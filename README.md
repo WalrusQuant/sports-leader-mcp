@@ -1,23 +1,15 @@
 # sports-leader-mcp
 
-[![Smithery](https://smithery.ai/badge/wickwireadam-o0nh/sports-leader-mcp)](https://smithery.ai/servers/wickwireadam-o0nh/sports-leader-mcp)
 
 Free MCP server for live sports data. **20 tools, 4 resources, 5 prompts** covering scores, standings, rosters, player stats, betting odds, play-by-play, injuries, transactions, and news across **17 sports and 139 leagues**.
 
 No auth. No API keys. No rate limits. Just connect and query.
 
-**[Full Documentation](https://walrusquant.github.io/sports-leader-mcp/index.html)** | **[Smithery Listing](https://smithery.ai/servers/wickwireadam-o0nh/sports-leader-mcp)** | **[GitHub](https://github.com/WalrusQuant/sports-leader-mcp)**
-
 ---
 
 ## Install
 
-Via Smithery:
-```bash
-npx -y @smithery/cli install @wickwireadam-o0nh/sports-leader-mcp --client claude
-```
-
-Or add to your MCP client config:
+Add to your MCP client config:
 ```json
 {
   "mcpServers": {
