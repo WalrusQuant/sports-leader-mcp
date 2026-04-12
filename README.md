@@ -1,13 +1,17 @@
 # sports-leader-mcp
 
+[![Smithery](https://smithery.ai/badge/wickwireadam-o0nh/sports-leader-mcp)](https://smithery.ai/servers/wickwireadam-o0nh/sports-leader-mcp)
+
 A free [Model Context Protocol](https://modelcontextprotocol.io) server for live sports data: scores, standings, rosters, player stats, odds, play-by-play, injuries, transactions, and news across **17 sports and 139 leagues**.
 
 Built on ESPN's undocumented public JSON APIs. No auth, no keys, no rate limits — just point your agent at it.
 
 ## Install (Smithery)
 
+Install via [Smithery](https://smithery.ai/servers/wickwireadam-o0nh/sports-leader-mcp):
+
 ```bash
-npx -y @smithery/cli install sports-leader-mcp --client claude
+npx -y @smithery/cli install @wickwireadam-o0nh/sports-leader-mcp --client claude
 ```
 
 Or add to your MCP client config manually (after `npm run build`):
