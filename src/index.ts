@@ -1,6 +1,9 @@
 #!/usr/bin/env node
+import { randomUUID } from "node:crypto";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import express from "express";
 
 import { scoreboardTools } from "./tools/scoreboard.js";
 import { leagueTools } from "./tools/league.js";
@@ -45,7 +48,7 @@ function toErrorResult(err: unknown) {
   };
 }
 
-async function main() {
+function createServer(): McpServer {
   const server = new McpServer({
     name: "sports-leader-mcp",
     version: "0.1.0",
@@ -70,8 +73,95 @@ async function main() {
     );
   }
 
+  return server;
+}
+
+async function startStdio() {
+  const server = createServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);
+}
+
+async function startHttp(port: number) {
+  const app = express();
+  app.use(express.json());
+
+  // Map of session ID → { server, transport }
+  const sessions = new Map<
+    string,
+    { server: McpServer; transport: StreamableHTTPServerTransport }
+  >();
+
+  // POST /mcp — main MCP endpoint (initialize + tool calls)
+  app.post("/mcp", async (req, res) => {
+    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+
+    if (sessionId && sessions.has(sessionId)) {
+      // Existing session
+      const session = sessions.get(sessionId)!;
+      await session.transport.handleRequest(req, res, req.body);
+      return;
+    }
+
+    // New session
+    const transport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: () => randomUUID(),
+      onsessioninitialized: (id) => {
+        sessions.set(id, { server, transport });
+      },
+    });
+
+    transport.onclose = () => {
+      if (transport.sessionId) {
+        sessions.delete(transport.sessionId);
+      }
+    };
+
+    const server = createServer();
+    await server.connect(transport);
+    await transport.handleRequest(req, res, req.body);
+  });
+
+  // GET /mcp — SSE stream for server-initiated notifications
+  app.get("/mcp", async (req, res) => {
+    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+    if (!sessionId || !sessions.has(sessionId)) {
+      res.status(400).json({ error: "Invalid or missing session ID" });
+      return;
+    }
+    const session = sessions.get(sessionId)!;
+    await session.transport.handleRequest(req, res);
+  });
+
+  // DELETE /mcp — close a session
+  app.delete("/mcp", async (req, res) => {
+    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+    if (!sessionId || !sessions.has(sessionId)) {
+      res.status(400).json({ error: "Invalid or missing session ID" });
+      return;
+    }
+    const session = sessions.get(sessionId)!;
+    await session.transport.handleRequest(req, res);
+  });
+
+  // Health check
+  app.get("/health", (_req, res) => {
+    res.json({ status: "ok", tools: ALL_TOOLS.length });
+  });
+
+  app.listen(port, "0.0.0.0", () => {
+    console.log(`sports-leader-mcp HTTP server listening on port ${port}`);
+  });
+}
+
+async function main() {
+  const port = process.env.PORT ? parseInt(process.env.PORT, 10) : undefined;
+
+  if (port) {
+    await startHttp(port);
+  } else {
+    await startStdio();
+  }
 }
 
 main().catch((err) => {
