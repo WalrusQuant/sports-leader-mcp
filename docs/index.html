@@ -5,22 +5,283 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>sports-leader-mcp</title>
   <meta name="description" content="Free MCP server for live sports data — scores, standings, rosters, player stats, odds, play-by-play, injuries, and news across 17 sports and 139 leagues.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.min.css">
   <style>
     :root {
-      --theme-color: #e65100;
-      --base-background-color: #1a1a2e;
-      --sidebar-background: #16213e;
-      --cover-background-color: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      --cover-heading-color: #e65100;
-      --cover-button-primary-background: #e65100;
+      /* Brand */
+      --accent: #ff6b00;
+      --accent-glow: rgba(255, 107, 0, 0.15);
+      --accent-hover: #ff8533;
+
+      /* Background */
+      --bg-primary: #0d0d0d;
+      --bg-secondary: #141414;
+      --bg-elevated: #1a1a1a;
+      --bg-card: #1e1e1e;
+
+      /* Text */
+      --text-primary: #f0f0f0;
+      --text-secondary: #a0a0a0;
+      --text-muted: #666;
+
+      /* Borders */
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-accent: rgba(255, 107, 0, 0.3);
+
+      /* Docsify theme overrides */
+      --theme-color: var(--accent);
+      --base-background-color: var(--bg-primary);
+      --base-color: var(--text-primary);
+      --sidebar-background: var(--bg-secondary);
+      --sidebar-border-color: var(--border-subtle);
+      --sidebar-nav-link-color: var(--text-secondary);
+      --sidebar-nav-link-color--active: var(--accent);
+      --sidebar-nav-strong-color: var(--text-primary);
+      --sidebar-name-color: var(--accent);
+      --sidebar-name-font-weight: 800;
+
+      --cover-background-color: var(--bg-primary);
+      --cover-background-image: none;
+      --cover-heading-color: var(--text-primary);
+      --cover-color: var(--text-secondary);
+      --cover-button-primary-background: var(--accent);
       --cover-button-primary-color: #fff;
+      --cover-button-color: var(--text-secondary);
+      --cover-button-border: 1px solid rgba(255, 255, 255, 0.15);
+
+      --heading-color: var(--text-primary);
+      --strong-color: var(--text-primary);
+      --code-inline-background: var(--bg-elevated);
+      --code-inline-color: var(--accent);
+      --code-theme-background: var(--bg-secondary);
+      --code-theme-text: var(--text-primary);
+
+      --link-color: var(--accent);
+      --link-color--hover: var(--accent-hover);
+
+      --table-head-background: var(--bg-elevated);
+      --table-row-odd-background: var(--bg-secondary);
+      --table-cell-border-color: var(--border-subtle);
+
+      --blockquote-border-color: var(--accent);
+      --blockquote-background: var(--accent-glow);
+      --blockquote-color: var(--text-secondary);
+
+      --search-background: var(--bg-elevated);
+      --search-result-heading-color: var(--accent);
     }
-    .cover-main {
-      max-width: 700px;
+
+    /* Typography */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
+
+    .app-name-link {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    code, .markdown-section code, pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875em;
+    }
+
+    .markdown-section h1 {
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .markdown-section h2 {
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 0.4em;
+    }
+
+    /* Cover page */
+    section.cover {
+      background: var(--bg-primary) !important;
+      min-height: 100vh;
+    }
+
+    section.cover .cover-main {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    section.cover h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.2em;
+    }
+
+    section.cover blockquote p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    section.cover blockquote {
+      border: none;
+      background: none;
+    }
+
+    section.cover ul {
+      list-style: none;
+      padding: 0;
+      margin: 2rem 0;
+    }
+
+    section.cover ul li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      margin: 0.5rem 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      transition: border-color 0.2s;
+    }
+
+    section.cover ul li:hover {
+      border-color: var(--border-accent);
+    }
+
+    section.cover ul li strong {
+      color: var(--accent);
+    }
+
+    section.cover .cover-main > p:last-child a {
+      border-radius: 8px;
+      padding: 0.7rem 2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.2px;
+      text-transform: none;
+      transition: all 0.2s;
+    }
+
+    section.cover .cover-main > p:last-child a:first-child {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+    }
+
+    section.cover .cover-main > p:last-child a:first-child:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    section.cover .cover-main > p:last-child a:last-child {
+      color: var(--text-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    section.cover .cover-main > p:last-child a:last-child:hover {
+      color: var(--text-primary);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      border-right: 1px solid var(--border-subtle);
+    }
+
     .sidebar-nav li a {
-      font-size: 14px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .sidebar-nav li.active > a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .sidebar-nav li > strong {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-top: 1.2rem;
+      display: block;
+    }
+
+    /* Content area */
+    .markdown-section {
+      max-width: 800px;
+    }
+
+    .markdown-section table {
+      border-collapse: collapse;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .markdown-section table th {
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    .markdown-section table td code {
+      background: var(--bg-elevated);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.8em;
+    }
+
+    /* Code blocks */
+    .markdown-section pre {
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Search */
+    .search input {
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle) !important;
+      background: var(--bg-elevated) !important;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .search input:focus {
+      border-color: var(--border-accent) !important;
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    /* GitHub corner */
+    .github-corner svg {
+      fill: var(--accent);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-elevated);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
     }
   </style>
 </head>
