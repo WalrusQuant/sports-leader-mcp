@@ -2,7 +2,7 @@
 
 Tools for retrieving player data — overviews, season stats, game logs, and statistical splits. All four tools work best with **NFL, NBA, NHL, and MLB**. Coverage for other leagues varies depending on what ESPN exposes for that sport.
 
-To find an `athleteId`, use [`search`](tools/discovery.md#search) with a player's name, or pull a roster via [`get_team`](tools/teams.md#get_team).
+To find an `athleteId`, use [`search`](discovery.md#search) with a player's name, or pull a roster via [`get_team`](teams.md#get_team).
 
 ---
 
