@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <!-- Markdown + syntax highlighting -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github-dark-dimmed.min.css">
   <script src="https://cdn.jsdelivr.net/npm/highlight.js@11"></script>
   <style>
@@ -417,6 +417,34 @@
           };
           block.parentElement.style.position = 'relative';
           block.parentElement.appendChild(btn);
+        });
+
+        // Intercept internal .md links — route through hash navigation
+        contentEl.querySelectorAll('a[href]').forEach(link => {
+          const href = link.getAttribute('href');
+          if (!href) return;
+          // Skip external links, anchors, and absolute URLs
+          if (href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
+          // Internal .md link — convert to hash route
+          if (href.endsWith('.md') || href.includes('.md#')) {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              // Strip .md extension, resolve relative paths
+              let target = href.replace(/\.md(#.*)?$/, '$1');
+              // Handle relative paths like reference/endpoints from within a subdir
+              if (!target.startsWith('/') && !target.startsWith('tools/') && !target.startsWith('reference/')) {
+                // If we're currently in a subdir, resolve relative to it
+                const currentDir = page.includes('/') ? page.substring(0, page.lastIndexOf('/') + 1) : '';
+                target = currentDir + target;
+              }
+              // Handle README links
+              if (target.endsWith('/README') || target === 'README') {
+                target = target.replace(/README$/, '');
+                if (!target) target = 'README';
+              }
+              navigate(target);
+            });
+          }
         });
 
         // Update active nav
