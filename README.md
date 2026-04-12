@@ -9,13 +9,13 @@ No auth. No API keys. No rate limits. Just connect and query.
 
 ## Install
 
-Add to your MCP client config:
+Add to your MCP client config manually (after 'npm run'):
 ```json
 {
   "mcpServers": {
     "sports-leader": {
-      "command": "npx",
-      "args": ["-y", "@wickwireadam-o0nh/sports-leader-mcp"]
+      "command": "node",
+      "args": [["/absolute/path/to/sports-leader-mcp/dist/index.js"]]
     }
   }
 }
