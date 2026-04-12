@@ -1,8 +1,38 @@
+name: sports-leader-mcp
+description: >-
+  Free MCP server for live sports data — scores, standings, rosters, player stats,
+  betting odds, play-by-play, injuries, transactions, and news across 17 sports
+  and 139 leagues. 20 tools, 4 resources, 5 prompts. No auth required.
+version: 0.1.0
+license: MIT
+keywords:
+  - sports
+  - scores
+  - standings
+  - stats
+  - odds
+  - nfl
+  - nba
+  - mlb
+  - nhl
+  - soccer
+  - mcp
+  - live-data
+  - play-by-play
+  - injuries
+  - betting
+homepage: https://walrusquant.github.io/sports-leader-mcp/
+repository: https://github.com/WalrusQuant/sports-leader-mcp
 startCommand:
   type: stdio
   configSchema:
     type: object
-    properties: {}
+    properties:
+      timeout:
+        type: number
+        description: Request timeout in milliseconds for upstream API calls
+        default: 30000
+    additionalProperties: false
   commandFunction: |-
     (config) => ({
       command: "node",
