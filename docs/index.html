@@ -3,314 +3,672 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>sports-leader-mcp</title>
+  <title>sports-leader-mcp — Live Sports Data for AI Agents</title>
   <meta name="description" content="Free MCP server for live sports data — scores, standings, rosters, player stats, odds, play-by-play, injuries, and news across 17 sports and 139 leagues.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
     :root {
-      /* Brand */
-      --accent: #ff6b00;
-      --accent-glow: rgba(255, 107, 0, 0.15);
-      --accent-hover: #ff8533;
-
-      /* Background */
-      --bg-primary: #0d0d0d;
-      --bg-secondary: #141414;
-      --bg-elevated: #1a1a1a;
-      --bg-card: #1e1e1e;
-
-      /* Text */
-      --text-primary: #f0f0f0;
-      --text-secondary: #a0a0a0;
-      --text-muted: #666;
-
-      /* Borders */
-      --border-subtle: rgba(255, 255, 255, 0.06);
-      --border-accent: rgba(255, 107, 0, 0.3);
-
-      /* Docsify theme overrides */
-      --theme-color: var(--accent);
-      --base-background-color: var(--bg-primary);
-      --base-color: var(--text-primary);
-      --sidebar-background: var(--bg-secondary);
-      --sidebar-border-color: var(--border-subtle);
-      --sidebar-nav-link-color: var(--text-secondary);
-      --sidebar-nav-link-color--active: var(--accent);
-      --sidebar-nav-strong-color: var(--text-primary);
-      --sidebar-name-color: var(--accent);
-      --sidebar-name-font-weight: 800;
-
-      --cover-background-color: var(--bg-primary);
-      --cover-background-image: none;
-      --cover-heading-color: var(--text-primary);
-      --cover-color: var(--text-secondary);
-      --cover-button-primary-background: var(--accent);
-      --cover-button-primary-color: #fff;
-      --cover-button-color: var(--text-secondary);
-      --cover-button-border: 1px solid rgba(255, 255, 255, 0.15);
-
-      --heading-color: var(--text-primary);
-      --strong-color: var(--text-primary);
-      --code-inline-background: var(--bg-elevated);
-      --code-inline-color: var(--accent);
-      --code-theme-background: var(--bg-secondary);
-      --code-theme-text: var(--text-primary);
-
-      --link-color: var(--accent);
-      --link-color--hover: var(--accent-hover);
-
-      --table-head-background: var(--bg-elevated);
-      --table-row-odd-background: var(--bg-secondary);
-      --table-cell-border-color: var(--border-subtle);
-
-      --blockquote-border-color: var(--accent);
-      --blockquote-background: var(--accent-glow);
-      --blockquote-color: var(--text-secondary);
-
-      --search-background: var(--bg-elevated);
-      --search-result-heading-color: var(--accent);
+      --bg: #0a0a0a;
+      --surface: #111;
+      --card: #161616;
+      --card-border: rgba(255,255,255,0.06);
+      --accent: #FF6B00;
+      --accent-dim: rgba(255,107,0,0.12);
+      --accent-glow: rgba(255,107,0,0.25);
+      --text: #EBEBEB;
+      --text-mid: #999;
+      --text-dim: #555;
+      --display: 'Bebas Neue', sans-serif;
+      --body: 'DM Sans', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
     }
 
-    /* Typography */
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    .app-name-link {
-      font-family: 'Inter', sans-serif;
-      font-weight: 800;
-      letter-spacing: -0.5px;
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
     }
 
-    code, .markdown-section code, pre {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.875em;
-    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: #ff8533; }
 
-    .markdown-section h1 {
-      font-weight: 800;
-      letter-spacing: -0.5px;
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
     }
-
-    .markdown-section h2 {
-      font-weight: 700;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 0.4em;
+    .nav-brand {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      color: var(--text);
     }
-
-    /* Cover page */
-    section.cover {
-      background: var(--bg-primary) !important;
-      min-height: 100vh;
-    }
-
-    section.cover .cover-main {
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    section.cover h1 {
-      font-size: 3.5rem;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.2em;
-    }
-
-    section.cover blockquote p {
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      font-weight: 400;
-    }
-
-    section.cover blockquote {
-      border: none;
-      background: none;
-    }
-
-    section.cover ul {
-      list-style: none;
-      padding: 0;
-      margin: 2rem 0;
-    }
-
-    section.cover ul li {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem 1.25rem;
-      margin: 0.5rem 0;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      transition: border-color 0.2s;
-    }
-
-    section.cover ul li:hover {
-      border-color: var(--border-accent);
-    }
-
-    section.cover ul li strong {
-      color: var(--accent);
-    }
-
-    section.cover .cover-main > p:last-child a {
-      border-radius: 8px;
-      padding: 0.7rem 2rem;
-      font-weight: 600;
-      font-size: 0.95rem;
-      letter-spacing: 0.2px;
-      text-transform: none;
-      transition: all 0.2s;
-    }
-
-    section.cover .cover-main > p:last-child a:first-child {
-      background: var(--accent);
-      color: #fff;
-      border: 1px solid var(--accent);
-    }
-
-    section.cover .cover-main > p:last-child a:first-child:hover {
-      background: var(--accent-hover);
-      box-shadow: 0 0 20px var(--accent-glow);
-    }
-
-    section.cover .cover-main > p:last-child a:last-child {
-      color: var(--text-secondary);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    section.cover .cover-main > p:last-child a:last-child:hover {
-      color: var(--text-primary);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Sidebar */
-    .sidebar {
-      border-right: 1px solid var(--border-subtle);
-    }
-
-    .sidebar-nav li a {
+    .nav-brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      color: var(--text-mid);
       font-size: 0.875rem;
       font-weight: 500;
-      transition: color 0.15s;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
     }
-
-    .sidebar-nav li.active > a {
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .sidebar-nav li > strong {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--text-muted);
-      margin-top: 1.2rem;
-      display: block;
-    }
-
-    /* Content area */
-    .markdown-section {
-      max-width: 800px;
-    }
-
-    .markdown-section table {
-      border-collapse: collapse;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .markdown-section table th {
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent) !important;
+      color: #fff !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
       font-weight: 600;
       font-size: 0.8rem;
-      text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: var(--text-muted);
+      transition: box-shadow 0.3s;
+    }
+    .nav-cta:hover { box-shadow: 0 0 20px var(--accent-glow); color: #fff !important; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
     }
 
-    .markdown-section table td code {
-      background: var(--bg-elevated);
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 0.8em;
+    /* Radial glow behind hero */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
+      pointer-events: none;
     }
 
-    /* Code blocks */
-    .markdown-section pre {
+    /* Subtle grid lines */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent-dim);
+      border: 1px solid rgba(255,107,0,0.2);
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease-out both;
+    }
+
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(4rem, 10vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: 4px;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      animation: fadeUp 0.6s ease-out 0.1s both;
+    }
+    .hero h1 span { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 1.25rem;
+      color: var(--text-mid);
+      max-width: 550px;
+      margin: 1rem auto 2.5rem;
+      font-weight: 400;
+      animation: fadeUp 0.6s ease-out 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.6s ease-out 0.3s both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
       border-radius: 8px;
-      border: 1px solid var(--border-subtle);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.25s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #ff8533;
+      box-shadow: 0 0 30px var(--accent-glow);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-mid);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .btn-ghost:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-1px);
     }
 
-    /* Search */
-    .search input {
-      border-radius: 8px;
-      border: 1px solid var(--border-subtle) !important;
-      background: var(--bg-elevated) !important;
-      font-family: 'Inter', sans-serif;
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      margin-top: 4rem;
+      animation: fadeUp 0.6s ease-out 0.4s both;
     }
 
-    .search input:focus {
-      border-color: var(--border-accent) !important;
-      box-shadow: 0 0 0 3px var(--accent-glow);
+    .stat {
+      text-align: center;
+    }
+    .stat-number {
+      font-family: var(--display);
+      font-size: 3.5rem;
+      color: var(--accent);
+      line-height: 1;
+      letter-spacing: 2px;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 500;
+      margin-top: 0.25rem;
     }
 
-    /* GitHub corner */
-    .github-corner svg {
-      fill: var(--accent);
+    /* ─── SECTION ─── */
+    section {
+      padding: 6rem 2rem;
+    }
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: var(--display);
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      letter-spacing: 2px;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      color: var(--text-mid);
+      max-width: 600px;
+      font-size: 1.05rem;
     }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
+    /* ─── FEATURE CARDS ─── */
+    .features {
+      background: var(--surface);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
     }
-    ::-webkit-scrollbar-track {
-      background: var(--bg-primary);
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-top: 3rem;
     }
-    ::-webkit-scrollbar-thumb {
-      background: var(--bg-elevated);
-      border-radius: 3px;
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
     }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--text-muted);
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .feature-card:hover::before { transform: scaleX(1); }
+    .feature-card:hover {
+      border-color: rgba(255,107,0,0.15);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--accent-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .feature-card p {
+      font-size: 0.875rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+
+    /* ─── TOOLS ─── */
+    .tools-section { position: relative; }
+    .tool-group { margin-top: 2.5rem; }
+    .tool-group-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--text-dim);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      padding-left: 0.25rem;
+    }
+    .tool-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 0.75rem;
+    }
+    .tool-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      transition: all 0.25s;
+      cursor: default;
+    }
+    .tool-card:hover {
+      border-color: rgba(255,107,0,0.2);
+      background: #1a1a1a;
+    }
+    .tool-name {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .tool-desc {
+      font-size: 0.8rem;
+      color: var(--text-mid);
+      line-height: 1.5;
+      margin-top: 0.2rem;
+    }
+
+    /* ─── INSTALL ─── */
+    .install-section {
+      background: var(--surface);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      text-align: center;
+    }
+    .install-block {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      max-width: 650px;
+      margin: 2.5rem auto 0;
+      position: relative;
+    }
+    .install-block code {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--text);
+      user-select: all;
+    }
+    .install-block .comment {
+      color: var(--text-dim);
+    }
+    .install-or {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin: 1.5rem 0;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 3rem;
+      text-align: center;
+      border-top: 1px solid var(--card-border);
+    }
+    footer p {
+      color: var(--text-dim);
+      font-size: 0.8rem;
+    }
+    footer a { color: var(--text-mid); }
+    footer a:hover { color: var(--accent); }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1rem; }
+      .stats-bar { gap: 2rem; flex-wrap: wrap; }
+      .stat-number { font-size: 2.5rem; }
+      section { padding: 4rem 1.5rem; }
+      .tool-list { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div id="app"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-brand">SPORTS<span>LEADER</span></div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#tools">Tools</a>
+      <a href="docs.html">Docs</a>
+      <a href="https://github.com/WalrusQuant/sports-leader-mcp" target="_blank">GitHub</a>
+      <a href="https://smithery.ai/servers/wickwireadam-o0nh/sports-leader-mcp" class="nav-cta" target="_blank">Smithery</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Free &amp; Open Source MCP Server</div>
+      <h1>SPORTS<span>LEADER</span></h1>
+      <p class="hero-sub">Live sports data for AI agents. Scores, stats, odds, play-by-play, and more — across every major league.</p>
+      <div class="hero-actions">
+        <a href="docs.html#getting-started" class="btn btn-primary">Get Started</a>
+        <a href="docs.html#tools/" class="btn btn-ghost">View All Tools</a>
+        <a href="https://github.com/WalrusQuant/sports-leader-mcp" class="btn btn-ghost" target="_blank">GitHub</a>
+      </div>
+
+      <div class="stats-bar">
+        <div class="stat">
+          <div class="stat-number">20</div>
+          <div class="stat-label">Tools</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">17</div>
+          <div class="stat-label">Sports</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">139</div>
+          <div class="stat-label">Leagues</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">$0</div>
+          <div class="stat-label">Price</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-inner">
+      <div class="section-label fade-in">What You Get</div>
+      <h2 class="section-title fade-in">Everything your agent needs</h2>
+      <p class="section-desc fade-in">Connect once, query any sport. No API keys, no rate limits, no setup friction.</p>
+
+      <div class="feature-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon">&#9917;</div>
+          <h3>Live Scores &amp; Schedules</h3>
+          <p>Real-time scoreboards for every game in every league. Filter by date, week, or season type. Get event IDs for deeper data.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">&#128202;</div>
+          <h3>Player Stats &amp; Game Logs</h3>
+          <p>Full season stats, game-by-game logs, home/away splits, and opponent breakdowns. Works for NFL, NBA, NHL, MLB, and more.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">&#127942;</div>
+          <h3>Standings &amp; Leaders</h3>
+          <p>Current standings for any league. League-wide statistical leaders — scoring, passing, rebounding, whatever the sport tracks.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">&#128176;</div>
+          <h3>Betting Odds</h3>
+          <p>Spreads, moneylines, and over/unders from DraftKings, FanDuel, Caesars, BetMGM, ESPN BET, and Bet365.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">&#127941;</div>
+          <h3>Full Game Data</h3>
+          <p>Boxscores, play-by-play, win probability timelines, and game summaries. The richest view of any game in one call.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">&#128240;</div>
+          <h3>News, Injuries &amp; Transactions</h3>
+          <p>Real-time news feeds, league-wide injury reports, and transaction logs — signings, trades, waivers, all in one place.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="tools-section" id="tools">
+    <div class="section-inner">
+      <div class="section-label fade-in">20 MCP Tools</div>
+      <h2 class="section-title fade-in">The Full Toolkit</h2>
+      <p class="section-desc fade-in">Each tool is documented with parameters, examples, and response schemas. <a href="docs.html#tools/">Read the full docs.</a></p>
+
+      <div class="tool-group fade-in">
+        <div class="tool-group-label">Discovery &amp; Search</div>
+        <div class="tool-list">
+          <div class="tool-card">
+            <div><div class="tool-name">list_sports_and_leagues</div><div class="tool-desc">Discover all valid sport and league slugs</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">search</div><div class="tool-desc">Global search for athletes, teams, and articles</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">espn_fetch</div><div class="tool-desc">Fetch any ESPN URL directly — the escape hatch</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-group fade-in">
+        <div class="tool-group-label">Scoreboard &amp; Games</div>
+        <div class="tool-list">
+          <div class="tool-card">
+            <div><div class="tool-name">get_scoreboard</div><div class="tool-desc">Live and scheduled games with scores and event IDs</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_game_summary</div><div class="tool-desc">Boxscore, plays, leaders, broadcasts, win probability</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_game_plays</div><div class="tool-desc">Full play-by-play data for any game</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_game_odds</div><div class="tool-desc">Spread, moneyline, over/under from top sportsbooks</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_game_probabilities</div><div class="tool-desc">Win probability timeline throughout the game</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-group fade-in">
+        <div class="tool-group-label">Teams</div>
+        <div class="tool-list">
+          <div class="tool-card">
+            <div><div class="tool-name">get_teams</div><div class="tool-desc">All teams in a league — IDs, names, logos</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_team</div><div class="tool-desc">Roster, schedule, record, depth chart, injuries, and more</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_team_injuries</div><div class="tool-desc">Current injury report for a single team</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-group fade-in">
+        <div class="tool-group-label">Athletes</div>
+        <div class="tool-list">
+          <div class="tool-card">
+            <div><div class="tool-name">get_athlete_overview</div><div class="tool-desc">Stats snapshot, next game, news — one call</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_athlete_stats</div><div class="tool-desc">Full season stats with categories and glossary</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_athlete_gamelog</div><div class="tool-desc">Game-by-game log with stats per game</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_athlete_splits</div><div class="tool-desc">Home/away, by opponent, by month, by situation</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-group fade-in">
+        <div class="tool-group-label">League-Wide</div>
+        <div class="tool-list">
+          <div class="tool-card">
+            <div><div class="tool-name">get_standings</div><div class="tool-desc">Current league standings</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_league_leaders</div><div class="tool-desc">League statistical leaders by category</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_injuries</div><div class="tool-desc">League-wide injury report, all teams</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_transactions</div><div class="tool-desc">Recent signings, trades, waivers</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_news</div><div class="tool-desc">Real-time sports news feed</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section class="install-section" id="install">
+    <div class="section-inner">
+      <div class="section-label fade-in">Get Started</div>
+      <h2 class="section-title fade-in">One command to connect</h2>
+
+      <div class="install-block fade-in">
+        <code><span class="comment"># Install via Smithery</span><br>
+npx -y @smithery/cli install @wickwireadam-o0nh/sports-leader-mcp --client claude</code>
+      </div>
+
+      <p class="install-or fade-in">or <a href="docs.html#getting-started">see manual config &rarr;</a></p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="docs.html">Docs</a>
+      <a href="https://github.com/WalrusQuant/sports-leader-mcp">GitHub</a>
+      <a href="https://smithery.ai/servers/wickwireadam-o0nh/sports-leader-mcp">Smithery</a>
+    </div>
+    <p>sports-leader-mcp &mdash; Free &amp; open source. MIT License.</p>
+  </footer>
+
+  <!-- Scroll-triggered fade-in -->
   <script>
-    window.$docsify = {
-      name: 'sports-leader-mcp',
-      repo: 'https://github.com/WalrusQuant/sports-leader-mcp',
-      loadSidebar: true,
-      coverpage: true,
-      subMaxLevel: 3,
-      auto2top: true,
-      search: {
-        placeholder: 'Search docs...',
-        noData: 'No results',
-        depth: 3,
-      },
-      copyCode: {
-        buttonText: 'Copy',
-        successText: 'Copied',
-      },
-    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
 </body>
 </html>
