@@ -23,6 +23,7 @@ keywords:
   - betting
 homepage: https://walrusquant.github.io/sports-leader-mcp/
 repository: https://github.com/WalrusQuant/sports-leader-mcp
+icon: https://walrusquant.github.io/sports-leader-mcp/assets/og-image.png
 startCommand:
   type: stdio
   configSchema:
@@ -30,13 +31,29 @@ startCommand:
     properties:
       timeout:
         type: number
-        description: Request timeout in milliseconds for upstream API calls
+        title: Request Timeout
+        description: Timeout in milliseconds for upstream ESPN API calls. Default is 30000 (30 seconds).
         default: 30000
+      defaultSport:
+        type: string
+        title: Default Sport
+        description: Default sport slug to use when not specified. Examples: basketball, football, baseball, hockey, soccer.
+        default: ""
+      defaultLeague:
+        type: string
+        title: Default League
+        description: Default league slug to use when not specified. Examples: nba, nfl, mlb, nhl, eng.1.
+        default: ""
     additionalProperties: false
   commandFunction: |-
     (config) => ({
       command: "node",
-      args: ["dist/index.js"]
+      args: ["dist/index.js"],
+      env: {
+        SPORTS_LEADER_TIMEOUT: String(config.timeout || 30000),
+        SPORTS_LEADER_DEFAULT_SPORT: config.defaultSport || "",
+        SPORTS_LEADER_DEFAULT_LEAGUE: config.defaultLeague || ""
+      }
     })
 build:
   dockerfile: Dockerfile

@@ -1,5 +1,7 @@
 const USER_AGENT = "sports-leader-mcp/0.1.0";
-const DEFAULT_TIMEOUT_MS = 30_000;
+const DEFAULT_TIMEOUT_MS = process.env.SPORTS_LEADER_TIMEOUT
+  ? parseInt(process.env.SPORTS_LEADER_TIMEOUT, 10)
+  : 30_000;
 
 const ALLOWED_HOSTS = new Set([
   "site.api.espn.com",

@@ -62,6 +62,13 @@ function createServer(): McpServer {
         title: tool.title,
         description: tool.description,
         inputSchema: tool.inputShape,
+        annotations: {
+          title: tool.title,
+          readOnlyHint: true,
+          destructiveHint: false,
+          idempotentHint: true,
+          openWorldHint: true,
+        },
       },
       async (args: Record<string, unknown>) => {
         try {
