@@ -194,7 +194,11 @@ curl ".../sports/rugby/leagues/180659/..."
 
 ## 14. No Official Rate Limits, But They Exist
 
-ESPN does not publish rate limits, but they will block excessive requests (HTTP 429). Best practices:
+ESPN does not publish rate limits, but they will block excessive requests (HTTP 429). The server handles this automatically with exponential backoff retries on 429 responses.
+
+When self-hosting as an HTTP service, the server also enforces its own rate limits (60 requests/min and 1,000 requests/day per IP by default) to protect against runaway clients. All upstream responses are cached with TTLs tuned by data type (30s for live scores up to 24h for historical stats). See the [Self-Hosting Guide](../self-hosting.md) for details.
+
+Best practices for direct ESPN API usage:
 
 - Cache responses that change infrequently (teams, rosters, standings)
 - Do not poll scoreboards more than once per minute

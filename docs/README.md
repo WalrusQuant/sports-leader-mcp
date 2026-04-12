@@ -44,6 +44,10 @@ Or add to your MCP client config manually:
 | [Athletes](tools/athletes.md) | `get_athlete_overview`, `get_athlete_stats`, `get_athlete_gamelog`, `get_athlete_splits` |
 | [League-Wide](tools/league.md) | `get_standings`, `get_league_leaders`, `get_injuries`, `get_transactions`, `get_news` |
 
+## Self-Hosting
+
+Running as a hosted HTTP service? See the [Self-Hosting Guide](self-hosting.md) for caching, rate limiting, monitoring, and the kill switch.
+
 ## Reference
 
 - [API Endpoints](reference/endpoints.md) — full catalog of ESPN API endpoints across 8 domains

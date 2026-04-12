@@ -12,7 +12,8 @@ import { teamTools } from "./tools/teams.js";
 import { athleteTools } from "./tools/athletes.js";
 import { discoveryTools } from "./tools/discovery.js";
 import type { ToolDef } from "./tool.js";
-import { UpstreamError } from "./client.js";
+import { UpstreamError, apiCache } from "./client.js";
+import { rateLimitMiddleware, rateLimitStats } from "./rate-limit.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ALL_TOOLS: ToolDef<any>[] = [
@@ -465,6 +466,7 @@ async function startStdio() {
 
 async function startHttp(port: number) {
   const app = express();
+  app.set("trust proxy", true);
   app.use(express.json());
 
   // Map of session ID → { server, transport }
@@ -473,8 +475,20 @@ async function startHttp(port: number) {
     { server: McpServer; transport: StreamableHTTPServerTransport }
   >();
 
+  // Kill switch + rate limiting for MCP routes
+  const mcpGuard = [
+    (req: import("express").Request, res: import("express").Response, next: import("express").NextFunction) => {
+      if (process.env.KILL_SWITCH === "1" || process.env.KILL_SWITCH === "true") {
+        res.status(503).json({ error: "Service temporarily disabled" });
+        return;
+      }
+      next();
+    },
+    rateLimitMiddleware,
+  ];
+
   // POST /mcp — main MCP endpoint (initialize + tool calls)
-  app.post("/mcp", async (req, res) => {
+  app.post("/mcp", ...mcpGuard, async (req, res) => {
     const sessionId = req.headers["mcp-session-id"] as string | undefined;
 
     if (sessionId && sessions.has(sessionId)) {
@@ -504,7 +518,7 @@ async function startHttp(port: number) {
   });
 
   // GET /mcp — SSE stream for server-initiated notifications
-  app.get("/mcp", async (req, res) => {
+  app.get("/mcp", ...mcpGuard, async (req, res) => {
     const sessionId = req.headers["mcp-session-id"] as string | undefined;
     if (!sessionId || !sessions.has(sessionId)) {
       res.status(400).json({ error: "Invalid or missing session ID" });
@@ -514,7 +528,7 @@ async function startHttp(port: number) {
     await session.transport.handleRequest(req, res);
   });
 
-  // DELETE /mcp — close a session
+  // DELETE /mcp — close a session (no guards — always allow cleanup)
   app.delete("/mcp", async (req, res) => {
     const sessionId = req.headers["mcp-session-id"] as string | undefined;
     if (!sessionId || !sessions.has(sessionId)) {
@@ -527,7 +541,28 @@ async function startHttp(port: number) {
 
   // Health check
   app.get("/health", (_req, res) => {
-    res.json({ status: "ok", tools: ALL_TOOLS.length });
+    res.json({
+      status: "ok",
+      uptime: process.uptime(),
+      tools: ALL_TOOLS.length,
+      sessions: sessions.size,
+    });
+  });
+
+  // Monitoring stats
+  app.get("/stats", (_req, res) => {
+    const cache = apiCache.stats();
+    const total = cache.hits + cache.misses;
+    res.json({
+      cache: {
+        ...cache,
+        hitRatePercent: total > 0 ? ((cache.hits / total) * 100).toFixed(1) : "0.0",
+      },
+      rateLimit: rateLimitStats(),
+      uptime: process.uptime(),
+      sessions: sessions.size,
+      killSwitch: process.env.KILL_SWITCH === "1" || process.env.KILL_SWITCH === "true",
+    });
   });
 
   app.listen(port, "0.0.0.0", () => {

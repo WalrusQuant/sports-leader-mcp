@@ -33,6 +33,14 @@ npm run build
 npm start
 ```
 
+To run as an HTTP service instead of stdio, set `PORT`:
+
+```bash
+PORT=3000 npm start
+```
+
+This enables session management, built-in caching, rate limiting, and monitoring endpoints. See the [Self-Hosting Guide](self-hosting.md) for full configuration options.
+
 ## Your First Queries
 
 Once connected, try these with your AI agent:
@@ -116,5 +124,6 @@ When filtering odds by sportsbook:
 ## Next Steps
 
 - Browse the [Tools](tools/) to see all 20 tools with parameters and examples
+- Read the [Self-Hosting Guide](self-hosting.md) if running as an HTTP service
 - Check the [API Endpoints](reference/endpoints.md) reference for the raw ESPN API catalog
 - Read [Gotchas & Pitfalls](reference/gotchas.md) to avoid common mistakes

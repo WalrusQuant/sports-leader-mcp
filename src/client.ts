@@ -1,3 +1,5 @@
+import { TtlCache } from "./cache.js";
+
 const USER_AGENT = "sports-leader-mcp/0.1.0";
 const DEFAULT_TIMEOUT_MS = process.env.SPORTS_LEADER_TIMEOUT
   ? parseInt(process.env.SPORTS_LEADER_TIMEOUT, 10)
@@ -41,6 +43,38 @@ function assertAllowedHost(url: string): void {
   }
 }
 
+export const apiCache = new TtlCache();
+
+function getTtlMs(path: string): number {
+
+  // 30s — live scoreboards
+  if (path.includes("/scoreboard")) return 30_000;
+
+  // 60s — in-progress game data
+  if (path.includes("/summary")) return 60_000;
+  if (path.includes("/plays")) return 60_000;
+  if (path.includes("/odds")) return 60_000;
+  if (path.includes("/probabilities")) return 60_000;
+
+  // 300s — semi-live data
+  if (path.includes("/injuries") && !path.includes("/teams/")) return 300_000;
+  if (path.includes("/transactions")) return 300_000;
+  if (path.includes("/news")) return 300_000;
+  if (path.includes("/search")) return 300_000;
+
+  // 3600s — standings, league, teams
+  if (path.includes("/standings")) return 3_600_000;
+  if (path.includes("/leaders")) return 3_600_000;
+  if (path.includes("/teams")) return 3_600_000;
+
+  // 86400s — athletes, ontology
+  if (path.includes("/athletes/")) return 86_400_000;
+  if (path.includes("/ontology/")) return 86_400_000;
+
+  // Default
+  return 300_000;
+}
+
 export interface FetchOptions {
   params?: Record<string, string | number | boolean | undefined>;
   timeoutMs?: number;
@@ -61,7 +95,12 @@ export async function fetchJson<T = unknown>(
     }
   }
 
-  assertAllowedHost(u.toString());
+  const resolvedUrl = u.toString();
+  assertAllowedHost(resolvedUrl);
+
+  // Cache check
+  const cached = apiCache.get<T>(resolvedUrl);
+  if (cached !== undefined) return cached;
 
   const maxAttempts = 3;
   let lastErr: unknown;
@@ -71,7 +110,7 @@ export async function fetchJson<T = unknown>(
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
-      const res = await fetch(u.toString(), {
+      const res = await fetch(resolvedUrl, {
         headers: {
           "User-Agent": USER_AGENT,
           Accept: "application/json",
@@ -90,12 +129,14 @@ export async function fetchJson<T = unknown>(
         throw new UpstreamError(
           `ESPN API returned ${res.status} ${res.statusText}`,
           res.status,
-          u.toString(),
+          resolvedUrl,
           body.slice(0, 500),
         );
       }
 
-      return (await res.json()) as T;
+      const data = (await res.json()) as T;
+      apiCache.set(resolvedUrl, data, getTtlMs(u.pathname));
+      return data;
     } catch (err) {
       lastErr = err;
       if (err instanceof UpstreamError) throw err;
