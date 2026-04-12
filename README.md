@@ -9,17 +9,27 @@ No auth. No API keys. No rate limits. Just connect and query.
 
 ## Install
 
-Add to your MCP client config manually (after 'npm run'):
+Clone and build:
+```bash
+git clone https://github.com/WalrusQuant/sports-leader-mcp.git
+cd sports-leader-mcp
+npm install
+npm run build
+```
+
+Then add to your MCP client config (e.g. Claude Desktop, Cursor, etc.):
 ```json
 {
   "mcpServers": {
     "sports-leader": {
       "command": "node",
-      "args": [["/absolute/path/to/sports-leader-mcp/dist/index.js"]]
+      "args": ["/absolute/path/to/sports-leader-mcp/dist/index.js"]
     }
   }
 }
 ```
+
+Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 
 ## What You Can Do
 
@@ -107,12 +117,11 @@ Basketball, Football, Baseball, Hockey, Soccer, Golf, Racing, Tennis, MMA, Lacro
 
 ## Local Development
 
+After cloning and installing (see [Install](#install)):
 ```bash
-git clone https://github.com/WalrusQuant/sports-leader-mcp.git
-cd sports-leader-mcp
-npm install
-npm run build
-npm start
+npm run dev       # watch mode — recompiles on file changes
+npm start         # run the server via stdio
+PORT=3000 npm start  # run as HTTP server on port 3000
 ```
 
 ## License
