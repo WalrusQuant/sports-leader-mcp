@@ -384,6 +384,13 @@
     const navItems = document.querySelectorAll('.nav-item[data-page]');
     const searchInput = document.getElementById('search-input');
 
+    // Parse markdown — handle different marked.js API versions
+    function parseMd(text) {
+      if (typeof marked.parse === 'function') return marked.parse(text, { gfm: true });
+      if (typeof marked === 'function') return marked(text, { gfm: true });
+      throw new Error('marked library not loaded');
+    }
+
     // Resolve page path to .md file URL
     function pageToUrl(page) {
       if (page.endsWith('/')) return page + 'README.md';
@@ -394,85 +401,88 @@
     async function loadPage(page) {
       contentEl.innerHTML = '<div class="loading">Loading</div>';
 
+      // Step 1: Fetch
+      let md;
       try {
         const url = pageToUrl(page);
         const res = await fetch(url);
-        if (!res.ok) throw new Error(`${res.status}`);
-        const md = await res.text();
-
-        contentEl.innerHTML = marked.parse(md, { breaks: false, gfm: true });
-
-        // Syntax highlight code blocks
-        contentEl.querySelectorAll('pre code').forEach(block => {
-          hljs.highlightElement(block);
-
-          // Add copy button
-          const btn = document.createElement('button');
-          btn.className = 'copy-btn';
-          btn.textContent = 'Copy';
-          btn.onclick = () => {
-            navigator.clipboard.writeText(block.textContent);
-            btn.textContent = 'Copied!';
-            setTimeout(() => btn.textContent = 'Copy', 1500);
-          };
-          block.parentElement.style.position = 'relative';
-          block.parentElement.appendChild(btn);
-        });
-
-        // Intercept internal .md links — route through hash navigation
-        contentEl.querySelectorAll('a[href]').forEach(link => {
-          const href = link.getAttribute('href');
-          if (!href) return;
-          // Skip external links, anchors, and absolute URLs
-          if (href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
-          // Internal .md link — convert to hash route
-          if (href.endsWith('.md') || href.includes('.md#')) {
-            link.addEventListener('click', (e) => {
-              e.preventDefault();
-              // Strip .md extension, resolve relative paths
-              let target = href.replace(/\.md(#.*)?$/, '$1');
-              // Handle relative paths like reference/endpoints from within a subdir
-              if (!target.startsWith('/') && !target.startsWith('tools/') && !target.startsWith('reference/')) {
-                // If we're currently in a subdir, resolve relative to it
-                const currentDir = page.includes('/') ? page.substring(0, page.lastIndexOf('/') + 1) : '';
-                target = currentDir + target;
-              }
-              // Handle README links
-              if (target.endsWith('/README') || target === 'README') {
-                target = target.replace(/README$/, '');
-                if (!target) target = 'README';
-              }
-              navigate(target);
-            });
-          }
-        });
-
-        // Update active nav
-        navItems.forEach(n => {
-          n.classList.toggle('active', n.dataset.page === page);
-        });
-
-        // Scroll to hash anchor if present
-        const anchor = window.location.hash.split('/').pop();
-        if (anchor && anchor !== page.replace(/\//g, '')) {
-          setTimeout(() => {
-            const target = document.getElementById(anchor);
-            if (target) target.scrollIntoView({ behavior: 'smooth' });
-          }, 100);
-        } else {
-          window.scrollTo(0, 0);
+        if (!res.ok) {
+          contentEl.innerHTML = '<p style="color:var(--text-dim)">Page not found (HTTP ' + res.status + ').</p>';
+          return;
         }
-
-        // Close mobile sidebar
-        document.querySelector('.sidebar').classList.remove('open');
+        md = await res.text();
       } catch (err) {
-        contentEl.innerHTML = `<p style="color:var(--text-dim)">Page not found.</p>`;
+        contentEl.innerHTML = '<p style="color:var(--text-dim)">Failed to load page: ' + err.message + '</p>';
+        return;
       }
+
+      // Step 2: Parse markdown
+      try {
+        contentEl.innerHTML = parseMd(md);
+      } catch (err) {
+        // Fallback: show raw markdown in a pre block
+        contentEl.innerHTML = '<pre style="white-space:pre-wrap;color:var(--text-mid)">' + md.replace(/</g,'&lt;') + '</pre>';
+        console.error('Markdown parse error:', err);
+      }
+
+      // Step 3: Syntax highlight (isolated — never kills the page)
+      try {
+        contentEl.querySelectorAll('pre code').forEach(function(block) {
+          hljs.highlightElement(block);
+        });
+      } catch (e) { console.warn('Highlight error:', e); }
+
+      // Step 4: Add copy buttons
+      contentEl.querySelectorAll('pre').forEach(function(pre) {
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'Copy';
+        btn.onclick = function() {
+          var code = pre.querySelector('code');
+          navigator.clipboard.writeText(code ? code.textContent : pre.textContent);
+          btn.textContent = 'Copied!';
+          setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+        };
+        pre.style.position = 'relative';
+        pre.appendChild(btn);
+      });
+
+      // Step 5: Intercept internal .md links
+      contentEl.querySelectorAll('a[href]').forEach(function(link) {
+        var href = link.getAttribute('href');
+        if (!href) return;
+        if (href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
+        if (href.endsWith('.md') || href.indexOf('.md#') !== -1) {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var target = href.replace(/\.md(#.*)?$/, '$1');
+            if (target.indexOf('/') === -1 && target !== 'README' && target !== 'getting-started') {
+              var currentDir = page.indexOf('/') !== -1 ? page.substring(0, page.lastIndexOf('/') + 1) : '';
+              target = currentDir + target;
+            }
+            if (target.endsWith('/README') || target === 'README') {
+              target = target.replace(/README$/, '') || 'README';
+            }
+            navigate(target);
+          });
+        }
+      });
+
+      // Step 6: Update active nav
+      navItems.forEach(function(n) {
+        n.classList.toggle('active', n.dataset.page === page);
+      });
+
+      // Step 7: Scroll
+      window.scrollTo(0, 0);
+
+      // Step 8: Close mobile sidebar
+      document.querySelector('.sidebar').classList.remove('open');
     }
 
     // Hash-based routing
     function getPageFromHash() {
-      const hash = window.location.hash.slice(1); // remove #
+      var hash = window.location.hash.slice(1);
       if (!hash) return 'README';
       return hash;
     }
