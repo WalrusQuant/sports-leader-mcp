@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sports-leader-mcp</title>
+  <meta name="description" content="Free MCP server for live sports data — scores, standings, rosters, player stats, odds, play-by-play, injuries, and news across 17 sports and 139 leagues.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.min.css">
+  <style>
+    :root {
+      --theme-color: #e65100;
+      --base-background-color: #1a1a2e;
+      --sidebar-background: #16213e;
+      --cover-background-color: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      --cover-heading-color: #e65100;
+      --cover-button-primary-background: #e65100;
+      --cover-button-primary-color: #fff;
+    }
+    .cover-main {
+      max-width: 700px;
+    }
+    .sidebar-nav li a {
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'sports-leader-mcp',
+      repo: 'https://github.com/WalrusQuant/sports-leader-mcp',
+      loadSidebar: true,
+      coverpage: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      search: {
+        placeholder: 'Search docs...',
+        noData: 'No results',
+        depth: 3,
+      },
+      copyCode: {
+        buttonText: 'Copy',
+        successText: 'Copied',
+      },
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+</body>
+</html>
