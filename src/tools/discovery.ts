@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { BASE, fetchJson } from "../client.js";
+import { BASE } from "../endpoints.js";
+import { fetchJson } from "../client.js";
 import { defineTool } from "../tool.js";
 import { limitSchema, sportSchema } from "../schemas.js";
 
@@ -45,7 +46,7 @@ export const espnFetch = defineTool({
       .string()
       .url()
       .describe(
-        "Full ESPN URL. Must be https:// and a known ESPN host (site.api.espn.com, sports.core.api.espn.com, site.web.api.espn.com, cdn.espn.com, now.core.api.espn.com, fantasy.espn.com).",
+        "Full ESPN URL. Must be https:// and on an *.espn.com host (e.g. site.api.espn.com, sports.core.api.espn.com, site.web.api.espn.com, cdn.espn.com, now.core.api.espn.com).",
       ),
   },
   handler: async ({ url }) => {

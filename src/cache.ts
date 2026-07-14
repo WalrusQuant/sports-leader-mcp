@@ -29,8 +29,9 @@ export class TtlCache {
       return undefined;
     }
     if (Date.now() > entry.expiresAt) {
+      // Lazy expiry on read: counts as a miss. Sweep-driven removals are the
+      // only thing that bumps `evictions`, so the stat stays meaningful.
       this.store.delete(key);
-      this.evictions++;
       this.misses++;
       return undefined;
     }

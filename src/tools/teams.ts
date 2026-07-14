@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { BASE, fetchJson } from "../client.js";
+import { BASE } from "../endpoints.js";
+import { fetchJson } from "../client.js";
 import { defineTool } from "../tool.js";
 import { leagueSchema, sportSchema, teamIdSchema } from "../schemas.js";
 

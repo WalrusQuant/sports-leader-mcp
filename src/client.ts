@@ -1,18 +1,17 @@
 import { TtlCache } from "./cache.js";
+import { VERSION } from "./version.js";
 
-const USER_AGENT = "sports-leader-mcp/0.1.0";
+const USER_AGENT = `sports-leader-mcp/${VERSION}`;
 const DEFAULT_TIMEOUT_MS = process.env.SPORTS_LEADER_TIMEOUT
   ? parseInt(process.env.SPORTS_LEADER_TIMEOUT, 10)
   : 30_000;
 
-const ALLOWED_HOSTS = new Set([
-  "site.api.espn.com",
-  "sports.core.api.espn.com",
-  "site.web.api.espn.com",
-  "cdn.espn.com",
-  "now.core.api.espn.com",
-  "fantasy.espn.com",
-]);
+// Any *.espn.com subdomain is permitted. The espn_fetch escape hatch is
+// documented as "locked to ESPN hostnames (*.espn.com)", so we honor that
+// literally rather than maintaining a brittle fixed allowlist that lags
+// behind ESPN's actual subdomains.
+const ALLOWED_HOST_SUFFIX = ".espn.com";
+const ALLOWED_ROOT_HOST = "espn.com";
 
 export class UpstreamError extends Error {
   constructor(
@@ -36,10 +35,11 @@ function assertAllowedHost(url: string): void {
   if (parsed.protocol !== "https:") {
     throw new Error(`Only https:// URLs allowed, got: ${parsed.protocol}`);
   }
-  if (!ALLOWED_HOSTS.has(parsed.hostname)) {
-    throw new Error(
-      `Host not allowed: ${parsed.hostname}. Allowed: ${[...ALLOWED_HOSTS].join(", ")}`,
-    );
+  const host = parsed.hostname;
+  const isEspn =
+    host === ALLOWED_ROOT_HOST || host.endsWith(ALLOWED_HOST_SUFFIX);
+  if (!isEspn) {
+    throw new Error(`Host not allowed: ${host}. Only *.espn.com is permitted.`);
   }
 }
 
@@ -152,15 +152,3 @@ export async function fetchJson<T = unknown>(
     ? lastErr
     : new Error(`Request failed: ${String(lastErr)}`);
 }
-
-export const BASE = {
-  site: "https://site.api.espn.com/apis/site/v2/sports",
-  siteV2: "https://site.api.espn.com/apis/v2/sports",
-  core: "https://sports.core.api.espn.com/v2/sports",
-  coreV3: "https://sports.core.api.espn.com/v3/sports",
-  web: "https://site.web.api.espn.com/apis/common/v3/sports",
-  cdn: "https://cdn.espn.com/core",
-  now: "https://now.core.api.espn.com/v1/sports/news",
-  search: "https://site.web.api.espn.com/apis/search/v2",
-  ontology: "https://sports.core.api.espn.com/v2",
-} as const;
