@@ -2,6 +2,12 @@ import { BASE } from "../endpoints.js";
 import { fetchJson } from "../client.js";
 import { defineTool } from "../tool.js";
 import {
+  transformScoreboard,
+  transformGameSummary,
+  transformGamePlays,
+  transformGameProbabilities,
+} from "../transforms.js";
+import {
   dateRangeSchema,
   dateSchema,
   eventIdSchema,
@@ -35,6 +41,7 @@ export const getScoreboard = defineTool({
       },
     });
   },
+  transform: transformScoreboard,
 });
 
 export const getGameSummary = defineTool({
@@ -52,6 +59,7 @@ export const getGameSummary = defineTool({
       params: { event: eventId },
     });
   },
+  transform: transformGameSummary,
 });
 
 export const getGamePlays = defineTool({
@@ -71,6 +79,7 @@ export const getGamePlays = defineTool({
       { params: { limit: limit ?? 400 } },
     );
   },
+  transform: transformGamePlays,
 });
 
 export const getGameOdds = defineTool({
@@ -109,6 +118,7 @@ export const getGameProbabilities = defineTool({
       { params: { limit: limit ?? 200 } },
     );
   },
+  transform: transformGameProbabilities,
 });
 
 export const scoreboardTools = [

@@ -40,7 +40,7 @@ export const espnFetch = defineTool({
   name: "espn_fetch",
   title: "Fetch an ESPN URL",
   description:
-    "Escape hatch: fetch any ESPN URL and return its JSON. Use this for endpoints not covered by a dedicated tool, or to resolve article URLs from get_news. Locked to ESPN hostnames (*.espn.com).",
+    "Escape hatch: fetch any ESPN URL and return its JSON. Use this for endpoints not covered by a dedicated tool, or to resolve article URLs from get_news. Locked to ESPN hostnames (*.espn.com). Returns the verbatim ESPN response (no curated transform), but a token-budget guard caps very large responses. Use dedicated tools when available — they return compact, curated views.",
   inputShape: {
     url: z
       .string()

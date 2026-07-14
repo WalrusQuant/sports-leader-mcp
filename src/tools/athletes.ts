@@ -8,6 +8,7 @@ import {
   seasonTypeSchema,
   sportSchema,
 } from "../schemas.js";
+import { transformAthleteStats, transformGamelog, transformAthleteSplits, stripRefs } from "../transforms.js";
 
 export const getAthleteOverview = defineTool({
   name: "get_athlete_overview",
@@ -22,6 +23,7 @@ export const getAthleteOverview = defineTool({
   handler: async ({ sport, league, athleteId }) => {
     return fetchJson(`${BASE.web}/${sport}/${league}/athletes/${athleteId}/overview`);
   },
+  transform: stripRefs,
 });
 
 export const getAthleteStats = defineTool({
@@ -41,6 +43,7 @@ export const getAthleteStats = defineTool({
       params: { season, seasontype: seasonType },
     });
   },
+  transform: transformAthleteStats,
 });
 
 export const getAthleteGamelog = defineTool({
@@ -58,6 +61,7 @@ export const getAthleteGamelog = defineTool({
       params: { season },
     });
   },
+  transform: transformGamelog,
 });
 
 export const getAthleteSplits = defineTool({
@@ -77,6 +81,7 @@ export const getAthleteSplits = defineTool({
       params: { season, seasontype: seasonType },
     });
   },
+  transform: transformAthleteSplits,
 });
 
 export const athleteTools = [

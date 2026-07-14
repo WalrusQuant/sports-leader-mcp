@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 import { scoreboardTools } from "./tools/scoreboard.js";
@@ -7,6 +8,7 @@ import { athleteTools } from "./tools/athletes.js";
 import { discoveryTools } from "./tools/discovery.js";
 import type { AnyToolDef } from "./tool.js";
 import { UpstreamError } from "./client.js";
+import { applyBudget } from "./transforms.js";
 import { registerPrompts } from "./prompts.js";
 import { registerResources } from "./resources.js";
 import { VERSION } from "./version.js";
@@ -19,14 +21,28 @@ export const ALL_TOOLS: AnyToolDef[] = [
   ...discoveryTools,
 ];
 
+/**
+ * Auto-injected on every tool. Lets the caller opt out of compaction and get
+ * the raw ESPN response. Individual tool definitions never declare this — it's
+ * added centrally so it can't be forgotten or drift between tools.
+ */
+const rawParam = z
+  .boolean()
+  .optional()
+  .describe(
+    "Return the raw ESPN API response without compaction. Defaults to false (compact). " +
+      "Use true only when you need a field omitted by the compact view.",
+  );
+
+/**
+ * Render a tool result to MCP text content. If `data` is already a string
+ * (e.g. the budget guard returned a pre-formatted truncation notice), pass it
+ * through without re-serializing.
+ */
 function toTextResult(data: unknown) {
+  const text = typeof data === "string" ? data : JSON.stringify(data, null, 2);
   return {
-    content: [
-      {
-        type: "text" as const,
-        text: JSON.stringify(data, null, 2),
-      },
-    ],
+    content: [{ type: "text" as const, text }],
   };
 }
 
@@ -67,7 +83,7 @@ export function createServer(): McpServer {
       {
         title: tool.title,
         description: tool.description,
-        inputSchema: tool.inputShape,
+        inputSchema: { ...tool.inputShape, raw: rawParam },
         annotations: {
           ...READ_ONLY_ANNOTATIONS,
           title: tool.title,
@@ -76,7 +92,21 @@ export function createServer(): McpServer {
       },
       async (args: Record<string, unknown>) => {
         try {
-          const data = await tool.handler(args as never);
+          // `raw` is consumed here, never passed to the tool handler.
+          const { raw, ...rest } = args;
+          const compact = raw !== true;
+
+          let data: unknown = await tool.handler(rest as never);
+
+          // Apply the tool's curated transform unless the caller asked for raw.
+          if (compact && tool.transform) {
+            data = tool.transform(data);
+          }
+
+          // Token-budget backstop always applies, even in raw mode, so an
+          // untransformed response can never overflow the agent's context.
+          data = applyBudget(data);
+
           return toTextResult(data);
         } catch (err) {
           return toErrorResult(err);

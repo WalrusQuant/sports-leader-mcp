@@ -3,6 +3,7 @@ import { BASE } from "../endpoints.js";
 import { fetchJson } from "../client.js";
 import { defineTool } from "../tool.js";
 import { leagueSchema, sportSchema, teamIdSchema } from "../schemas.js";
+import { transformTeams, transformTeam, transformTeamInjuries } from "../transforms.js";
 
 export const getTeams = defineTool({
   name: "get_teams",
@@ -16,6 +17,7 @@ export const getTeams = defineTool({
   handler: async ({ sport, league }) => {
     return fetchJson(`${BASE.site}/${sport}/${league}/teams`);
   },
+  transform: transformTeams,
 });
 
 const teamViewSchema = z
@@ -52,6 +54,7 @@ export const getTeam = defineTool({
     const path = view === "detail" ? base : `${base}/${view}`;
     return fetchJson(path);
   },
+  transform: transformTeam,
 });
 
 export const getTeamInjuries = defineTool({
@@ -66,6 +69,7 @@ export const getTeamInjuries = defineTool({
   handler: async ({ sport, league, teamId }) => {
     return fetchJson(`${BASE.site}/${sport}/${league}/teams/${teamId}/injuries`);
   },
+  transform: transformTeamInjuries,
 });
 
 export const teamTools = [getTeams, getTeam, getTeamInjuries];

@@ -7,6 +7,7 @@ import {
   seasonSchema,
   sportSchema,
 } from "../schemas.js";
+import { transformStandings, transformInjuries, transformNews, stripRefs } from "../transforms.js";
 import { z } from "zod";
 
 export const getStandings = defineTool({
@@ -24,6 +25,7 @@ export const getStandings = defineTool({
       params: { season },
     });
   },
+  transform: transformStandings,
 });
 
 export const getLeagueLeaders = defineTool({
@@ -55,6 +57,7 @@ export const getInjuries = defineTool({
   handler: async ({ sport, league }) => {
     return fetchJson(`${BASE.site}/${sport}/${league}/injuries`);
   },
+  transform: transformInjuries,
 });
 
 export const getTransactions = defineTool({
@@ -68,6 +71,7 @@ export const getTransactions = defineTool({
   handler: async ({ sport, league }) => {
     return fetchJson(`${BASE.site}/${sport}/${league}/transactions`);
   },
+  transform: stripRefs,
 });
 
 export const getNews = defineTool({
@@ -94,6 +98,7 @@ export const getNews = defineTool({
       },
     });
   },
+  transform: transformNews,
 });
 
 export const leagueTools = [

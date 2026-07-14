@@ -12,6 +12,12 @@ export interface ToolDef<S extends z.ZodRawShape = z.ZodRawShape> {
    * needs different hints.
    */
   annotations?: ToolAnnotations;
+  /**
+   * Optional compaction function applied to the raw ESPN response before it is
+   * returned to the agent. Bypassed when the caller passes `raw=true`.
+   * The server also applies a token-budget backstop after the transform.
+   */
+  transform?: (data: unknown) => unknown;
   handler: (args: z.infer<z.ZodObject<S>>) => Promise<unknown>;
 }
 
