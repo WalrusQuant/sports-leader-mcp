@@ -9,7 +9,7 @@ export const getTeams = defineTool({
   name: "get_teams",
   title: "Get teams",
   description:
-    "List all teams in a league. Returns team IDs, names, abbreviations, colors, and logos. Use the IDs with get_team and other team-scoped tools.",
+    "List teams in a league as compact identity records: ID, name, abbreviation, location, and venue when available. Use the IDs with team-scoped tools.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -42,7 +42,7 @@ export const getTeam = defineTool({
   name: "get_team",
   title: "Get team details",
   description:
-    "Get a team's info, roster, schedule, record, depth chart, injuries, transactions, history, news, or leaders. Pick which view via the 'view' param.",
+    "Get one team view selected by view: detail, roster, schedule, record, depthcharts, injuries, transactions, history, news, or leaders. Roster athletes are normalized; other views preserve varying ESPN fields after links/images/UI metadata are removed.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -60,7 +60,7 @@ export const getTeam = defineTool({
 export const getTeamInjuries = defineTool({
   name: "get_team_injuries",
   title: "Get team injury report",
-  description: "Get the current injury report for a single team.",
+  description: "Get a normalized injury report for one team. Filters Active/news-only entries and returns player, position, status, injury detail, dates, return date, and a capped note when supplied.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,

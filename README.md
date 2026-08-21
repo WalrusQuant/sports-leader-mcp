@@ -3,7 +3,7 @@
 
 Free MCP server for live sports data. **20 tools, 4 resources, 5 prompts** covering scores, standings, rosters, player stats, betting odds, play-by-play, injuries, transactions, and news across **17 sports and 139 leagues**.
 
-No auth. No API keys. No rate limits. Just connect and query.
+No ESPN auth or API keys. Stdio mode has no server-side request quota; HTTP mode applies configurable per-IP limits.
 
 ---
 
@@ -57,7 +57,7 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | Tool | Description |
 |------|-------------|
 | `get_scoreboard` | Live and scheduled games — entry point for finding eventIds |
-| `get_game_summary` | Boxscore, plays, leaders, broadcasts, win probability |
+| `get_game_summary` | Scores, team/player boxscore, leaders, key plays, sampled win probability |
 | `get_game_plays` | Full play-by-play data |
 | `get_game_odds` | Spread, moneyline, over/under by sportsbook |
 | `get_game_probabilities` | Win probability timeline |
@@ -65,7 +65,7 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 ### Teams
 | Tool | Description |
 |------|-------------|
-| `get_teams` | All teams in a league with IDs, names, logos |
+| `get_teams` | Compact team IDs, names, abbreviations, locations, and venues |
 | `get_team` | Team detail, roster, schedule, record, depth chart, injuries, transactions, history, news, or leaders |
 | `get_team_injuries` | Injury report for a single team |
 
@@ -73,7 +73,7 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | Tool | Description |
 |------|-------------|
 | `get_athlete_overview` | Player snapshot — stats, next game, news |
-| `get_athlete_stats` | Full season stats with categories and glossary |
+| `get_athlete_stats` | Season stats converted into named fields |
 | `get_athlete_gamelog` | Game-by-game log |
 | `get_athlete_splits` | Home/away, by opponent, by situation |
 
@@ -122,7 +122,14 @@ After cloning and installing (see [Install](#install)):
 npm run dev       # watch mode — recompiles on file changes
 npm start         # run the server via stdio
 PORT=3000 npm start  # run as HTTP server on port 3000
+npm test          # build and run transform regression tests
 ```
+
+## Agent-safe responses
+
+Dedicated tools return compact, curated JSON by default. Every tool accepts `raw: true`, but raw ESPN responses can be extremely large and should be used only to recover a specific omitted field. Responses over `SPORTS_LEADER_MAX_TOKENS` are replaced with valid truncation metadata; the server never cuts JSON mid-document.
+
+Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent` when the result is an object. See [tool contracts](docs/tools/) for the current response shapes.
 
 ## License
 

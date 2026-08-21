@@ -1,5 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ENDPOINT_DOCS } from "./endpoints.js";
+import { LEAGUE_CATALOG } from "./catalog.js";
 
 /**
  * Register the static reference resources on a server. The api-domains resource
@@ -13,7 +14,7 @@ export function registerResources(server: McpServer): void {
     "sports://leagues",
     {
       description:
-        "Curated list of valid sport and league slug pairs for ESPN API tools. Read this once to know what values are valid for the `sport` and `league` parameters. For the full live ESPN ontology, call the list_sports_and_leagues tool instead.",
+        "Curated list of verified sport and league slug pairs for ESPN API tools. Read this once to choose sport and league parameters; list_sports_and_leagues returns the same compact catalog.",
       mimeType: "application/json",
     },
     async (uri) => ({
@@ -25,42 +26,8 @@ export function registerResources(server: McpServer): void {
             {
               description:
                 "Valid sport/league slug pairs for ESPN API tools. Pass `sport` and `league` together.",
-              slugs: [
-                // American football
-                { sport: "football", league: "nfl", name: "NFL" },
-                { sport: "football", league: "college-football", name: "NCAA Football (FBS)" },
-                // Basketball
-                { sport: "basketball", league: "nba", name: "NBA" },
-                { sport: "basketball", league: "wnba", name: "WNBA" },
-                { sport: "basketball", league: "mens-college-basketball", name: "NCAA Men's Basketball" },
-                { sport: "basketball", league: "womens-college-basketball", name: "NCAA Women's Basketball" },
-                // Baseball
-                { sport: "baseball", league: "mlb", name: "MLB" },
-                { sport: "baseball", league: "college-baseball", name: "NCAA Baseball" },
-                // Ice hockey
-                { sport: "hockey", league: "nhl", name: "NHL" },
-                // Soccer
-                { sport: "soccer", league: "usa.1", name: "MLS (US)" },
-                { sport: "soccer", league: "eng.1", name: "English Premier League" },
-                { sport: "soccer", league: "esp.1", name: "La Liga (Spain)" },
-                { sport: "soccer", league: "ger.1", name: "Bundesliga (Germany)" },
-                { sport: "soccer", league: "ita.1", name: "Serie A (Italy)" },
-                { sport: "soccer", league: "fra.1", name: "Ligue 1 (France)" },
-                { sport: "soccer", league: "uefa.champions", name: "UEFA Champions League" },
-                { sport: "soccer", league: "fifa.world", name: "FIFA World Cup" },
-                // Golf
-                { sport: "golf", league: "pga", name: "PGA Tour" },
-                { sport: "golf", league: "lpga", name: "LPGA Tour" },
-                // Tennis
-                { sport: "tennis", league: "atp", name: "ATP (Men's)" },
-                { sport: "tennis", league: "wta", name: "WTA (Women's)" },
-                // MMA
-                { sport: "mma", league: "ufc", name: "UFC" },
-                // Motorsport
-                { sport: "racing", league: "f1", name: "Formula 1" },
-                { sport: "racing", league: "nascar", name: "NASCAR Cup Series" },
-              ],
-              note: "Call the list_sports_and_leagues tool to retrieve ESPN's live full ontology with hundreds of additional leagues.",
+              slugs: LEAGUE_CATALOG,
+              note: "This is a curated catalog of slug pairs verified against the public endpoints.",
             },
             null,
             2,

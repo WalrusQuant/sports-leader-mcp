@@ -21,14 +21,14 @@ Built on ESPN's public JSON APIs. No authentication required — just connect yo
 npx -y @smithery/cli install @wickwireadam-o0nh/sports-leader-mcp --client claude
 ```
 
-Or add to your MCP client config manually:
+The scoped identifier above is a Smithery registry identifier, not this repository's npm package name. For a source checkout, build the repository and point the client at `dist/index.js`:
 
 ```json
 {
   "mcpServers": {
     "sports-leader": {
-      "command": "npx",
-      "args": ["-y", "@wickwireadam-o0nh/sports-leader-mcp"]
+      "command": "node",
+      "args": ["/absolute/path/to/sports-leader-mcp/dist/index.js"]
     }
   }
 }
@@ -50,7 +50,7 @@ Running as a hosted HTTP service? See the [Self-Hosting Guide](self-hosting.md) 
 
 ## Reference
 
-- [API Endpoints](reference/endpoints.md) — full catalog of ESPN API endpoints across 8 domains
-- [Response Schemas](reference/response-schemas.md) — annotated JSON examples for every major endpoint
-- [League & Sport Slugs](reference/league-slugs.md) — all 139 leagues mapped to their sport categories
-- [Gotchas & Pitfalls](reference/gotchas.md) — 16 common mistakes and how to avoid them
+- [API Endpoints](../references/endpoints.md) — raw ESPN endpoint catalog
+- [Response Schemas](../references/response-schemas.md) — raw upstream examples, not compact MCP contracts
+- [League & Sport Slugs](../references/league-slugs.md) — broader slug reference; availability varies by endpoint
+- [Gotchas & Pitfalls](../references/gotchas.md) — ESPN API quirks and common mistakes

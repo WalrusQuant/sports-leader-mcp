@@ -7,14 +7,14 @@ import {
   seasonSchema,
   sportSchema,
 } from "../schemas.js";
-import { transformStandings, transformInjuries, transformNews, stripRefs } from "../transforms.js";
+import { transformStandings, transformInjuries, transformNews, transformLeagueLeaders, stripRefs } from "../transforms.js";
 import { z } from "zod";
 
 export const getStandings = defineTool({
   name: "get_standings",
   title: "Get league standings",
   description:
-    "Get league standings. Uses the correct /apis/v2/ path (the /site/v2/ path returns a stub).",
+    "Get compact standings grouped by ESPN conference/division. Each entry includes team ID/identity plus named standings statistics such as wins, losses, percentage, streak, and games back when supplied.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -32,7 +32,7 @@ export const getLeagueLeaders = defineTool({
   name: "get_league_leaders",
   title: "Get league statistical leaders",
   description:
-    "Get league-wide statistical leaders (points, rebounds, passing yards, etc. — varies by sport).",
+    "Get compact league leader categories and ranked values. Athlete IDs are extracted from ESPN references; some Core responses do not include athlete names, so use the IDs with athlete tools when needed.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -43,13 +43,14 @@ export const getLeagueLeaders = defineTool({
       params: { season },
     });
   },
+  transform: transformLeagueLeaders,
 });
 
 export const getInjuries = defineTool({
   name: "get_injuries",
   title: "Get league-wide injuries",
   description:
-    "Get the league-wide injury report (all teams). Works for NBA, NFL, NHL, MLB, Soccer. Returns 500 for MMA, Tennis, Golf.",
+    "Get actual league injuries grouped by team. Compact mode filters ESPN's Active/news-only records and keeps player, position, team, status, injury detail, dates, return date, and a capped note. ESPN does not support this endpoint for every sport.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -63,7 +64,7 @@ export const getInjuries = defineTool({
 export const getTransactions = defineTool({
   name: "get_transactions",
   title: "Get league transactions",
-  description: "Get recent league transactions — signings, trades, waivers.",
+  description: "Get recent league transactions such as signings, trades, and waivers. Compact mode recursively removes references/images/UI metadata, but the remaining ESPN shape varies by league.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -78,7 +79,7 @@ export const getNews = defineTool({
   name: "get_news",
   title: "Get sports news",
   description:
-    "Get real-time sports news from the Now API. Filter by sport, league, or team. Results include article URLs that can be fetched and summarized via espn_fetch.",
+    "Get compact current headlines filtered by sport, league, or team abbreviation. Returns headline ID/type/text, description, publication time, source, keywords, and article URL. Use espn_fetch only if full article JSON is required.",
   inputShape: {
     sport: sportSchema.optional(),
     league: leagueSchema.optional(),

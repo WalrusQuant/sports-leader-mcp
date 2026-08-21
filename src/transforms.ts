@@ -13,6 +13,8 @@
  *   by sport/league/season state).
  */
 
+import { LEAGUE_CATALOG } from "./catalog.js";
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 // ESPN responses are untyped JSON of varying shape. We traverse them with an
@@ -117,6 +119,12 @@ function prune(o: AnyObj): AnyObj {
   );
 }
 
+function idFromRef(value: unknown, segment: string): string | undefined {
+  const ref = String(d(value).$ref ?? d(value).ref ?? "");
+  const match = ref.match(new RegExp(`/${segment}/([^/?]+)`));
+  return match?.[1];
+}
+
 // ─── Token budget backstop ────────────────────────────────────────────────────
 
 const MAX_TOKENS = readPositiveInt(process.env.SPORTS_LEADER_MAX_TOKENS, 50_000);
@@ -137,16 +145,25 @@ export function applyBudget(data: unknown): unknown {
   const estTokens = Math.ceil(json.length / 4);
   if (estTokens <= MAX_TOKENS) return data;
 
-  // Over budget: truncate the pretty-printed JSON and annotate.
-  const maxChars = MAX_TOKENS * 4;
-  const truncated = json.slice(0, maxChars);
-  return (
-    truncated +
-    `\n\n...[TRUNCATED: response was ~${estTokens.toLocaleString()} tokens ` +
-    `(budget: ${MAX_TOKENS.toLocaleString()}). ` +
-    `Pass a narrower query, or if using raw=true, switch to compact mode ` +
-    `(raw=false) for a curated view.]`
-  );
+  // Never cut serialized JSON mid-token. An over-budget response is replaced
+  // by a small, valid JSON envelope that an MCP client can always parse.
+  return {
+    truncated: true,
+    estimatedTokens: estTokens,
+    budgetTokens: MAX_TOKENS,
+    message:
+      "Response exceeded the configured token budget. Use a narrower query or " +
+      "the dedicated compact tool output (raw=false).",
+    dataSummary: summarizeShape(data),
+  };
+}
+
+function summarizeShape(data: unknown): AnyObj {
+  if (Array.isArray(data)) return { type: "array", itemCount: data.length };
+  if (data !== null && typeof data === "object") {
+    return { type: "object", keys: Object.keys(data as AnyObj).slice(0, 30) };
+  }
+  return { type: typeof data };
 }
 
 // ─── Per-tool transforms ──────────────────────────────────────────────────────
@@ -166,7 +183,7 @@ export function transformScoreboard(data: unknown): unknown {
       const competitors = arr<AnyObj>(comp.competitors).map((c) => {
         const team = compactTeam(d(c.team)) ?? {};
         const linescores = arr<AnyObj>(c.linescores).map((ls) =>
-          arr<AnyObj>(ls.linescores ?? ls.value).map((p) => String(p.value ?? "")),
+          String(ls.displayValue ?? ls.value ?? ""),
         );
         const records = arr<AnyObj>(c.records);
         return {
@@ -191,13 +208,33 @@ export function transformScoreboard(data: unknown): unknown {
 }
 
 /**
- * Game summary: keep boxscore teams/stats, leaders, gameInfo, broadcasts.
- * Drop news, articles, seasonseries — those are fetchable separately.
+ * Game summary: a bounded but complete game view. Keeps identity/final score,
+ * team and player box scores, leaders, scoring/recent plays, win probability,
+ * venue/attendance, broadcasts, and compact standings context.
  */
 export function transformGameSummary(data: unknown): unknown {
   const root = d(data);
+  const header = d(root.header);
+  const competition = d(arr<AnyObj>(header.competitions)[0]);
+  const competitors = arr<AnyObj>(competition.competitors).map((c) => prune({
+    homeAway: String(c.homeAway ?? ""),
+    winner: c.winner,
+    team: compactTeam(d(c.team)),
+    score: String(c.score ?? ""),
+    linescores: arr<AnyObj>(c.linescores).map((ls) => String(ls.displayValue ?? ls.value ?? "")),
+    record: arr<AnyObj>(c.records)[0]?.displayValue ?? arr<AnyObj>(c.records)[0]?.summary,
+  }));
+
+  const game = prune({
+    id: String(header.id ?? competition.id ?? ""),
+    date: competition.date ? String(competition.date) : undefined,
+    status: compactStatus(d(competition.status)),
+    competitors,
+  });
+
   // Boxscore: compact team stats
-  const boxscoreTeams = arr<AnyObj>(d(d(root.boxscore).teams)).map((bt) => {
+  const boxscore = d(root.boxscore);
+  const boxscoreTeams = arr<AnyObj>(boxscore.teams).map((bt) => {
     const team = compactTeam(d(bt.team)) ?? {};
     const stats = arr<AnyObj>(bt.statistics).map((s) => ({
       label: String(s.label ?? s.name ?? ""),
@@ -206,23 +243,78 @@ export function transformGameSummary(data: unknown): unknown {
     return { team, stats };
   });
 
-  // Leaders: flatten to category → {athlete, value}
-  const leaders = arr<AnyObj>(d(root.leaders)).map((cat) => ({
-    category: String(d(cat).displayName ?? d(cat).name ?? ""),
-    leaders: arr<AnyObj>(d(cat).leaders).map((l) => ({
-      athlete: String(d(l.athlete).displayName ?? ""),
-      value: String(l.displayValue ?? ""),
+  const boxscorePlayers = arr<AnyObj>(boxscore.players).map((group) => ({
+    team: compactTeam(d(group.team)),
+    categories: arr<AnyObj>(group.statistics).map((category) => {
+      const labels = arr<any>(category.labels);
+      return {
+        name: String(category.name ?? category.text ?? ""),
+        athletes: arr<AnyObj>(category.athletes).map((row) => {
+          const athlete = d(row.athlete);
+          return prune({
+            id: String(athlete.id ?? ""),
+            name: String(athlete.displayName ?? athlete.fullName ?? ""),
+            jersey: athlete.jersey ? String(athlete.jersey) : undefined,
+            stats: zipStats(labels, arr<any>(row.stats)),
+          });
+        }),
+        totals: zipStats(labels, arr<any>(category.totals)),
+      };
+    }),
+  }));
+
+  // ESPN summary leaders are grouped by team, then category.
+  const leaders = arr<AnyObj>(root.leaders).map((teamGroup) => ({
+    team: compactTeam(d(teamGroup.team)),
+    categories: arr<AnyObj>(teamGroup.leaders).map((cat) => ({
+      name: String(cat.name ?? ""),
+      displayName: String(cat.displayName ?? cat.name ?? ""),
+      leaders: arr<AnyObj>(cat.leaders).map((leader) => ({
+        athleteId: String(d(leader.athlete).id ?? ""),
+        athlete: String(d(leader.athlete).displayName ?? d(leader.athlete).fullName ?? ""),
+        value: String(leader.displayValue ?? leader.value ?? ""),
+      })),
     })),
   }));
 
+  const plays = arr<AnyObj>(root.plays);
+  const compactPlay = (play: AnyObj) => prune({
+    id: String(play.id ?? ""),
+    period: d(play.period).number,
+    clock: d(play.clock).displayValue ?? play.clock,
+    text: String(play.text ?? ""),
+    scoringPlay: play.scoringPlay ?? false,
+    homeScore: play.homeScore !== undefined ? String(play.homeScore) : undefined,
+    awayScore: play.awayScore !== undefined ? String(play.awayScore) : undefined,
+    teamId: d(play.team).id ? String(d(play.team).id) : undefined,
+  });
+  const scoringPlays = plays.filter((p) => p.scoringPlay).map(compactPlay);
+  const recentPlays = plays.slice(-20).map(compactPlay);
+
+  const winProbability = arr<AnyObj>(root.winprobability).map((point) => prune({
+    playId: String(point.playId ?? ""),
+    homeWinPercentage: point.homeWinPercentage,
+    awayWinPercentage: point.awayWinPercentage,
+  }));
+  const probabilitySamples = winProbability.length <= 25
+    ? winProbability
+    : winProbability.filter((_, index) => index === 0 || index === winProbability.length - 1 || index % Math.ceil(winProbability.length / 23) === 0);
+
   const gameInfo = stripRefs(d(root.gameInfo));
   const broadcasts = stripRefs(d(root.broadcasts));
+  const standings = stripRefs(d(root.standings));
 
   return {
-    ...(boxscoreTeams.length ? { boxscore: { teams: boxscoreTeams } } : {}),
+    game,
+    ...(boxscoreTeams.length || boxscorePlayers.length
+      ? { boxscore: { teams: boxscoreTeams, players: boxscorePlayers } }
+      : {}),
     ...(leaders.length ? { leaders } : {}),
+    ...(plays.length ? { plays: { count: plays.length, scoring: scoringPlays, recent: recentPlays } } : {}),
+    ...(winProbability.length ? { winProbability: { count: winProbability.length, samples: probabilitySamples } } : {}),
     ...(Object.keys(gameInfo).length ? { gameInfo } : {}),
     ...(Object.keys(broadcasts).length ? { broadcasts } : {}),
+    ...(Object.keys(standings).length ? { standings } : {}),
   };
 }
 
@@ -240,12 +332,20 @@ export function transformGamePlays(data: unknown): unknown {
       const period = d(item.period);
       return {
         id: String(item.id ?? ""),
+        sequence: item.sequenceNumber ?? item.sequence,
         period: period.number ?? undefined,
         clock: item.clock?.displayValue ?? item.clock ?? undefined,
+        wallClock: item.wallclock ?? item.wallClock ?? undefined,
+        type: d(item.type).text ?? d(item.type).name ?? undefined,
         text: String(item.text ?? ""),
         scoringPlay: item.scoringPlay ?? false,
         ...(item.scoreValue !== undefined ? { scoreValue: item.scoreValue } : {}),
+        ...(item.homeScore !== undefined ? { homeScore: String(item.homeScore) } : {}),
+        ...(item.awayScore !== undefined ? { awayScore: String(item.awayScore) } : {}),
         ...(item.team?.id ? { teamId: String(item.team.id) } : {}),
+        ...(Array.isArray(item.participants)
+          ? { participantIds: item.participants.map((p: AnyObj) => String(d(p.athlete).id ?? p.id ?? "")).filter(Boolean) }
+          : {}),
       };
     }),
   };
@@ -263,6 +363,97 @@ export function transformGameProbabilities(data: unknown): unknown {
       playId: String(item.playId ?? ""),
       homeWinPct: item.homeWinPercentage ?? undefined,
       awayWinPct: item.awayWinPercentage ?? undefined,
+    })),
+  };
+}
+
+/** Betting odds: one concise record per provider, including open/current lines. */
+export function transformGameOdds(data: unknown): unknown {
+  const root = d(data);
+  return {
+    count: root.count,
+    odds: arr<AnyObj>(root.items).map((item) => {
+      const home = d(item.homeTeamOdds);
+      const away = d(item.awayTeamOdds);
+      return prune({
+        provider: String(d(item.provider).name ?? d(item.provider).id ?? ""),
+        details: item.details ? String(item.details) : undefined,
+        spread: item.spread,
+        overUnder: item.overUnder,
+        overOdds: item.overOdds,
+        underOdds: item.underOdds,
+        home: prune({ favorite: home.favorite, moneyLine: home.moneyLine, spreadOdds: home.spreadOdds }),
+        away: prune({ favorite: away.favorite, moneyLine: away.moneyLine, spreadOdds: away.spreadOdds }),
+        open: prune({
+          total: d(d(item.open).total).alternateDisplayValue ?? d(d(item.open).total).american,
+          homeSpread: d(d(home.open).pointSpread).alternateDisplayValue,
+          homeMoneyLine: d(d(home.open).moneyLine).alternateDisplayValue,
+          awaySpread: d(d(away.open).pointSpread).alternateDisplayValue,
+          awayMoneyLine: d(d(away.open).moneyLine).alternateDisplayValue,
+        }),
+        current: prune({
+          total: d(d(item.current).total).alternateDisplayValue ?? d(d(item.current).total).american,
+          homeSpread: d(d(home.current).pointSpread).alternateDisplayValue,
+          homeMoneyLine: d(d(home.current).moneyLine).alternateDisplayValue,
+          awaySpread: d(d(away.current).pointSpread).alternateDisplayValue,
+          awayMoneyLine: d(d(away.current).moneyLine).alternateDisplayValue,
+        }),
+      });
+    }),
+  };
+}
+
+/** Search: remove image variants and return IDs/slugs needed by later tools. */
+export function transformSearch(data: unknown): unknown {
+  const root = d(data);
+  const groups = arr<AnyObj>(root.results);
+  return {
+    totalFound: root.totalFound,
+    groups: groups.map((group) => ({
+      type: String(group.type ?? ""),
+      totalFound: group.totalFound,
+      results: arr<AnyObj>(group.contents).map((item) => {
+        const uid = String(item.uid ?? "");
+        const uidId = uid.match(/~(?:a|t):(\d+)/)?.[1];
+        return prune({
+          id: uidId ?? (item.id ? String(item.id) : undefined),
+          type: String(item.type ?? group.type ?? ""),
+          name: String(item.displayName ?? item.name ?? ""),
+          description: item.description ? String(item.description) : undefined,
+          subtitle: item.subtitle ? String(item.subtitle) : undefined,
+          sport: item.sport ? String(item.sport) : undefined,
+          league: item.defaultLeagueSlug ? String(item.defaultLeagueSlug) : undefined,
+          url: d(item.link).web ? String(d(item.link).web) : undefined,
+        });
+      }),
+    })),
+  };
+}
+
+/** Curated discovery list. The upstream ontology contains unresolved $refs. */
+export function transformSportsAndLeagues(_data: unknown): unknown {
+  return {
+    count: LEAGUE_CATALOG.length,
+    leagues: LEAGUE_CATALOG,
+    note: "Curated public-endpoint slug pairs. Use raw=true only to inspect ESPN's unresolved ontology references.",
+  };
+}
+
+/** League leaders: normalize categories and extract athlete IDs from Core refs. */
+export function transformLeagueLeaders(data: unknown): unknown {
+  const root = d(data);
+  return {
+    scope: prune({ id: root.id ? String(root.id) : undefined, name: root.name, type: root.type }),
+    categories: arr<AnyObj>(root.categories).map((category) => ({
+      name: String(category.name ?? ""),
+      displayName: String(category.displayName ?? category.name ?? ""),
+      leaders: arr<AnyObj>(category.leaders).map((leader, index) => prune({
+        rank: index + 1,
+        athleteId: d(leader.athlete).id ? String(d(leader.athlete).id) : idFromRef(leader.athlete, "athletes"),
+        athlete: d(leader.athlete).displayName ?? d(leader.athlete).fullName,
+        value: leader.displayValue ?? leader.value,
+        active: leader.active,
+      })),
     })),
   };
 }

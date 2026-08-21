@@ -1,174 +1,65 @@
-# Discovery & Search
+# Discovery tools
 
-Tools for finding the right slugs, IDs, and data before calling other tools.
+All tools return compact JSON by default. Every tool also accepts `raw: true`; use it only when a compact response omits a required field. Oversized responses are replaced with a valid `{ "truncated": true, ... }` envelope.
 
-## list_sports_and_leagues
+## `list_sports_and_leagues`
 
-Discover all valid sport and league slugs. Returns ESPN's full ontology of sports and leagues. Call this first when you don't know the right `sport` or `league` slug to pass to other tools.
+Returns the curated catalog of sport/league slug pairs verified for the server's public endpoints.
 
-### Parameters
+Parameters:
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `limit` | number | No | Max number of results to return. Default `500`. |
+- `limit` (optional): applies only to the upstream ontology request used by `raw: true`.
+- `raw` (optional, default `false`): return ESPN's live ontology response. That response is mostly unresolved `$ref` records and is intended for debugging, not normal agent discovery.
 
-### Example
-
-Call with no parameters to retrieve the complete list of leagues:
-
-```json
-{}
-```
-
-### Response
-
-```json
-[
-  {
-    "name": "NFL",
-    "slug": "nfl",
-    "sport": "football"
-  },
-  {
-    "name": "NBA",
-    "slug": "nba",
-    "sport": "basketball"
-  },
-  {
-    "name": "MLB",
-    "slug": "mlb",
-    "sport": "baseball"
-  },
-  {
-    "name": "NHL",
-    "slug": "nhl",
-    "sport": "hockey"
-  },
-  {
-    "name": "Premier League",
-    "slug": "eng.1",
-    "sport": "soccer"
-  },
-  "... 134 more leagues"
-]
-```
-
----
-
-## search
-
-Global ESPN search for athletes, teams, news, and articles. Returns mixed results with IDs you can pass to other tools such as `get_athlete_overview` or `get_team`.
-
-### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `query` | string | Yes | Search query. Examples: `"LeBron James"`, `"Chiefs"`, `"Super Bowl"`. |
-| `sport` | string | No | Sport slug to scope results (e.g. `"football"`, `"basketball"`). Omit to search all sports. |
-| `limit` | number | No | Max number of results to return. |
-
-### Example
-
-Search for Patrick Mahomes:
+Compact shape:
 
 ```json
 {
-  "query": "Patrick Mahomes"
+  "count": 30,
+  "leagues": [{ "sport": "football", "league": "nfl", "name": "NFL" }],
+  "note": "Curated public-endpoint slug pairs..."
 }
 ```
 
-### Response
+The same curated catalog is available as the `sports://leagues` resource.
+
+## `search`
+
+Searches ESPN for athletes, teams, and articles. Use this to resolve IDs before calling athlete/team tools.
+
+Parameters:
+
+- `query` (required): search text.
+- `sport` (optional): sport slug used to narrow results.
+- `limit` (optional): per-group result limit.
+- `raw` (optional, default `false`).
+
+Compact shape:
 
 ```json
 {
-  "results": [
-    {
-      "type": "athlete",
+  "totalFound": 4,
+  "groups": [{
+    "type": "player",
+    "totalFound": 1,
+    "results": [{
       "id": "3139477",
+      "type": "player",
       "name": "Patrick Mahomes",
-      "team": "Kansas City Chiefs",
-      "teamId": "12",
       "sport": "football",
-      "league": "nfl",
-      "position": "QB"
-    },
-    {
-      "type": "article",
-      "id": "42891034",
-      "headline": "Mahomes leads Chiefs to comeback win",
-      "published": "2025-01-19T22:31:00Z",
-      "url": "https://www.espn.com/nfl/story/_/id/42891034/..."
-    },
-    "... more results"
-  ]
+      "league": "nfl"
+    }]
+  }]
 }
 ```
 
----
+## `espn_fetch`
 
-## espn_fetch
+Escape hatch for an HTTPS ESPN JSON URL when no dedicated tool exists. ESPN hostnames are allowlisted. The response is uncurated and may be large; dedicated tools are safer for agent context.
 
-Escape hatch — fetch any ESPN URL and return its raw JSON. Locked to known ESPN hostnames. Use this for endpoints not covered by dedicated tools, or to resolve article URLs returned by `get_news`.
+Parameters:
 
-### Parameters
+- `url` (required): full `https://` URL on an ESPN hostname.
+- `raw`: accepted for consistency but has no additional effect because this tool has no curated transform.
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `url` | string | Yes | Full ESPN API URL to fetch. Must begin with `https://` and use an allowed ESPN hostname (see below). |
-
-**Allowed hostnames:**
-
-- `site.api.espn.com`
-- `sports.core.api.espn.com`
-- `site.web.api.espn.com`
-- `cdn.espn.com`
-- `now.core.api.espn.com`
-- `fantasy.espn.com`
-
-### Example
-
-Fetch QBR leader data directly from the ESPN API:
-
-```json
-{
-  "url": "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2024/types/2/athletes/statistics/0?limit=10"
-}
-```
-
-Or fetch a CDN game package:
-
-```json
-{
-  "url": "https://cdn.espn.com/core/nfl/game?xhr=1&gameId=401671793"
-}
-```
-
-### Response
-
-Returns the raw JSON payload from ESPN exactly as received. Structure varies by endpoint.
-
-```json
-{
-  "count": 32,
-  "pageIndex": 1,
-  "pageSize": 10,
-  "pageCount": 4,
-  "items": [
-    {
-      "athlete": {
-        "$ref": "http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2024/athletes/3139477"
-      },
-      "categories": [
-        {
-          "name": "qbr",
-          "displayName": "Total QBR",
-          "stats": [
-            { "name": "totalQBR", "value": 77.4 }
-          ]
-        }
-      ]
-    },
-    "... more items"
-  ]
-}
-```
+If the response exceeds `SPORTS_LEADER_MAX_TOKENS`, the server returns a valid truncation envelope containing the estimated size and root shape. It never returns partial JSON.

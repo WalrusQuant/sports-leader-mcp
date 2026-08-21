@@ -27,6 +27,10 @@ Setting `PORT` switches the server from stdio mode (for local MCP clients) to HT
 | `KILL_SWITCH` | *(unset)* | Set to `1` or `true` to return 503 on all `/mcp` endpoints |
 | `RATE_LIMIT_PER_MIN` | `60` | Max requests per IP per minute |
 | `RATE_LIMIT_PER_DAY` | `1000` | Max requests per IP per day |
+| `SPORTS_LEADER_MAX_TOKENS` | `50000` | Estimated-token ceiling for one MCP result; oversized results become valid truncation metadata |
+| `MAX_SESSIONS` | `1000` | Maximum concurrent HTTP MCP sessions |
+| `CACHE_MAX_ENTRIES` | `250` | Maximum raw ESPN responses retained in the in-memory LRU/TTL cache |
+| `CACHE_MAX_BYTES` | `67108864` | Approximate maximum cache bytes (64 MiB by default) |
 
 ---
 
@@ -52,9 +56,11 @@ All upstream ESPN API responses are cached in-memory with TTLs tuned to how freq
 - Expired entries are evicted lazily on access and via a background sweep every 60 seconds
 - No external dependencies (Redis, Memcached, etc.) required
 
-### Cache Sizing
+### Cache sizing
 
-In practice the cache holds a few hundred entries at most. ESPN API responses are small JSON payloads, and there are only ~20 distinct URL patterns with limited parameter combinations (a handful of sports, leagues, team IDs, and event IDs). Memory usage is negligible for a single container.
+The cache stores raw upstream objects before compact transforms run. Some ESPN payloads are multiple megabytes, especially league injuries, athlete gamelogs, and custom `espn_fetch` URLs. It is bounded by both entry count and approximate serialized bytes. Expired entries and least-recently-used entries are evicted as needed. A single object larger than the byte ceiling is not cached.
+
+Because the cache key is the complete URL, `espn_fetch` and broad date/query combinations can create many distinct entries.
 
 ---
 
@@ -171,5 +177,5 @@ docker run -p 3000:3000 \
 ## Next Steps
 
 - Browse the [Tools](tools/) to see all 20 tools with parameters and examples
-- Read [Gotchas & Pitfalls](reference/gotchas.md) for ESPN API quirks
-- Check the [API Endpoints](reference/endpoints.md) reference for the raw ESPN API catalog
+- Read [Gotchas & Pitfalls](../references/gotchas.md) for ESPN API quirks
+- Check the [API Endpoints](../references/endpoints.md) reference for the raw ESPN API catalog

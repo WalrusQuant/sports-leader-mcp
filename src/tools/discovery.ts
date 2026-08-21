@@ -3,12 +3,13 @@ import { BASE } from "../endpoints.js";
 import { fetchJson } from "../client.js";
 import { defineTool } from "../tool.js";
 import { limitSchema, sportSchema } from "../schemas.js";
+import { transformSearch, transformSportsAndLeagues } from "../transforms.js";
 
 export const listSportsAndLeagues = defineTool({
   name: "list_sports_and_leagues",
   title: "List all sports and leagues",
   description:
-    "Discover all valid sport and league slugs. Returns ESPN's full ontology of sports and leagues. Call this first when you don't know the right slug to pass to other tools.",
+    "Return a compact, curated catalog of verified sport/league slug pairs for the other tools. The raw ESPN ontology is available with raw=true, but consists mainly of unresolved references.",
   inputShape: {
     limit: limitSchema,
   },
@@ -17,13 +18,14 @@ export const listSportsAndLeagues = defineTool({
       params: { limit: limit ?? 500 },
     });
   },
+  transform: transformSportsAndLeagues,
 });
 
 export const search = defineTool({
   name: "search",
   title: "Search ESPN",
   description:
-    "Global ESPN search for athletes, teams, news, and articles. Returns mixed results with IDs you can pass to other tools (athleteId, teamId).",
+    "Search ESPN for athletes, teams, and articles. Compact results include names, types, usable athlete/team IDs when available, sport/league slugs, and article URLs.",
   inputShape: {
     query: z.string().min(1).describe("Search query, e.g. 'LeBron James' or 'Chiefs'."),
     sport: sportSchema.optional(),
@@ -34,13 +36,14 @@ export const search = defineTool({
       params: { query, sport, limit: limit ?? 20 },
     });
   },
+  transform: transformSearch,
 });
 
 export const espnFetch = defineTool({
   name: "espn_fetch",
   title: "Fetch an ESPN URL",
   description:
-    "Escape hatch: fetch any ESPN URL and return its JSON. Use this for endpoints not covered by a dedicated tool, or to resolve article URLs from get_news. Locked to ESPN hostnames (*.espn.com). Returns the verbatim ESPN response (no curated transform), but a token-budget guard caps very large responses. Use dedicated tools when available — they return compact, curated views.",
+    "Escape hatch for ESPN JSON endpoints not covered by a dedicated tool. Locked to HTTPS ESPN hostnames. This output is uncurated and, if it exceeds the token budget, is replaced by a valid truncation envelope rather than partial JSON. Prefer dedicated tools.",
   inputShape: {
     url: z
       .string()

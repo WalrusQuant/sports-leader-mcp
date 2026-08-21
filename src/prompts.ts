@@ -24,7 +24,7 @@ export function registerPrompts(server: McpServer): void {
 Follow these steps:
 1. Call \`get_scoreboard\` with sport="${args.sport}" and league="${args.league}" to retrieve all current and recent games.
 2. Present a clean summary of each game: teams, current score, game status (quarter/period/inning, time remaining), and venue.
-3. If the user wants more detail on a specific game, call \`get_game_summary\` with the event_id from the scoreboard results to get a full breakdown including play-by-play highlights, box score leaders, and game notes.`,
+3. If the user wants more detail on a specific game, call \`get_game_summary\` with the \`eventId\` from the scoreboard results to get the box score, leaders, scoring/recent plays, and sampled win probability.`,
           },
         },
       ],
@@ -49,9 +49,9 @@ Follow these steps:
 
 Follow these steps in order:
 1. Call \`search\` with query="${args.player_name}", sport="${args.sport}" to find the athlete's ID.
-2. Using the athlete_id from step 1, call \`get_athlete_overview\` to retrieve the player's profile, current team, position, and season highlights.
-3. Call \`get_athlete_stats\` with the same athlete_id to get detailed season and career statistics broken down by category.
-4. Call \`get_athlete_splits\` with the same athlete_id to retrieve situational splits (home/away, by opponent type, clutch situations, etc.).
+2. Using the \`athleteId\` from step 1, call \`get_athlete_overview\` to retrieve the player's profile, current team, position, and season highlights.
+3. Call \`get_athlete_stats\` with the same \`athleteId\` to get detailed season statistics broken down by category.
+4. Call \`get_athlete_splits\` with the same \`athleteId\` to retrieve available situational splits.
 5. Synthesize all of the above into a comprehensive player report: bio, season stats table, career trends, and notable splits.`,
           },
         },
@@ -81,13 +81,13 @@ Gather data by calling all of the following tools in parallel where possible:
 3. \`get_game_plays\` — Full play-by-play or key plays/drives log.
 4. \`get_game_probabilities\` — Win probability chart and key momentum shifts.
 
-All calls should use sport="${args.sport}", league="${args.league}", and event_id="${args.event_id}".
+All calls should use sport="${args.sport}", league="${args.league}", and eventId="${args.event_id}".
 
 After collecting the data, produce a structured analysis that includes:
 - Game overview (final score, venue, attendance, key storylines)
 - Statistical leaders on both sides
 - Turning-point plays identified from the play log and probability shifts
-- Odds context (did the favorite cover? how did the line move?)`,
+- Odds context (favorite, closing/current line, and whether the favorite covered when the result permits it)`,
           },
         },
       ],
@@ -142,13 +142,13 @@ Synthesize the results into a league pulse report covering: standings race highl
 
 Gather data by calling \`get_team\` multiple times for each team with different view parameters. Use sport="${args.sport}" and league="${args.league}" throughout.
 
-For team1 (team_id="${args.team1_id}"):
+For team1 (teamId="${args.team1_id}"):
 - \`get_team\` with view="record" — season record and standings position
 - \`get_team\` with view="roster" — current active roster
 - \`get_team\` with view="leaders" — statistical leaders on the team
 - \`get_team\` with view="injuries" — current injury report
 
-For team2 (team_id="${args.team2_id}"):
+For team2 (teamId="${args.team2_id}"):
 - \`get_team\` with view="record" — season record and standings position
 - \`get_team\` with view="roster" — current active roster
 - \`get_team\` with view="leaders" — statistical leaders on the team

@@ -35,15 +35,21 @@ const rawParam = z
   );
 
 /**
- * Render a tool result to MCP text content. If `data` is already a string
- * (e.g. the budget guard returned a pre-formatted truncation notice), pass it
- * through without re-serializing.
+ * Render compact JSON without pretty-print whitespace. Object responses are
+ * also exposed through structuredContent for MCP clients that support it.
  */
 function toTextResult(data: unknown) {
-  const text = typeof data === "string" ? data : JSON.stringify(data, null, 2);
-  return {
+  const text = typeof data === "string" ? data : JSON.stringify(data);
+  const result: {
+    content: Array<{ type: "text"; text: string }>;
+    structuredContent?: Record<string, unknown>;
+  } = {
     content: [{ type: "text" as const, text }],
   };
+  if (data !== null && typeof data === "object" && !Array.isArray(data)) {
+    result.structuredContent = data as Record<string, unknown>;
+  }
+  return result;
 }
 
 function toErrorResult(err: unknown) {

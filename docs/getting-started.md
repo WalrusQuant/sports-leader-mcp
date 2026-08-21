@@ -2,13 +2,15 @@
 
 ## Installation
 
-### Via Smithery (recommended)
+### Via Smithery
 
 ```bash
 npx -y @smithery/cli install @wickwireadam-o0nh/sports-leader-mcp --client claude
 ```
 
-### Manual Configuration
+The scoped Smithery identifier above is a hosted registry/install identifier; it is not the npm package name in this repository.
+
+### Manual configuration from a source checkout
 
 Add to your MCP client's config file:
 
@@ -16,8 +18,8 @@ Add to your MCP client's config file:
 {
   "mcpServers": {
     "sports-leader": {
-      "command": "npx",
-      "args": ["-y", "@wickwireadam-o0nh/sports-leader-mcp"]
+      "command": "node",
+      "args": ["/absolute/path/to/sports-leader-mcp/dist/index.js"]
     }
   }
 }
@@ -90,7 +92,15 @@ Most tools take a `sport` and `league` slug. Here are the most common ones:
 
 Don't know the slug? Call `list_sports_and_leagues` to discover all valid values.
 
-For the full list of 139 leagues, see the [League & Sport Slugs](reference/league-slugs.md) reference.
+The tool and `sports://leagues` return a curated catalog verified against the public endpoints. The broader [League & Sport Slugs](../references/league-slugs.md) file includes less-common values that may not work across every tool.
+
+## Compact and raw mode
+
+All tools accept `raw`:
+
+- Omit it or pass `false` for compact, agent-safe output.
+- Pass `true` only when you need a specific field removed by compaction.
+- If any output exceeds `SPORTS_LEADER_MAX_TOKENS`, the result is a valid JSON envelope with `truncated: true`, estimated size, budget, and root-shape metadata. Narrow the request instead of treating that envelope as sports data.
 
 ## Season Types
 
@@ -125,5 +135,5 @@ When filtering odds by sportsbook:
 
 - Browse the [Tools](tools/) to see all 20 tools with parameters and examples
 - Read the [Self-Hosting Guide](self-hosting.md) if running as an HTTP service
-- Check the [API Endpoints](reference/endpoints.md) reference for the raw ESPN API catalog
-- Read [Gotchas & Pitfalls](reference/gotchas.md) to avoid common mistakes
+- Check the [API Endpoints](../references/endpoints.md) reference for the raw ESPN API catalog
+- Read [Gotchas & Pitfalls](../references/gotchas.md) to avoid common mistakes
