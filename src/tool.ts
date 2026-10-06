@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
+import type { ResourceLinkContent } from "./links.js";
 
 /** Extra information handed to a transform alongside the raw ESPN response. */
 export interface TransformContext<A = Record<string, unknown>> {
@@ -41,6 +42,12 @@ export interface ToolDef<S extends z.ZodRawShape = z.ZodRawShape> {
    * receives `context: undefined` and must degrade gracefully.
    */
   context?: (args: z.infer<z.ZodObject<S>>) => Promise<unknown>;
+  /**
+   * Optional resource links appended to the content array in compact mode
+   * (after the text block), pointing at espn:// resource templates for large
+   * sub-payloads. Clients that ignore links lose nothing.
+   */
+  links?: (args: z.infer<z.ZodObject<S>>, data: unknown) => ResourceLinkContent[];
   handler: (args: z.infer<z.ZodObject<S>>) => Promise<unknown>;
 }
 

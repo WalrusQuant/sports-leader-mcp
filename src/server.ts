@@ -13,6 +13,8 @@ import { applyBudget } from "./transforms.js";
 import { registerPrompts } from "./prompts.js";
 import { registerResources } from "./resources.js";
 import { VERSION } from "./version.js";
+import type { ResourceLinkContent } from "./links.js";
+import { registerResourceTemplates } from "./resource-templates.js";
 
 export const ALL_TOOLS: AnyToolDef[] = [
   ...scoreboardTools,
@@ -37,7 +39,7 @@ const rawParam = z
   );
 
 type ToolResult = {
-  content: Array<{ type: "text"; text: string }>;
+  content: Array<{ type: "text"; text: string } | ResourceLinkContent>;
   structuredContent?: Record<string, unknown>;
   isError?: boolean;
 };
@@ -77,30 +79,37 @@ function toErrorResult(err: unknown): ToolResult {
 }
 
 /**
+ * Fetch + transform + budget for one call. Shared by tool calls and
+ * resource-template reads so both return identical compact JSON.
+ */
+export async function produce(tool: AnyToolDef, rest: Record<string, unknown>, compact: boolean): Promise<unknown> {
+  const contextP: Promise<unknown> =
+    compact && tool.transform && tool.context
+      ? tool.context(rest as never).catch(() => undefined)
+      : Promise.resolve(undefined);
+
+  let data: unknown = await tool.handler(rest as never);
+
+  // Apply the tool's curated transform unless the caller asked for raw.
+  if (compact && tool.transform) {
+    data = tool.transform(data, { args: rest, context: await contextP });
+  }
+
+  // Token-budget backstop always applies, even in raw mode, so an
+  // untransformed response can never overflow the agent's context.
+  return applyBudget(data);
+}
+
+/**
  * Execute one tool call end to end: fetch, optional context fetch, transform,
- * token budget, and result shaping. Exported for tests.
+ * token budget, result shaping, and resource links. Exported for tests.
  */
 export async function runTool(tool: AnyToolDef, args: Record<string, unknown>): Promise<ToolResult> {
   try {
     // `raw` is consumed here, never passed to the tool handler.
     const { raw, ...rest } = args;
     const compact = raw !== true;
-
-    const contextP: Promise<unknown> =
-      compact && tool.transform && tool.context
-        ? tool.context(rest as never).catch(() => undefined)
-        : Promise.resolve(undefined);
-
-    let data: unknown = await tool.handler(rest as never);
-
-    // Apply the tool's curated transform unless the caller asked for raw.
-    if (compact && tool.transform) {
-      data = tool.transform(data, { args: rest, context: await contextP });
-    }
-
-    // Token-budget backstop always applies, even in raw mode, so an
-    // untransformed response can never overflow the agent's context.
-    data = applyBudget(data);
+    const data = await produce(tool, rest, compact);
 
     // Tools with an outputSchema describe the compact shape. In raw mode the
     // text block is still the untouched ESPN JSON, while structuredContent
@@ -110,7 +119,11 @@ export async function runTool(tool: AnyToolDef, args: Record<string, unknown>): 
     if (tool.outputSchema && !compact && !isEnvelope) {
       return toTextResult(data, { raw: true, response: data });
     }
-    return toTextResult(data);
+    const result = toTextResult(data);
+    if (compact && !isEnvelope && tool.links) {
+      result.content.push(...tool.links(rest as never, data));
+    }
+    return result;
   } catch (err) {
     return toErrorResult(err);
   }
@@ -152,6 +165,7 @@ export function createServer(): McpServer {
 
   registerPrompts(server);
   registerResources(server);
+  registerResourceTemplates(server, ALL_TOOLS, (tool, args) => produce(tool, args, true));
 
   return server;
 }

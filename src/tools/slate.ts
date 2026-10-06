@@ -5,6 +5,7 @@ import { defineTool } from "../tool.js";
 import { transformSlate, type SlateRaw } from "../transforms.js";
 import { dateSchema, leagueSchema, sportSchema } from "../schemas.js";
 import { slateOutput } from "../output-schemas.js";
+import { slateLinks } from "../links.js";
 
 export const getSlate = defineTool({
   name: "get_slate",
@@ -43,6 +44,7 @@ export const getSlate = defineTool({
     return { scoreboard: scoreboard.value, injuries: injuries.value };
   },
   transform: transformSlate,
+  links: slateLinks,
 });
 
 export const slateTools = [getSlate];

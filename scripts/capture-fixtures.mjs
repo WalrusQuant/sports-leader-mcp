@@ -3,6 +3,7 @@
  * Capture raw ESPN responses as golden-test fixtures.
  *
  *   node scripts/capture-fixtures.mjs            # capture into test/fixtures
+ *   ONLY=plays,probabilities node scripts/...    # capture only some fixture kinds
  *   UPDATE_GOLDEN=1 npm test                     # then regenerate test/golden
  *
  * Fixtures are *raw* upstream JSON, scrubbed and trimmed so the repo stays
@@ -88,7 +89,12 @@ async function get(url) {
   return res.json();
 }
 
+// Play-by-play and probability fixtures are large, so only a couple of leagues.
+const PBP_LEAGUES = new Set(["nfl", "mlb"]);
+const ONLY = process.env.ONLY ? new Set(process.env.ONLY.split(",")) : null;
+
 async function save(league, name, data) {
+  if (ONLY && !ONLY.has(name)) return;
   const file = join(ROOT, league, `${name}.json`);
   await mkdir(dirname(file), { recursive: true });
   await writeFile(file, JSON.stringify(data) + "\n");
@@ -116,6 +122,16 @@ for (const [sport, league, oddsDay, finalDay] of LEAGUES) {
   if (summaryId) {
     const summary = await get(`${SITE}/${sport}/${league}/summary?event=${summaryId}`);
     await save(league, "summary", scrub(trimSummary(summary)));
+    const core = `${CORE}/${sport}/leagues/${league}/events/${summaryId}/competitions/${summaryId}`;
+    if (!ONLY || ONLY.has("plays")) {
+      const plays = await get(`${core}/plays?limit=400`);
+      // Play items are ~4 KB each in raw form; 25 is enough to test the shape.
+      if (!plays.__status && PBP_LEAGUES.has(league)) await save(league, "plays", scrub({ ...plays, items: (plays.items ?? []).slice(0, 25) }));
+    }
+    if (!ONLY || ONLY.has("probabilities")) {
+      const probs = await get(`${core}/probabilities?limit=200`);
+      if (!probs.__status && PBP_LEAGUES.has(league)) await save(league, "probabilities", scrub({ ...probs, items: (probs.items ?? []).slice(0, 25) }));
+    }
     athleteId =
       summary.leaders?.[0]?.leaders?.[0]?.leaders?.[0]?.athlete?.id ??
       summary.boxscore?.players?.[0]?.statistics?.[0]?.athletes?.[0]?.athlete?.id;

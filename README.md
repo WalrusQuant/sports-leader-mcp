@@ -110,6 +110,22 @@ Static reference data agents can browse:
 | Betting Providers | `sports://reference/betting-providers` | Sportsbook provider IDs |
 | API Domains | `sports://reference/api-domains` | ESPN API base URLs |
 
+### Resource templates
+
+Large sub-payloads are also addressable as resources. Reading a URI returns exactly the compact JSON the matching tool returns for those arguments (variables are validated with the tool's input schema).
+
+| Template | Same as |
+|----------|---------|
+| `espn://{sport}/{league}/game/{eventId}/summary` | `get_game_summary` |
+| `espn://{sport}/{league}/game/{eventId}/plays` | `get_game_plays` |
+| `espn://{sport}/{league}/game/{eventId}/probabilities` | `get_game_probabilities` |
+| `espn://{sport}/{league}/game/{eventId}/odds` | `get_game_odds` |
+| `espn://{sport}/{league}/injuries` | `get_injuries` |
+| `espn://{sport}/{league}/team/{teamId}/injuries` | `get_team_injuries` |
+| `espn://{sport}/{league}/slate/{date}` | `get_slate` |
+
+`get_game_summary` appends `resource_link` content items (after the normal text block) for the full plays, probability timeline, all-book odds, and league injury report; `get_slate` links the full league injury report. Clients that ignore links get the same output as before.
+
 ## Supported Sports
 
 **30 verified leagues across 11 sports** (the curated catalog in [`src/catalog.ts`](src/catalog.ts), also served by `list_sports_and_leagues` and `sports://leagues`):

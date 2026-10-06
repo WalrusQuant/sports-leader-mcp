@@ -19,6 +19,7 @@ import {
   sportSchema,
   weekSchema,
 } from "../schemas.js";
+import { summaryLinks } from "../links.js";
 import { gameOddsOutput, gameSummaryOutput, scoreboardOutput } from "../output-schemas.js";
 
 export const getScoreboard = defineTool({
@@ -64,6 +65,7 @@ export const getGameSummary = defineTool({
   },
   outputSchema: gameSummaryOutput,
   transform: transformGameSummary,
+  links: summaryLinks,
 });
 
 export const getGamePlays = defineTool({
