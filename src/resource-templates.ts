@@ -1,7 +1,5 @@
 import { z } from "zod";
-import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { ErrorCode, McpError } from "@modelcontextprotocol/sdk/types.js";
-
+import { McpServer, ResourceTemplate, ProtocolError, ProtocolErrorCode } from "@modelcontextprotocol/server";
 import type { AnyToolDef } from "./tool.js";
 import { RESOURCE_TEMPLATES } from "./links.js";
 
@@ -29,8 +27,8 @@ export function registerResourceTemplates(server: McpServer, tools: AnyToolDef[]
         }
         const parsed = schema.safeParse(args);
         if (!parsed.success) {
-          throw new McpError(
-            ErrorCode.InvalidParams,
+          throw new ProtocolError(
+            ProtocolErrorCode.InvalidParams,
             `Invalid ${def.uriTemplate} variables: ${parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`,
           );
         }

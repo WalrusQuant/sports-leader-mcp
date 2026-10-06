@@ -1,4 +1,4 @@
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { McpServer } from "@modelcontextprotocol/server";
 import { ENDPOINT_DOCS } from "./endpoints.js";
 import { LEAGUE_CATALOG } from "./catalog.js";
 
@@ -9,7 +9,7 @@ import { LEAGUE_CATALOG } from "./catalog.js";
  */
 export function registerResources(server: McpServer): void {
   // sports-leagues: curated list of valid sport/league slug pairs
-  server.resource(
+  server.registerResource(
     "sports-leagues",
     "sports://leagues",
     {
@@ -38,7 +38,7 @@ export function registerResources(server: McpServer): void {
   );
 
   // season-types: reference for season type codes
-  server.resource(
+  server.registerResource(
     "season-types",
     "sports://reference/season-types",
     {
@@ -70,7 +70,7 @@ export function registerResources(server: McpServer): void {
   );
 
   // betting-providers: reference for sportsbook provider IDs
-  server.resource(
+  server.registerResource(
     "betting-providers",
     "sports://reference/betting-providers",
     {
@@ -104,7 +104,7 @@ export function registerResources(server: McpServer): void {
   );
 
   // api-domains: derived from ENDPOINT_DOCS so it stays in sync with BASE
-  server.resource(
+  server.registerResource(
     "api-domains",
     "sports://reference/api-domains",
     {

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { randomUUID } from "node:crypto";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { NodeStreamableHTTPServerTransport } from "@modelcontextprotocol/node";
+import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
+import { McpServer } from "@modelcontextprotocol/server";
 import express from "express";
 
 import { createServer, ALL_TOOLS } from "./server.js";
@@ -23,7 +23,7 @@ function readPositiveInt(value: string | undefined, fallback: number): number {
 
 interface SessionEntry {
   server: McpServer;
-  transport: StreamableHTTPServerTransport;
+  transport: NodeStreamableHTTPServerTransport;
   createdAt: number;
 }
 
@@ -83,7 +83,7 @@ async function startHttp(port: number) {
     // Create the server BEFORE the transport closure so the `onsessioninitialized`
     // callback captures an already-initialized binding.
     const server = createServer();
-    const transport = new StreamableHTTPServerTransport({
+    const transport = new NodeStreamableHTTPServerTransport({
       sessionIdGenerator: () => randomUUID(),
       onsessioninitialized: (id) => {
         sessions.set(id, { server, transport, createdAt: Date.now() });

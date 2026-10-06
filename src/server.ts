@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-
+import { McpServer } from "@modelcontextprotocol/server";
 import { scoreboardTools } from "./tools/scoreboard.js";
 import { leagueTools } from "./tools/league.js";
 import { teamTools } from "./tools/teams.js";
@@ -151,7 +150,7 @@ export function createServer(): McpServer {
       {
         title: tool.title,
         description: tool.description,
-        inputSchema: { ...tool.inputShape, raw: rawParam },
+        inputSchema: z.object({ ...tool.inputShape, raw: rawParam }),
         ...(tool.outputSchema ? { outputSchema: tool.outputSchema } : {}),
         annotations: {
           ...READ_ONLY_ANNOTATIONS,

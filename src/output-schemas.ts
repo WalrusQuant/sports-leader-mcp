@@ -2,7 +2,7 @@
  * Zod output schemas for the most-used tools, exposed as MCP `outputSchema`.
  *
  * Design notes:
- * - Objects are `.passthrough()` so the JSON Schema clients see allows
+ * - Objects are `.loose()` so the JSON Schema clients see allows
  *   additional properties. This server only ever *adds* fields to compact
  *   output, so a client validating against today's schema keeps working.
  * - Every schema is wrapped by `withEnvelope`: top-level fields become optional
@@ -14,7 +14,7 @@
  */
 import { z } from "zod";
 
-const obj = <T extends z.ZodRawShape>(shape: T) => z.object(shape).passthrough();
+const obj = <T extends z.ZodRawShape>(shape: T) => z.object(shape).loose();
 const str = z.string();
 const optStr = z.string().optional();
 const nullableNum = z.number().nullable();
@@ -22,7 +22,7 @@ const nullableNum = z.number().nullable();
 function withEnvelope<T extends z.ZodRawShape>(shape: T) {
   const optionalShape = Object.fromEntries(
     Object.entries(shape).map(([k, v]) => [k, (v as z.ZodTypeAny).optional()]),
-  ) as { [K in keyof T]: z.ZodOptional<T[K]> };
+  ) as unknown as { [K in keyof T]: z.ZodOptional<T[K]> };
   return z
     .object({
       ...optionalShape,
@@ -31,12 +31,12 @@ function withEnvelope<T extends z.ZodRawShape>(shape: T) {
       estimatedTokens: z.number().optional(),
       budgetTokens: z.number().optional(),
       message: z.string().optional(),
-      dataSummary: z.record(z.unknown()).optional(),
+      dataSummary: z.record(z.string(), z.unknown()).optional(),
       // raw=true mode
       raw: z.literal(true).optional(),
       response: z.unknown().optional(),
     })
-    .passthrough();
+    .loose();
 }
 
 // ─── Shared pieces ────────────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ export const scoreboardOutput = withEnvelope({
 
 // ─── get_game_summary ─────────────────────────────────────────────────────────
 
-const looseRecord = z.record(z.unknown());
+const looseRecord = z.record(z.string(), z.unknown());
 
 export const gameSummaryOutput = withEnvelope({
   game: obj({
@@ -183,7 +183,7 @@ export const gameOddsOutput = withEnvelope({
         open: looseRecord,
         current: looseRecord,
       })
-      .passthrough(),
+      .loose(),
   ),
 });
 
@@ -225,7 +225,7 @@ export const gamelogOutput = withEnvelope({
       homeAway: z.enum(["H", "A"]),
       result: optStr,
       score: optStr,
-      stats: z.record(str),
+      stats: z.record(z.string(), str),
     }),
   ),
 });

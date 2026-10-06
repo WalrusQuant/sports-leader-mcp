@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
+import type { ToolAnnotations } from "@modelcontextprotocol/server";
 import type { ResourceLinkContent } from "./links.js";
 
 /** Extra information handed to a transform alongside the raw ESPN response. */
@@ -28,7 +28,7 @@ export interface ToolDef<S extends z.ZodRawShape = z.ZodRawShape> {
    * Optional zod object schema describing the compact output. Exposed as the
    * MCP `outputSchema`; the server validates `structuredContent` against it.
    */
-  outputSchema?: z.AnyZodObject;
+  outputSchema?: z.ZodObject<z.ZodRawShape>;
   /**
    * Optional compaction function applied to the raw ESPN response before it is
    * returned to the agent. Bypassed when the caller passes `raw=true`.
