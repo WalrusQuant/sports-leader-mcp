@@ -1,0 +1,2300 @@
+{
+ "game": {
+  "id": "401898388",
+  "date": "2026-10-05T23:00Z",
+  "status": {
+   "state": "post",
+   "detail": "Final"
+  },
+  "competitors": [
+   {
+    "homeAway": "home",
+    "winner": false,
+    "team": {
+     "id": "1",
+     "abbrev": "ATL",
+     "name": "Hawks",
+     "displayName": "Atlanta Hawks"
+    },
+    "score": "123",
+    "linescores": [
+     "35",
+     "26",
+     "37",
+     "25"
+    ]
+   },
+   {
+    "homeAway": "away",
+    "winner": true,
+    "team": {
+     "id": "29",
+     "abbrev": "MEM",
+     "name": "Grizzlies",
+     "displayName": "Memphis Grizzlies"
+    },
+    "score": "132",
+    "linescores": [
+     "32",
+     "49",
+     "29",
+     "22"
+    ]
+   }
+  ]
+ },
+ "boxscore": {
+  "teams": [
+   {
+    "team": {
+     "id": "29",
+     "abbrev": "MEM",
+     "name": "Grizzlies",
+     "displayName": "Memphis Grizzlies"
+    },
+    "stats": [
+     {
+      "label": "FG",
+      "displayValue": "43-83"
+     },
+     {
+      "label": "Field Goal %",
+      "displayValue": "52"
+     },
+     {
+      "label": "3PT",
+      "displayValue": "18-43"
+     },
+     {
+      "label": "Three Point %",
+      "displayValue": "42"
+     },
+     {
+      "label": "FT",
+      "displayValue": "28-37"
+     },
+     {
+      "label": "Free Throw %",
+      "displayValue": "76"
+     },
+     {
+      "label": "Rebounds",
+      "displayValue": "41"
+     },
+     {
+      "label": "Offensive Rebounds",
+      "displayValue": "9"
+     },
+     {
+      "label": "Defensive Rebounds",
+      "displayValue": "32"
+     },
+     {
+      "label": "Assists",
+      "displayValue": "32"
+     },
+     {
+      "label": "Steals",
+      "displayValue": "13"
+     },
+     {
+      "label": "Blocks",
+      "displayValue": "3"
+     },
+     {
+      "label": "Turnovers",
+      "displayValue": "18"
+     },
+     {
+      "label": "Team Turnovers",
+      "displayValue": "1"
+     },
+     {
+      "label": "Total Turnovers",
+      "displayValue": "19"
+     },
+     {
+      "label": "Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Total Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Flagrant Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Points Conceded Off Turnovers",
+      "displayValue": "17"
+     },
+     {
+      "label": "Fast Break Points",
+      "displayValue": "27"
+     },
+     {
+      "label": "Points in Paint",
+      "displayValue": "48"
+     },
+     {
+      "label": "Fouls",
+      "displayValue": "26"
+     },
+     {
+      "label": "Largest Lead",
+      "displayValue": "23"
+     },
+     {
+      "label": "Lead Changes",
+      "displayValue": "4"
+     },
+     {
+      "label": "Percent Led",
+      "displayValue": "73"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "1",
+     "abbrev": "ATL",
+     "name": "Hawks",
+     "displayName": "Atlanta Hawks"
+    },
+    "stats": [
+     {
+      "label": "FG",
+      "displayValue": "43-94"
+     },
+     {
+      "label": "Field Goal %",
+      "displayValue": "46"
+     },
+     {
+      "label": "3PT",
+      "displayValue": "14-43"
+     },
+     {
+      "label": "Three Point %",
+      "displayValue": "33"
+     },
+     {
+      "label": "FT",
+      "displayValue": "23-33"
+     },
+     {
+      "label": "Free Throw %",
+      "displayValue": "70"
+     },
+     {
+      "label": "Rebounds",
+      "displayValue": "45"
+     },
+     {
+      "label": "Offensive Rebounds",
+      "displayValue": "14"
+     },
+     {
+      "label": "Defensive Rebounds",
+      "displayValue": "31"
+     },
+     {
+      "label": "Assists",
+      "displayValue": "25"
+     },
+     {
+      "label": "Steals",
+      "displayValue": "11"
+     },
+     {
+      "label": "Blocks",
+      "displayValue": "1"
+     },
+     {
+      "label": "Turnovers",
+      "displayValue": "17"
+     },
+     {
+      "label": "Team Turnovers",
+      "displayValue": "1"
+     },
+     {
+      "label": "Total Turnovers",
+      "displayValue": "18"
+     },
+     {
+      "label": "Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Total Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Flagrant Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Points Conceded Off Turnovers",
+      "displayValue": "21"
+     },
+     {
+      "label": "Fast Break Points",
+      "displayValue": "16"
+     },
+     {
+      "label": "Points in Paint",
+      "displayValue": "58"
+     },
+     {
+      "label": "Fouls",
+      "displayValue": "23"
+     },
+     {
+      "label": "Largest Lead",
+      "displayValue": "11"
+     },
+     {
+      "label": "Lead Changes",
+      "displayValue": "4"
+     },
+     {
+      "label": "Percent Led",
+      "displayValue": "24"
+     }
+    ]
+   }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "29",
+     "abbrev": "MEM",
+     "name": "Grizzlies",
+     "displayName": "Memphis Grizzlies"
+    },
+    "categories": [
+     {
+      "name": "",
+      "athletes": [
+       {
+        "id": "4903027",
+        "name": "Cedric Coward",
+        "jersey": "23",
+        "stats": {
+         "MIN": "18",
+         "PTS": "9",
+         "FG": "3-6",
+         "3PT": "1-3",
+         "FT": "2-2",
+         "REB": "5",
+         "AST": "4",
+         "TO": "2",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "4",
+         "PF": "2",
+         "+/-": "+5"
+        }
+       },
+       {
+        "id": "5041935",
+        "name": "Cameron Boozer",
+        "jersey": "27",
+        "stats": {
+         "MIN": "18",
+         "PTS": "11",
+         "FG": "5-9",
+         "3PT": "0-3",
+         "FT": "1-3",
+         "REB": "5",
+         "AST": "4",
+         "TO": "1",
+         "STL": "2",
+         "BLK": "0",
+         "OREB": "3",
+         "DREB": "2",
+         "PF": "2",
+         "+/-": "+5"
+        }
+       },
+       {
+        "id": "5112087",
+        "name": "Jaylen Wells",
+        "jersey": "0",
+        "stats": {
+         "MIN": "17",
+         "PTS": "12",
+         "FG": "4-7",
+         "3PT": "4-6",
+         "FT": "0-0",
+         "REB": "0",
+         "AST": "0",
+         "TO": "0",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "0",
+         "+/-": "+3"
+        }
+       },
+       {
+        "id": "4593016",
+        "name": "Quinten Post",
+        "jersey": "41",
+        "stats": {
+         "MIN": "12",
+         "PTS": "8",
+         "FG": "3-6",
+         "3PT": "2-3",
+         "FT": "0-0",
+         "REB": "4",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "3",
+         "PF": "0",
+         "+/-": "+9"
+        }
+       },
+       {
+        "id": "4065733",
+        "name": "Ty Jerome",
+        "jersey": "2",
+        "stats": {
+         "MIN": "15",
+         "PTS": "12",
+         "FG": "4-8",
+         "3PT": "1-2",
+         "FT": "3-3",
+         "REB": "0",
+         "AST": "5",
+         "TO": "3",
+         "STL": "0",
+         "BLK": "1",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "2",
+         "+/-": "+11"
+        }
+       },
+       {
+        "id": "2991070",
+        "name": "Jerami Grant",
+        "jersey": "3",
+        "stats": {
+         "MIN": "14",
+         "PTS": "10",
+         "FG": "2-3",
+         "3PT": "1-2",
+         "FT": "5-6",
+         "REB": "4",
+         "AST": "2",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "4",
+         "PF": "2",
+         "+/-": "+14"
+        }
+       },
+       {
+        "id": "4594326",
+        "name": "Kris Murray",
+        "jersey": "17",
+        "stats": {
+         "MIN": "13",
+         "PTS": "3",
+         "FG": "1-3",
+         "3PT": "0-2",
+         "FT": "1-2",
+         "REB": "1",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "1",
+         "+/-": "-4"
+        }
+       },
+       {
+        "id": "4595400",
+        "name": "Olivier-Maxence Prosper",
+        "jersey": "18",
+        "stats": {
+         "MIN": "11",
+         "PTS": "1",
+         "FG": "0-1",
+         "3PT": "0-0",
+         "FT": "1-2",
+         "REB": "1",
+         "AST": "1",
+         "TO": "1",
+         "STL": "2",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "1",
+         "+/-": "-3"
+        }
+       },
+       {
+        "id": "4684806",
+        "name": "Taylor Hendricks",
+        "jersey": "22",
+        "stats": {
+         "MIN": "19",
+         "PTS": "7",
+         "FG": "3-5",
+         "3PT": "0-1",
+         "FT": "1-2",
+         "REB": "6",
+         "AST": "1",
+         "TO": "2",
+         "STL": "3",
+         "BLK": "1",
+         "OREB": "0",
+         "DREB": "6",
+         "PF": "5",
+         "+/-": "-1"
+        }
+       },
+       {
+        "id": "5105550",
+        "name": "GG Jackson",
+        "jersey": "45",
+        "stats": {
+         "MIN": "16",
+         "PTS": "14",
+         "FG": "5-7",
+         "3PT": "2-4",
+         "FT": "2-3",
+         "REB": "2",
+         "AST": "1",
+         "TO": "0",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "2",
+         "PF": "2",
+         "+/-": "+9"
+        }
+       },
+       {
+        "id": "5231919",
+        "name": "Karim Lopez",
+        "jersey": "35",
+        "stats": {
+         "MIN": "8",
+         "PTS": "2",
+         "FG": "1-2",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "1",
+         "AST": "0",
+         "TO": "0",
+         "STL": "2",
+         "BLK": "1",
+         "OREB": "1",
+         "DREB": "0",
+         "PF": "1",
+         "+/-": "-6"
+        }
+       },
+       {
+        "id": "4432810",
+        "name": "Isaiah Stewart",
+        "jersey": "28",
+        "stats": {
+         "MIN": "2",
+         "PTS": "0",
+         "FG": "0-0",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "1",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "0",
+         "+/-": "+4"
+        }
+       },
+       {
+        "id": "5105817",
+        "name": "Carson Cooper",
+        "jersey": "20",
+        "stats": {
+         "MIN": "15",
+         "PTS": "8",
+         "FG": "2-3",
+         "3PT": "1-1",
+         "FT": "3-4",
+         "REB": "4",
+         "AST": "1",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "3",
+         "PF": "1",
+         "+/-": "-3"
+        }
+       },
+       {
+        "id": "4431785",
+        "name": "Scotty Pippen Jr.",
+        "jersey": "1",
+        "stats": {
+         "MIN": "16",
+         "PTS": "10",
+         "FG": "3-5",
+         "3PT": "2-3",
+         "FT": "2-2",
+         "REB": "0",
+         "AST": "4",
+         "TO": "2",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "3",
+         "+/-": "+9"
+        }
+       },
+       {
+        "id": "4433083",
+        "name": "Cam Spencer",
+        "jersey": "24",
+        "stats": {
+         "MIN": "14",
+         "PTS": "8",
+         "FG": "2-3",
+         "3PT": "2-3",
+         "FT": "2-2",
+         "REB": "4",
+         "AST": "2",
+         "TO": "3",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "3",
+         "PF": "2",
+         "+/-": "+4"
+        }
+       },
+       {
+        "id": "4683934",
+        "name": "Jahmai Mashack",
+        "jersey": "21",
+        "stats": {
+         "MIN": "8",
+         "PTS": "2",
+         "FG": "1-1",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "1",
+         "AST": "1",
+         "TO": "1",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "0",
+         "+/-": "-6"
+        }
+       },
+       {
+        "id": "4781746",
+        "name": "Javon Small",
+        "jersey": "10",
+        "stats": {
+         "MIN": "13",
+         "PTS": "8",
+         "FG": "2-9",
+         "3PT": "1-6",
+         "FT": "3-4",
+         "REB": "1",
+         "AST": "4",
+         "TO": "1",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "1",
+         "+/-": "-4"
+        }
+       },
+       {
+        "id": "4896372",
+        "name": "Walter Clayton Jr.",
+        "jersey": "4",
+        "stats": {
+         "MIN": "13",
+         "PTS": "7",
+         "FG": "2-5",
+         "3PT": "1-4",
+         "FT": "2-2",
+         "REB": "1",
+         "AST": "2",
+         "TO": "2",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "0",
+         "PF": "1",
+         "+/-": "-1"
+        }
+       }
+      ],
+      "totals": {
+       "MIN": "",
+       "PTS": "132",
+       "FG": "43-83",
+       "3PT": "18-43",
+       "FT": "28-37",
+       "REB": "41",
+       "AST": "32",
+       "TO": "18",
+       "STL": "13",
+       "BLK": "3",
+       "OREB": "9",
+       "DREB": "32",
+       "PF": "26",
+       "+/-": ""
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "1",
+     "abbrev": "ATL",
+     "name": "Hawks",
+     "displayName": "Atlanta Hawks"
+    },
+    "categories": [
+     {
+      "name": "",
+      "athletes": [
+       {
+        "id": "4431680",
+        "name": "Onyeka Okongwu",
+        "jersey": "17",
+        "stats": {
+         "MIN": "14",
+         "PTS": "8",
+         "FG": "3-4",
+         "3PT": "1-2",
+         "FT": "1-2",
+         "REB": "4",
+         "AST": "2",
+         "TO": "1",
+         "STL": "0",
+         "BLK": "1",
+         "OREB": "1",
+         "DREB": "3",
+         "PF": "2",
+         "+/-": "-8"
+        }
+       },
+       {
+        "id": "4701230",
+        "name": "Jalen Johnson",
+        "jersey": "1",
+        "stats": {
+         "MIN": "18",
+         "PTS": "8",
+         "FG": "1-7",
+         "3PT": "0-3",
+         "FT": "6-6",
+         "REB": "5",
+         "AST": "3",
+         "TO": "2",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "4",
+         "PF": "1",
+         "+/-": "-8"
+        }
+       },
+       {
+        "id": "4278039",
+        "name": "Nickeil Alexander-Walker",
+        "jersey": "7",
+        "stats": {
+         "MIN": "16",
+         "PTS": "14",
+         "FG": "6-9",
+         "3PT": "1-4",
+         "FT": "1-1",
+         "REB": "1",
+         "AST": "0",
+         "TO": "0",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "1",
+         "+/-": "-11"
+        }
+       },
+       {
+        "id": "4869342",
+        "name": "Dyson Daniels",
+        "jersey": "5",
+        "stats": {
+         "MIN": "18",
+         "PTS": "6",
+         "FG": "2-6",
+         "3PT": "0-4",
+         "FT": "2-5",
+         "REB": "4",
+         "AST": "2",
+         "TO": "1",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "3",
+         "PF": "0",
+         "+/-": "-8"
+        }
+       },
+       {
+        "id": "5149077",
+        "name": "Kingston Flemings",
+        "jersey": "4",
+        "stats": {
+         "MIN": "25",
+         "PTS": "11",
+         "FG": "4-11",
+         "3PT": "2-6",
+         "FT": "1-4",
+         "REB": "0",
+         "AST": "2",
+         "TO": "3",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "3",
+         "+/-": "-12"
+        }
+       },
+       {
+        "id": "2578185",
+        "name": "Dorian Finney-Smith",
+        "jersey": "8",
+        "stats": {
+         "MIN": "8",
+         "PTS": "3",
+         "FG": "1-3",
+         "3PT": "1-3",
+         "FT": "0-0",
+         "REB": "0",
+         "AST": "1",
+         "TO": "1",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "1",
+         "+/-": "+6"
+        }
+       },
+       {
+        "id": "4280151",
+        "name": "Corey Kispert",
+        "jersey": "24",
+        "stats": {
+         "MIN": "20",
+         "PTS": "19",
+         "FG": "7-11",
+         "3PT": "4-7",
+         "FT": "1-2",
+         "REB": "4",
+         "AST": "2",
+         "TO": "1",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "3",
+         "PF": "4",
+         "+/-": "-9"
+        }
+       },
+       {
+        "id": "4431714",
+        "name": "Jalen Wilson",
+        "jersey": "22",
+        "stats": {
+         "MIN": "15",
+         "PTS": "12",
+         "FG": "3-6",
+         "3PT": "2-3",
+         "FT": "4-5",
+         "REB": "0",
+         "AST": "0",
+         "TO": "0",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "3",
+         "+/-": "+8"
+        }
+       },
+       {
+        "id": "4712902",
+        "name": "Cameron Corhen",
+        "jersey": "32",
+        "stats": {
+         "MIN": "3",
+         "PTS": "0",
+         "FG": "0-1",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "2",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "1",
+         "PF": "0",
+         "+/-": "-1"
+        }
+       },
+       {
+        "id": "4873201",
+        "name": "Asa Newell",
+        "jersey": "14",
+        "stats": {
+         "MIN": "22",
+         "PTS": "12",
+         "FG": "5-9",
+         "3PT": "0-1",
+         "FT": "2-2",
+         "REB": "12",
+         "AST": "2",
+         "TO": "2",
+         "STL": "2",
+         "BLK": "0",
+         "OREB": "5",
+         "DREB": "7",
+         "PF": "1",
+         "+/-": "-5"
+        }
+       },
+       {
+        "id": "5106262",
+        "name": "Zuby Ejiofor",
+        "jersey": "20",
+        "stats": {
+         "MIN": "14",
+         "PTS": "5",
+         "FG": "2-5",
+         "3PT": "0-1",
+         "FT": "1-2",
+         "REB": "3",
+         "AST": "2",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "3",
+         "PF": "2",
+         "+/-": "+7"
+        }
+       },
+       {
+        "id": "3146557",
+        "name": "Jock Landale",
+        "jersey": "31",
+        "stats": {
+         "MIN": "16",
+         "PTS": "4",
+         "FG": "1-5",
+         "3PT": "0-2",
+         "FT": "2-2",
+         "REB": "6",
+         "AST": "3",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "4",
+         "DREB": "2",
+         "PF": "0",
+         "+/-": "-9"
+        }
+       },
+       {
+        "id": "4397183",
+        "name": "Aaron Wiggins",
+        "jersey": "2",
+        "stats": {
+         "MIN": "11",
+         "PTS": "7",
+         "FG": "2-4",
+         "3PT": "1-2",
+         "FT": "2-2",
+         "REB": "0",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "2",
+         "+/-": "-13"
+        }
+       },
+       {
+        "id": "4431941",
+        "name": "RayJ Dennis",
+        "jersey": "10",
+        "stats": {
+         "MIN": "18",
+         "PTS": "12",
+         "FG": "5-10",
+         "3PT": "2-5",
+         "FT": "0-0",
+         "REB": "3",
+         "AST": "3",
+         "TO": "3",
+         "STL": "2",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "3",
+         "PF": "2",
+         "+/-": "+12"
+        }
+       },
+       {
+        "id": "4585618",
+        "name": "Keshon Gilbert",
+        "jersey": "00",
+        "stats": {
+         "MIN": "15",
+         "PTS": "2",
+         "FG": "1-3",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "1",
+         "AST": "2",
+         "TO": "3",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "0",
+         "+/-": "+7"
+        }
+       },
+       {
+        "id": "4683857",
+        "name": "Kobe Johnson",
+        "jersey": "12",
+        "stats": {
+         "MIN": "8",
+         "PTS": "0",
+         "FG": "0-0",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "0",
+         "AST": "1",
+         "TO": "0",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "1",
+         "+/-": "-1"
+        }
+       }
+      ],
+      "totals": {
+       "MIN": "",
+       "PTS": "123",
+       "FG": "43-94",
+       "3PT": "14-43",
+       "FT": "23-33",
+       "REB": "45",
+       "AST": "25",
+       "TO": "17",
+       "STL": "11",
+       "BLK": "1",
+       "OREB": "14",
+       "DREB": "31",
+       "PF": "23",
+       "+/-": ""
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "leaders": [
+  {
+   "team": {
+    "id": "1",
+    "abbrev": "ATL",
+    "name": "Atlanta Hawks",
+    "displayName": "Atlanta Hawks"
+   },
+   "categories": [
+    {
+     "name": "points",
+     "displayName": "Points",
+     "leaders": [
+      {
+       "athleteId": "4280151",
+       "athlete": "Corey Kispert",
+       "value": "19"
+      }
+     ]
+    },
+    {
+     "name": "assists",
+     "displayName": "Assists",
+     "leaders": [
+      {
+       "athleteId": "4431941",
+       "athlete": "RayJ Dennis",
+       "value": "3"
+      }
+     ]
+    },
+    {
+     "name": "rebounds",
+     "displayName": "Rebounds",
+     "leaders": [
+      {
+       "athleteId": "4873201",
+       "athlete": "Asa Newell",
+       "value": "12"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "team": {
+    "id": "29",
+    "abbrev": "MEM",
+    "name": "Memphis Grizzlies",
+    "displayName": "Memphis Grizzlies"
+   },
+   "categories": [
+    {
+     "name": "points",
+     "displayName": "Points",
+     "leaders": [
+      {
+       "athleteId": "5105550",
+       "athlete": "GG Jackson",
+       "value": "14"
+      }
+     ]
+    },
+    {
+     "name": "assists",
+     "displayName": "Assists",
+     "leaders": [
+      {
+       "athleteId": "4065733",
+       "athlete": "Ty Jerome",
+       "value": "5"
+      }
+     ]
+    },
+    {
+     "name": "rebounds",
+     "displayName": "Rebounds",
+     "leaders": [
+      {
+       "athleteId": "4684806",
+       "athlete": "Taylor Hendricks",
+       "value": "6"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "plays": {
+  "count": 80,
+  "scoring": [
+   {
+    "id": "4018983887",
+    "period": 1,
+    "clock": "11:49",
+    "text": "Ty Jerome makes driving layup (Cameron Boozer assists)",
+    "scoringPlay": true,
+    "homeScore": "0",
+    "awayScore": "2",
+    "teamId": "29"
+   },
+   {
+    "id": "4018983889",
+    "period": 1,
+    "clock": "11:30",
+    "text": "Nickeil Alexander-Walker makes 25-foot three point jumper (Dyson Daniels assists)",
+    "scoringPlay": true,
+    "homeScore": "3",
+    "awayScore": "2",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838813",
+    "period": 1,
+    "clock": "11:03",
+    "text": "Jalen Johnson makes 9-foot pullup jump shot",
+    "scoringPlay": true,
+    "homeScore": "5",
+    "awayScore": "2",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838814",
+    "period": 1,
+    "clock": "10:50",
+    "text": "Jaylen Wells makes 25-foot three point jumper (Cedric Coward assists)",
+    "scoringPlay": true,
+    "homeScore": "5",
+    "awayScore": "5",
+    "teamId": "29"
+   },
+   {
+    "id": "40189838822",
+    "period": 1,
+    "clock": "10:05",
+    "text": "Nickeil Alexander-Walker makes 11-foot two point shot",
+    "scoringPlay": true,
+    "homeScore": "7",
+    "awayScore": "5",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838827",
+    "period": 1,
+    "clock": "9:44",
+    "text": "Dyson Daniels makes two point shot",
+    "scoringPlay": true,
+    "homeScore": "9",
+    "awayScore": "5",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838830",
+    "period": 1,
+    "clock": "9:26",
+    "text": "Nickeil Alexander-Walker makes running dunk",
+    "scoringPlay": true,
+    "homeScore": "11",
+    "awayScore": "5",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838839",
+    "period": 1,
+    "clock": "8:32",
+    "text": "Cameron Boozer makes 12-foot turnaround jump shot",
+    "scoringPlay": true,
+    "homeScore": "11",
+    "awayScore": "7",
+    "teamId": "29"
+   },
+   {
+    "id": "40189838840",
+    "period": 1,
+    "clock": "8:21",
+    "text": "Nickeil Alexander-Walker makes 7-foot driving floating jump shot (Onyeka Okongwu assists)",
+    "scoringPlay": true,
+    "homeScore": "13",
+    "awayScore": "7",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838844",
+    "period": 1,
+    "clock": "8:21",
+    "text": "Nickeil Alexander-Walker makes free throw 1 of 1",
+    "scoringPlay": true,
+    "homeScore": "14",
+    "awayScore": "7",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838846",
+    "period": 1,
+    "clock": "8:08",
+    "text": "Quinten Post makes 3-foot two point shot (Ty Jerome assists)",
+    "scoringPlay": true,
+    "homeScore": "14",
+    "awayScore": "9",
+    "teamId": "29"
+   },
+   {
+    "id": "40189838848",
+    "period": 1,
+    "clock": "7:54",
+    "text": "Kingston Flemings makes 25-foot three point jumper (Onyeka Okongwu assists)",
+    "scoringPlay": true,
+    "homeScore": "17",
+    "awayScore": "9",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838855",
+    "period": 1,
+    "clock": "7:18",
+    "text": "Onyeka Okongwu makes 25-foot three point jumper (Jalen Johnson assists)",
+    "scoringPlay": true,
+    "homeScore": "20",
+    "awayScore": "9",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838863",
+    "period": 1,
+    "clock": "6:49",
+    "text": "Ty Jerome makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "20",
+    "awayScore": "10",
+    "teamId": "29"
+   },
+   {
+    "id": "40189838864",
+    "period": 1,
+    "clock": "6:49",
+    "text": "Ty Jerome makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "20",
+    "awayScore": "11",
+    "teamId": "29"
+   },
+   {
+    "id": "40189838873",
+    "period": 1,
+    "clock": "6:09",
+    "text": "Ty Jerome makes 25-foot three pointer",
+    "scoringPlay": true,
+    "homeScore": "20",
+    "awayScore": "14",
+    "teamId": "29"
+   },
+   {
+    "id": "40189838874",
+    "period": 1,
+    "clock": "5:57",
+    "text": "Onyeka Okongwu makes alley oop dunk (Jalen Johnson assists)",
+    "scoringPlay": true,
+    "homeScore": "22",
+    "awayScore": "14",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838883",
+    "period": 1,
+    "clock": "5:28",
+    "text": "Cedric Coward makes driving layup",
+    "scoringPlay": true,
+    "homeScore": "22",
+    "awayScore": "16",
+    "teamId": "29"
+   },
+   {
+    "id": "40189838891",
+    "period": 1,
+    "clock": "4:56",
+    "text": "GG Jackson makes 25-foot three point jumper (Jerami Grant assists)",
+    "scoringPlay": true,
+    "homeScore": "22",
+    "awayScore": "19",
+    "teamId": "29"
+   },
+   {
+    "id": "40189838895",
+    "period": 1,
+    "clock": "4:42",
+    "text": "Jalen Johnson makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "23",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838896",
+    "period": 1,
+    "clock": "4:42",
+    "text": "Jalen Johnson makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388112",
+    "period": 1,
+    "clock": "3:44",
+    "text": "Jalen Johnson makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "25",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388113",
+    "period": 1,
+    "clock": "3:44",
+    "text": "Jalen Johnson makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "26",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388119",
+    "period": 1,
+    "clock": "3:28",
+    "text": "Dyson Daniels makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "27",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388120",
+    "period": 1,
+    "clock": "3:18",
+    "text": "Jerami Grant makes 24-foot three point jumper (Scotty Pippen Jr. assists)",
+    "scoringPlay": true,
+    "homeScore": "27",
+    "awayScore": "22",
+    "teamId": "29"
+   }
+  ],
+  "recent": [
+   {
+    "id": "40189838895",
+    "period": 1,
+    "clock": "4:42",
+    "text": "Jalen Johnson makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "23",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838896",
+    "period": 1,
+    "clock": "4:42",
+    "text": "Jalen Johnson makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "40189838898",
+    "period": 1,
+    "clock": "4:42",
+    "text": "Taylor Hendricks enters the game for Isaiah Stewart",
+    "scoringPlay": false,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "29"
+   },
+   {
+    "id": "40189838899",
+    "period": 1,
+    "clock": "4:27",
+    "text": "Jerami Grant misses 25-foot three point jumper",
+    "scoringPlay": false,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "29"
+   },
+   {
+    "id": "401898388100",
+    "period": 1,
+    "clock": "4:27",
+    "text": "Hawks defensive team rebound",
+    "scoringPlay": false,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388101",
+    "period": 1,
+    "clock": "4:26",
+    "text": "Cam Spencer loose ball foul",
+    "scoringPlay": false,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "29"
+   },
+   {
+    "id": "401898388104",
+    "period": 1,
+    "clock": "4:26",
+    "text": "Corey Kispert enters the game for Nickeil Alexander-Walker",
+    "scoringPlay": false,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388106",
+    "period": 1,
+    "clock": "4:03",
+    "text": "Dyson Daniels misses 25-foot three point jumper",
+    "scoringPlay": false,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388107",
+    "period": 1,
+    "clock": "4:03",
+    "text": "Taylor Hendricks defensive rebound",
+    "scoringPlay": false,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "29"
+   },
+   {
+    "id": "401898388108",
+    "period": 1,
+    "clock": "3:53",
+    "text": "GG Jackson misses 24-foot three point jumper",
+    "scoringPlay": false,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "29"
+   },
+   {
+    "id": "401898388109",
+    "period": 1,
+    "clock": "3:53",
+    "text": "Corey Kispert defensive rebound",
+    "scoringPlay": false,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388110",
+    "period": 1,
+    "clock": "3:44",
+    "text": "Taylor Hendricks shooting foul",
+    "scoringPlay": false,
+    "homeScore": "24",
+    "awayScore": "19",
+    "teamId": "29"
+   },
+   {
+    "id": "401898388112",
+    "period": 1,
+    "clock": "3:44",
+    "text": "Jalen Johnson makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "25",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388113",
+    "period": 1,
+    "clock": "3:44",
+    "text": "Jalen Johnson makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "26",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388114",
+    "period": 1,
+    "clock": "3:35",
+    "text": "Cam Spencer out of bounds bad pass turnover",
+    "scoringPlay": false,
+    "homeScore": "26",
+    "awayScore": "19",
+    "teamId": "29"
+   },
+   {
+    "id": "401898388115",
+    "period": 1,
+    "clock": "3:28",
+    "text": "Scotty Pippen Jr. personal foul",
+    "scoringPlay": false,
+    "homeScore": "26",
+    "awayScore": "19",
+    "teamId": "29"
+   },
+   {
+    "id": "401898388117",
+    "period": 1,
+    "clock": "3:28",
+    "text": "Dyson Daniels misses free throw 1 of 2",
+    "scoringPlay": false,
+    "homeScore": "26",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388118",
+    "period": 1,
+    "clock": "3:28",
+    "text": "Hawks offensive team rebound",
+    "scoringPlay": false,
+    "homeScore": "26",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388119",
+    "period": 1,
+    "clock": "3:28",
+    "text": "Dyson Daniels makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "27",
+    "awayScore": "19",
+    "teamId": "1"
+   },
+   {
+    "id": "401898388120",
+    "period": 1,
+    "clock": "3:18",
+    "text": "Jerami Grant makes 24-foot three point jumper (Scotty Pippen Jr. assists)",
+    "scoringPlay": true,
+    "homeScore": "27",
+    "awayScore": "22",
+    "teamId": "29"
+   }
+  ]
+ },
+ "winProbability": {
+  "count": 80,
+  "samples": [
+   {
+    "playId": "4018983884",
+    "homeWinPercentage": 0.49
+   },
+   {
+    "playId": "40189838812",
+    "homeWinPercentage": 0.542
+   },
+   {
+    "playId": "40189838817",
+    "homeWinPercentage": 0.489
+   },
+   {
+    "playId": "40189838822",
+    "homeWinPercentage": 0.538
+   },
+   {
+    "playId": "40189838828",
+    "homeWinPercentage": 0.614
+   },
+   {
+    "playId": "40189838833",
+    "homeWinPercentage": 0.646
+   },
+   {
+    "playId": "40189838838",
+    "homeWinPercentage": 0.64
+   },
+   {
+    "playId": "40189838844",
+    "homeWinPercentage": 0.665
+   },
+   {
+    "playId": "40189838852",
+    "homeWinPercentage": 0.689
+   },
+   {
+    "playId": "40189838857",
+    "homeWinPercentage": 0.772
+   },
+   {
+    "playId": "40189838863",
+    "homeWinPercentage": 0.719
+   },
+   {
+    "playId": "40189838870",
+    "homeWinPercentage": 0.737
+   },
+   {
+    "playId": "40189838874",
+    "homeWinPercentage": 0.691
+   },
+   {
+    "playId": "40189838882",
+    "homeWinPercentage": 0.692
+   },
+   {
+    "playId": "40189838889",
+    "homeWinPercentage": 0.651
+   },
+   {
+    "playId": "40189838895",
+    "homeWinPercentage": 0.64
+   },
+   {
+    "playId": "401898388100",
+    "homeWinPercentage": 0.647
+   },
+   {
+    "playId": "401898388107",
+    "homeWinPercentage": 0.619
+   },
+   {
+    "playId": "401898388112",
+    "homeWinPercentage": 0.692
+   },
+   {
+    "playId": "401898388117",
+    "homeWinPercentage": 0.717
+   },
+   {
+    "playId": "401898388120",
+    "homeWinPercentage": 0.646
+   }
+  ]
+ },
+ "gameInfo": {
+  "venue": {
+   "id": "1827",
+   "fullName": "State Farm Arena",
+   "address": {
+    "city": "Atlanta",
+    "state": "GA"
+   },
+   "grass": false
+  },
+  "attendance": 10923,
+  "officials": [
+   {
+    "fullName": "Kevin Cutler",
+    "displayName": "Kevin Cutler",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "40"
+    },
+    "order": 1
+   },
+   {
+    "fullName": "Michael Smith",
+    "displayName": "Michael Smith",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "40"
+    },
+    "order": 2
+   },
+   {
+    "fullName": "Nate Green",
+    "displayName": "Nate Green",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "40"
+    },
+    "order": 3
+   }
+  ]
+ },
+ "standings": {
+  "fullViewLink": {
+   "text": "Full Standings"
+  },
+  "header": "2026-27 Standings",
+  "groups": [
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "Memphis",
+       "id": "29",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 1,
+         "displayValue": "W1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 1,
+         "displayValue": "1.000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "New Orleans",
+       "id": "3",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0.5,
+         "displayValue": "0.5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0,
+         "displayValue": ".000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        }
+       ]
+      },
+      {
+       "team": "Dallas",
+       "id": "6",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0.5,
+         "displayValue": "0.5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0,
+         "displayValue": ".000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        }
+       ]
+      },
+      {
+       "team": "Houston",
+       "id": "10",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0.5,
+         "displayValue": "0.5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0,
+         "displayValue": ".000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        }
+       ]
+      },
+      {
+       "team": "San Antonio",
+       "id": "24",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0.5,
+         "displayValue": "0.5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0,
+         "displayValue": ".000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2026-27 Southwest Standings",
+    "conferenceHeader": "Western Conference",
+    "divisionHeader": "Southwest"
+   },
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "Miami",
+       "id": "14",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 1,
+         "displayValue": "W1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 1,
+         "displayValue": "1.000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "Orlando",
+       "id": "19",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0.5,
+         "displayValue": "0.5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0,
+         "displayValue": ".000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        }
+       ]
+      },
+      {
+       "team": "Washington",
+       "id": "27",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0.5,
+         "displayValue": "0.5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0,
+         "displayValue": ".000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        }
+       ]
+      },
+      {
+       "team": "Charlotte",
+       "id": "30",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0.5,
+         "displayValue": "0.5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0,
+         "displayValue": ".000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        }
+       ]
+      },
+      {
+       "team": "Atlanta",
+       "id": "1",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": -1,
+         "displayValue": "L1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0,
+         "displayValue": ".000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2026-27 Southeast Standings",
+    "conferenceHeader": "Eastern Conference",
+    "divisionHeader": "Southeast"
+   }
+  ],
+  "isSameConference": false
+ },
+ "odds": {
+  "markets": [
+   {
+    "provider": "Draft Kings",
+    "providerId": "100",
+    "threeWay": false,
+    "homeMoneyLine": -166,
+    "awayMoneyLine": 140,
+    "drawMoneyLine": null,
+    "homeImpliedProb": 0.6241,
+    "awayImpliedProb": 0.4167,
+    "drawImpliedProb": null,
+    "homeNoVigProb": 0.5996,
+    "awayNoVigProb": 0.4004,
+    "drawNoVigProb": null,
+    "overround": 0.0407,
+    "noVigReason": null,
+    "homeSpread": -3.5,
+    "total": 232.5
+   }
+  ],
+  "consensus": {
+   "providerCount": 1,
+   "providers": [
+    "Draft Kings"
+   ],
+   "homeNoVigProb": 0.5996,
+   "awayNoVigProb": 0.4004,
+   "drawNoVigProb": null,
+   "homeSpread": -3.5,
+   "total": 232.5,
+   "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+   "reason": null
+  },
+  "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+  "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+ }
+}

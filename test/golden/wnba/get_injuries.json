@@ -1,0 +1,125 @@
+{
+ "timestamp": "2026-10-06T14:09:53Z",
+ "season": {
+  "year": 2026,
+  "type": 3,
+  "name": "Postseason",
+  "displayName": "2026"
+ },
+ "injuries": [
+  {
+   "team": "Atlanta Dream",
+   "teamId": "20",
+   "injuries": [
+    {
+     "player": "Allisha Gray",
+     "position": "G",
+     "team": "ATL",
+     "status": "Out",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-04T18:52Z",
+     "note": "Gray (hand) exited to the locker room in the second quarter of Sunday's Game 1 against the Liberty and will not return, Alexa Philippou of …"
+    },
+    {
+     "player": "Matilde Villa",
+     "position": "G",
+     "team": "ATL",
+     "status": "Out",
+     "returnDate": "2027-05-01",
+     "date": "2026-09-23T22:50Z",
+     "note": "Villa (coach's decision) has been ruled out for Wednesday's game against New York."
+    },
+    {
+     "player": "Brionna Jones",
+     "position": "F",
+     "team": "ATL",
+     "status": "Out",
+     "returnDate": "2027-05-01",
+     "date": "2026-09-17T16:08Z",
+     "note": "Jones will miss the remainder of the season after sustaining a left leg injury against the Sun on Aug. 13, Annie Costabile of The Athletic …"
+    }
+   ]
+  },
+  {
+   "team": "Golden State Valkyries",
+   "teamId": "129689",
+   "injuries": [
+    {
+     "player": "Iliana Rupert",
+     "position": "C",
+     "team": "GS",
+     "status": "Out",
+     "returnDate": "2027-05-01",
+     "date": "2026-05-07T15:18Z",
+     "note": "Rupert is pregnant, and the Valkyries have filed for a replacement contract ahead of the 2026 season, Alexa Philippou of ESPN.com reports T…"
+    }
+   ]
+  },
+  {
+   "team": "Las Vegas Aces",
+   "teamId": "17",
+   "injuries": [
+    {
+     "player": "Jewell Loyd",
+     "position": "G",
+     "team": "LV",
+     "status": "Out",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-04T21:42Z",
+     "note": "Loyd suffered a left leg injury in the third quarter of Sunday's Game 1 against the Valkyries and will not return, WNBA reporter Kareem Cop…"
+    },
+    {
+     "player": "Stephanie Talbot",
+     "position": "F",
+     "team": "LV",
+     "status": "Out",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-04T17:50Z",
+     "note": "Talbot (leg) has been ruled out for Game 1 of the semifinals against the Valkyries on Sunday."
+    },
+    {
+     "player": "Dana Evans",
+     "position": "G",
+     "team": "LV",
+     "status": "Out",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-04T00:20Z",
+     "note": "Evans (knee) is out for Game 1 of the semifinals against the Valkyries on Sunday."
+    },
+    {
+     "player": "NaLyssa Smith",
+     "position": "F",
+     "team": "LV",
+     "status": "Out",
+     "returnDate": "2027-05-01",
+     "date": "2026-08-27T19:29Z",
+     "note": "The Aces announced Thursday that Smith will be sidelined for the rest of the season after suffering a non-contact left leg injury during Su…"
+    }
+   ]
+  },
+  {
+   "team": "New York Liberty",
+   "teamId": "9",
+   "injuries": [
+    {
+     "player": "Satou Sabally",
+     "position": "F",
+     "team": "NY",
+     "status": "Out",
+     "returnDate": "2027-05-01",
+     "date": "2026-10-06T14:00Z",
+     "note": "out"
+    },
+    {
+     "player": "Elizabeth Balogun",
+     "position": "G",
+     "team": "NY",
+     "status": "Out",
+     "returnDate": "2027-05-01",
+     "date": "2026-09-22T21:05Z",
+     "note": "Balogun (not with team) is out for Wednesday's game against the Dream."
+    }
+   ]
+  }
+ ]
+}

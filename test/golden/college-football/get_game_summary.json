@@ -1,0 +1,2088 @@
+{
+ "game": {
+  "id": "401856705",
+  "date": "2026-10-03T16:45Z",
+  "status": {
+   "state": "post",
+   "detail": "Final"
+  },
+  "competitors": [
+   {
+    "homeAway": "home",
+    "winner": true,
+    "team": {
+     "id": "61",
+     "abbrev": "UGA",
+     "name": "Bulldogs",
+     "displayName": "Georgia Bulldogs"
+    },
+    "score": "38",
+    "linescores": [
+     "7",
+     "14",
+     "7",
+     "10"
+    ]
+   },
+   {
+    "homeAway": "away",
+    "winner": false,
+    "team": {
+     "id": "238",
+     "abbrev": "VAN",
+     "name": "Commodores",
+     "displayName": "Vanderbilt Commodores"
+    },
+    "score": "14",
+    "linescores": [
+     "7",
+     "7",
+     "0",
+     "0"
+    ]
+   }
+  ]
+ },
+ "boxscore": {
+  "teams": [
+   {
+    "team": {
+     "id": "238",
+     "abbrev": "VAN",
+     "name": "Commodores",
+     "displayName": "Vanderbilt Commodores"
+    },
+    "stats": [
+     {
+      "label": "1st Downs",
+      "displayValue": "13"
+     },
+     {
+      "label": "3rd down efficiency",
+      "displayValue": "5-12"
+     },
+     {
+      "label": "4th down efficiency",
+      "displayValue": "1-2"
+     },
+     {
+      "label": "Total Yards",
+      "displayValue": "293"
+     },
+     {
+      "label": "Passing",
+      "displayValue": "208"
+     },
+     {
+      "label": "Comp/Att",
+      "displayValue": "14/25"
+     },
+     {
+      "label": "Yards per pass",
+      "displayValue": "8.3"
+     },
+     {
+      "label": "Rushing",
+      "displayValue": "85"
+     },
+     {
+      "label": "Rushing Attempts",
+      "displayValue": "26"
+     },
+     {
+      "label": "Yards per rush",
+      "displayValue": "3.3"
+     },
+     {
+      "label": "Penalties",
+      "displayValue": "9-60"
+     },
+     {
+      "label": "Turnovers",
+      "displayValue": "1"
+     },
+     {
+      "label": "Fumbles lost",
+      "displayValue": "0"
+     },
+     {
+      "label": "Interceptions thrown",
+      "displayValue": "1"
+     },
+     {
+      "label": "Possession",
+      "displayValue": "27:12"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "61",
+     "abbrev": "UGA",
+     "name": "Bulldogs",
+     "displayName": "Georgia Bulldogs"
+    },
+    "stats": [
+     {
+      "label": "1st Downs",
+      "displayValue": "26"
+     },
+     {
+      "label": "3rd down efficiency",
+      "displayValue": "7-10"
+     },
+     {
+      "label": "4th down efficiency",
+      "displayValue": "0-0"
+     },
+     {
+      "label": "Total Yards",
+      "displayValue": "471"
+     },
+     {
+      "label": "Passing",
+      "displayValue": "295"
+     },
+     {
+      "label": "Comp/Att",
+      "displayValue": "25/32"
+     },
+     {
+      "label": "Yards per pass",
+      "displayValue": "9.2"
+     },
+     {
+      "label": "Rushing",
+      "displayValue": "176"
+     },
+     {
+      "label": "Rushing Attempts",
+      "displayValue": "34"
+     },
+     {
+      "label": "Yards per rush",
+      "displayValue": "5.2"
+     },
+     {
+      "label": "Penalties",
+      "displayValue": "4-40"
+     },
+     {
+      "label": "Turnovers",
+      "displayValue": "0"
+     },
+     {
+      "label": "Fumbles lost",
+      "displayValue": "0"
+     },
+     {
+      "label": "Interceptions thrown",
+      "displayValue": "0"
+     },
+     {
+      "label": "Possession",
+      "displayValue": "32:48"
+     }
+    ]
+   }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "238",
+     "abbrev": "VAN",
+     "name": "Commodores",
+     "displayName": "Vanderbilt Commodores"
+    },
+    "categories": [
+     {
+      "name": "passing",
+      "athletes": [
+       {
+        "id": "5121691",
+        "name": "Blaze Berlowitz",
+        "jersey": "1",
+        "stats": {
+         "C/ATT": "12/23",
+         "YDS": "190",
+         "AVG": "8.3",
+         "TD": "1",
+         "INT": "1",
+         "QBR": "81.2"
+        }
+       },
+       {
+        "id": "5126473",
+        "name": "Whit Muschamp",
+        "jersey": "10",
+        "stats": {
+         "C/ATT": "2/2",
+         "YDS": "18",
+         "AVG": "9.0",
+         "TD": "0",
+         "INT": "0",
+         "QBR": "--"
+        }
+       }
+      ],
+      "totals": {
+       "C/ATT": "14/25",
+       "YDS": "208",
+       "AVG": "8.3",
+       "TD": "1",
+       "INT": "1",
+       "QBR": "--"
+      }
+     },
+     {
+      "name": "rushing",
+      "athletes": [
+       {
+        "id": "5121691",
+        "name": "Blaze Berlowitz",
+        "jersey": "1",
+        "stats": {
+         "CAR": "8",
+         "YDS": "37",
+         "AVG": "4.6",
+         "TD": "0",
+         "LONG": "16"
+        }
+       },
+       {
+        "id": "5030333",
+        "name": "Sedrick Alexander",
+        "jersey": "28",
+        "stats": {
+         "CAR": "8",
+         "YDS": "35",
+         "AVG": "4.4",
+         "TD": "1",
+         "LONG": "11"
+        }
+       },
+       {
+        "id": "4912302",
+        "name": "Makhilyn Young",
+        "jersey": "22",
+        "stats": {
+         "CAR": "4",
+         "YDS": "10",
+         "AVG": "2.5",
+         "TD": "0",
+         "LONG": "4"
+        }
+       },
+       {
+        "id": "5218655",
+        "name": "Jamezell Lassiter",
+        "jersey": "3",
+        "stats": {
+         "CAR": "1",
+         "YDS": "4",
+         "AVG": "4.0",
+         "TD": "0",
+         "LONG": "4"
+        }
+       },
+       {
+        "id": "5209910",
+        "name": "Jack Elliott",
+        "jersey": "11",
+        "stats": {
+         "CAR": "1",
+         "YDS": "1",
+         "AVG": "1.0",
+         "TD": "0",
+         "LONG": "1"
+        }
+       },
+       {
+        "id": "5245128",
+        "name": "Evan Hampton",
+        "jersey": "23",
+        "stats": {
+         "CAR": "2",
+         "YDS": "1",
+         "AVG": "0.5",
+         "TD": "0",
+         "LONG": "5"
+        }
+       },
+       {
+        "id": "5126473",
+        "name": "Whit Muschamp",
+        "jersey": "10",
+        "stats": {
+         "CAR": "2",
+         "YDS": "-3",
+         "AVG": "-1.5",
+         "TD": "0",
+         "LONG": "0"
+        }
+       }
+      ],
+      "totals": {
+       "CAR": "26",
+       "YDS": "85",
+       "AVG": "3.3",
+       "TD": "1",
+       "LONG": "16"
+      }
+     },
+     {
+      "name": "receiving",
+      "athletes": [
+       {
+        "id": "5078165",
+        "name": "Junior Sherrill",
+        "jersey": "0",
+        "stats": {
+         "REC": "7",
+         "YDS": "107",
+         "AVG": "15.3",
+         "TD": "1",
+         "LONG": "60"
+        }
+       },
+       {
+        "id": "5295920",
+        "name": "Ja'Cory Thomas",
+        "jersey": "6",
+        "stats": {
+         "REC": "2",
+         "YDS": "43",
+         "AVG": "21.5",
+         "TD": "0",
+         "LONG": "27"
+        }
+       },
+       {
+        "id": "4912302",
+        "name": "Makhilyn Young",
+        "jersey": "22",
+        "stats": {
+         "REC": "2",
+         "YDS": "18",
+         "AVG": "9.0",
+         "TD": "0",
+         "LONG": "14"
+        }
+       },
+       {
+        "id": "5149910",
+        "name": "Tristen Brown",
+        "jersey": "5",
+        "stats": {
+         "REC": "1",
+         "YDS": "17",
+         "AVG": "17.0",
+         "TD": "0",
+         "LONG": "17"
+        }
+       },
+       {
+        "id": "4799991",
+        "name": "Cole Spence",
+        "jersey": "16",
+        "stats": {
+         "REC": "1",
+         "YDS": "15",
+         "AVG": "15.0",
+         "TD": "0",
+         "LONG": "15"
+        }
+       },
+       {
+        "id": "5126473",
+        "name": "Whit Muschamp",
+        "jersey": "10",
+        "stats": {
+         "REC": "1",
+         "YDS": "8",
+         "AVG": "8.0",
+         "TD": "0",
+         "LONG": "8"
+        }
+       }
+      ],
+      "totals": {
+       "REC": "14",
+       "YDS": "208",
+       "AVG": "14.9",
+       "TD": "1",
+       "LONG": "60"
+      }
+     },
+     {
+      "name": "fumbles",
+      "athletes": [],
+      "totals": {}
+     },
+     {
+      "name": "defensive",
+      "athletes": [
+       {
+        "id": "5079471",
+        "name": "CJ Heard",
+        "jersey": "8",
+        "stats": {
+         "TOT": "9",
+         "SOLO": "8",
+         "SACKS": "1",
+         "TFL": "1",
+         "PD": "1",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4837351",
+        "name": "Bryce Cowan",
+        "jersey": "22",
+        "stats": {
+         "TOT": "6",
+         "SOLO": "5",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5089321",
+        "name": "Bryan Longwell",
+        "jersey": "11",
+        "stats": {
+         "TOT": "6",
+         "SOLO": "5",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5281576",
+        "name": "Mason Lewis",
+        "jersey": "25",
+        "stats": {
+         "TOT": "4",
+         "SOLO": "4",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5089173",
+        "name": "Nick Rinaldi",
+        "jersey": "24",
+        "stats": {
+         "TOT": "4",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5215250",
+        "name": "Cayden Daniels",
+        "jersey": "26",
+        "stats": {
+         "TOT": "4",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5226567",
+        "name": "Talan Carter",
+        "jersey": "99",
+        "stats": {
+         "TOT": "4",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4870744",
+        "name": "Martel Hight",
+        "jersey": "4",
+        "stats": {
+         "TOT": "3",
+         "SOLO": "3",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5216544",
+        "name": "Davin Chandler",
+        "jersey": "21",
+        "stats": {
+         "TOT": "3",
+         "SOLO": "3",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4837384",
+        "name": "Bradley Mann",
+        "jersey": "94",
+        "stats": {
+         "TOT": "3",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5079544",
+        "name": "Ricardo Jones",
+        "jersey": "7",
+        "stats": {
+         "TOT": "3",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4870911",
+        "name": "Jordan Matthews",
+        "jersey": "6",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5139855",
+        "name": "Glenn Seabrooks III",
+        "jersey": "53",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4911912",
+        "name": "Issa Ouattara",
+        "jersey": "5",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5078165",
+        "name": "Junior Sherrill",
+        "jersey": "0",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5080692",
+        "name": "Edwin Kolenge",
+        "jersey": "17",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5085312",
+        "name": "Jalen Gilbert",
+        "jersey": "9",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5294064",
+        "name": "Austin Howard",
+        "jersey": "30",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5146882",
+        "name": "Mason Carter",
+        "jersey": "32",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5153504",
+        "name": "Jaylon Stone",
+        "jersey": "92",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       }
+      ],
+      "totals": {
+       "TOT": "60",
+       "SOLO": "46",
+       "SACKS": "1",
+       "TFL": "1",
+       "PD": "2",
+       "QB HUR": "0",
+       "TD": "0"
+      }
+     },
+     {
+      "name": "interceptions",
+      "athletes": [],
+      "totals": {}
+     },
+     {
+      "name": "kickReturns",
+      "athletes": [],
+      "totals": {}
+     },
+     {
+      "name": "puntReturns",
+      "athletes": [],
+      "totals": {}
+     },
+     {
+      "name": "kicking",
+      "athletes": [
+       {
+        "id": "5087247",
+        "name": "Brock Taylor",
+        "jersey": "88",
+        "stats": {
+         "FG": "0/1",
+         "PCT": "0.0",
+         "LONG": "0",
+         "XP": "2/2",
+         "PTS": "2"
+        }
+       }
+      ],
+      "totals": {
+       "FG": "0/1",
+       "PCT": "0.0",
+       "LONG": "0",
+       "XP": "2/2",
+       "PTS": "2"
+      }
+     },
+     {
+      "name": "punting",
+      "athletes": [
+       {
+        "id": "5088418",
+        "name": "Tyler Ebel",
+        "jersey": "37",
+        "stats": {
+         "NO": "4",
+         "YDS": "157",
+         "AVG": "39.3",
+         "TB": "1",
+         "In 20": "1",
+         "LONG": "61"
+        }
+       }
+      ],
+      "totals": {
+       "NO": "4",
+       "YDS": "157",
+       "AVG": "39.3",
+       "TB": "1",
+       "In 20": "1",
+       "LONG": "61"
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "61",
+     "abbrev": "UGA",
+     "name": "Bulldogs",
+     "displayName": "Georgia Bulldogs"
+    },
+    "categories": [
+     {
+      "name": "passing",
+      "athletes": [
+       {
+        "id": "4685578",
+        "name": "Gunner Stockton",
+        "jersey": "14",
+        "stats": {
+         "C/ATT": "25/32",
+         "YDS": "295",
+         "AVG": "9.2",
+         "TD": "3",
+         "INT": "0",
+         "QBR": "86.7"
+        }
+       }
+      ],
+      "totals": {
+       "C/ATT": "25/32",
+       "YDS": "295",
+       "AVG": "9.2",
+       "TD": "3",
+       "INT": "0",
+       "QBR": "--"
+      }
+     },
+     {
+      "name": "rushing",
+      "athletes": [
+       {
+        "id": "5172095",
+        "name": "Bo Walker",
+        "jersey": "24",
+        "stats": {
+         "CAR": "5",
+         "YDS": "71",
+         "AVG": "14.2",
+         "TD": "0",
+         "LONG": "59"
+        }
+       },
+       {
+        "id": "5079335",
+        "name": "Chauncey Bowens",
+        "jersey": "5",
+        "stats": {
+         "CAR": "10",
+         "YDS": "31",
+         "AVG": "3.1",
+         "TD": "1",
+         "LONG": "9"
+        }
+       },
+       {
+        "id": "5079561",
+        "name": "Dwight Phillips Jr.",
+        "jersey": "20",
+        "stats": {
+         "CAR": "5",
+         "YDS": "27",
+         "AVG": "5.4",
+         "TD": "0",
+         "LONG": "14"
+        }
+       },
+       {
+        "id": "4685578",
+        "name": "Gunner Stockton",
+        "jersey": "14",
+        "stats": {
+         "CAR": "7",
+         "YDS": "22",
+         "AVG": "3.1",
+         "TD": "0",
+         "LONG": "9"
+        }
+       },
+       {
+        "id": "5078453",
+        "name": "London Humphreys",
+        "jersey": "16",
+        "stats": {
+         "CAR": "1",
+         "YDS": "11",
+         "AVG": "11.0",
+         "TD": "0",
+         "LONG": "11"
+        }
+       },
+       {
+        "id": "5084047",
+        "name": "Nate Frazier",
+        "jersey": "3",
+        "stats": {
+         "CAR": "2",
+         "YDS": "9",
+         "AVG": "4.5",
+         "TD": "0",
+         "LONG": "5"
+        }
+       },
+       {
+        "id": "5079679",
+        "name": "Ryan Puglisi",
+        "jersey": "12",
+        "stats": {
+         "CAR": "1",
+         "YDS": "6",
+         "AVG": "6.0",
+         "TD": "0",
+         "LONG": "6"
+        }
+       },
+       {
+        "id": "5218582",
+        "name": "Jaden Reddell",
+        "jersey": "23",
+        "stats": {
+         "CAR": "1",
+         "YDS": "1",
+         "AVG": "1.0",
+         "TD": "1",
+         "LONG": "1"
+        }
+       },
+       {
+        "id": "-6047",
+        "name": " Team",
+        "stats": {
+         "CAR": "2",
+         "YDS": "-2",
+         "AVG": "-1.0",
+         "TD": "0",
+         "LONG": "0"
+        }
+       }
+      ],
+      "totals": {
+       "CAR": "34",
+       "YDS": "176",
+       "AVG": "5.2",
+       "TD": "2",
+       "LONG": "59"
+      }
+     },
+     {
+      "name": "receiving",
+      "athletes": [
+       {
+        "id": "5079561",
+        "name": "Dwight Phillips Jr.",
+        "jersey": "20",
+        "stats": {
+         "REC": "5",
+         "YDS": "75",
+         "AVG": "15.0",
+         "TD": "1",
+         "LONG": "30"
+        }
+       },
+       {
+        "id": "5215017",
+        "name": "Landon Roldan",
+        "jersey": "8",
+        "stats": {
+         "REC": "2",
+         "YDS": "57",
+         "AVG": "28.5",
+         "TD": "1",
+         "LONG": "55"
+        }
+       },
+       {
+        "id": "4870874",
+        "name": "Lawson Luckie",
+        "jersey": "7",
+        "stats": {
+         "REC": "1",
+         "YDS": "43",
+         "AVG": "43.0",
+         "TD": "0",
+         "LONG": "43"
+        }
+       },
+       {
+        "id": "5149473",
+        "name": "Thomas Blackshear",
+        "jersey": "2",
+        "stats": {
+         "REC": "3",
+         "YDS": "33",
+         "AVG": "11.0",
+         "TD": "0",
+         "LONG": "16"
+        }
+       },
+       {
+        "id": "5141756",
+        "name": "Elyiss Williams",
+        "jersey": "10",
+        "stats": {
+         "REC": "2",
+         "YDS": "20",
+         "AVG": "10.0",
+         "TD": "1",
+         "LONG": "19"
+        }
+       },
+       {
+        "id": "5078453",
+        "name": "London Humphreys",
+        "jersey": "16",
+        "stats": {
+         "REC": "3",
+         "YDS": "19",
+         "AVG": "6.3",
+         "TD": "0",
+         "LONG": "11"
+        }
+       },
+       {
+        "id": "5079335",
+        "name": "Chauncey Bowens",
+        "jersey": "5",
+        "stats": {
+         "REC": "3",
+         "YDS": "18",
+         "AVG": "6.0",
+         "TD": "0",
+         "LONG": "8"
+        }
+       },
+       {
+        "id": "5218582",
+        "name": "Jaden Reddell",
+        "jersey": "23",
+        "stats": {
+         "REC": "2",
+         "YDS": "17",
+         "AVG": "8.5",
+         "TD": "0",
+         "LONG": "11"
+        }
+       },
+       {
+        "id": "5141671",
+        "name": "Talyn Taylor",
+        "jersey": "1",
+        "stats": {
+         "REC": "3",
+         "YDS": "7",
+         "AVG": "2.3",
+         "TD": "0",
+         "LONG": "3"
+        }
+       },
+       {
+        "id": "5263766",
+        "name": "Craig Dandridge",
+        "jersey": "81",
+        "stats": {
+         "REC": "1",
+         "YDS": "6",
+         "AVG": "6.0",
+         "TD": "0",
+         "LONG": "6"
+        }
+       }
+      ],
+      "totals": {
+       "REC": "25",
+       "YDS": "295",
+       "AVG": "11.8",
+       "TD": "3",
+       "LONG": "55"
+      }
+     },
+     {
+      "name": "fumbles",
+      "athletes": [],
+      "totals": {}
+     },
+     {
+      "name": "defensive",
+      "athletes": [
+       {
+        "id": "5079334",
+        "name": "KJ Bolden",
+        "jersey": "4",
+        "stats": {
+         "TOT": "7",
+         "SOLO": "7",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4871074",
+        "name": "Raylen Wilson",
+        "jersey": "5",
+        "stats": {
+         "TOT": "7",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0.5",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5142602",
+        "name": "Rasean Dinkins",
+        "jersey": "14",
+        "stats": {
+         "TOT": "5",
+         "SOLO": "4",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5145410",
+        "name": "Chris Cole",
+        "jersey": "9",
+        "stats": {
+         "TOT": "4",
+         "SOLO": "3",
+         "SACKS": "0",
+         "TFL": "2",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4870779",
+        "name": "Jordan Hall",
+        "jersey": "44",
+        "stats": {
+         "TOT": "3",
+         "SOLO": "3",
+         "SACKS": "0",
+         "TFL": "1",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5079767",
+        "name": "Justin Williams",
+        "jersey": "19",
+        "stats": {
+         "TOT": "3",
+         "SOLO": "1",
+         "SACKS": "1",
+         "TFL": "1",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5127726",
+        "name": "Braylon Conley",
+        "jersey": "24",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5078250",
+        "name": "Khalil Barnes",
+        "jersey": "7",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0.5",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5122447",
+        "name": "Demello Jones",
+        "jersey": "8",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4870716",
+        "name": "Gabe Harris Jr.",
+        "jersey": "0",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "1",
+         "TFL": "1",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5079698",
+        "name": "Ellis Robinson IV",
+        "jersey": "1",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5141464",
+        "name": "Elijah Griffin",
+        "jersey": "90",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5146897",
+        "name": "Quintavius Johnson",
+        "jersey": "3",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5212631",
+        "name": "Chase Linton",
+        "jersey": "85",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5264957",
+        "name": "Valdin Sone",
+        "jersey": "52",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HUR": "0",
+         "TD": "0"
+        }
+       }
+      ],
+      "totals": {
+       "TOT": "41",
+       "SOLO": "25",
+       "SACKS": "2",
+       "TFL": "6",
+       "PD": "2",
+       "QB HUR": "0",
+       "TD": "0"
+      }
+     },
+     {
+      "name": "interceptions",
+      "athletes": [
+       {
+        "id": "5079698",
+        "name": "Ellis Robinson IV",
+        "jersey": "1",
+        "stats": {
+         "INT": "1",
+         "YDS": "0",
+         "TD": "0"
+        }
+       }
+      ],
+      "totals": {
+       "INT": "1",
+       "YDS": "0",
+       "TD": "0"
+      }
+     },
+     {
+      "name": "kickReturns",
+      "athletes": [],
+      "totals": {}
+     },
+     {
+      "name": "puntReturns",
+      "athletes": [],
+      "totals": {}
+     },
+     {
+      "name": "kicking",
+      "athletes": [
+       {
+        "id": "5077226",
+        "name": "Peyton Woodring",
+        "jersey": "91",
+        "stats": {
+         "FG": "1/1",
+         "PCT": "100.0",
+         "LONG": "39",
+         "XP": "5/5",
+         "PTS": "8"
+        }
+       }
+      ],
+      "totals": {
+       "FG": "1/1",
+       "PCT": "100.0",
+       "LONG": "39",
+       "XP": "5/5",
+       "PTS": "8"
+      }
+     },
+     {
+      "name": "punting",
+      "athletes": [
+       {
+        "id": "5145507",
+        "name": "Drew Miller",
+        "jersey": "90",
+        "stats": {
+         "NO": "2",
+         "YDS": "88",
+         "AVG": "44.0",
+         "TB": "0",
+         "In 20": "1",
+         "LONG": "48"
+        }
+       }
+      ],
+      "totals": {
+       "NO": "2",
+       "YDS": "88",
+       "AVG": "44.0",
+       "TB": "0",
+       "In 20": "1",
+       "LONG": "48"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "leaders": [
+  {
+   "team": {
+    "id": "61",
+    "abbrev": "UGA",
+    "name": "Georgia Bulldogs",
+    "displayName": "Georgia Bulldogs"
+   },
+   "categories": [
+    {
+     "name": "passingYards",
+     "displayName": "Passing Yards",
+     "leaders": [
+      {
+       "athleteId": "4685578",
+       "athlete": "Gunner Stockton",
+       "value": "25/32, 295 YDS, 3 TD"
+      }
+     ]
+    },
+    {
+     "name": "rushingYards",
+     "displayName": "Rushing Yards",
+     "leaders": [
+      {
+       "athleteId": "5172095",
+       "athlete": "Bo Walker",
+       "value": "5 CAR, 71 YDS"
+      }
+     ]
+    },
+    {
+     "name": "receivingYards",
+     "displayName": "Receiving Yards",
+     "leaders": [
+      {
+       "athleteId": "5079561",
+       "athlete": "Dwight Phillips Jr.",
+       "value": "5 REC, 75 YDS, 1 TD"
+      }
+     ]
+    },
+    {
+     "name": "sacks",
+     "displayName": "Sacks",
+     "leaders": [
+      {
+       "athleteId": "4870716",
+       "athlete": "Gabe Harris Jr.",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "name": "totalTackles",
+     "displayName": "Tackles",
+     "leaders": [
+      {
+       "athleteId": "4871074",
+       "athlete": "Raylen Wilson",
+       "value": "7"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "team": {
+    "id": "238",
+    "abbrev": "VAN",
+    "name": "Vanderbilt Commodores",
+    "displayName": "Vanderbilt Commodores"
+   },
+   "categories": [
+    {
+     "name": "passingYards",
+     "displayName": "Passing Yards",
+     "leaders": [
+      {
+       "athleteId": "5121691",
+       "athlete": "Blaze Berlowitz",
+       "value": "12/23, 190 YDS, 1 TD, 1 INT"
+      }
+     ]
+    },
+    {
+     "name": "rushingYards",
+     "displayName": "Rushing Yards",
+     "leaders": [
+      {
+       "athleteId": "5121691",
+       "athlete": "Blaze Berlowitz",
+       "value": "8 CAR, 37 YDS"
+      }
+     ]
+    },
+    {
+     "name": "receivingYards",
+     "displayName": "Receiving Yards",
+     "leaders": [
+      {
+       "athleteId": "5078165",
+       "athlete": "Junior Sherrill",
+       "value": "7 REC, 107 YDS, 1 TD"
+      }
+     ]
+    },
+    {
+     "name": "sacks",
+     "displayName": "Sacks",
+     "leaders": [
+      {
+       "athleteId": "5079471",
+       "athlete": "CJ Heard",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "name": "totalTackles",
+     "displayName": "Tackles",
+     "leaders": [
+      {
+       "athleteId": "5079471",
+       "athlete": "CJ Heard",
+       "value": "9"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "winProbability": {
+  "count": 80,
+  "samples": [
+   {
+    "playId": "4018567052",
+    "homeWinPercentage": 0.9552
+   },
+   {
+    "playId": "40185670520",
+    "homeWinPercentage": 0.9449
+   },
+   {
+    "playId": "40185670537",
+    "homeWinPercentage": 0.9542
+   },
+   {
+    "playId": "40185670554",
+    "homeWinPercentage": 0.9544
+   },
+   {
+    "playId": "40185670574",
+    "homeWinPercentage": 0.966
+   },
+   {
+    "playId": "40185670596",
+    "homeWinPercentage": 0.9709
+   },
+   {
+    "playId": "401856705109",
+    "homeWinPercentage": 0.9767
+   },
+   {
+    "playId": "401856705186",
+    "homeWinPercentage": 0.9315
+   },
+   {
+    "playId": "401856705143",
+    "homeWinPercentage": 0.9709
+   },
+   {
+    "playId": "401856705160",
+    "homeWinPercentage": 0.9385
+   },
+   {
+    "playId": "401856705182",
+    "homeWinPercentage": 0.9616
+   },
+   {
+    "playId": "401856705206",
+    "homeWinPercentage": 0.9661
+   },
+   {
+    "playId": "401856705221",
+    "homeWinPercentage": 0.9629
+   },
+   {
+    "playId": "401856705238",
+    "homeWinPercentage": 0.9556
+   },
+   {
+    "playId": "401856705253",
+    "homeWinPercentage": 0.9629
+   },
+   {
+    "playId": "401856705274",
+    "homeWinPercentage": 0.9685
+   },
+   {
+    "playId": "401856705296",
+    "homeWinPercentage": 0.9737
+   },
+   {
+    "playId": "401856705328",
+    "homeWinPercentage": 0.985
+   },
+   {
+    "playId": "401856705347",
+    "homeWinPercentage": 0.984
+   },
+   {
+    "playId": "401856705356",
+    "homeWinPercentage": 0.9775
+   },
+   {
+    "playId": "401856705373",
+    "homeWinPercentage": 0.9744
+   }
+  ]
+ },
+ "gameInfo": {
+  "venue": {
+   "id": "3917",
+   "fullName": "Sanford Stadium",
+   "address": {
+    "city": "Athens",
+    "state": "GA",
+    "zipCode": "30602",
+    "country": "USA"
+   },
+   "grass": true
+  },
+  "attendance": 93033
+ },
+ "standings": {
+  "fullViewLink": {
+   "text": "Full Standings"
+  },
+  "header": "2026 Standings",
+  "groups": [
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "Alabama",
+       "id": "333",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "5-0",
+         "displayValue": "5-0"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "3-0",
+         "displayValue": "3-0"
+        }
+       ]
+      },
+      {
+       "team": "Georgia",
+       "id": "61",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "5-0",
+         "displayValue": "5-0"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "3-0",
+         "displayValue": "3-0"
+        }
+       ]
+      },
+      {
+       "team": "Texas",
+       "id": "251",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "1-0",
+         "displayValue": "1-0"
+        }
+       ]
+      },
+      {
+       "team": "Florida",
+       "id": "57",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-1",
+         "displayValue": "4-1"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "2-1",
+         "displayValue": "2-1"
+        }
+       ]
+      },
+      {
+       "team": "Kentucky",
+       "id": "96",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-1",
+         "displayValue": "4-1"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "2-1",
+         "displayValue": "2-1"
+        }
+       ]
+      },
+      {
+       "team": "Mississippi State",
+       "id": "344",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-1",
+         "displayValue": "4-1"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "2-1",
+         "displayValue": "2-1"
+        }
+       ]
+      },
+      {
+       "team": "Ole Miss",
+       "id": "145",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "1-1",
+         "displayValue": "1-1"
+        }
+       ]
+      },
+      {
+       "team": "LSU",
+       "id": "99",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-1",
+         "displayValue": "4-1"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "1-1",
+         "displayValue": "1-1"
+        }
+       ]
+      },
+      {
+       "team": "Missouri",
+       "id": "142",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-1",
+         "displayValue": "4-1"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "1-1",
+         "displayValue": "1-1"
+        }
+       ]
+      },
+      {
+       "team": "Tennessee",
+       "id": "2633",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-1",
+         "displayValue": "4-1"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "1-1",
+         "displayValue": "1-1"
+        }
+       ]
+      },
+      {
+       "team": "Auburn",
+       "id": "2",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-2",
+         "displayValue": "3-2"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "1-2",
+         "displayValue": "1-2"
+        }
+       ]
+      },
+      {
+       "team": "Texas A&M",
+       "id": "245",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-2",
+         "displayValue": "3-2"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "1-2",
+         "displayValue": "1-2"
+        }
+       ]
+      },
+      {
+       "team": "Oklahoma",
+       "id": "201",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-2",
+         "displayValue": "2-2"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-1",
+         "displayValue": "0-1"
+        }
+       ]
+      },
+      {
+       "team": "Vanderbilt",
+       "id": "238",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-2",
+         "displayValue": "3-2"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-2",
+         "displayValue": "0-2"
+        }
+       ]
+      },
+      {
+       "team": "Arkansas",
+       "id": "8",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-3",
+         "displayValue": "2-3"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-2",
+         "displayValue": "0-2"
+        }
+       ]
+      },
+      {
+       "team": "South Carolina",
+       "id": "2579",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "overall",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-3",
+         "displayValue": "2-3"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "CONF",
+         "displayName": "vs. Conference",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-3",
+         "displayValue": "0-3"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2026 Southeastern Conference Standings",
+    "conferenceHeader": "FBS",
+    "divisionHeader": "Southeastern Conference",
+    "shortDivisionHeader": "SEC"
+   }
+  ],
+  "isSameConference": true
+ },
+ "odds": {
+  "markets": [
+   {
+    "provider": "Draft Kings",
+    "providerId": "100",
+    "threeWay": false,
+    "homeMoneyLine": -2800,
+    "awayMoneyLine": 1300,
+    "drawMoneyLine": null,
+    "homeImpliedProb": 0.9655,
+    "awayImpliedProb": 0.0714,
+    "drawImpliedProb": null,
+    "homeNoVigProb": 0.9311,
+    "awayNoVigProb": 0.0689,
+    "drawNoVigProb": null,
+    "overround": 0.0369,
+    "noVigReason": null,
+    "homeSpread": -25.5,
+    "total": 49.5
+   }
+  ],
+  "consensus": {
+   "providerCount": 1,
+   "providers": [
+    "Draft Kings"
+   ],
+   "homeNoVigProb": 0.9311,
+   "awayNoVigProb": 0.0689,
+   "drawNoVigProb": null,
+   "homeSpread": -25.5,
+   "total": 49.5,
+   "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+   "reason": null
+  },
+  "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+  "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+ }
+}

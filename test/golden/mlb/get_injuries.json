@@ -1,0 +1,335 @@
+{
+ "timestamp": "2026-10-06T14:09:47Z",
+ "season": {
+  "year": 2026,
+  "type": 3,
+  "name": "Postseason",
+  "displayName": "2026"
+ },
+ "injuries": [
+  {
+   "team": "Atlanta Braves",
+   "teamId": "15",
+   "injuries": [
+    {
+     "player": "Martin Perez",
+     "position": "SP",
+     "team": "ATL",
+     "status": "15-Day-IL",
+     "injury": "Inflammation",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-02T17:14Z",
+     "note": "Atlanta manager Walt Weiss said Friday that Perez (back) will not be available for the NLDS against the Dodgers, Aiden Stepansky of MLB.com…"
+    },
+    {
+     "player": "Bryce Elder",
+     "position": "SP",
+     "team": "ATL",
+     "status": "15-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-02T17:10Z",
+     "note": "Atlanta manager Walt Weiss said Friday that Elder (knee) will not be available for the NLDS against the Dodgers, Aiden Stepansky of MLB.com…"
+    },
+    {
+     "player": "Tyler Mahle",
+     "position": "SP",
+     "team": "ATL",
+     "status": "Day-To-Day",
+     "injury": "Soreness",
+     "returnDate": "2026-10-07",
+     "date": "2026-09-30T22:05Z",
+     "note": "Atlanta manager Walt Weiss said after Game 2 of the NL Wild Card Series against the Phillies on Wednesday that Mahle suffered an abdominal …"
+    },
+    {
+     "player": "Hurston Waldrep",
+     "position": "SP",
+     "team": "ATL",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2028-02-01",
+     "date": "2026-09-24T22:45Z",
+     "note": "Atlanta recalled Waldrep (elbow) from Triple-A Gwinnett on Thursday and placed him on the 60-day injured list."
+    },
+    {
+     "player": "Reynaldo Lopez",
+     "position": "RP",
+     "team": "ATL",
+     "status": "15-Day-IL",
+     "injury": "Inflammation",
+     "returnDate": "2026-10-06",
+     "date": "2026-09-15T14:40Z",
+     "note": "Lopez (4-5) took the loss in Monday's 7-3 loss against the Cubs after allowing five runs on six hits and two walks with two strikeouts over…"
+    },
+    {
+     "player": "Joe Jimenez",
+     "position": "RP",
+     "team": "ATL",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2026-10-06",
+     "date": "2026-09-15T14:39Z",
+     "note": "Jimenez (knee) will begin a rehab assignment at Triple-A Gwinnett on Tuesday."
+    },
+    {
+     "player": "Spencer Strider",
+     "position": "SP",
+     "team": "ATL",
+     "status": "60-Day-IL",
+     "injury": "Inflammation",
+     "returnDate": "2027-02-01",
+     "date": "2026-08-28T20:43Z",
+     "note": "Strider (elbow) is not expected to return to Atlanta's active roster before the end of this season, Mark Bowman of MLB.com reports."
+    },
+    {
+     "player": "Spencer Schwellenbach",
+     "position": "SP",
+     "team": "ATL",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2027-04-01",
+     "date": "2026-08-28T20:36Z",
+     "note": "Schwellenbach will undergo season-ending surgery to repair a fracture in his right elbow, Mark Bowman of MLB.com reports."
+    },
+    {
+     "player": "Jurickson Profar",
+     "position": "LF",
+     "team": "ATL",
+     "status": "suspension",
+     "injury": "Not Specified",
+     "returnDate": "2027-02-01",
+     "date": "2026-05-08T11:02Z",
+     "note": "Profar will miss the full 2026 season after the appeal of his 162-game PED suspension was denied Thursday, Jeff Passan of ESPN.com reports."
+    },
+    {
+     "player": "Joey Wentz",
+     "position": "RP",
+     "team": "ATL",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2027-02-01",
+     "date": "2026-05-08T11:02Z",
+     "note": "Atlanta placed Wentz (knee) on the 60-day injured list Tuesday."
+    }
+   ]
+  },
+  {
+   "team": "Los Angeles Dodgers",
+   "teamId": "19",
+   "injuries": [
+    {
+     "player": "Blake Treinen",
+     "position": "RP",
+     "team": "LAD",
+     "status": "15-Day-IL",
+     "injury": "Inflammation",
+     "returnDate": "2026-10-23",
+     "date": "2026-10-03T18:34Z",
+     "note": "President of baseball operations Andrew Friedman said Saturday that Treinen (shoulder) hasn't been ruled out for a return in the postseason…"
+    },
+    {
+     "player": "Will Klein",
+     "position": "RP",
+     "team": "LAD",
+     "status": "60-Day-IL",
+     "injury": "Soreness",
+     "returnDate": "2026-10-06",
+     "date": "2026-09-22T22:13Z",
+     "note": "Klein (elbow) threw live batting practice Tuesday, Fabian Ardaya of The Athletic reports."
+    },
+    {
+     "player": "Eric Lauer",
+     "position": "SP",
+     "team": "LAD",
+     "status": "60-Day-IL",
+     "injury": "Inflammation",
+     "returnDate": "2027-02-01",
+     "date": "2026-09-11T22:04Z",
+     "note": "The Dodgers transferred Lauer (elbow) to the 60-day injured list Friday, David Vassegh of AM 570 LA Sports reports."
+    },
+    {
+     "player": "Gavin Stone",
+     "position": "SP",
+     "team": "LAD",
+     "status": "60-Day-IL",
+     "injury": "Inflammation",
+     "returnDate": "2026-10-06",
+     "date": "2026-09-10T13:24Z",
+     "note": "Stone (shoulder/biceps) resumed his rehab assignment with Triple-A Oklahoma City on Wednesday, allowing three runs over two-thirds of an in…"
+    },
+    {
+     "player": "Jake Cousins",
+     "position": "RP",
+     "team": "LAD",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2026-10-06",
+     "date": "2026-09-03T13:34Z",
+     "note": "Cousins (elbow) began a rehab assignment with Triple-A Oklahoma City on Wednesday, striking out one and issuing one walk in a scoreless fra…"
+    },
+    {
+     "player": "Ben Casparius",
+     "position": "RP",
+     "team": "LAD",
+     "status": "60-Day-IL",
+     "injury": "Inflammation",
+     "returnDate": "2026-10-06",
+     "date": "2026-09-02T18:44Z",
+     "note": "Casparius (shoulder) experienced arm fatigue while on a minor-league rehab assignment and has been shut down from throwing, MLB.com reports."
+    },
+    {
+     "player": "Brusdar Graterol",
+     "position": "RP",
+     "team": "LAD",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2026-10-06",
+     "date": "2026-06-01T14:38Z",
+     "note": "Graterol (shoulder) underwent surgery recently for a back injury he suffered while on a rehab assignment, Jack Harris of the California Pos…"
+    }
+   ]
+  },
+  {
+   "team": "Milwaukee Brewers",
+   "teamId": "8",
+   "injuries": [
+    {
+     "player": "Brandon Woodruff",
+     "position": "SP",
+     "team": "MIL",
+     "status": "60-Day-IL",
+     "injury": "Inflammation",
+     "returnDate": "2026-10-11",
+     "date": "2026-09-29T19:54Z",
+     "note": "Woodruff (shoulder) completed the flat-ground portion of his throwing program Sunday and is awaiting to receive clearance to throw off the …"
+    },
+    {
+     "player": "Grant Anderson",
+     "position": "RP",
+     "team": "MIL",
+     "status": "15-Day-IL",
+     "injury": "Inflammation",
+     "returnDate": "2026-10-06",
+     "date": "2026-09-15T16:04Z",
+     "note": "Anderson (biceps) will begin a rehab assignment Wednesday, Adam McCalvy of MLB.com reports."
+    },
+    {
+     "player": "Brian Fitzpatrick",
+     "position": "RP",
+     "team": "MIL",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2027-08-01",
+     "date": "2026-07-05T00:09Z",
+     "note": "Fitzpatrick (elbow) underwent Tommy John surgery over the past week, Curt Hogg of the Milwaukee Journal Sentinel reports."
+    },
+    {
+     "player": "Quinn Priester",
+     "position": "SP",
+     "team": "MIL",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2027-02-01",
+     "date": "2026-06-18T15:25Z",
+     "note": "Priester will undergo thoracic outlet compression surgery on Monday and is expected to be sidelined 8-to-10 months, Curt Hogg of the Milwau…"
+    },
+    {
+     "player": "Angel Zerpa",
+     "position": "RP",
+     "team": "MIL",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2027-07-01",
+     "date": "2026-05-31T17:56Z",
+     "note": "The Brewers transferred Zerpa (elbow) to the 60-day injured list Sunday."
+    }
+   ]
+  },
+  {
+   "team": "San Diego Padres",
+   "teamId": "25",
+   "injuries": [
+    {
+     "player": "Rodolfo Duran",
+     "position": "C",
+     "team": "SD",
+     "status": "60-Day-IL",
+     "injury": "Strain",
+     "returnDate": "2027-02-01",
+     "date": "2026-09-29T20:52Z",
+     "note": "The Padres recalled Duran from Triple-A El Paso on Tuesday and placed him on the 60-day injured list with a right forearm strain."
+    },
+    {
+     "player": "Casey Mize",
+     "position": "SP",
+     "team": "SD",
+     "status": "15-Day-IL",
+     "injury": "Sprain",
+     "returnDate": "2026-10-11",
+     "date": "2026-09-26T21:47Z",
+     "note": "Mize (6-10) allowed seven runs on seven hits, two walks and a hit batsman while striking out one over four innings to take the loss versus …"
+    },
+    {
+     "player": "Miguel Andujar",
+     "position": "DH",
+     "team": "SD",
+     "status": "10-Day-IL",
+     "injury": "Fracture",
+     "returnDate": "2026-10-06",
+     "date": "2026-09-24T05:45Z",
+     "note": "Andujar (wrist) took live at-bats at Petco Park on Monday, MLB.com reports."
+    },
+    {
+     "player": "Jeremiah Estrada",
+     "position": "RP",
+     "team": "SD",
+     "status": "15-Day-IL",
+     "injury": "Pinched Nerve",
+     "returnDate": "2026-10-06",
+     "date": "2026-09-12T20:06Z",
+     "note": "Estrada (shoulder) hadn't resumed throwing as of Sept. 8, and he may not be able to return from the injured list before the end of the camp…"
+    },
+    {
+     "player": "Ramon Laureano",
+     "position": "LF",
+     "team": "SD",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2027-02-01",
+     "date": "2026-09-12T19:52Z",
+     "note": "Laureano (hip) has progressed to swinging off a tee and playing catch, but he isn't close to playing in games, MLB.com reports."
+    },
+    {
+     "player": "Luis Rengifo",
+     "position": "LF",
+     "team": "SD",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2027-05-01",
+     "date": "2026-09-01T16:29Z",
+     "note": "The Padres placed Rengifo (knee) on the 60-day injured list Tuesday."
+    },
+    {
+     "player": "Lucas Giolito",
+     "position": "SP",
+     "team": "SD",
+     "status": "60-Day-IL",
+     "injury": "Inflammation",
+     "returnDate": "2026-10-06",
+     "date": "2026-08-24T23:01Z",
+     "note": "Giolito (elbow) has been throwing at the Padres' team complex in Arizona, but his timeline to return is unclear, MLB.com reports."
+    },
+    {
+     "player": "Bryan Hoeing",
+     "position": "RP",
+     "team": "SD",
+     "status": "60-Day-IL",
+     "injury": "Surgery",
+     "returnDate": "2027-02-01",
+     "date": "2026-05-08T11:02Z",
+     "note": "The Padres transferred Hoeing (elbow) from the 15-day injured list to the 60-day IL on Wednesday."
+    }
+   ]
+  }
+ ]
+}

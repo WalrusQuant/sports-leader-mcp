@@ -1,0 +1,329 @@
+{
+ "timestamp": "2026-10-06T14:09:33Z",
+ "season": {
+  "year": 2027,
+  "type": 1,
+  "name": "Preseason",
+  "displayName": "2026-27"
+ },
+ "injuries": [
+  {
+   "team": "Brooklyn Nets",
+   "teamId": "17",
+   "injuries": [
+    {
+     "player": "Joshua Jefferson",
+     "position": "F",
+     "team": "BKN",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-08",
+     "date": "2026-10-05T16:55Z",
+     "note": "Jefferson (lower back) is out for Tuesday's preseason game against Charlotte, Brian Lewis of the New York Post reports."
+    },
+    {
+     "player": "Mikel Brown Jr.",
+     "position": "G",
+     "team": "BKN",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-08",
+     "date": "2026-10-05T16:51Z",
+     "note": "Brown (ankle) will miss Tuesday's preseason game against the Hornets, Brian Lewis of the New York Post reports."
+    }
+   ]
+  },
+  {
+   "team": "Charlotte Hornets",
+   "teamId": "30",
+   "injuries": [
+    {
+     "player": "Kylan Boswell",
+     "position": "G",
+     "team": "CHA",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-21",
+     "date": "2026-10-05T21:28Z",
+     "note": "Boswell is rehabbing a right knee injury, and he's hopeful to be cleared for basketball activities prior to the start of the G League seaso…"
+    },
+    {
+     "player": "Coby White",
+     "position": "G",
+     "team": "CHA",
+     "status": "Day-To-Day",
+     "injury": "Strain",
+     "returnDate": "2026-10-21",
+     "date": "2026-10-05T20:56Z",
+     "note": "The Hornets announced Monday that White suffered a left calf strain during training camp and will not play during the preseason."
+    },
+    {
+     "player": "Kon Knueppel",
+     "position": "G",
+     "team": "CHA",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-21",
+     "date": "2026-09-28T14:25Z",
+     "note": "Hornets general manager Jeff Peterson said Monday that he \"doesn't know\" whether Knueppel (hamstring) will be available for the team's regu…"
+    },
+    {
+     "player": "Grant Williams",
+     "position": "F",
+     "team": "CHA",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-21",
+     "date": "2026-09-25T23:03Z",
+     "note": "Williams will miss the preseason after suffering a right hamstring injury, the Hornets announced Friday."
+    },
+    {
+     "player": "PJ Hall",
+     "position": "C",
+     "team": "CHA",
+     "status": "Day-To-Day",
+     "injury": "Surgery",
+     "returnDate": "2026-10-06",
+     "date": "2026-06-16T14:32Z",
+     "note": "The Hornets announced Thursday that Hall underwent a procedure to address a fractured right ankle and will miss the remainder of the 2025-2…"
+    }
+   ]
+  },
+  {
+   "team": "Denver Nuggets",
+   "teamId": "7",
+   "injuries": [
+    {
+     "player": "Spencer Jones",
+     "position": "F",
+     "team": "DEN",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-06",
+     "date": "2026-10-04T22:00Z",
+     "note": "Jones (hamstring) has been ruled out for Sunday's preseason game against the Jazz, Katy Winge of Altitude Sports reports."
+    },
+    {
+     "player": "Jamal Murray",
+     "position": "G",
+     "team": "DEN",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-06",
+     "date": "2026-10-04T21:58Z",
+     "note": "Murray is out for Sunday's preseason opener against the Jazz due to personal reasons, Katy Winge of Altitude Sports reports."
+    }
+   ]
+  },
+  {
+   "team": "Golden State Warriors",
+   "teamId": "9",
+   "injuries": [
+    {
+     "player": "Jimmy Butler III",
+     "position": "F",
+     "team": "GS",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2027-01-02",
+     "date": "2026-10-02T18:48Z",
+     "note": "The Warriors hope to have Butler (knee) back early in 2027, per Keith Watkins of Yahoo Sports."
+    },
+    {
+     "player": "Moses Moody",
+     "position": "G",
+     "team": "GS",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2026-12-01",
+     "date": "2026-09-28T15:06Z",
+     "note": "Moody has progressed to light on-court activities as he continues his recovery from a ruptured left patellar tendon, Evan Webeck of The Mer…"
+    },
+    {
+     "player": "Kristaps Porzingis",
+     "position": "C",
+     "team": "GS",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-13",
+     "date": "2026-09-28T15:15Z",
+     "note": "Porzingis is out indefinitely due to an undisclosed issue, Anthony Slater of ESPN.com reports."
+    }
+   ]
+  },
+  {
+   "team": "Los Angeles Lakers",
+   "teamId": "13",
+   "injuries": [
+    {
+     "player": "Arthur Kaluma",
+     "position": "F",
+     "team": "LAL",
+     "status": "Day-To-Day",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-06",
+     "date": "2026-10-06T00:42Z",
+     "note": "Kaluma (undisclosed) won't play in Monday's preseason game against the Kings, Dan Woike of The Athletic reports."
+    },
+    {
+     "player": "Collin Sexton",
+     "position": "G",
+     "team": "LAL",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-06",
+     "date": "2026-10-06T00:39Z",
+     "note": "Sexton (undisclosed) has been ruled out for Monday's preseason game against the Kings, Dan Woike of The Athletic reports."
+    },
+    {
+     "player": "Austin Reaves",
+     "position": "G",
+     "team": "LAL",
+     "status": "Day-To-Day",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-06",
+     "date": "2026-10-06T00:39Z",
+     "note": "Reaves won't play in Monday's preseason game against the Kings after tweaking his ankle, Dan Woike of The Athletic reports."
+    },
+    {
+     "player": "Walker Kessler",
+     "position": "C",
+     "team": "LAL",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-06",
+     "date": "2026-10-06T00:38Z",
+     "note": "Kessler (rest) won't suit up for Monday's exhibition against the Kings, Khobi Price of The California Post reports."
+    }
+   ]
+  },
+  {
+   "team": "New Orleans Pelicans",
+   "teamId": "3",
+   "injuries": [
+    {
+     "player": "Bryce McGowens",
+     "position": "G",
+     "team": "NO",
+     "status": "Day-To-Day",
+     "injury": "Fracture",
+     "returnDate": "2026-10-06",
+     "date": "2026-06-16T14:36Z",
+     "note": "McGowens (toe) is out for Sunday's game against the Timberwolves."
+    }
+   ]
+  },
+  {
+   "team": "Oklahoma City Thunder",
+   "teamId": "25",
+   "injuries": [
+    {
+     "player": "Thomas Sorber",
+     "position": "C",
+     "team": "OKC",
+     "status": "Day-To-Day",
+     "injury": "Surgery",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-05T17:52Z",
+     "note": "Sorber (knee) will not play in Tuesday's preseason opener against New Orleans, Clemente Almanza of USA Today reports."
+    },
+    {
+     "player": "Nikola Topic",
+     "position": "G",
+     "team": "OKC",
+     "status": "Day-To-Day",
+     "injury": "Surgery",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-05T17:51Z",
+     "note": "Topic (back) will not play in Tuesday's preseason opener against the Pelicans, Clemente Almanza of USA Today reports."
+    },
+    {
+     "player": "Cason Wallace",
+     "position": "G",
+     "team": "OKC",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-05T17:47Z",
+     "note": "Wallace will not play in Tuesday's preseason opener against New Orleans, Clemente Almanza of USA Today reports."
+    },
+    {
+     "player": "Alex Caruso",
+     "position": "G",
+     "team": "OKC",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-05T17:46Z",
+     "note": "Caruso will not play in Tuesday's preseason opener against the Pelicans, Clemente Almanza of USA Today reports."
+    },
+    {
+     "player": "Chet Holmgren",
+     "position": "C",
+     "team": "OKC",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-05T17:45Z",
+     "note": "Holmgren (rest) will not play in Tuesday's preseason opener against New Orleans, Clemente Almanza of USA Today reports."
+    },
+    {
+     "player": "Isaiah Hartenstein",
+     "position": "C",
+     "team": "OKC",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-05T17:43Z",
+     "note": "Hartenstein (rest) will not play in Tuesday's preseason opener against the Pelicans, Clemente Almanza of USA Today reports."
+    },
+    {
+     "player": "Jalen Williams",
+     "position": "G",
+     "team": "OKC",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-05T17:41Z",
+     "note": "Williams (not injury related) is out for Tuesday's preseason game against the Pelicans, Clemente Almanza of USA Today reports."
+    },
+    {
+     "player": "Shai Gilgeous-Alexander",
+     "position": "G",
+     "team": "OKC",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-07",
+     "date": "2026-10-05T17:40Z",
+     "note": "Gilgeous-Alexander will not play in Tuesday's preseason opener against the Pelicans, Clemente Almanza of USA Today reports."
+    }
+   ]
+  },
+  {
+   "team": "Utah Jazz",
+   "teamId": "26",
+   "injuries": [
+    {
+     "player": "Jusuf Nurkic",
+     "position": "C",
+     "team": "UTAH",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-06",
+     "date": "2026-10-05T23:17Z",
+     "note": "Nurkic didn't participate in Monday's practice due to a right foot injury, Shreyas Laddha of The Salt Lake Tribune reports."
+    },
+    {
+     "player": "Kyle Filipowski",
+     "position": "F",
+     "team": "UTAH",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-06",
+     "date": "2026-10-05T23:16Z",
+     "note": "Filipowski (back) won't play in Tuesday's preseason game against the Nuggets, Shreyas Laddha of The Salt Lake Tribune reports."
+    },
+    {
+     "player": "Josh Green",
+     "position": "G",
+     "team": "UTAH",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-06",
+     "date": "2026-10-04T21:50Z",
+     "note": "Green (knee) has been ruled out for Sunday's preseason game against the Nuggets, Shreyas Laddha of The Salt Lake Tribune reports."
+    },
+    {
+     "player": "Brice Sensabaugh",
+     "position": "F",
+     "team": "UTAH",
+     "status": "Day-To-Day",
+     "returnDate": "2026-10-06",
+     "date": "2026-10-04T21:49Z",
+     "note": "Sensabaugh won't play in Sunday's preseason opener against the Nuggets due to a left hip injury, Shreyas Laddha of The Salt Lake Tribune re…"
+    }
+   ]
+  }
+ ]
+}

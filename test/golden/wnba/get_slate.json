@@ -1,0 +1,172 @@
+{
+ "sport": "basketball",
+ "league": "wnba",
+ "gameCount": 2,
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "keyInjuryStatuses": [
+  "Out",
+  "Doubtful"
+ ],
+ "injuriesAvailable": true,
+ "games": [
+  {
+   "eventId": "401918297",
+   "startUtc": "2026-10-07T23:30Z",
+   "name": "NY @ ATL",
+   "status": {
+    "state": "pre",
+    "detail": "10/7 - 7:30 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "20",
+    "abbrev": "ATL",
+    "name": "Atlanta Dream",
+    "record": "30-14",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Allisha Gray",
+      "position": "G",
+      "status": "Out",
+      "injury": "Hand",
+      "returnDate": "2026-10-07"
+     },
+     {
+      "player": "Matilde Villa",
+      "position": "G",
+      "status": "Out",
+      "injury": "Coach's Decision",
+      "returnDate": "2027-05-01"
+     },
+     {
+      "player": "Brionna Jones",
+      "position": "F",
+      "status": "Out",
+      "injury": "Leg",
+      "returnDate": "2027-05-01"
+     }
+    ],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "9",
+    "abbrev": "NY",
+    "name": "New York Liberty",
+    "record": "26-18",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Satou Sabally",
+      "position": "F",
+      "status": "Out",
+      "injury": "Concussion",
+      "returnDate": "2027-05-01"
+     },
+     {
+      "player": "Elizabeth Balogun",
+      "position": "G",
+      "status": "Out",
+      "injury": "Not Injury Related",
+      "returnDate": "2027-05-01"
+     }
+    ],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "DraftKings"
+    ],
+    "homeNoVigProb": 0.5635,
+    "awayNoVigProb": 0.4365,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -142,
+    "awayMoneyLine": 120,
+    "drawMoneyLine": null,
+    "homeSpread": -2.5,
+    "total": 170.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401918298",
+   "startUtc": "2026-10-08T01:30Z",
+   "name": "LV @ GS",
+   "status": {
+    "state": "pre",
+    "detail": "10/7 - 9:30 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "129689",
+    "abbrev": "GS",
+    "name": "Golden State Valkyries",
+    "record": "32-12",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Iliana Rupert",
+      "position": "C",
+      "status": "Out",
+      "injury": "Not Injury Related",
+      "returnDate": "2027-05-01"
+     }
+    ],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "17",
+    "abbrev": "LV",
+    "name": "Las Vegas Aces",
+    "record": "31-13",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Jewell Loyd",
+      "position": "G",
+      "status": "Out",
+      "injury": "Leg",
+      "returnDate": "2026-10-07"
+     },
+     {
+      "player": "Stephanie Talbot",
+      "position": "F",
+      "status": "Out",
+      "injury": "Leg",
+      "returnDate": "2026-10-07"
+     },
+     {
+      "player": "Dana Evans",
+      "position": "G",
+      "status": "Out",
+      "injury": "Knee",
+      "returnDate": "2026-10-07"
+     },
+     {
+      "player": "NaLyssa Smith",
+      "position": "F",
+      "status": "Out",
+      "injury": "Leg",
+      "returnDate": "2027-05-01"
+     }
+    ],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "DraftKings"
+    ],
+    "homeNoVigProb": 0.5217,
+    "awayNoVigProb": 0.4783,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -120,
+    "awayMoneyLine": 100,
+    "drawMoneyLine": null,
+    "homeSpread": -1.5,
+    "total": 157.5,
+    "reason": null
+   }
+  }
+ ]
+}

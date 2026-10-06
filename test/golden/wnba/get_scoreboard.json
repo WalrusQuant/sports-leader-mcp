@@ -1,0 +1,150 @@
+{
+ "events": [
+  {
+   "id": "401918297",
+   "date": "2026-10-07T23:30Z",
+   "name": "NY @ ATL",
+   "status": {
+    "state": "pre",
+    "detail": "10/7 - 7:30 PM EDT"
+   },
+   "venue": {
+    "name": "State Farm Arena",
+    "city": "Atlanta"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "20",
+      "abbrev": "ATL",
+      "name": "Dream",
+      "displayName": "Atlanta Dream"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "9",
+      "abbrev": "NY",
+      "name": "Liberty",
+      "displayName": "New York Liberty"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "DraftKings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -142,
+      "awayMoneyLine": 120,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5868,
+      "awayImpliedProb": 0.4545,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5635,
+      "awayNoVigProb": 0.4365,
+      "drawNoVigProb": null,
+      "overround": 0.0413,
+      "noVigReason": null,
+      "homeSpread": -2.5,
+      "total": 170.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "DraftKings"
+     ],
+     "homeNoVigProb": 0.5635,
+     "awayNoVigProb": 0.4365,
+     "drawNoVigProb": null,
+     "homeSpread": -2.5,
+     "total": 170.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401918298",
+   "date": "2026-10-08T01:30Z",
+   "name": "LV @ GS",
+   "status": {
+    "state": "pre",
+    "detail": "10/7 - 9:30 PM EDT"
+   },
+   "venue": {
+    "name": "Chase Center",
+    "city": "San Francisco"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "129689",
+      "abbrev": "GS",
+      "name": "Valkyries",
+      "displayName": "Golden State Valkyries"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "17",
+      "abbrev": "LV",
+      "name": "Aces",
+      "displayName": "Las Vegas Aces"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "DraftKings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -120,
+      "awayMoneyLine": 100,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5455,
+      "awayImpliedProb": 0.5,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5217,
+      "awayNoVigProb": 0.4783,
+      "drawNoVigProb": null,
+      "overround": 0.0455,
+      "noVigReason": null,
+      "homeSpread": -1.5,
+      "total": 157.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "DraftKings"
+     ],
+     "homeNoVigProb": 0.5217,
+     "awayNoVigProb": 0.4783,
+     "drawNoVigProb": null,
+     "homeSpread": -1.5,
+     "total": 157.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  }
+ ],
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+}

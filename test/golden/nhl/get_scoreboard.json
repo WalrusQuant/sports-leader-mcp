@@ -1,0 +1,654 @@
+{
+ "events": [
+  {
+   "id": "401891815",
+   "date": "2026-10-06T23:00Z",
+   "name": "CAR @ MTL",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "venue": {
+    "name": "Bell Centre",
+    "city": "Montreal"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "10",
+      "abbrev": "MTL",
+      "name": "Canadiens",
+      "displayName": "Montreal Canadiens"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "7",
+      "abbrev": "CAR",
+      "name": "Hurricanes",
+      "displayName": "Carolina Hurricanes"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": 100,
+      "awayMoneyLine": -120,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5,
+      "awayImpliedProb": 0.5455,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.4783,
+      "awayNoVigProb": 0.5217,
+      "drawNoVigProb": null,
+      "overround": 0.0455,
+      "noVigReason": null,
+      "homeSpread": 1.5,
+      "total": 6.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.4783,
+     "awayNoVigProb": 0.5217,
+     "drawNoVigProb": null,
+     "homeSpread": 1.5,
+     "total": 6.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401892449",
+   "date": "2026-10-06T23:00Z",
+   "name": "NSH @ TOR",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "venue": {
+    "name": "Scotiabank Arena",
+    "city": "Toronto"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "21",
+      "abbrev": "TOR",
+      "name": "Maple Leafs",
+      "displayName": "Toronto Maple Leafs"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "27",
+      "abbrev": "NSH",
+      "name": "Predators",
+      "displayName": "Nashville Predators"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -155,
+      "awayMoneyLine": 130,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.6078,
+      "awayImpliedProb": 0.4348,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.583,
+      "awayNoVigProb": 0.417,
+      "drawNoVigProb": null,
+      "overround": 0.0426,
+      "noVigReason": null,
+      "homeSpread": -1.5,
+      "total": 5.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.583,
+     "awayNoVigProb": 0.417,
+     "drawNoVigProb": null,
+     "homeSpread": -1.5,
+     "total": 5.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401892450",
+   "date": "2026-10-06T23:00Z",
+   "name": "OTT @ DET",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "venue": {
+    "name": "Little Caesars Arena",
+    "city": "Detroit"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "5",
+      "abbrev": "DET",
+      "name": "Red Wings",
+      "displayName": "Detroit Red Wings"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "14",
+      "abbrev": "OTT",
+      "name": "Senators",
+      "displayName": "Ottawa Senators"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -110,
+      "awayMoneyLine": -110,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5238,
+      "awayImpliedProb": 0.5238,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5,
+      "awayNoVigProb": 0.5,
+      "drawNoVigProb": null,
+      "overround": 0.0476,
+      "noVigReason": null,
+      "homeSpread": 1.5,
+      "total": 5.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.5,
+     "awayNoVigProb": 0.5,
+     "drawNoVigProb": null,
+     "homeSpread": 1.5,
+     "total": 5.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401892451",
+   "date": "2026-10-06T23:00Z",
+   "name": "UTA @ NJ",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "venue": {
+    "name": "Prudential Center",
+    "city": "Newark"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "11",
+      "abbrev": "NJ",
+      "name": "Devils",
+      "displayName": "New Jersey Devils"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "129764",
+      "abbrev": "UTA",
+      "name": "Mammoth",
+      "displayName": "Utah Mammoth"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -130,
+      "awayMoneyLine": 110,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5652,
+      "awayImpliedProb": 0.4762,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5427,
+      "awayNoVigProb": 0.4573,
+      "drawNoVigProb": null,
+      "overround": 0.0414,
+      "noVigReason": null,
+      "homeSpread": -1.5,
+      "total": 6.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.5427,
+     "awayNoVigProb": 0.4573,
+     "drawNoVigProb": null,
+     "homeSpread": -1.5,
+     "total": 6.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401892453",
+   "date": "2026-10-06T23:00Z",
+   "name": "MIN @ BUF",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "venue": {
+    "name": "KeyBank Center",
+    "city": "Buffalo"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "2",
+      "abbrev": "BUF",
+      "name": "Sabres",
+      "displayName": "Buffalo Sabres"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "30",
+      "abbrev": "MIN",
+      "name": "Wild",
+      "displayName": "Minnesota Wild"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -108,
+      "awayMoneyLine": -112,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5192,
+      "awayImpliedProb": 0.5283,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.4957,
+      "awayNoVigProb": 0.5043,
+      "drawNoVigProb": null,
+      "overround": 0.0475,
+      "noVigReason": null,
+      "homeSpread": 1.5,
+      "total": 6.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.4957,
+     "awayNoVigProb": 0.5043,
+     "drawNoVigProb": null,
+     "homeSpread": 1.5,
+     "total": 6.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401892452",
+   "date": "2026-10-06T23:30Z",
+   "name": "NYI @ NYR",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:30 PM EDT"
+   },
+   "venue": {
+    "name": "Madison Square Garden",
+    "city": "New York"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "13",
+      "abbrev": "NYR",
+      "name": "Rangers",
+      "displayName": "New York Rangers"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "12",
+      "abbrev": "NYI",
+      "name": "Islanders",
+      "displayName": "New York Islanders"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -155,
+      "awayMoneyLine": 130,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.6078,
+      "awayImpliedProb": 0.4348,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.583,
+      "awayNoVigProb": 0.417,
+      "drawNoVigProb": null,
+      "overround": 0.0426,
+      "noVigReason": null,
+      "homeSpread": -1.5,
+      "total": 5.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.583,
+     "awayNoVigProb": 0.417,
+     "drawNoVigProb": null,
+     "homeSpread": -1.5,
+     "total": 5.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401891779",
+   "date": "2026-10-07T00:00Z",
+   "name": "STL @ CHI",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 8:00 PM EDT"
+   },
+   "venue": {
+    "name": "United Center",
+    "city": "Chicago"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "4",
+      "abbrev": "CHI",
+      "name": "Blackhawks",
+      "displayName": "Chicago Blackhawks"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "19",
+      "abbrev": "STL",
+      "name": "Blues",
+      "displayName": "St. Louis Blues"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": 124,
+      "awayMoneyLine": -148,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.4464,
+      "awayImpliedProb": 0.5968,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.4279,
+      "awayNoVigProb": 0.5721,
+      "drawNoVigProb": null,
+      "overround": 0.0432,
+      "noVigReason": null,
+      "homeSpread": 1.5,
+      "total": 5.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.4279,
+     "awayNoVigProb": 0.5721,
+     "drawNoVigProb": null,
+     "homeSpread": 1.5,
+     "total": 5.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401892454",
+   "date": "2026-10-07T01:00Z",
+   "name": "VGK @ SEA",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 9:00 PM EDT"
+   },
+   "venue": {
+    "name": "Climate Pledge Arena",
+    "city": "Seattle"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "124292",
+      "abbrev": "SEA",
+      "name": "Kraken",
+      "displayName": "Seattle Kraken"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "37",
+      "abbrev": "VGK",
+      "name": "Golden Knights",
+      "displayName": "Vegas Golden Knights"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": 150,
+      "awayMoneyLine": -180,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.4,
+      "awayImpliedProb": 0.6429,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.3836,
+      "awayNoVigProb": 0.6164,
+      "drawNoVigProb": null,
+      "overround": 0.0429,
+      "noVigReason": null,
+      "homeSpread": 1.5,
+      "total": 6.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.3836,
+     "awayNoVigProb": 0.6164,
+     "drawNoVigProb": null,
+     "homeSpread": 1.5,
+     "total": 6.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401891806",
+   "date": "2026-10-07T02:00Z",
+   "name": "FLA @ LA",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 10:00 PM EDT"
+   },
+   "venue": {
+    "name": "crypto.com Arena",
+    "city": "Los Angeles"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "8",
+      "abbrev": "LA",
+      "name": "Kings",
+      "displayName": "Los Angeles Kings"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "26",
+      "abbrev": "FLA",
+      "name": "Panthers",
+      "displayName": "Florida Panthers"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": 102,
+      "awayMoneyLine": -122,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.495,
+      "awayImpliedProb": 0.5495,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.4739,
+      "awayNoVigProb": 0.5261,
+      "drawNoVigProb": null,
+      "overround": 0.0446,
+      "noVigReason": null,
+      "homeSpread": 1.5,
+      "total": 5.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.4739,
+     "awayNoVigProb": 0.5261,
+     "drawNoVigProb": null,
+     "homeSpread": 1.5,
+     "total": 5.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  }
+ ],
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+}

@@ -1,0 +1,1945 @@
+{
+ "game": {
+  "id": "401879268",
+  "date": "2026-10-10T11:30Z",
+  "status": {
+   "state": "pre",
+   "detail": "10/10 - 7:30 AM EDT"
+  },
+  "competitors": [
+   {
+    "homeAway": "home",
+    "winner": false,
+    "team": {
+     "id": "359",
+     "abbrev": "ARS",
+     "name": "Arsenal",
+     "displayName": "Arsenal"
+    },
+    "score": ""
+   },
+   {
+    "homeAway": "away",
+    "winner": false,
+    "team": {
+     "id": "357",
+     "abbrev": "LEE",
+     "name": "Leeds United",
+     "displayName": "Leeds United"
+    },
+    "score": ""
+   }
+  ]
+ },
+ "boxscore": {
+  "teams": [
+   {
+    "team": {
+     "id": "359",
+     "abbrev": "ARS",
+     "name": "Arsenal",
+     "displayName": "Arsenal"
+    },
+    "stats": [
+     {
+      "label": "Goal Difference",
+      "displayValue": "4"
+     },
+     {
+      "label": "Total Goals",
+      "displayValue": "8"
+     },
+     {
+      "label": "Assists",
+      "displayValue": "6"
+     },
+     {
+      "label": "Goals Against",
+      "displayValue": "4"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "357",
+     "abbrev": "LEE",
+     "name": "Leeds United",
+     "displayName": "Leeds United"
+    },
+    "stats": [
+     {
+      "label": "Goal Difference",
+      "displayValue": "4"
+     },
+     {
+      "label": "Total Goals",
+      "displayValue": "7"
+     },
+     {
+      "label": "Assists",
+      "displayValue": "4"
+     },
+     {
+      "label": "Goals Against",
+      "displayValue": "3"
+     }
+    ]
+   }
+  ],
+  "players": []
+ },
+ "leaders": [
+  {
+   "team": {
+    "id": "359",
+    "abbrev": "ARS",
+    "name": "Arsenal",
+    "displayName": "Arsenal"
+   },
+   "categories": [
+    {
+     "name": "goalsLeaders",
+     "displayName": "Goals",
+     "leaders": [
+      {
+       "athleteId": "280555",
+       "athlete": "Bukayo Saka",
+       "value": "Matches: 5, Goals: 3"
+      },
+      {
+       "athleteId": "231182",
+       "athlete": "Kai Havertz",
+       "value": "Matches: 5, Goals: 2"
+      },
+      {
+       "athleteId": "203669",
+       "athlete": "Martin Ødegaard",
+       "value": "Matches: 5, Goals: 2"
+      }
+     ]
+    },
+    {
+     "name": "assistsLeaders",
+     "displayName": "Assists",
+     "leaders": [
+      {
+       "athleteId": "298329",
+       "athlete": "Riccardo Calafiori",
+       "value": "Matches: 5, Assists: 2"
+      },
+      {
+       "athleteId": "238262",
+       "athlete": "Declan Rice",
+       "value": "Matches: 5, Assists: 2"
+      },
+      {
+       "athleteId": "303793",
+       "athlete": "Christos Tzolis",
+       "value": "Matches: 5, Assists: 1"
+      }
+     ]
+    },
+    {
+     "name": "totalShots",
+     "displayName": "Total Shots",
+     "leaders": [
+      {
+       "athleteId": "280555",
+       "athlete": "Bukayo Saka",
+       "value": "15"
+      },
+      {
+       "athleteId": "231182",
+       "athlete": "Kai Havertz",
+       "value": "10"
+      },
+      {
+       "athleteId": "298329",
+       "athlete": "Riccardo Calafiori",
+       "value": "7"
+      }
+     ]
+    },
+    {
+     "name": "accuratePasses",
+     "displayName": "Accurate Passes",
+     "leaders": [
+      {
+       "athleteId": "238262",
+       "athlete": "Declan Rice",
+       "value": "312"
+      },
+      {
+       "athleteId": "236322",
+       "athlete": "Gabriel Magalhães",
+       "value": "244"
+      },
+      {
+       "athleteId": "203669",
+       "athlete": "Martin Ødegaard",
+       "value": "215"
+      }
+     ]
+    },
+    {
+     "name": "saves",
+     "displayName": "Saves",
+     "leaders": [
+      {
+       "athleteId": "196176",
+       "athlete": "David Raya",
+       "value": "9"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "team": {
+    "id": "357",
+    "abbrev": "LEE",
+    "name": "Leeds United",
+    "displayName": "Leeds United"
+   },
+   "categories": [
+    {
+     "name": "goalsLeaders",
+     "displayName": "Goals",
+     "leaders": [
+      {
+       "athleteId": "197717",
+       "athlete": "Dominic Calvert-Lewin",
+       "value": "Matches: 5, Goals: 2"
+      },
+      {
+       "athleteId": "243408",
+       "athlete": "Jayden Bogle",
+       "value": "Matches: 5, Goals: 2"
+      },
+      {
+       "athleteId": "304802",
+       "athlete": "Anton Stach",
+       "value": "Matches: 5, Goals: 1"
+      }
+     ]
+    },
+    {
+     "name": "assistsLeaders",
+     "displayName": "Assists",
+     "leaders": [
+      {
+       "athleteId": "318390",
+       "athlete": "Tarik Muharemovic",
+       "value": "Matches: 5, Assists: 1"
+      },
+      {
+       "athleteId": "197717",
+       "athlete": "Dominic Calvert-Lewin",
+       "value": "Matches: 5, Assists: 1"
+      },
+      {
+       "athleteId": "253173",
+       "athlete": "Ao Tanaka",
+       "value": "Matches: 4, Assists: 1"
+      }
+     ]
+    },
+    {
+     "name": "totalShots",
+     "displayName": "Total Shots",
+     "leaders": [
+      {
+       "athleteId": "197717",
+       "athlete": "Dominic Calvert-Lewin",
+       "value": "11"
+      },
+      {
+       "athleteId": "304802",
+       "athlete": "Anton Stach",
+       "value": "7"
+      },
+      {
+       "athleteId": "243408",
+       "athlete": "Jayden Bogle",
+       "value": "6"
+      }
+     ]
+    },
+    {
+     "name": "accuratePasses",
+     "displayName": "Accurate Passes",
+     "leaders": [
+      {
+       "athleteId": "318390",
+       "athlete": "Tarik Muharemovic",
+       "value": "218"
+      },
+      {
+       "athleteId": "241317",
+       "athlete": "Ethan Ampadu",
+       "value": "175"
+      },
+      {
+       "athleteId": "212237",
+       "athlete": "Nico Elvedi",
+       "value": "160"
+      }
+     ]
+    },
+    {
+     "name": "saves",
+     "displayName": "Saves",
+     "leaders": [
+      {
+       "athleteId": "307118",
+       "athlete": "James Trafford",
+       "value": "20"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "gameInfo": {
+  "venue": {
+   "id": "2267",
+   "fullName": "Emirates Stadium",
+   "address": {
+    "city": "London",
+    "country": "England"
+   }
+  }
+ },
+ "standings": {
+  "fullViewLink": {
+   "text": "Full Table"
+  },
+  "header": "English Premier League Standings",
+  "groups": [
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "Manchester City",
+       "id": "382",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": 8,
+         "displayValue": "+8"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 15,
+         "displayValue": "15"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "5-0-0",
+         "displayValue": "5-0-0"
+        }
+       ]
+      },
+      {
+       "team": "Arsenal",
+       "id": "359",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": 4,
+         "displayValue": "+4"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 12,
+         "displayValue": "12"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0-1",
+         "displayValue": "4-0-1"
+        }
+       ]
+      },
+      {
+       "team": "Brighton & Hove Albion",
+       "id": "331",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": 11,
+         "displayValue": "+11"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 10,
+         "displayValue": "10"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1-1",
+         "displayValue": "3-1-1"
+        }
+       ]
+      },
+      {
+       "team": "Brentford",
+       "id": "337",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": 6,
+         "displayValue": "+6"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 9,
+         "displayValue": "9"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-3-0",
+         "displayValue": "2-3-0"
+        }
+       ]
+      },
+      {
+       "team": "Leeds United",
+       "id": "357",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": 4,
+         "displayValue": "+4"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 9,
+         "displayValue": "9"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-3-0",
+         "displayValue": "2-3-0"
+        }
+       ]
+      },
+      {
+       "team": "Liverpool",
+       "id": "364",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": 3,
+         "displayValue": "+3"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 9,
+         "displayValue": "9"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 6,
+         "displayValue": "6"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-3-0",
+         "displayValue": "2-3-0"
+        }
+       ]
+      },
+      {
+       "team": "Everton",
+       "id": "368",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": 3,
+         "displayValue": "+3"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 9,
+         "displayValue": "9"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 7,
+         "displayValue": "7"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-3-0",
+         "displayValue": "2-3-0"
+        }
+       ]
+      },
+      {
+       "team": "Hull City",
+       "id": "306",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": 2,
+         "displayValue": "+2"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 8,
+         "displayValue": "8"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 8,
+         "displayValue": "8"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-2-1",
+         "displayValue": "2-2-1"
+        }
+       ]
+      },
+      {
+       "team": "Newcastle United",
+       "id": "361",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 8,
+         "displayValue": "8"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 9,
+         "displayValue": "9"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-2-1",
+         "displayValue": "2-2-1"
+        }
+       ]
+      },
+      {
+       "team": "Chelsea",
+       "id": "363",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": -2,
+         "displayValue": "-2"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 7,
+         "displayValue": "7"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 10,
+         "displayValue": "10"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-1-2",
+         "displayValue": "2-1-2"
+        }
+       ]
+      },
+      {
+       "team": "Ipswich Town",
+       "id": "373",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": -4,
+         "displayValue": "-4"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 6,
+         "displayValue": "6"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 11,
+         "displayValue": "11"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-0-3",
+         "displayValue": "2-0-3"
+        }
+       ]
+      },
+      {
+       "team": "Manchester United",
+       "id": "360",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 12,
+         "displayValue": "12"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "1-2-2",
+         "displayValue": "1-2-2"
+        }
+       ]
+      },
+      {
+       "team": "Nottingham Forest",
+       "id": "393",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": -1,
+         "displayValue": "-1"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 13,
+         "displayValue": "13"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "1-2-2",
+         "displayValue": "1-2-2"
+        }
+       ]
+      },
+      {
+       "team": "Sunderland",
+       "id": "366",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": -4,
+         "displayValue": "-4"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 14,
+         "displayValue": "14"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "1-1-3",
+         "displayValue": "1-1-3"
+        }
+       ]
+      },
+      {
+       "team": "Crystal Palace",
+       "id": "384",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": -5,
+         "displayValue": "-5"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 15,
+         "displayValue": "15"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "1-1-3",
+         "displayValue": "1-1-3"
+        }
+       ]
+      },
+      {
+       "team": "Aston Villa",
+       "id": "362",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": -5,
+         "displayValue": "-5"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 16,
+         "displayValue": "16"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "1-1-3",
+         "displayValue": "1-1-3"
+        }
+       ]
+      },
+      {
+       "team": "AFC Bournemouth",
+       "id": "349",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": -2,
+         "displayValue": "-2"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 17,
+         "displayValue": "17"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "0-3-2",
+         "displayValue": "0-3-2"
+        }
+       ]
+      },
+      {
+       "team": "Coventry City",
+       "id": "388",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": -9,
+         "displayValue": "-9"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 18,
+         "displayValue": "18"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "1-0-4",
+         "displayValue": "1-0-4"
+        }
+       ]
+      },
+      {
+       "team": "Fulham",
+       "id": "370",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": -3,
+         "displayValue": "-3"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 19,
+         "displayValue": "19"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "0-2-3",
+         "displayValue": "0-2-3"
+        }
+       ]
+      },
+      {
+       "team": "Tottenham Hotspur",
+       "id": "367",
+       "stats": [
+        {
+         "name": "gamesPlayed",
+         "displayName": "Games Played",
+         "description": "Number of Games Played",
+         "abbreviation": "GP",
+         "type": "gamesplayed",
+         "value": 5,
+         "displayValue": "5"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "pointDifferential",
+         "displayName": "Goal Difference",
+         "description": "Goal Difference",
+         "abbreviation": "GD",
+         "type": "pointdifferential",
+         "value": -6,
+         "displayValue": "-6"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Points",
+         "abbreviation": "P",
+         "type": "points",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "ties",
+         "displayName": "Draws",
+         "description": "Draws",
+         "abbreviation": "D",
+         "type": "ties",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "rank",
+         "displayName": "Rank",
+         "description": "Rank",
+         "abbreviation": "R",
+         "type": "rank",
+         "value": 20,
+         "displayValue": "20"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Total",
+         "displayName": "Overall",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "0-2-3",
+         "displayValue": "0-2-3"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "English Premier League Standings"
+   }
+  ]
+ },
+ "odds": {
+  "markets": [
+   {
+    "provider": "DraftKings",
+    "providerId": "100",
+    "threeWay": true,
+    "homeMoneyLine": -275,
+    "awayMoneyLine": 700,
+    "drawMoneyLine": 400,
+    "homeImpliedProb": 0.7333,
+    "awayImpliedProb": 0.125,
+    "drawImpliedProb": 0.2,
+    "homeNoVigProb": 0.6929,
+    "awayNoVigProb": 0.1181,
+    "drawNoVigProb": 0.189,
+    "overround": 0.0583,
+    "noVigReason": null,
+    "homeSpread": -1.5,
+    "total": 2.5
+   }
+  ],
+  "consensus": {
+   "providerCount": 1,
+   "providers": [
+    "DraftKings"
+   ],
+   "homeNoVigProb": 0.6929,
+   "awayNoVigProb": 0.1181,
+   "drawNoVigProb": 0.189,
+   "homeSpread": -1.5,
+   "total": 2.5,
+   "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+   "reason": null
+  },
+  "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+  "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+ }
+}

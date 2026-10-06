@@ -1,0 +1,1833 @@
+{
+ "game": {
+  "id": "401918295",
+  "date": "2026-10-04T18:00Z",
+  "status": {
+   "state": "post",
+   "detail": "Final"
+  },
+  "competitors": [
+   {
+    "homeAway": "home",
+    "winner": true,
+    "team": {
+     "id": "20",
+     "abbrev": "ATL",
+     "name": "Dream",
+     "displayName": "Atlanta Dream"
+    },
+    "score": "92",
+    "linescores": [
+     "21",
+     "16",
+     "32",
+     "23"
+    ]
+   },
+   {
+    "homeAway": "away",
+    "winner": false,
+    "team": {
+     "id": "9",
+     "abbrev": "NY",
+     "name": "Liberty",
+     "displayName": "New York Liberty"
+    },
+    "score": "82",
+    "linescores": [
+     "24",
+     "16",
+     "15",
+     "27"
+    ]
+   }
+  ]
+ },
+ "boxscore": {
+  "teams": [
+   {
+    "team": {
+     "id": "9",
+     "abbrev": "NY",
+     "name": "Liberty",
+     "displayName": "New York Liberty"
+    },
+    "stats": [
+     {
+      "label": "FG",
+      "displayValue": "28-65"
+     },
+     {
+      "label": "Field Goal %",
+      "displayValue": "43"
+     },
+     {
+      "label": "3PT",
+      "displayValue": "11-28"
+     },
+     {
+      "label": "Three Point %",
+      "displayValue": "39"
+     },
+     {
+      "label": "FT",
+      "displayValue": "15-15"
+     },
+     {
+      "label": "Free Throw %",
+      "displayValue": "100"
+     },
+     {
+      "label": "Rebounds",
+      "displayValue": "34"
+     },
+     {
+      "label": "Offensive Rebounds",
+      "displayValue": "7"
+     },
+     {
+      "label": "Defensive Rebounds",
+      "displayValue": "27"
+     },
+     {
+      "label": "Assists",
+      "displayValue": "17"
+     },
+     {
+      "label": "Steals",
+      "displayValue": "6"
+     },
+     {
+      "label": "Blocks",
+      "displayValue": "9"
+     },
+     {
+      "label": "Turnovers",
+      "displayValue": "19"
+     },
+     {
+      "label": "Team Turnovers",
+      "displayValue": "2"
+     },
+     {
+      "label": "Total Turnovers",
+      "displayValue": "21"
+     },
+     {
+      "label": "Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Total Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Flagrant Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Points Conceded Off Turnovers",
+      "displayValue": "32"
+     },
+     {
+      "label": "Fast Break Points",
+      "displayValue": "0"
+     },
+     {
+      "label": "Points in Paint",
+      "displayValue": "30"
+     },
+     {
+      "label": "Fouls",
+      "displayValue": "17"
+     },
+     {
+      "label": "Largest Lead",
+      "displayValue": "6"
+     },
+     {
+      "label": "Lead Changes",
+      "displayValue": "15"
+     },
+     {
+      "label": "Percent Led",
+      "displayValue": "43"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "20",
+     "abbrev": "ATL",
+     "name": "Dream",
+     "displayName": "Atlanta Dream"
+    },
+    "stats": [
+     {
+      "label": "FG",
+      "displayValue": "32-71"
+     },
+     {
+      "label": "Field Goal %",
+      "displayValue": "45"
+     },
+     {
+      "label": "3PT",
+      "displayValue": "10-26"
+     },
+     {
+      "label": "Three Point %",
+      "displayValue": "38"
+     },
+     {
+      "label": "FT",
+      "displayValue": "18-23"
+     },
+     {
+      "label": "Free Throw %",
+      "displayValue": "78"
+     },
+     {
+      "label": "Rebounds",
+      "displayValue": "34"
+     },
+     {
+      "label": "Offensive Rebounds",
+      "displayValue": "9"
+     },
+     {
+      "label": "Defensive Rebounds",
+      "displayValue": "25"
+     },
+     {
+      "label": "Assists",
+      "displayValue": "20"
+     },
+     {
+      "label": "Steals",
+      "displayValue": "14"
+     },
+     {
+      "label": "Blocks",
+      "displayValue": "4"
+     },
+     {
+      "label": "Turnovers",
+      "displayValue": "13"
+     },
+     {
+      "label": "Team Turnovers",
+      "displayValue": "0"
+     },
+     {
+      "label": "Total Turnovers",
+      "displayValue": "13"
+     },
+     {
+      "label": "Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Total Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Flagrant Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Points Conceded Off Turnovers",
+      "displayValue": "14"
+     },
+     {
+      "label": "Fast Break Points",
+      "displayValue": "18"
+     },
+     {
+      "label": "Points in Paint",
+      "displayValue": "38"
+     },
+     {
+      "label": "Fouls",
+      "displayValue": "12"
+     },
+     {
+      "label": "Largest Lead",
+      "displayValue": "16"
+     },
+     {
+      "label": "Lead Changes",
+      "displayValue": "15"
+     },
+     {
+      "label": "Percent Led",
+      "displayValue": "55"
+     }
+    ]
+   }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "9",
+     "abbrev": "NY",
+     "name": "Liberty",
+     "displayName": "New York Liberty"
+    },
+    "categories": [
+     {
+      "name": "",
+      "athletes": [
+       {
+        "id": "2998928",
+        "name": "Breanna Stewart",
+        "jersey": "30",
+        "stats": {
+         "MIN": "40",
+         "PTS": "19",
+         "FG": "6-13",
+         "3PT": "1-3",
+         "FT": "6-6",
+         "REB": "2",
+         "AST": "3",
+         "TO": "2",
+         "STL": "3",
+         "BLK": "3",
+         "OREB": "0",
+         "DREB": "2",
+         "PF": "3",
+         "+/-": "-10"
+        }
+       },
+       {
+        "id": "4683006",
+        "name": "Leonie Fiebich",
+        "jersey": "13",
+        "stats": {
+         "MIN": "36",
+         "PTS": "9",
+         "FG": "3-7",
+         "3PT": "3-5",
+         "FT": "0-0",
+         "REB": "7",
+         "AST": "3",
+         "TO": "4",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "2",
+         "DREB": "5",
+         "PF": "3",
+         "+/-": "-8"
+        }
+       },
+       {
+        "id": "2999101",
+        "name": "Jonquel Jones",
+        "jersey": "35",
+        "stats": {
+         "MIN": "32",
+         "PTS": "12",
+         "FG": "4-9",
+         "3PT": "2-4",
+         "FT": "2-2",
+         "REB": "11",
+         "AST": "4",
+         "TO": "2",
+         "STL": "1",
+         "BLK": "5",
+         "OREB": "2",
+         "DREB": "9",
+         "PF": "3",
+         "+/-": "-9"
+        }
+       },
+       {
+        "id": "4066533",
+        "name": "Sabrina Ionescu",
+        "jersey": "20",
+        "stats": {
+         "MIN": "34",
+         "PTS": "27",
+         "FG": "10-20",
+         "3PT": "3-8",
+         "FT": "4-4",
+         "REB": "4",
+         "AST": "1",
+         "TO": "5",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "4",
+         "PF": "2",
+         "+/-": "-12"
+        }
+       },
+       {
+        "id": "5345320",
+        "name": "Pauline Astier",
+        "jersey": "18",
+        "stats": {
+         "MIN": "21",
+         "PTS": "9",
+         "FG": "4-7",
+         "3PT": "1-2",
+         "FT": "0-0",
+         "REB": "6",
+         "AST": "1",
+         "TO": "2",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "2",
+         "DREB": "4",
+         "PF": "2",
+         "+/-": "-4"
+        }
+       },
+       {
+        "id": "4337216",
+        "name": "Han Xu",
+        "jersey": "21",
+        "stats": {
+         "MIN": "8",
+         "PTS": "3",
+         "FG": "1-2",
+         "3PT": "1-2",
+         "FT": "0-0",
+         "REB": "2",
+         "AST": "1",
+         "TO": "2",
+         "STL": "0",
+         "BLK": "1",
+         "OREB": "0",
+         "DREB": "2",
+         "PF": "0",
+         "+/-": "-1"
+        }
+       },
+       {
+        "id": "2327695",
+        "name": "Rebekah Gardner",
+        "jersey": "7",
+        "stats": {
+         "MIN": "4",
+         "PTS": "0",
+         "FG": "0-0",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "0",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "1",
+         "+/-": "-6"
+        }
+       },
+       {
+        "id": "3102133",
+        "name": "Rebecca Allen",
+        "jersey": "9",
+        "stats": {
+         "MIN": "4",
+         "PTS": "0",
+         "FG": "0-1",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "0",
+         "AST": "0",
+         "TO": "0",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "0",
+         "+/-": "-2"
+        }
+       },
+       {
+        "id": "4038379",
+        "name": "Marine Johannes",
+        "jersey": "23",
+        "stats": {
+         "MIN": "9",
+         "PTS": "3",
+         "FG": "0-2",
+         "3PT": "0-1",
+         "FT": "3-3",
+         "REB": "0",
+         "AST": "1",
+         "TO": "2",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "1",
+         "+/-": "-1"
+        }
+       },
+       {
+        "id": "4790260",
+        "name": "Marine Fauthoux",
+        "jersey": "4",
+        "stats": {
+         "MIN": "12",
+         "PTS": "0",
+         "FG": "0-4",
+         "3PT": "0-3",
+         "FT": "0-0",
+         "REB": "2",
+         "AST": "3",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "1",
+         "PF": "2",
+         "+/-": "+3"
+        }
+       },
+       {
+        "id": "4281930",
+        "name": "Anneli Maley",
+        "jersey": "24",
+        "stats": {}
+       },
+       {
+        "id": "4790258",
+        "name": "Raquel Carrera",
+        "jersey": "14",
+        "stats": {}
+       }
+      ],
+      "totals": {
+       "MIN": "",
+       "PTS": "82",
+       "FG": "28-65",
+       "3PT": "11-28",
+       "FT": "15-15",
+       "REB": "34",
+       "AST": "17",
+       "TO": "19",
+       "STL": "6",
+       "BLK": "9",
+       "OREB": "7",
+       "DREB": "27",
+       "PF": "17",
+       "+/-": ""
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "20",
+     "abbrev": "ATL",
+     "name": "Dream",
+     "displayName": "Atlanta Dream"
+    },
+    "categories": [
+     {
+      "name": "",
+      "athletes": [
+       {
+        "id": "4398915",
+        "name": "Naz Hillmon",
+        "jersey": "00",
+        "stats": {
+         "MIN": "37",
+         "PTS": "0",
+         "FG": "0-2",
+         "3PT": "0-1",
+         "FT": "0-0",
+         "REB": "4",
+         "AST": "4",
+         "TO": "3",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "3",
+         "PF": "2",
+         "+/-": "+14"
+        }
+       },
+       {
+        "id": "4433402",
+        "name": "Angel Reese",
+        "jersey": "5",
+        "stats": {
+         "MIN": "34",
+         "PTS": "17",
+         "FG": "6-10",
+         "3PT": "1-1",
+         "FT": "4-6",
+         "REB": "7",
+         "AST": "2",
+         "TO": "4",
+         "STL": "4",
+         "BLK": "3",
+         "OREB": "4",
+         "DREB": "3",
+         "PF": "1",
+         "+/-": "+7"
+        }
+       },
+       {
+        "id": "3058901",
+        "name": "Allisha Gray",
+        "jersey": "15",
+        "stats": {
+         "MIN": "11",
+         "PTS": "7",
+         "FG": "1-5",
+         "3PT": "1-3",
+         "FT": "4-5",
+         "REB": "1",
+         "AST": "0",
+         "TO": "0",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "0",
+         "+/-": "0"
+        }
+       },
+       {
+        "id": "3142250",
+        "name": "Jordin Canada",
+        "jersey": "3",
+        "stats": {
+         "MIN": "32",
+         "PTS": "25",
+         "FG": "9-14",
+         "3PT": "4-6",
+         "FT": "3-3",
+         "REB": "1",
+         "AST": "4",
+         "TO": "2",
+         "STL": "5",
+         "BLK": "1",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "5",
+         "+/-": "+10"
+        }
+       },
+       {
+        "id": "4398674",
+        "name": "Rhyne Howard",
+        "jersey": "10",
+        "stats": {
+         "MIN": "40",
+         "PTS": "16",
+         "FG": "5-20",
+         "3PT": "1-8",
+         "FT": "5-6",
+         "REB": "8",
+         "AST": "8",
+         "TO": "3",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "7",
+         "PF": "3",
+         "+/-": "+10"
+        }
+       },
+       {
+        "id": "869",
+        "name": "DeWanna Bonner",
+        "jersey": "24",
+        "stats": {
+         "MIN": "30",
+         "PTS": "23",
+         "FG": "10-18",
+         "3PT": "3-6",
+         "FT": "0-1",
+         "REB": "9",
+         "AST": "2",
+         "TO": "0",
+         "STL": "2",
+         "BLK": "0",
+         "OREB": "2",
+         "DREB": "7",
+         "PF": "0",
+         "+/-": "+9"
+        }
+       },
+       {
+        "id": "5108587",
+        "name": "Madina Okot",
+        "jersey": "11",
+        "stats": {
+         "MIN": "2",
+         "PTS": "0",
+         "FG": "0-0",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "2",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "1",
+         "PF": "1",
+         "+/-": "-2"
+        }
+       },
+       {
+        "id": "4433431",
+        "name": "Te-Hina Paopao",
+        "jersey": "2",
+        "stats": {
+         "MIN": "4",
+         "PTS": "2",
+         "FG": "1-1",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "1",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "0",
+         "+/-": "-1"
+        }
+       },
+       {
+        "id": "5208983",
+        "name": "Isobel Borlase",
+        "jersey": "20",
+        "stats": {
+         "MIN": "10",
+         "PTS": "2",
+         "FG": "0-1",
+         "3PT": "0-1",
+         "FT": "2-2",
+         "REB": "1",
+         "AST": "0",
+         "TO": "1",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "0",
+         "+/-": "+3"
+        }
+       },
+       {
+        "id": "3058895",
+        "name": "Brionna Jones",
+        "jersey": "42",
+        "stats": {}
+       },
+       {
+        "id": "5017721",
+        "name": "Sika Kone",
+        "jersey": "23",
+        "stats": {}
+       },
+       {
+        "id": "3058893",
+        "name": "Shatori Walker-Kimbrough",
+        "jersey": "33",
+        "stats": {}
+       }
+      ],
+      "totals": {
+       "MIN": "",
+       "PTS": "92",
+       "FG": "32-71",
+       "3PT": "10-26",
+       "FT": "18-23",
+       "REB": "34",
+       "AST": "20",
+       "TO": "13",
+       "STL": "14",
+       "BLK": "4",
+       "OREB": "9",
+       "DREB": "25",
+       "PF": "12",
+       "+/-": ""
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "leaders": [
+  {
+   "team": {
+    "id": "20",
+    "abbrev": "ATL",
+    "name": "Atlanta Dream",
+    "displayName": "Atlanta Dream"
+   },
+   "categories": [
+    {
+     "name": "points",
+     "displayName": "Points",
+     "leaders": [
+      {
+       "athleteId": "3142250",
+       "athlete": "Jordin Canada",
+       "value": "25"
+      }
+     ]
+    },
+    {
+     "name": "assists",
+     "displayName": "Assists",
+     "leaders": [
+      {
+       "athleteId": "4398674",
+       "athlete": "Rhyne Howard",
+       "value": "8"
+      }
+     ]
+    },
+    {
+     "name": "rebounds",
+     "displayName": "Rebounds",
+     "leaders": [
+      {
+       "athleteId": "869",
+       "athlete": "DeWanna Bonner",
+       "value": "9"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "team": {
+    "id": "9",
+    "abbrev": "NY",
+    "name": "New York Liberty",
+    "displayName": "New York Liberty"
+   },
+   "categories": [
+    {
+     "name": "points",
+     "displayName": "Points",
+     "leaders": [
+      {
+       "athleteId": "4066533",
+       "athlete": "Sabrina Ionescu",
+       "value": "27"
+      }
+     ]
+    },
+    {
+     "name": "assists",
+     "displayName": "Assists",
+     "leaders": [
+      {
+       "athleteId": "2999101",
+       "athlete": "Jonquel Jones",
+       "value": "4"
+      }
+     ]
+    },
+    {
+     "name": "rebounds",
+     "displayName": "Rebounds",
+     "leaders": [
+      {
+       "athleteId": "2999101",
+       "athlete": "Jonquel Jones",
+       "value": "11"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "plays": {
+  "count": 80,
+  "scoring": [
+   {
+    "id": "4019182959",
+    "period": 1,
+    "clock": "9:24",
+    "text": "Pauline Astier makes 1-foot two point shot (Breanna Stewart assists)",
+    "scoringPlay": true,
+    "homeScore": "0",
+    "awayScore": "2",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829511",
+    "period": 1,
+    "clock": "9:07",
+    "text": "Allisha Gray makes 24-foot three point jumper (Naz Hillmon assists)",
+    "scoringPlay": true,
+    "homeScore": "3",
+    "awayScore": "2",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829520",
+    "period": 1,
+    "clock": "7:58",
+    "text": "Breanna Stewart makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "3",
+    "awayScore": "3",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829521",
+    "period": 1,
+    "clock": "7:58",
+    "text": "Breanna Stewart makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "3",
+    "awayScore": "4",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829522",
+    "period": 1,
+    "clock": "7:42",
+    "text": "Angel Reese makes 24-foot three point jumper (Rhyne Howard assists)",
+    "scoringPlay": true,
+    "homeScore": "6",
+    "awayScore": "4",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829529",
+    "period": 1,
+    "clock": "6:55",
+    "text": "Sabrina Ionescu makes 3-foot two point shot",
+    "scoringPlay": true,
+    "homeScore": "6",
+    "awayScore": "6",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829531",
+    "period": 1,
+    "clock": "6:28",
+    "text": "Jonquel Jones makes 3-foot two point shot (Sabrina Ionescu assists)",
+    "scoringPlay": true,
+    "homeScore": "6",
+    "awayScore": "8",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829539",
+    "period": 1,
+    "clock": "6:00",
+    "text": "Allisha Gray makes free throw 1 of 3",
+    "scoringPlay": true,
+    "homeScore": "7",
+    "awayScore": "8",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829540",
+    "period": 1,
+    "clock": "6:00",
+    "text": "Allisha Gray makes free throw 2 of 3",
+    "scoringPlay": true,
+    "homeScore": "8",
+    "awayScore": "8",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829543",
+    "period": 1,
+    "clock": "6:00",
+    "text": "Allisha Gray makes free throw 3 of 3",
+    "scoringPlay": true,
+    "homeScore": "9",
+    "awayScore": "8",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829545",
+    "period": 1,
+    "clock": "5:37",
+    "text": "Pauline Astier makes 26-foot three pointer",
+    "scoringPlay": true,
+    "homeScore": "9",
+    "awayScore": "11",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829563",
+    "period": 1,
+    "clock": "4:48",
+    "text": "Breanna Stewart makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "9",
+    "awayScore": "12",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829564",
+    "period": 1,
+    "clock": "4:48",
+    "text": "Breanna Stewart makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "9",
+    "awayScore": "13",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829565",
+    "period": 1,
+    "clock": "4:36",
+    "text": "DeWanna Bonner makes 22-foot three point jumper (Rhyne Howard assists)",
+    "scoringPlay": true,
+    "homeScore": "12",
+    "awayScore": "13",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829569",
+    "period": 1,
+    "clock": "4:16",
+    "text": "Jordin Canada makes running layup",
+    "scoringPlay": true,
+    "homeScore": "14",
+    "awayScore": "13",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829572",
+    "period": 1,
+    "clock": "4:00",
+    "text": "Sabrina Ionescu makes 11-foot floating jump shot (Leonie Fiebich assists)",
+    "scoringPlay": true,
+    "homeScore": "14",
+    "awayScore": "15",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829579",
+    "period": 1,
+    "clock": "3:37",
+    "text": "DeWanna Bonner makes 12-foot two point shot",
+    "scoringPlay": true,
+    "homeScore": "16",
+    "awayScore": "15",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829580",
+    "period": 1,
+    "clock": "3:22",
+    "text": "Breanna Stewart makes 5-foot two point shot (Han Xu assists)",
+    "scoringPlay": true,
+    "homeScore": "16",
+    "awayScore": "17",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829584",
+    "period": 1,
+    "clock": "2:52",
+    "text": "Sabrina Ionescu makes driving layup",
+    "scoringPlay": true,
+    "homeScore": "16",
+    "awayScore": "19",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829590",
+    "period": 1,
+    "clock": "2:23",
+    "text": "Leonie Fiebich makes 24-foot three point jumper (Marine Johannes assists)",
+    "scoringPlay": true,
+    "homeScore": "16",
+    "awayScore": "22",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829592",
+    "period": 1,
+    "clock": "2:02",
+    "text": "Jordin Canada makes 24-foot three point jumper (DeWanna Bonner assists)",
+    "scoringPlay": true,
+    "homeScore": "19",
+    "awayScore": "22",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829596",
+    "period": 1,
+    "clock": "1:42",
+    "text": "DeWanna Bonner makes running layup (Jordin Canada assists)",
+    "scoringPlay": true,
+    "homeScore": "21",
+    "awayScore": "22",
+    "teamId": "20"
+   },
+   {
+    "id": "401918295101",
+    "period": 1,
+    "clock": "1:07",
+    "text": "Sabrina Ionescu makes 13-foot step back jumpshot",
+    "scoringPlay": true,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "9"
+   }
+  ],
+  "recent": [
+   {
+    "id": "40191829587",
+    "period": 1,
+    "clock": "2:38",
+    "text": "Marine Johannes enters the game for Rebekah Gardner",
+    "scoringPlay": false,
+    "homeScore": "16",
+    "awayScore": "19",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829590",
+    "period": 1,
+    "clock": "2:23",
+    "text": "Leonie Fiebich makes 24-foot three point jumper (Marine Johannes assists)",
+    "scoringPlay": true,
+    "homeScore": "16",
+    "awayScore": "22",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829592",
+    "period": 1,
+    "clock": "2:02",
+    "text": "Jordin Canada makes 24-foot three point jumper (DeWanna Bonner assists)",
+    "scoringPlay": true,
+    "homeScore": "19",
+    "awayScore": "22",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829594",
+    "period": 1,
+    "clock": "1:46",
+    "text": "Han Xu bad pass\nturnover (Jordin Canada steals)",
+    "scoringPlay": false,
+    "homeScore": "19",
+    "awayScore": "22",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829596",
+    "period": 1,
+    "clock": "1:42",
+    "text": "DeWanna Bonner makes running layup (Jordin Canada assists)",
+    "scoringPlay": true,
+    "homeScore": "21",
+    "awayScore": "22",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829597",
+    "period": 1,
+    "clock": "1:30",
+    "text": "Sabrina Ionescu misses driving layup",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "22",
+    "teamId": "9"
+   },
+   {
+    "id": "40191829598",
+    "period": 1,
+    "clock": "1:29",
+    "text": "Naz Hillmon defensive rebound",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "22",
+    "teamId": "20"
+   },
+   {
+    "id": "40191829599",
+    "period": 1,
+    "clock": "1:18",
+    "text": "DeWanna Bonner misses 24-foot three point pullup jump shot",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "22",
+    "teamId": "20"
+   },
+   {
+    "id": "401918295100",
+    "period": 1,
+    "clock": "1:17",
+    "text": "Breanna Stewart defensive rebound",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "22",
+    "teamId": "9"
+   },
+   {
+    "id": "401918295101",
+    "period": 1,
+    "clock": "1:07",
+    "text": "Sabrina Ionescu makes 13-foot step back jumpshot",
+    "scoringPlay": true,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "9"
+   },
+   {
+    "id": "401918295102",
+    "period": 1,
+    "clock": "58.9",
+    "text": "Jordin Canada traveling turnover",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "20"
+   },
+   {
+    "id": "401918295103",
+    "period": 1,
+    "clock": "58.9",
+    "text": "Te-Hina Paopao enters the game for Jordin Canada",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "20"
+   },
+   {
+    "id": "401918295104",
+    "period": 1,
+    "clock": "58.9",
+    "text": "Angel Reese enters the game for DeWanna Bonner",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "20"
+   },
+   {
+    "id": "401918295105",
+    "period": 1,
+    "clock": "58.9",
+    "text": "Jonquel Jones enters the game for Han Xu",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "9"
+   },
+   {
+    "id": "401918295109",
+    "period": 1,
+    "clock": "46.9",
+    "text": "Sabrina Ionescu misses driving layup",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "9"
+   },
+   {
+    "id": "401918295110",
+    "period": 1,
+    "clock": "45.3",
+    "text": "Leonie Fiebich offensive rebound",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "9"
+   },
+   {
+    "id": "401918295111",
+    "period": 1,
+    "clock": "40.4",
+    "text": "Leonie Fiebich misses 25-foot three point step back jumpshot",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "9"
+   },
+   {
+    "id": "401918295112",
+    "period": 1,
+    "clock": "38.0",
+    "text": "Naz Hillmon defensive rebound",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "20"
+   },
+   {
+    "id": "401918295113",
+    "period": 1,
+    "clock": "27.0",
+    "text": "Rhyne Howard misses two point shot",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "20"
+   },
+   {
+    "id": "401918295114",
+    "period": 1,
+    "clock": "25.7",
+    "text": "Jonquel Jones defensive rebound",
+    "scoringPlay": false,
+    "homeScore": "21",
+    "awayScore": "24",
+    "teamId": "9"
+   }
+  ]
+ },
+ "winProbability": {
+  "count": 80,
+  "samples": [
+   {
+    "playId": "4019182954",
+    "homeWinPercentage": 0.649
+   },
+   {
+    "playId": "40191829511",
+    "homeWinPercentage": 0.64
+   },
+   {
+    "playId": "40191829516",
+    "homeWinPercentage": 0.652
+   },
+   {
+    "playId": "40191829522",
+    "homeWinPercentage": 0.672
+   },
+   {
+    "playId": "40191829527",
+    "homeWinPercentage": 0.678
+   },
+   {
+    "playId": "40191829531",
+    "homeWinPercentage": 0.593
+   },
+   {
+    "playId": "40191829536",
+    "homeWinPercentage": 0.592
+   },
+   {
+    "playId": "40191829541",
+    "homeWinPercentage": 0.655
+   },
+   {
+    "playId": "40191829548",
+    "homeWinPercentage": 0.587
+   },
+   {
+    "playId": "40191829554",
+    "homeWinPercentage": 0.58
+   },
+   {
+    "playId": "40191829560",
+    "homeWinPercentage": 0.518
+   },
+   {
+    "playId": "40191829565",
+    "homeWinPercentage": 0.584
+   },
+   {
+    "playId": "40191829571",
+    "homeWinPercentage": 0.64
+   },
+   {
+    "playId": "40191829576",
+    "homeWinPercentage": 0.608
+   },
+   {
+    "playId": "40191829583",
+    "homeWinPercentage": 0.578
+   },
+   {
+    "playId": "40191829587",
+    "homeWinPercentage": 0.521
+   },
+   {
+    "playId": "40191829596",
+    "homeWinPercentage": 0.573
+   },
+   {
+    "playId": "401918295100",
+    "homeWinPercentage": 0.571
+   },
+   {
+    "playId": "401918295104",
+    "homeWinPercentage": 0.515
+   },
+   {
+    "playId": "401918295111",
+    "homeWinPercentage": 0.534
+   },
+   {
+    "playId": "401918295114",
+    "homeWinPercentage": 0.512
+   }
+  ]
+ },
+ "gameInfo": {
+  "venue": {
+   "id": "1827",
+   "fullName": "State Farm Arena",
+   "address": {
+    "city": "Atlanta",
+    "state": "GA"
+   },
+   "grass": false
+  },
+  "attendance": 9745,
+  "officials": [
+   {
+    "fullName": "Roy Gulbeyan",
+    "displayName": "Roy Gulbeyan",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "40"
+    },
+    "order": 1
+   },
+   {
+    "fullName": "Angel Kent",
+    "displayName": "Angel Kent",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "40"
+    },
+    "order": 2
+   },
+   {
+    "fullName": "Ashley Gloss",
+    "displayName": "Ashley Gloss",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "40"
+    },
+    "order": 3
+   }
+  ]
+ },
+ "standings": {
+  "fullViewLink": {
+   "text": "Full Standings"
+  },
+  "header": "2025-26 Standings",
+  "groups": [
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "Atlanta",
+       "id": "20",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 14,
+         "displayValue": "14"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 5,
+         "displayValue": "W5"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.6818182,
+         "displayValue": ".682"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 30,
+         "displayValue": "30"
+        }
+       ]
+      },
+      {
+       "team": "Washington",
+       "id": "16",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 16,
+         "displayValue": "16"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 4,
+         "displayValue": "W4"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.6363636,
+         "displayValue": ".636"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 28,
+         "displayValue": "28"
+        }
+       ]
+      },
+      {
+       "team": "Indiana",
+       "id": "5",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 16,
+         "displayValue": "16"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": -1,
+         "displayValue": "L1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.6363636,
+         "displayValue": ".636"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 28,
+         "displayValue": "28"
+        }
+       ]
+      },
+      {
+       "team": "New York",
+       "id": "9",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 18,
+         "displayValue": "18"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": -2,
+         "displayValue": "L2"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.59090906,
+         "displayValue": ".591"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 26,
+         "displayValue": "26"
+        }
+       ]
+      },
+      {
+       "team": "Chicago",
+       "id": "19",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 14,
+         "displayValue": "14"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 28,
+         "displayValue": "28"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": -1,
+         "displayValue": "L1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.36363637,
+         "displayValue": ".364"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 16,
+         "displayValue": "16"
+        }
+       ]
+      },
+      {
+       "team": "Toronto",
+       "id": "131935",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 19,
+         "displayValue": "19"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 33,
+         "displayValue": "33"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": -8,
+         "displayValue": "L8"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.25,
+         "displayValue": ".250"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 11,
+         "displayValue": "11"
+        }
+       ]
+      },
+      {
+       "team": "Connecticut",
+       "id": "18",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 19,
+         "displayValue": "19"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 33,
+         "displayValue": "33"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 1,
+         "displayValue": "W1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.25,
+         "displayValue": ".250"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 11,
+         "displayValue": "11"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2025-26 Eastern Conference Standings",
+    "conferenceHeader": "Women's National Basketball Assoc.",
+    "divisionHeader": "Eastern Conference"
+   }
+  ],
+  "isSameConference": true
+ },
+ "odds": {
+  "markets": [
+   {
+    "provider": "DraftKings",
+    "providerId": "100",
+    "threeWay": false,
+    "homeMoneyLine": -192,
+    "awayMoneyLine": 160,
+    "drawMoneyLine": null,
+    "homeImpliedProb": 0.6575,
+    "awayImpliedProb": 0.3846,
+    "drawImpliedProb": null,
+    "homeNoVigProb": 0.6309,
+    "awayNoVigProb": 0.3691,
+    "drawNoVigProb": null,
+    "overround": 0.0421,
+    "noVigReason": null,
+    "homeSpread": -4.5,
+    "total": 172.5
+   }
+  ],
+  "consensus": {
+   "providerCount": 1,
+   "providers": [
+    "DraftKings"
+   ],
+   "homeNoVigProb": 0.6309,
+   "awayNoVigProb": 0.3691,
+   "drawNoVigProb": null,
+   "homeSpread": -4.5,
+   "total": 172.5,
+   "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+   "reason": null
+  },
+  "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+  "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+ }
+}

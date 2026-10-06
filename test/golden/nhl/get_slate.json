@@ -1,0 +1,440 @@
+{
+ "sport": "hockey",
+ "league": "nhl",
+ "gameCount": 9,
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "keyInjuryStatuses": [
+  "Out",
+  "Doubtful"
+ ],
+ "injuriesAvailable": true,
+ "games": [
+  {
+   "eventId": "401891815",
+   "startUtc": "2026-10-06T23:00Z",
+   "name": "CAR @ MTL",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "10",
+    "abbrev": "MTL",
+    "name": "Montreal Canadiens",
+    "record": "1-0-1",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 5
+   },
+   "away": {
+    "id": "7",
+    "abbrev": "CAR",
+    "name": "Carolina Hurricanes",
+    "record": "1-1-1",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Alexander Nikishin",
+      "position": "D",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-10"
+     }
+    ],
+    "otherInjuryCount": 1
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.4783,
+    "awayNoVigProb": 0.5217,
+    "drawNoVigProb": null,
+    "homeMoneyLine": 100,
+    "awayMoneyLine": -120,
+    "drawMoneyLine": null,
+    "homeSpread": 1.5,
+    "total": 6.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401892449",
+   "startUtc": "2026-10-06T23:00Z",
+   "name": "NSH @ TOR",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "21",
+    "abbrev": "TOR",
+    "name": "Toronto Maple Leafs",
+    "record": "1-2-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 5
+   },
+   "away": {
+    "id": "27",
+    "abbrev": "NSH",
+    "name": "Nashville Predators",
+    "record": "1-1-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 1
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.583,
+    "awayNoVigProb": 0.417,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -155,
+    "awayMoneyLine": 130,
+    "drawMoneyLine": null,
+    "homeSpread": -1.5,
+    "total": 5.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401892450",
+   "startUtc": "2026-10-06T23:00Z",
+   "name": "OTT @ DET",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "5",
+    "abbrev": "DET",
+    "name": "Detroit Red Wings",
+    "record": "0-2-0",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Simon Edvinsson",
+      "position": "D",
+      "status": "Out",
+      "injury": "Contract Dispute",
+      "returnDate": "2026-10-10"
+     }
+    ],
+    "otherInjuryCount": 5
+   },
+   "away": {
+    "id": "14",
+    "abbrev": "OTT",
+    "name": "Ottawa Senators",
+    "record": "2-0-0",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Jake Sanderson",
+      "position": "D",
+      "status": "Out",
+      "injury": "Lower Body",
+      "returnDate": "2026-10-08"
+     }
+    ],
+    "otherInjuryCount": 5
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.5,
+    "awayNoVigProb": 0.5,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -110,
+    "awayMoneyLine": -110,
+    "drawMoneyLine": null,
+    "homeSpread": 1.5,
+    "total": 5.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401892451",
+   "startUtc": "2026-10-06T23:00Z",
+   "name": "UTA @ NJ",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "11",
+    "abbrev": "NJ",
+    "name": "New Jersey Devils",
+    "record": "1-1-0",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Connor Brown",
+      "position": "RW",
+      "status": "Out",
+      "injury": "Lower Body",
+      "returnDate": "2026-10-12"
+     }
+    ],
+    "otherInjuryCount": 3
+   },
+   "away": {
+    "id": "129764",
+    "abbrev": "UTA",
+    "name": "Utah Mammoth",
+    "record": "2-1-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 1
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.5427,
+    "awayNoVigProb": 0.4573,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -130,
+    "awayMoneyLine": 110,
+    "drawMoneyLine": null,
+    "homeSpread": -1.5,
+    "total": 6.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401892453",
+   "startUtc": "2026-10-06T23:00Z",
+   "name": "MIN @ BUF",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "2",
+    "abbrev": "BUF",
+    "name": "Buffalo Sabres",
+    "record": "1-1-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 5
+   },
+   "away": {
+    "id": "30",
+    "abbrev": "MIN",
+    "name": "Minnesota Wild",
+    "record": "2-0-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 3
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.4957,
+    "awayNoVigProb": 0.5043,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -108,
+    "awayMoneyLine": -112,
+    "drawMoneyLine": null,
+    "homeSpread": 1.5,
+    "total": 6.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401892452",
+   "startUtc": "2026-10-06T23:30Z",
+   "name": "NYI @ NYR",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:30 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "13",
+    "abbrev": "NYR",
+    "name": "New York Rangers",
+    "record": "3-1-0",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Joe Veleno",
+      "position": "C",
+      "status": "Out",
+      "injury": "Lower Body",
+      "returnDate": "2026-10-09"
+     }
+    ],
+    "otherInjuryCount": 3
+   },
+   "away": {
+    "id": "12",
+    "abbrev": "NYI",
+    "name": "New York Islanders",
+    "record": "1-1-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 1
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.583,
+    "awayNoVigProb": 0.417,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -155,
+    "awayMoneyLine": 130,
+    "drawMoneyLine": null,
+    "homeSpread": -1.5,
+    "total": 5.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401891779",
+   "startUtc": "2026-10-07T00:00Z",
+   "name": "STL @ CHI",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 8:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "4",
+    "abbrev": "CHI",
+    "name": "Chicago Blackhawks",
+    "record": "0-3-0",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Andrew Mangiapane",
+      "position": "LW",
+      "status": "Out",
+      "injury": "Lower Body",
+      "returnDate": "2026-10-25"
+     }
+    ],
+    "otherInjuryCount": 1
+   },
+   "away": {
+    "id": "19",
+    "abbrev": "STL",
+    "name": "St. Louis Blues",
+    "record": "1-1-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 4
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.4279,
+    "awayNoVigProb": 0.5721,
+    "drawNoVigProb": null,
+    "homeMoneyLine": 124,
+    "awayMoneyLine": -148,
+    "drawMoneyLine": null,
+    "homeSpread": 1.5,
+    "total": 5.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401892454",
+   "startUtc": "2026-10-07T01:00Z",
+   "name": "VGK @ SEA",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 9:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "124292",
+    "abbrev": "SEA",
+    "name": "Seattle Kraken",
+    "record": "2-1-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 2
+   },
+   "away": {
+    "id": "37",
+    "abbrev": "VGK",
+    "name": "Vegas Golden Knights",
+    "record": "2-1-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 2
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.3836,
+    "awayNoVigProb": 0.6164,
+    "drawNoVigProb": null,
+    "homeMoneyLine": 150,
+    "awayMoneyLine": -180,
+    "drawMoneyLine": null,
+    "homeSpread": 1.5,
+    "total": 6.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401891806",
+   "startUtc": "2026-10-07T02:00Z",
+   "name": "FLA @ LA",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 10:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "8",
+    "abbrev": "LA",
+    "name": "Los Angeles Kings",
+    "record": "0-1-1",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 4
+   },
+   "away": {
+    "id": "26",
+    "abbrev": "FLA",
+    "name": "Florida Panthers",
+    "record": "1-0-2",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 4
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.4739,
+    "awayNoVigProb": 0.5261,
+    "drawNoVigProb": null,
+    "homeMoneyLine": 102,
+    "awayMoneyLine": -122,
+    "drawMoneyLine": null,
+    "homeSpread": 1.5,
+    "total": 5.5,
+    "reason": null
+   }
+  }
+ ]
+}

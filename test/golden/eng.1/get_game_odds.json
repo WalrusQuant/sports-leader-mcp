@@ -1,0 +1,100 @@
+{
+ "eventId": "401879268",
+ "startUtc": "2026-10-10T11:30Z",
+ "homeTeam": {
+  "id": "359",
+  "abbrev": "ARS"
+ },
+ "awayTeam": {
+  "id": "357",
+  "abbrev": "LEE"
+ },
+ "consensus": {
+  "providerCount": 2,
+  "providers": [
+   "DraftKings",
+   "Bet 365"
+  ],
+  "homeNoVigProb": 0.6819,
+  "awayNoVigProb": 0.1208,
+  "drawNoVigProb": 0.1974,
+  "homeSpread": -1.5,
+  "total": 2.5,
+  "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+  "reason": null
+ },
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "count": 2,
+ "odds": [
+  {
+   "provider": "DraftKings",
+   "details": "ARS -275",
+   "spread": -1.5,
+   "overUnder": 2.5,
+   "overOdds": -140,
+   "underOdds": 110,
+   "home": {
+    "favorite": true,
+    "moneyLine": -275,
+    "spreadOdds": 100
+   },
+   "away": {
+    "favorite": false,
+    "moneyLine": 700,
+    "spreadOdds": -150
+   },
+   "open": {
+    "total": "2.5",
+    "homeSpread": "-1.5",
+    "homeMoneyLine": "-340",
+    "awaySpread": "+1.5",
+    "awayMoneyLine": "+800"
+   },
+   "current": {
+    "total": "2.5",
+    "homeSpread": "-1.5",
+    "homeMoneyLine": "-275",
+    "awaySpread": "+1.5",
+    "awayMoneyLine": "+700"
+   },
+   "providerId": "100",
+   "threeWay": true,
+   "homeMoneyLine": -275,
+   "awayMoneyLine": 700,
+   "drawMoneyLine": 400,
+   "homeImpliedProb": 0.7333,
+   "awayImpliedProb": 0.125,
+   "drawImpliedProb": 0.2,
+   "homeNoVigProb": 0.6929,
+   "awayNoVigProb": 0.1181,
+   "drawNoVigProb": 0.189,
+   "overround": 0.0583,
+   "noVigReason": null,
+   "homeSpread": -1.5,
+   "total": 2.5
+  },
+  {
+   "provider": "Bet 365",
+   "home": {},
+   "away": {},
+   "open": {},
+   "current": {},
+   "providerId": "2000",
+   "threeWay": true,
+   "homeMoneyLine": -263,
+   "awayMoneyLine": 650,
+   "drawMoneyLine": 350,
+   "homeImpliedProb": 0.7245,
+   "awayImpliedProb": 0.1333,
+   "drawImpliedProb": 0.2222,
+   "homeNoVigProb": 0.6708,
+   "awayNoVigProb": 0.1234,
+   "drawNoVigProb": 0.2057,
+   "overround": 0.0801,
+   "noVigReason": null,
+   "homeSpread": null,
+   "total": null
+  }
+ ]
+}

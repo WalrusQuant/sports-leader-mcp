@@ -1,0 +1,279 @@
+{
+ "sport": "soccer",
+ "league": "eng.1",
+ "gameCount": 6,
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "keyInjuryStatuses": [
+  "Out",
+  "Doubtful"
+ ],
+ "injuriesAvailable": true,
+ "injuriesNote": "ESPN returned an empty injury report for this league; an empty keyInjuries list does not confirm a healthy roster.",
+ "games": [
+  {
+   "eventId": "401879268",
+   "startUtc": "2026-10-10T11:30Z",
+   "name": "LEE @ ARS",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "359",
+    "abbrev": "ARS",
+    "name": "Arsenal",
+    "record": "4-0-1",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "357",
+    "abbrev": "LEE",
+    "name": "Leeds United",
+    "record": "2-3-0",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "DraftKings"
+    ],
+    "homeNoVigProb": 0.6929,
+    "awayNoVigProb": 0.1181,
+    "drawNoVigProb": 0.189,
+    "homeMoneyLine": -275,
+    "awayMoneyLine": 700,
+    "drawMoneyLine": 400,
+    "homeSpread": -1.5,
+    "total": 2.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401878776",
+   "startUtc": "2026-10-10T14:00Z",
+   "name": "BRE @ AVL",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "362",
+    "abbrev": "AVL",
+    "name": "Aston Villa",
+    "record": "1-1-3",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "337",
+    "abbrev": "BRE",
+    "name": "Brentford",
+    "record": "2-3-0",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "DraftKings"
+    ],
+    "homeNoVigProb": 0.3634,
+    "awayNoVigProb": 0.3705,
+    "drawNoVigProb": 0.2661,
+    "homeMoneyLine": 160,
+    "awayMoneyLine": 155,
+    "drawMoneyLine": 255,
+    "homeSpread": 0.5,
+    "total": 2.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401878775",
+   "startUtc": "2026-10-10T14:00Z",
+   "name": "BOU @ CHE",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "363",
+    "abbrev": "CHE",
+    "name": "Chelsea",
+    "record": "2-1-2",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "349",
+    "abbrev": "BOU",
+    "name": "AFC Bournemouth",
+    "record": "0-3-2",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "DraftKings"
+    ],
+    "homeNoVigProb": 0.5568,
+    "awayNoVigProb": 0.2138,
+    "drawNoVigProb": 0.2294,
+    "homeMoneyLine": -145,
+    "awayMoneyLine": 340,
+    "drawMoneyLine": 310,
+    "homeSpread": -0.5,
+    "total": 3.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401879265",
+   "startUtc": "2026-10-10T14:00Z",
+   "name": "FUL @ IPS",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "373",
+    "abbrev": "IPS",
+    "name": "Ipswich Town",
+    "record": "2-0-3",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "370",
+    "abbrev": "FUL",
+    "name": "Fulham",
+    "record": "0-2-3",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "DraftKings"
+    ],
+    "homeNoVigProb": 0.3563,
+    "awayNoVigProb": 0.3777,
+    "drawNoVigProb": 0.266,
+    "homeMoneyLine": 165,
+    "awayMoneyLine": 150,
+    "drawMoneyLine": 255,
+    "homeSpread": 0.5,
+    "total": 2.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401878772",
+   "startUtc": "2026-10-10T14:00Z",
+   "name": "BHA @ SUN",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "366",
+    "abbrev": "SUN",
+    "name": "Sunderland",
+    "record": "1-1-3",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "331",
+    "abbrev": "BHA",
+    "name": "Brighton & Hove Albion",
+    "record": "3-1-1",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "DraftKings"
+    ],
+    "homeNoVigProb": 0.3304,
+    "awayNoVigProb": 0.4006,
+    "drawNoVigProb": 0.269,
+    "homeMoneyLine": 185,
+    "awayMoneyLine": 135,
+    "drawMoneyLine": 250,
+    "homeSpread": 0.5,
+    "total": 2.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401878773",
+   "startUtc": "2026-10-10T16:30Z",
+   "name": "TOT @ MAN",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "360",
+    "abbrev": "MAN",
+    "name": "Manchester United",
+    "record": "1-2-2",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "367",
+    "abbrev": "TOT",
+    "name": "Tottenham Hotspur",
+    "record": "0-2-3",
+    "winner": false,
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "DraftKings"
+    ],
+    "homeNoVigProb": 0.5598,
+    "awayNoVigProb": 0.215,
+    "drawNoVigProb": 0.2252,
+    "homeMoneyLine": -145,
+    "awayMoneyLine": 340,
+    "drawMoneyLine": 320,
+    "homeSpread": -0.5,
+    "total": 3.5,
+    "reason": null
+   }
+  }
+ ]
+}

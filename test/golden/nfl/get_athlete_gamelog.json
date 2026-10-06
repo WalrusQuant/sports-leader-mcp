@@ -1,0 +1,44 @@
+{
+ "labels": [
+  "CMP",
+  "ATT",
+  "YDS",
+  "CMP%",
+  "AVG",
+  "TD",
+  "INT",
+  "LNG",
+  "SACK",
+  "RTG",
+  "QBR",
+  "CAR",
+  "YDS",
+  "AVG",
+  "TD",
+  "LNG"
+ ],
+ "games": [
+  {
+   "eventId": "401872965",
+   "date": "2026-10-04T13:30:00.000+00:00",
+   "opponent": "IND",
+   "homeAway": "H",
+   "result": "L",
+   "score": "30-13",
+   "stats": {
+    "CMP": "15",
+    "ATT": "33",
+    "YDS": "16",
+    "CMP%": "45.5",
+    "AVG": "5.3",
+    "TD": "0",
+    "INT": "1",
+    "LNG": "9",
+    "SACK": "1",
+    "RTG": "60.9",
+    "QBR": "20.7",
+    "CAR": "3"
+   }
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+ "eventId": "401918297",
+ "startUtc": "2026-10-07T23:30Z",
+ "homeTeam": {
+  "id": "20",
+  "abbrev": "ATL"
+ },
+ "awayTeam": {
+  "id": "9",
+  "abbrev": "NY"
+ },
+ "consensus": {
+  "providerCount": 1,
+  "providers": [
+   "DraftKings"
+  ],
+  "homeNoVigProb": 0.5635,
+  "awayNoVigProb": 0.4365,
+  "drawNoVigProb": null,
+  "homeSpread": -2.5,
+  "total": 170.5,
+  "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+  "reason": null
+ },
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "count": 1,
+ "odds": [
+  {
+   "provider": "DraftKings",
+   "details": "ATL -2.5",
+   "spread": -2.5,
+   "overUnder": 170.5,
+   "overOdds": -110,
+   "underOdds": -110,
+   "home": {
+    "favorite": true,
+    "moneyLine": -142,
+    "spreadOdds": -112
+   },
+   "away": {
+    "favorite": false,
+    "moneyLine": 120,
+    "spreadOdds": -108
+   },
+   "open": {
+    "total": "171.5",
+    "homeSpread": "-4.5",
+    "homeMoneyLine": "-180",
+    "awaySpread": "+4.5",
+    "awayMoneyLine": "+150"
+   },
+   "current": {
+    "total": "170.5",
+    "homeSpread": "-2.5",
+    "homeMoneyLine": "-142",
+    "awaySpread": "+2.5",
+    "awayMoneyLine": "+120"
+   },
+   "providerId": "100",
+   "threeWay": false,
+   "homeMoneyLine": -142,
+   "awayMoneyLine": 120,
+   "drawMoneyLine": null,
+   "homeImpliedProb": 0.5868,
+   "awayImpliedProb": 0.4545,
+   "drawImpliedProb": null,
+   "homeNoVigProb": 0.5635,
+   "awayNoVigProb": 0.4365,
+   "drawNoVigProb": null,
+   "overround": 0.0413,
+   "noVigReason": null,
+   "homeSpread": -2.5,
+   "total": 170.5
+  }
+ ]
+}

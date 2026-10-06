@@ -1,0 +1,942 @@
+{
+ "events": [
+  {
+   "id": "401872981",
+   "date": "2026-10-11T13:30Z",
+   "name": "PHI VS JAX",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 9:30 AM EDT"
+   },
+   "venue": {
+    "name": "Tottenham Hotspur Stadium",
+    "city": "London"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "30",
+      "abbrev": "JAX",
+      "name": "Jaguars",
+      "displayName": "Jacksonville Jaguars"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "21",
+      "abbrev": "PHI",
+      "name": "Eagles",
+      "displayName": "Philadelphia Eagles"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -285,
+      "awayMoneyLine": 230,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.7403,
+      "awayImpliedProb": 0.303,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.7095,
+      "awayNoVigProb": 0.2905,
+      "drawNoVigProb": null,
+      "overround": 0.0433,
+      "noVigReason": null,
+      "homeSpread": -6.5,
+      "total": 42.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.7095,
+     "awayNoVigProb": 0.2905,
+     "drawNoVigProb": null,
+     "homeSpread": -6.5,
+     "total": 42.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872990",
+   "date": "2026-10-11T17:00Z",
+   "name": "CHI @ GB",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "venue": {
+    "name": "Lambeau Field",
+    "city": "Green Bay"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "9",
+      "abbrev": "GB",
+      "name": "Packers",
+      "displayName": "Green Bay Packers"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "3",
+      "abbrev": "CHI",
+      "name": "Bears",
+      "displayName": "Chicago Bears"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": 130,
+      "awayMoneyLine": -155,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.4348,
+      "awayImpliedProb": 0.6078,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.417,
+      "awayNoVigProb": 0.583,
+      "drawNoVigProb": null,
+      "overround": 0.0426,
+      "noVigReason": null,
+      "homeSpread": 3,
+      "total": 45.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.417,
+     "awayNoVigProb": 0.583,
+     "drawNoVigProb": null,
+     "homeSpread": 3,
+     "total": 45.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872984",
+   "date": "2026-10-11T17:00Z",
+   "name": "HOU @ TEN",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "venue": {
+    "name": "Nissan Stadium",
+    "city": "Nashville"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "10",
+      "abbrev": "TEN",
+      "name": "Titans",
+      "displayName": "Tennessee Titans"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "34",
+      "abbrev": "HOU",
+      "name": "Texans",
+      "displayName": "Houston Texans"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": 270,
+      "awayMoneyLine": -340,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.2703,
+      "awayImpliedProb": 0.7727,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.2591,
+      "awayNoVigProb": 0.7409,
+      "drawNoVigProb": null,
+      "overround": 0.043,
+      "noVigReason": null,
+      "homeSpread": 7,
+      "total": 39.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.2591,
+     "awayNoVigProb": 0.7409,
+     "drawNoVigProb": null,
+     "homeSpread": 7,
+     "total": 39.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872982",
+   "date": "2026-10-11T17:00Z",
+   "name": "CIN @ MIA",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "venue": {
+    "name": "Hard Rock Stadium",
+    "city": "Miami Gardens"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "15",
+      "abbrev": "MIA",
+      "name": "Dolphins",
+      "displayName": "Miami Dolphins"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "4",
+      "abbrev": "CIN",
+      "name": "Bengals",
+      "displayName": "Cincinnati Bengals"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": 275,
+      "awayMoneyLine": -345,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.2667,
+      "awayImpliedProb": 0.7753,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.2559,
+      "awayNoVigProb": 0.7441,
+      "drawNoVigProb": null,
+      "overround": 0.0419,
+      "noVigReason": null,
+      "homeSpread": 7,
+      "total": 42.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.2559,
+     "awayNoVigProb": 0.7441,
+     "drawNoVigProb": null,
+     "homeSpread": 7,
+     "total": 42.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872986",
+   "date": "2026-10-11T17:00Z",
+   "name": "LV @ NE",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "venue": {
+    "name": "Gillette Stadium",
+    "city": "Foxborough"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "17",
+      "abbrev": "NE",
+      "name": "Patriots",
+      "displayName": "New England Patriots"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "13",
+      "abbrev": "LV",
+      "name": "Raiders",
+      "displayName": "Las Vegas Raiders"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -192,
+      "awayMoneyLine": 160,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.6575,
+      "awayImpliedProb": 0.3846,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.6309,
+      "awayNoVigProb": 0.3691,
+      "drawNoVigProb": null,
+      "overround": 0.0421,
+      "noVigReason": null,
+      "homeSpread": -3.5,
+      "total": 45.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.6309,
+     "awayNoVigProb": 0.3691,
+     "drawNoVigProb": null,
+     "homeSpread": -3.5,
+     "total": 45.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872987",
+   "date": "2026-10-11T17:00Z",
+   "name": "MIN @ NO",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "venue": {
+    "name": "Caesars Superdome",
+    "city": "New Orleans"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "18",
+      "abbrev": "NO",
+      "name": "Saints",
+      "displayName": "New Orleans Saints"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "16",
+      "abbrev": "MIN",
+      "name": "Vikings",
+      "displayName": "Minnesota Vikings"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": 110,
+      "awayMoneyLine": -130,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.4762,
+      "awayImpliedProb": 0.5652,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.4573,
+      "awayNoVigProb": 0.5427,
+      "drawNoVigProb": null,
+      "overround": 0.0414,
+      "noVigReason": null,
+      "homeSpread": 1.5,
+      "total": 42.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.4573,
+     "awayNoVigProb": 0.5427,
+     "drawNoVigProb": null,
+     "homeSpread": 1.5,
+     "total": 42.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872983",
+   "date": "2026-10-11T17:00Z",
+   "name": "CLE @ NYJ",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "venue": {
+    "name": "MetLife Stadium",
+    "city": "East Rutherford"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "20",
+      "abbrev": "NYJ",
+      "name": "Jets",
+      "displayName": "New York Jets"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "5",
+      "abbrev": "CLE",
+      "name": "Browns",
+      "displayName": "Cleveland Browns"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -130,
+      "awayMoneyLine": 110,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5652,
+      "awayImpliedProb": 0.4762,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5427,
+      "awayNoVigProb": 0.4573,
+      "drawNoVigProb": null,
+      "overround": 0.0414,
+      "noVigReason": null,
+      "homeSpread": -2.5,
+      "total": 39.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.5427,
+     "awayNoVigProb": 0.4573,
+     "drawNoVigProb": null,
+     "homeSpread": -2.5,
+     "total": 39.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872985",
+   "date": "2026-10-11T17:00Z",
+   "name": "IND @ PIT",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "venue": {
+    "name": "Acrisure Stadium",
+    "city": "Pittsburgh"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "23",
+      "abbrev": "PIT",
+      "name": "Steelers",
+      "displayName": "Pittsburgh Steelers"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "11",
+      "abbrev": "IND",
+      "name": "Colts",
+      "displayName": "Indianapolis Colts"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -135,
+      "awayMoneyLine": 114,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5745,
+      "awayImpliedProb": 0.4673,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5514,
+      "awayNoVigProb": 0.4486,
+      "drawNoVigProb": null,
+      "overround": 0.0418,
+      "noVigReason": null,
+      "homeSpread": -2.5,
+      "total": 44.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.5514,
+     "awayNoVigProb": 0.4486,
+     "drawNoVigProb": null,
+     "homeSpread": -2.5,
+     "total": 44.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872988",
+   "date": "2026-10-11T17:00Z",
+   "name": "NYG @ WSH",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "venue": {
+    "name": "Northwest Stadium",
+    "city": "Landover"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "28",
+      "abbrev": "WSH",
+      "name": "Commanders",
+      "displayName": "Washington Commanders"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "19",
+      "abbrev": "NYG",
+      "name": "Giants",
+      "displayName": "New York Giants"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -166,
+      "awayMoneyLine": 140,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.6241,
+      "awayImpliedProb": 0.4167,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5996,
+      "awayNoVigProb": 0.4004,
+      "drawNoVigProb": null,
+      "overround": 0.0407,
+      "noVigReason": null,
+      "homeSpread": -3,
+      "total": 43.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.5996,
+     "awayNoVigProb": 0.4004,
+     "drawNoVigProb": null,
+     "homeSpread": -3,
+     "total": 43.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872989",
+   "date": "2026-10-11T20:05Z",
+   "name": "DEN @ LAC",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 4:05 PM EDT"
+   },
+   "venue": {
+    "name": "SoFi Stadium",
+    "city": "Inglewood"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "24",
+      "abbrev": "LAC",
+      "name": "Chargers",
+      "displayName": "Los Angeles Chargers"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "7",
+      "abbrev": "DEN",
+      "name": "Broncos",
+      "displayName": "Denver Broncos"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": 154,
+      "awayMoneyLine": -185,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.3937,
+      "awayImpliedProb": 0.6491,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.3775,
+      "awayNoVigProb": 0.6225,
+      "drawNoVigProb": null,
+      "overround": 0.0428,
+      "noVigReason": null,
+      "homeSpread": 3.5,
+      "total": 42.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.3775,
+     "awayNoVigProb": 0.6225,
+     "drawNoVigProb": null,
+     "homeSpread": 3.5,
+     "total": 42.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872991",
+   "date": "2026-10-11T20:25Z",
+   "name": "DET @ ARI",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 4:25 PM EDT"
+   },
+   "venue": {
+    "name": "State Farm Stadium",
+    "city": "Glendale"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "22",
+      "abbrev": "ARI",
+      "name": "Cardinals",
+      "displayName": "Arizona Cardinals"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "8",
+      "abbrev": "DET",
+      "name": "Lions",
+      "displayName": "Detroit Lions"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": 180,
+      "awayMoneyLine": -218,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.3571,
+      "awayImpliedProb": 0.6855,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.3425,
+      "awayNoVigProb": 0.6575,
+      "drawNoVigProb": null,
+      "overround": 0.0427,
+      "noVigReason": null,
+      "homeSpread": 4.5,
+      "total": 54.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.3425,
+     "awayNoVigProb": 0.6575,
+     "drawNoVigProb": null,
+     "homeSpread": 4.5,
+     "total": 54.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872992",
+   "date": "2026-10-11T20:25Z",
+   "name": "SF @ SEA",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 4:25 PM EDT"
+   },
+   "venue": {
+    "name": "Lumen Field",
+    "city": "Seattle"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "26",
+      "abbrev": "SEA",
+      "name": "Seahawks",
+      "displayName": "Seattle Seahawks"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "25",
+      "abbrev": "SF",
+      "name": "49ers",
+      "displayName": "San Francisco 49ers"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -148,
+      "awayMoneyLine": 124,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5968,
+      "awayImpliedProb": 0.4464,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5721,
+      "awayNoVigProb": 0.4279,
+      "drawNoVigProb": null,
+      "overround": 0.0432,
+      "noVigReason": null,
+      "homeSpread": -2.5,
+      "total": 47.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.5721,
+     "awayNoVigProb": 0.4279,
+     "drawNoVigProb": null,
+     "homeSpread": -2.5,
+     "total": 47.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401872993",
+   "date": "2026-10-12T00:20Z",
+   "name": "BAL @ ATL",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 8:20 PM EDT"
+   },
+   "venue": {
+    "name": "Mercedes-Benz Stadium",
+    "city": "Atlanta"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "1",
+      "abbrev": "ATL",
+      "name": "Falcons",
+      "displayName": "Atlanta Falcons"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "33",
+      "abbrev": "BAL",
+      "name": "Ravens",
+      "displayName": "Baltimore Ravens"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -148,
+      "awayMoneyLine": 124,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5968,
+      "awayImpliedProb": 0.4464,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5721,
+      "awayNoVigProb": 0.4279,
+      "drawNoVigProb": null,
+      "overround": 0.0432,
+      "noVigReason": null,
+      "homeSpread": -2.5,
+      "total": 44.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.5721,
+     "awayNoVigProb": 0.4279,
+     "drawNoVigProb": null,
+     "homeSpread": -2.5,
+     "total": 44.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  }
+ ],
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+}

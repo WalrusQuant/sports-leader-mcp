@@ -1,0 +1,77 @@
+{
+ "eventId": "401891815",
+ "startUtc": "2026-10-06T23:00Z",
+ "homeTeam": {
+  "id": "10",
+  "abbrev": "MTL"
+ },
+ "awayTeam": {
+  "id": "7",
+  "abbrev": "CAR"
+ },
+ "consensus": {
+  "providerCount": 1,
+  "providers": [
+   "Draft Kings"
+  ],
+  "homeNoVigProb": 0.4783,
+  "awayNoVigProb": 0.5217,
+  "drawNoVigProb": null,
+  "homeSpread": 1.5,
+  "total": 6.5,
+  "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+  "reason": null
+ },
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "count": 1,
+ "odds": [
+  {
+   "provider": "Draft Kings",
+   "details": "CAR -120",
+   "spread": 1.5,
+   "overUnder": 6.5,
+   "overOdds": 100,
+   "underOdds": -120,
+   "home": {
+    "favorite": false,
+    "moneyLine": 100,
+    "spreadOdds": -250
+   },
+   "away": {
+    "favorite": true,
+    "moneyLine": -120,
+    "spreadOdds": 205
+   },
+   "open": {
+    "total": "6.5",
+    "homeSpread": "+1.5",
+    "homeMoneyLine": "+100",
+    "awaySpread": "-1.5",
+    "awayMoneyLine": "-120"
+   },
+   "current": {
+    "total": "6.5",
+    "homeSpread": "+1.5",
+    "homeMoneyLine": "+100",
+    "awaySpread": "-1.5",
+    "awayMoneyLine": "-120"
+   },
+   "providerId": "100",
+   "threeWay": false,
+   "homeMoneyLine": 100,
+   "awayMoneyLine": -120,
+   "drawMoneyLine": null,
+   "homeImpliedProb": 0.5,
+   "awayImpliedProb": 0.5455,
+   "drawImpliedProb": null,
+   "homeNoVigProb": 0.4783,
+   "awayNoVigProb": 0.5217,
+   "drawNoVigProb": null,
+   "overround": 0.0455,
+   "noVigReason": null,
+   "homeSpread": 1.5,
+   "total": 6.5
+  }
+ ]
+}

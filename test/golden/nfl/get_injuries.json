@@ -1,0 +1,1884 @@
+{
+ "timestamp": "2026-10-06T14:09:40Z",
+ "season": {
+  "year": 2026,
+  "type": 2,
+  "name": "Regular Season",
+  "displayName": "2026"
+ },
+ "injuries": [
+  {
+   "team": "Arizona Cardinals",
+   "teamId": "22",
+   "injuries": [
+    {
+     "player": "Paris Johnson Jr.",
+     "position": "OT",
+     "team": "ARI",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2027-02-15",
+     "date": "2026-10-06T00:46Z",
+     "note": "Johnson (biceps) has been ruled out for the remainder of the 2026 season, Dani Sureck of the Cardinals' official site reports."
+    },
+    {
+     "player": "Dadrion Taylor-Demerson",
+     "position": "S",
+     "team": "ARI",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:27Z",
+     "note": "out"
+    },
+    {
+     "player": "Andrew Wingard",
+     "position": "S",
+     "team": "ARI",
+     "status": "Questionable",
+     "injury": "Bruise",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:51Z",
+     "note": "Wingard suffered a bone bruise in his knee during Sunday's 36-24 loss to the Giants, Jeremy Fowler of ESPN.com reports."
+    },
+    {
+     "player": "Jeremiyah Love",
+     "position": "RB",
+     "team": "ARI",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:03Z",
+     "note": "Coach Mike LaFleur said Monday that Love is dealing with an ankle issue that's not related to the high-ankle sprain he tended to in August,…"
+    },
+    {
+     "player": "Isaiah Adams",
+     "position": "G",
+     "team": "ARI",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T00:47Z",
+     "note": "Adams suffered an ankle injury in Sunday's loss to the Giants, Theo Mackie of The Arizona Republic reports."
+    },
+    {
+     "player": "Hunter Long",
+     "position": "TE",
+     "team": "ARI",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T19:58Z",
+     "note": "Long (knee) is questionable to return against the Giants on Sunday."
+    }
+   ]
+  },
+  {
+   "team": "Atlanta Falcons",
+   "teamId": "1",
+   "injuries": [
+    {
+     "player": "Jared Ivey",
+     "position": "LB",
+     "team": "ATL",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T13:00Z",
+     "note": "inactive"
+    },
+    {
+     "player": "Cooper Rush",
+     "position": "QB",
+     "team": "ATL",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:07Z",
+     "note": "Rush (coach's decision) is inactive for Thursday's game against the Saints but will serve as the emergency quarterback, Tori McElhaney of t…"
+    },
+    {
+     "player": "Ethan Onianwa",
+     "position": "OT",
+     "team": "ATL",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:53Z",
+     "note": "inactive"
+    },
+    {
+     "player": "Jack Strand",
+     "position": "QB",
+     "team": "ATL",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:53Z",
+     "note": "inactive"
+    },
+    {
+     "player": "Robert Longerbeam",
+     "position": "CB",
+     "team": "ATL",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:53Z",
+     "note": "inactive"
+    },
+    {
+     "player": "Malcolm DeWalt IV",
+     "position": "CB",
+     "team": "ATL",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:53Z",
+     "note": "inactive"
+    },
+    {
+     "player": "Jake Matthews",
+     "position": "OT",
+     "team": "ATL",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T02:13Z",
+     "note": "Matthews (groin) has been downgraded to out for the rest of Monday's game against the Saints, Tori McElhaney of the Falcons' official site …"
+    },
+    {
+     "player": "Za'Darius Smith",
+     "position": "DE",
+     "team": "ATL",
+     "status": "Questionable",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T01:24Z",
+     "note": "Smith (concussion) has been ruled out for the remainder of Monday night's game against the Saints, Tori McElhaney of the Falcons' official …"
+    }
+   ]
+  },
+  {
+   "team": "Baltimore Ravens",
+   "teamId": "33",
+   "injuries": [
+    {
+     "player": "Chris Moore",
+     "position": "WR",
+     "team": "BAL",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T14:00Z",
+     "note": "out"
+    },
+    {
+     "player": "Trey Hendrickson",
+     "position": "LB",
+     "team": "BAL",
+     "status": "Out",
+     "injury": "Fracture",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:28Z",
+     "note": "out"
+    },
+    {
+     "player": "Lamar Jackson",
+     "position": "QB",
+     "team": "BAL",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T13:11Z",
+     "note": "Jackson (ankle) is not dealing with a long-term injury, but he has \"only an outside chance to play\" in Week 5 and \"could end up missing mul…"
+    },
+    {
+     "player": "Ronnie Stanley",
+     "position": "OT",
+     "team": "BAL",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T21:22Z",
+     "note": "Stanley (toe) was able to complete Sunday's 24-18 win over Tennessee, Jonas Shaffer of TheBaltimoreBanner.com reports."
+    },
+    {
+     "player": "Durham Smythe",
+     "position": "TE",
+     "team": "BAL",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T19:52Z",
+     "note": "Smythe (Achilles) won't return to Sunday's game against the Titans."
+    },
+    {
+     "player": "Marlon Humphrey",
+     "position": "CB",
+     "team": "BAL",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T19:18Z",
+     "note": "Humphrey (calf) has been ruled out for the rest of Sunday's game against the Titans."
+    },
+    {
+     "player": "Andrew Vorhees",
+     "position": "G",
+     "team": "BAL",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T19:08Z",
+     "note": "Vorhees (foot) won't return to Sunday's game against the Titans, Brian Wacker of The Baltimore Sun reports."
+    },
+    {
+     "player": "Ethan Pocic",
+     "position": "C",
+     "team": "BAL",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-11-01",
+     "date": "2026-10-04T00:42Z",
+     "note": "Baltimore placed Pocic (knee) on injured reserve Saturday."
+    },
+    {
+     "player": "Jovaughn Gwyn",
+     "position": "G",
+     "team": "BAL",
+     "status": "Injured Reserve",
+     "injury": "Surgery",
+     "returnDate": "2026-12-13",
+     "date": "2026-10-04T00:38Z",
+     "note": "The Ravens moved Gwyn (ankle) to injured reserve Saturday."
+    }
+   ]
+  },
+  {
+   "team": "Chicago Bears",
+   "teamId": "3",
+   "injuries": [
+    {
+     "player": "Caleb Williams",
+     "position": "QB",
+     "team": "CHI",
+     "status": "Out",
+     "injury": "Strain",
+     "returnDate": "2026-10-18",
+     "date": "2026-10-05T21:13Z",
+     "note": "Bears head coach Ben Johnson said Monday that Williams (hamstring) won't practice during Week 5 and is still being classified as week-to-we…"
+    },
+    {
+     "player": "Cam Lewis",
+     "position": "CB",
+     "team": "CHI",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:32Z",
+     "note": "out"
+    },
+    {
+     "player": "Kyler Gordon",
+     "position": "CB",
+     "team": "CHI",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-01T00:31Z",
+     "note": "Gordon (calf) was estimated as a full participant on the Bears' official injury report Wednesday."
+    },
+    {
+     "player": "Shemar Turner",
+     "position": "DT",
+     "team": "CHI",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2026-10-11",
+     "date": "2026-09-24T00:28Z",
+     "note": "The Bears opened the 21-day practice window for Turner (knee) on Wednesday, Kevin Fishbain of The Athletic reports."
+    },
+    {
+     "player": "Noah Sewell",
+     "position": "LB",
+     "team": "CHI",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2026-10-11",
+     "date": "2026-09-23T22:34Z",
+     "note": "The Bears opened the 21-day practice window for Sewell (Achilles) on Wednesday, Kevin Fishbain of The Athletic reports."
+    },
+    {
+     "player": "Anthony Johnson Jr.",
+     "position": "S",
+     "team": "CHI",
+     "status": "Injured Reserve",
+     "returnDate": "2026-10-18",
+     "date": "2026-10-06T14:00Z",
+     "note": "ir"
+    },
+    {
+     "player": "Kyle Monangai",
+     "position": "RB",
+     "team": "CHI",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T21:08Z",
+     "note": "Bears head coach Ben Johnson said that Monangai is considered day-to-day after sustaining a right thumb injury in Sunday's 23-12 win over t…"
+    },
+    {
+     "player": "Braxton Jones",
+     "position": "OT",
+     "team": "CHI",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-11-02",
+     "date": "2026-10-04T01:02Z",
+     "note": "The Bears placed Jones (knee) on injured reserve Saturday."
+    }
+   ]
+  },
+  {
+   "team": "Cincinnati Bengals",
+   "teamId": "4",
+   "injuries": [
+    {
+     "player": "Colbie Young",
+     "position": "WR",
+     "team": "CIN",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:34Z",
+     "note": "out"
+    },
+    {
+     "player": "Bryan Cook",
+     "position": "S",
+     "team": "CIN",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:34Z",
+     "note": "out"
+    },
+    {
+     "player": "Kyle Dugger",
+     "position": "S",
+     "team": "CIN",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:34Z",
+     "note": "out"
+    },
+    {
+     "player": "B.J. Hill",
+     "position": "DT",
+     "team": "CIN",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:34Z",
+     "note": "out"
+    },
+    {
+     "player": "Swayze Bozeman",
+     "position": "LB",
+     "team": "CIN",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:34Z",
+     "note": "out"
+    },
+    {
+     "player": "Tee Higgins",
+     "position": "WR",
+     "team": "CIN",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:16Z",
+     "note": "Higgins (adductor), per head coach Zac Taylor, is considered day-to-day, Ben Baby of ESPN.com reports."
+    },
+    {
+     "player": "Ja'Marr Chase",
+     "position": "WR",
+     "team": "CIN",
+     "status": "Questionable",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T18:47Z",
+     "note": "Chase (concussion) has been ruled out for the rest of Sunday's game against the Jaguars."
+    },
+    {
+     "player": "Jalen Davis",
+     "position": "CB",
+     "team": "CIN",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-11-08",
+     "date": "2026-09-29T23:16Z",
+     "note": "The Bengals placed Davis (hamstring) on injured reserve Tuesday."
+    }
+   ]
+  },
+  {
+   "team": "Cleveland Browns",
+   "teamId": "5",
+   "injuries": [
+    {
+     "player": "Tylan Wallace",
+     "position": "WR",
+     "team": "CLE",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:37Z",
+     "note": "out"
+    },
+    {
+     "player": "Elgton Jenkins",
+     "position": "C",
+     "team": "CLE",
+     "status": "Out",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:37Z",
+     "note": "out"
+    },
+    {
+     "player": "Teven Jenkins",
+     "position": "G",
+     "team": "CLE",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:37Z",
+     "note": "out"
+    },
+    {
+     "player": "Mason Graham",
+     "position": "DT",
+     "team": "CLE",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-02T19:22Z",
+     "note": "Graham underwent an MRI on Friday that revealed he sustained an MCL and ankle sprain in Thursday night's game, Ian Rapoport of NFL Network …"
+    }
+   ]
+  },
+  {
+   "team": "Denver Broncos",
+   "teamId": "7",
+   "injuries": [
+    {
+     "player": "Dondrea Tillman",
+     "position": "LB",
+     "team": "DEN",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:39Z",
+     "note": "out"
+    },
+    {
+     "player": "Pat Surtain II",
+     "position": "CB",
+     "team": "DEN",
+     "status": "Doubtful",
+     "injury": "Sprain",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:28Z",
+     "note": "Surtain (ankle) is expected to miss \"about two weeks,\" Jeremy Fowler of ESPN reports."
+    },
+    {
+     "player": "Pat Bryant",
+     "position": "WR",
+     "team": "DEN",
+     "status": "Doubtful",
+     "injury": "Sprain",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T16:15Z",
+     "note": "Bryant is expected to miss \"a few weeks\" after spraining his right ankle in Sunday's 24-14 loss to the 49ers, Adam Schefter of ESPN reports."
+    },
+    {
+     "player": "Riley Moss",
+     "position": "CB",
+     "team": "DEN",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:18Z",
+     "note": "Moss had imaging done on his ribs Monday, Ian Rapoport of NFL Network reports."
+    },
+    {
+     "player": "Jonah Coleman",
+     "position": "RB",
+     "team": "DEN",
+     "status": "Injured Reserve",
+     "injury": "Sprain",
+     "returnDate": "2026-10-25",
+     "date": "2026-09-26T20:36Z",
+     "note": "Coleman (ankle) is being placed on injured reserve Saturday, Adam Schefter of ESPN reports."
+    }
+   ]
+  },
+  {
+   "team": "Detroit Lions",
+   "teamId": "8",
+   "injuries": [
+    {
+     "player": "Rock Ya-Sin",
+     "position": "CB",
+     "team": "DET",
+     "status": "Doubtful",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T00:54Z",
+     "note": "Ya-Sin (hamstring) is expected to be sidelined in Week 5 at Arizona, Richard Silva of The Detroit News reports."
+    },
+    {
+     "player": "Ben Bartch",
+     "position": "G",
+     "team": "DET",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:40Z",
+     "note": "out"
+    },
+    {
+     "player": "Brian Branch",
+     "position": "S",
+     "team": "DET",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-02T16:17Z",
+     "note": "Head coach Dan Campbell said Friday that Branch (Achilles) is close to returning, Tim Twentyman of the Lions' official site reports."
+    },
+    {
+     "player": "Cade Mays",
+     "position": "C",
+     "team": "DET",
+     "status": "Injured Reserve",
+     "injury": "Fracture",
+     "returnDate": "2026-10-25",
+     "date": "2026-09-29T01:05Z",
+     "note": "Mays (wrist) is targeting a Week 7 return from injured reserve, Dave Birkett of the Detroit Free Press reports."
+    },
+    {
+     "player": "Thomas Harper",
+     "position": "S",
+     "team": "DET",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-11-01",
+     "date": "2026-09-26T21:03Z",
+     "note": "The Lions placed Harper (ankle) on injured reserve Saturday."
+    }
+   ]
+  },
+  {
+   "team": "Green Bay Packers",
+   "teamId": "9",
+   "injuries": [
+    {
+     "player": "Micah Parsons",
+     "position": "DE",
+     "team": "GB",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2026-10-18",
+     "date": "2026-10-05T21:10Z",
+     "note": "Parsons (knee), per head coach Matt LaFleur, will not practice this week, Weston Hodkiewicz of the Packers' official site reports."
+    },
+    {
+     "player": "Jacob Monk",
+     "position": "C",
+     "team": "GB",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:41Z",
+     "note": "out"
+    },
+    {
+     "player": "Aaron Banks",
+     "position": "G",
+     "team": "GB",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:41Z",
+     "note": "out"
+    },
+    {
+     "player": "Anthony Campbell",
+     "position": "DT",
+     "team": "GB",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:41Z",
+     "note": "out"
+    },
+    {
+     "player": "Edgerrin Cooper",
+     "position": "LB",
+     "team": "GB",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2027-02-15",
+     "date": "2026-10-05T17:23Z",
+     "note": "Cooper suffered a torn Achilles during Sunday's 17-14 win at Tampa Bay and will miss the rest of the season, Ian Rapoport of NFL Network re…"
+    },
+    {
+     "player": "Brandon Cisse",
+     "position": "CB",
+     "team": "GB",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:50Z",
+     "note": "Cisse (neck) was not placed in the league's concussion protocol following Sunday's 17-14 win over the Buccaneers, Weston Hodkiewicz of the …"
+    },
+    {
+     "player": "Chris Brooks",
+     "position": "RB",
+     "team": "GB",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T17:59Z",
+     "note": "Brooks is questionable to return to Sunday's Week 4 matchup against Tampa Bay due to an ankle injury, Rob Demovsky of ESPN.com reports."
+    },
+    {
+     "player": "Warren Brinson",
+     "position": "DT",
+     "team": "GB",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-29",
+     "date": "2026-10-03T23:49Z",
+     "note": "Green Bay placed Brinson (calf/groin) on injured reserve Saturday."
+    },
+    {
+     "player": "Jayden Reed",
+     "position": "WR",
+     "team": "GB",
+     "status": "Injured Reserve",
+     "injury": "Surgery",
+     "returnDate": "2027-02-15",
+     "date": "2026-09-30T15:55Z",
+     "note": "The Packers are expected to place Reed (neck) on injured reserve Wednesday, Adam Schefter of ESPN reports."
+    },
+    {
+     "player": "Zach Bako-Bewele",
+     "position": "OT",
+     "team": "GB",
+     "status": "Injured Reserve",
+     "injury": "Surgery",
+     "returnDate": "2027-02-15",
+     "date": "2026-09-29T00:26Z",
+     "note": "The Packers placed Bako-Bewele (knee) on injured reserve Monday, Adam Schefter of ESPN reports."
+    }
+   ]
+  },
+  {
+   "team": "Houston Texans",
+   "teamId": "34",
+   "injuries": [
+    {
+     "player": "Azeez Al-Shaair",
+     "position": "LB",
+     "team": "HOU",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:43Z",
+     "note": "out"
+    },
+    {
+     "player": "Tank Dell",
+     "position": "WR",
+     "team": "HOU",
+     "status": "Injured Reserve",
+     "injury": "Surgery",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T16:48Z",
+     "note": "Head coach DeMeco Ryans said Monday that he expects the Texans to open Dell's (knee) 21-day practice window this week, Jonathan M. Alexande…"
+    },
+    {
+     "player": "Jaden Crumedy",
+     "position": "DT",
+     "team": "HOU",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T03:07Z",
+     "note": "Crumedy suffered a shoulder injury during Sunday's 34-30 loss to the Cowboys."
+    },
+    {
+     "player": "Jaylin Smith",
+     "position": "CB",
+     "team": "HOU",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T00:52Z",
+     "note": "Smith (hamstring) was unable to return to Sunday's game against Dallas."
+    },
+    {
+     "player": "Kenneth Murray Jr.",
+     "position": "LB",
+     "team": "HOU",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T20:26Z",
+     "note": "Murray was evaluated for a concussion during Sunday's 34-30 loss to the Cowboys."
+    },
+    {
+     "player": "British Brooks",
+     "position": "RB",
+     "team": "HOU",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-11-08",
+     "date": "2026-10-03T00:35Z",
+     "note": "Brooks (hamstring) was placed on injured reserve Friday."
+    }
+   ]
+  },
+  {
+   "team": "Indianapolis Colts",
+   "teamId": "11",
+   "injuries": [
+    {
+     "player": "Arden Key",
+     "position": "DE",
+     "team": "IND",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-18",
+     "date": "2026-10-06T00:02Z",
+     "note": "Key (hamstring) has been ruled out for the Colts' matchup with Pittsburgh in Week 5, James Boyd of The Athletic reports."
+    },
+    {
+     "player": "Keenan Allen",
+     "position": "WR",
+     "team": "IND",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:44Z",
+     "note": "out"
+    },
+    {
+     "player": "Alec Pierce",
+     "position": "WR",
+     "team": "IND",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-25",
+     "date": "2026-09-28T18:38Z",
+     "note": "Colts head coach Shane Steichen reiterated Monday that Pierce didn't undergo surgery on his left heel and is continuing to rehab the injury…"
+    },
+    {
+     "player": "Micheal Clemons",
+     "position": "DE",
+     "team": "IND",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-25",
+     "date": "2026-09-23T00:30Z",
+     "note": "Clemons (toe) was placed on injured reserve by the Colts on Tuesday."
+    }
+   ]
+  },
+  {
+   "team": "Jacksonville Jaguars",
+   "teamId": "30",
+   "injuries": [
+    {
+     "player": "Christian Braswell",
+     "position": "CB",
+     "team": "JAX",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:45Z",
+     "note": "out"
+    },
+    {
+     "player": "Montaric Brown",
+     "position": "CB",
+     "team": "JAX",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:45Z",
+     "note": "out"
+    },
+    {
+     "player": "Eric Murray",
+     "position": "S",
+     "team": "JAX",
+     "status": "Questionable",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T19:56Z",
+     "note": "Murray (concussion) has been ruled out for the rest of Sunday's game against the Bengals, Demetrius Harvey of The Florida Times-Union repor…"
+    },
+    {
+     "player": "Caleb Ransaw",
+     "position": "S",
+     "team": "JAX",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T17:38Z",
+     "note": "Ransaw (knee) is questionable to return to Sunday's clash against Cincinnati."
+    }
+   ]
+  },
+  {
+   "team": "Las Vegas Raiders",
+   "teamId": "13",
+   "injuries": [
+    {
+     "player": "Jackson Powers-Johnson",
+     "position": "G",
+     "team": "LV",
+     "status": "Out",
+     "injury": "Soreness",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T19:36Z",
+     "note": "Powers-Johnson (groin) is inactive for Sunday's game against the Chiefs."
+    },
+    {
+     "player": "Jalen Nailor",
+     "position": "WR",
+     "team": "LV",
+     "status": "Questionable",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T22:16Z",
+     "note": "Nailor (concussion) has been ruled out for the remainder of Sunday's contest against the Chiefs."
+    },
+    {
+     "player": "Trey Zuhn III",
+     "position": "C",
+     "team": "LV",
+     "status": "Questionable",
+     "injury": "Abrasion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T21:14Z",
+     "note": "Zuhn (knee) is questionable to return to Sunday's contest against the Chiefs, Sam Warren of The Athletic reports."
+    },
+    {
+     "player": "Dont'e Thornton Jr.",
+     "position": "WR",
+     "team": "LV",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-02T21:43Z",
+     "note": "Head coach Klint Kubiak said Friday that the hope is that Thornton (undisclosed) will be back at practice ahead of the Raiders' Week 5 road…"
+    },
+    {
+     "player": "Jack Bech",
+     "position": "WR",
+     "team": "LV",
+     "status": "Injured Reserve",
+     "injury": "Fracture",
+     "returnDate": "2026-11-01",
+     "date": "2026-09-29T22:27Z",
+     "note": "The Raiders placed Bech (forearm) on injured reserve Tuesday."
+    }
+   ]
+  },
+  {
+   "team": "Los Angeles Chargers",
+   "teamId": "24",
+   "injuries": [
+    {
+     "player": "Derwin James Jr.",
+     "position": "S",
+     "team": "LAC",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:57Z",
+     "note": "James (hamstring) is considered week-to-week ahead of the team's Week 5 matchup with Denver, Alex Insdorf of BoltBeat.com reports."
+    },
+    {
+     "player": "Rashawn Slater",
+     "position": "OT",
+     "team": "LAC",
+     "status": "Out",
+     "injury": "Sprain",
+     "returnDate": "2026-11-01",
+     "date": "2026-10-05T23:24Z",
+     "note": "Slater suffered a high-ankle sprain Sunday against the Seahawks, and he is expected to miss 4-to-6 weeks, Ian Rapoport of NFL Network repor…"
+    },
+    {
+     "player": "Brenen Thompson",
+     "position": "WR",
+     "team": "LAC",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:49Z",
+     "note": "out"
+    },
+    {
+     "player": "Dalvin Tomlinson",
+     "position": "DT",
+     "team": "LAC",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:49Z",
+     "note": "out"
+    },
+    {
+     "player": "Charlie Kolar",
+     "position": "TE",
+     "team": "LAC",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:49Z",
+     "note": "out"
+    },
+    {
+     "player": "Kayode Awosika",
+     "position": "G",
+     "team": "LAC",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T19:43Z",
+     "note": "Awosika (leg) is inactive for Sunday's game against Seattle."
+    },
+    {
+     "player": "Scott Matlock",
+     "position": "FB",
+     "team": "LAC",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T00:02Z",
+     "note": "The Chargers opened Matlock's (undisclosed) 21-day return window Monday, Alex Insdorf of BoltBeat.com reports."
+    },
+    {
+     "player": "Ladd McConkey",
+     "position": "WR",
+     "team": "LAC",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:41Z",
+     "note": "McConkey (foot), per head coach Jim Harbaugh, is \"week-to-week,\" Alex Insdorf of BoltBeat.com reports."
+    },
+    {
+     "player": "Trevor Penning",
+     "position": "G",
+     "team": "LAC",
+     "status": "Questionable",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T23:31Z",
+     "note": "Penning (head) exited Sunday's contest against Seattle in the fourth quarter."
+    },
+    {
+     "player": "Joe Alt",
+     "position": "OT",
+     "team": "LAC",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T22:33Z",
+     "note": "Alt (neck) has been ruled out for the remainder of Sunday's matchup with the Seahawks."
+    }
+   ]
+  },
+  {
+   "team": "Miami Dolphins",
+   "teamId": "15",
+   "injuries": [
+    {
+     "player": "Reese Taylor",
+     "position": "CB",
+     "team": "MIA",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-25",
+     "date": "2026-10-06T01:00Z",
+     "note": "Taylor (quadriceps) has been ruled out ahead of the Dolphins' Week 5 matchup with the Bengals, Barry Jackson of the Miami Herald reported M…"
+    },
+    {
+     "player": "Caleb Douglas",
+     "position": "WR",
+     "team": "MIA",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T21:01Z",
+     "note": "Head coach Jeff Hafley said Monday that he's viewing Douglas (ankle) as day-to-day heading into the Dolphins' Week 5 game against the Benga…"
+    },
+    {
+     "player": "Robert Beal Jr.",
+     "position": "DE",
+     "team": "MIA",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:51Z",
+     "note": "out"
+    },
+    {
+     "player": "Storm Duck",
+     "position": "CB",
+     "team": "MIA",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-01T01:21Z",
+     "note": "The Dolphins opened Duck's (knee) 21-day practice window Wednesday, David Furones of the South Florida Sun Sentinel reports."
+    },
+    {
+     "player": "Dante Trader Jr.",
+     "position": "S",
+     "team": "MIA",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:45Z",
+     "note": "Trader (knee) is considered day-to-day ahead of Week 5, C. Isaiah Smalls II of the Miami Herald reports."
+    },
+    {
+     "player": "Jackson Woodard",
+     "position": "LB",
+     "team": "MIA",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T03:29Z",
+     "note": "Woodard suffered an ankle injury during Sunday's 15-10 loss to the Vikings."
+    },
+    {
+     "player": "Kenneth Grant",
+     "position": "DT",
+     "team": "MIA",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-02T15:37Z",
+     "note": "Head coach Jeff Hafley said Friday that Grant (leg) could begin practicing next week, C. Isaiah Smalls II of the Miami Herald reports."
+    },
+    {
+     "player": "De'Von Achane",
+     "position": "RB",
+     "team": "MIA",
+     "status": "Injured Reserve",
+     "injury": "Surgery",
+     "returnDate": "2027-02-15",
+     "date": "2026-09-28T20:10Z",
+     "note": "The Dolphins placed Achane (knee) on injured reserve Monday."
+    }
+   ]
+  },
+  {
+   "team": "Minnesota Vikings",
+   "teamId": "16",
+   "injuries": [
+    {
+     "player": "Donovan Jackson",
+     "position": "G",
+     "team": "MIN",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2027-01-17",
+     "date": "2026-10-06T00:30Z",
+     "note": "Jackson suffered a torn meniscus during Sunday's game versus the Dolphins, Dane Mizutani of the St. Paul Pioneer Press reports."
+    },
+    {
+     "player": "Brett Thorson",
+     "position": "P",
+     "team": "MIN",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:53Z",
+     "note": "out"
+    },
+    {
+     "player": "Justin Jefferson",
+     "position": "WR",
+     "team": "MIN",
+     "status": "Out",
+     "injury": "Sprain",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:53Z",
+     "note": "out"
+    },
+    {
+     "player": "Charles Demmings",
+     "position": "CB",
+     "team": "MIN",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:53Z",
+     "note": "out"
+    },
+    {
+     "player": "Christian Darrisaw",
+     "position": "OT",
+     "team": "MIN",
+     "status": "Questionable",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T00:34Z",
+     "note": "Darrisaw is in concussion protocol following Sunday's game versus the Dolphins, Dane Mizutani of the St. Paul Pioneer Press reports."
+    },
+    {
+     "player": "Josh Oliver",
+     "position": "TE",
+     "team": "MIN",
+     "status": "Injured Reserve",
+     "injury": "Surgery",
+     "returnDate": "2027-01-17",
+     "date": "2026-09-30T00:26Z",
+     "note": "The Vikings placed Oliver (biceps) on injured reserve Tuesday, Craig Peters of the team's official site reports."
+    }
+   ]
+  },
+  {
+   "team": "New England Patriots",
+   "teamId": "17",
+   "injuries": [
+    {
+     "player": "Christian Gonzalez",
+     "position": "CB",
+     "team": "NE",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:54Z",
+     "note": "out"
+    },
+    {
+     "player": "Christian Barmore",
+     "position": "DT",
+     "team": "NE",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:54Z",
+     "note": "out"
+    },
+    {
+     "player": "Channing Canada",
+     "position": "CB",
+     "team": "NE",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:54Z",
+     "note": "out"
+    },
+    {
+     "player": "Mack Hollins",
+     "position": "WR",
+     "team": "NE",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T15:49Z",
+     "note": "Head coach Mike Vrabel said that he expects to know more about Hollins' calf injury later Monday, and the Patriots are uncertain if the wid…"
+    },
+    {
+     "player": "Charles Woods",
+     "position": "CB",
+     "team": "NE",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T21:07Z",
+     "note": "Woods (shoulder) exited Sunday's 29-26 win over the Bills. He finished with two tackles (one solo)."
+    },
+    {
+     "player": "Eli Raridon",
+     "position": "TE",
+     "team": "NE",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T20:03Z",
+     "note": "Raridon (ankle) is questionable to return to Sunday's game against Buffalo."
+    },
+    {
+     "player": "Greg Van Roten",
+     "position": "G",
+     "team": "NE",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-11-01",
+     "date": "2026-09-30T01:03Z",
+     "note": "The Patriots placed Van Roten (thigh) on injured reserve Tuesday."
+    },
+    {
+     "player": "A.J. Brown",
+     "position": "WR",
+     "team": "NE",
+     "status": "Injured Reserve",
+     "injury": "Sprain",
+     "returnDate": "2026-11-01",
+     "date": "2026-09-28T17:01Z",
+     "note": "Brown was spotted Monday in the Patriots' locker room walking without a limp and wearing a small wrap on his injured right ankle, Taylor Ky…"
+    }
+   ]
+  },
+  {
+   "team": "New Orleans Saints",
+   "teamId": "18",
+   "injuries": [
+    {
+     "player": "Christen Miller",
+     "position": "DT",
+     "team": "NO",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:12Z",
+     "note": "Miller (coach's decision) is inactive for Monday night's contest against the Falcons."
+    },
+    {
+     "player": "Zach Wilson",
+     "position": "QB",
+     "team": "NO",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:06Z",
+     "note": "Wilson (coach's decision) is inactive but will serve as the Saints' emergency third quarterback for Monday night's contest against the Falc…"
+    },
+    {
+     "player": "Noah Fant",
+     "position": "TE",
+     "team": "NO",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:49Z",
+     "note": "Fant (abdomen) is listed as inactive for Monday's game against the Falcons."
+    },
+    {
+     "player": "Decamerion Richardson",
+     "position": "CB",
+     "team": "NO",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:47Z",
+     "note": "inactive"
+    },
+    {
+     "player": "Kaden Elliss",
+     "position": "LB",
+     "team": "NO",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:47Z",
+     "note": "inactive"
+    },
+    {
+     "player": "Carl Granderson",
+     "position": "DE",
+     "team": "NO",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:47Z",
+     "note": "inactive"
+    },
+    {
+     "player": "Anfernee Jennings",
+     "position": "LB",
+     "team": "NO",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:47Z",
+     "note": "inactive"
+    },
+    {
+     "player": "Davon Godchaux",
+     "position": "DT",
+     "team": "NO",
+     "status": "Questionable",
+     "returnDate": "2026-10-05",
+     "date": "2026-10-06T03:25Z",
+     "note": "Godchaux exited Monday night's game against the Falcons with a groin injury."
+    },
+    {
+     "player": "Jordyn Tyson",
+     "position": "WR",
+     "team": "NO",
+     "status": "Injured Reserve",
+     "injury": "Strain",
+     "returnDate": "2026-10-25",
+     "date": "2026-10-05T13:36Z",
+     "note": "Tyson (hamstring) is said to be making progress and feeling good but isn't expected to be activated from injured reserve until Week 7 at th…"
+    },
+    {
+     "player": "Travis Etienne Jr.",
+     "position": "RB",
+     "team": "NO",
+     "status": "Injured Reserve",
+     "injury": "Strain",
+     "returnDate": "2026-11-08",
+     "date": "2026-10-01T20:44Z",
+     "note": "The Saints are placing Etienne (hamstring) on injured reserve, Katherine Terrell of ESPN.com reports."
+    }
+   ]
+  },
+  {
+   "team": "New York Giants",
+   "teamId": "19",
+   "injuries": [
+    {
+     "player": "Braxton Berrios",
+     "position": "WR",
+     "team": "NYG",
+     "status": "Doubtful",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T21:48Z",
+     "note": "Giants head coach John Harbaugh confirmed Berrios is dealing with a foot/ankle injury, but a decision has yet to be made regarding whether …"
+    },
+    {
+     "player": "Chauncey Golston",
+     "position": "DE",
+     "team": "NYG",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T00:59Z",
+     "note": "Golston suffered a neck injury in Sunday's win over the Cardinals and did not return, Jordan Raanan of ESPN.com reports."
+    },
+    {
+     "player": "Jason Pinnock",
+     "position": "S",
+     "team": "NYG",
+     "status": "Questionable",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T00:59Z",
+     "note": "Pinnock suffered a concussion during Sunday's 36-24 win over the Cardinals, Jordan Raanan of ESPN.com reports."
+    }
+   ]
+  },
+  {
+   "team": "New York Jets",
+   "teamId": "20",
+   "injuries": [
+    {
+     "player": "Braiden McGregor",
+     "position": "DE",
+     "team": "NYJ",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2027-02-15",
+     "date": "2026-10-06T00:30Z",
+     "note": "McGregor (pectoral) suffered a season-ending injury during Sunday's loss to the Bears, Adam Schefter of ESPN reports."
+    },
+    {
+     "player": "Mason Taylor",
+     "position": "TE",
+     "team": "NYJ",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:58Z",
+     "note": "out"
+    },
+    {
+     "player": "Dylan Parham",
+     "position": "G",
+     "team": "NYJ",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:58Z",
+     "note": "out"
+    },
+    {
+     "player": "Kiko Mauigoa",
+     "position": "LB",
+     "team": "NYJ",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:58Z",
+     "note": "out"
+    },
+    {
+     "player": "Adonai Mitchell",
+     "position": "WR",
+     "team": "NYJ",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:58Z",
+     "note": "out"
+    },
+    {
+     "player": "Kingsley Enagbare",
+     "position": "LB",
+     "team": "NYJ",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:58Z",
+     "note": "out"
+    },
+    {
+     "player": "Breece Hall",
+     "position": "RB",
+     "team": "NYJ",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T18:58Z",
+     "note": "out"
+    },
+    {
+     "player": "Jarvis Brownlee Jr.",
+     "position": "CB",
+     "team": "NYJ",
+     "status": "Questionable",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:17Z",
+     "note": "Brownlee is in concussion protocol as Week 5 approaches, Antwan V. Staley of the New York Daily News reports."
+    },
+    {
+     "player": "Arian Smith",
+     "position": "WR",
+     "team": "NYJ",
+     "status": "Injured Reserve",
+     "injury": "Surgery",
+     "returnDate": "2027-02-15",
+     "date": "2026-09-23T21:53Z",
+     "note": "Smith (knee) underwent surgery Wednesday to repair a torn ACL and will miss the rest of the season, Antwan V. Staley of the New York Daily …"
+    },
+    {
+     "player": "David Onyemata",
+     "position": "DT",
+     "team": "NYJ",
+     "status": "Injured Reserve",
+     "injury": "Surgery",
+     "returnDate": "2026-11-08",
+     "date": "2026-09-23T21:40Z",
+     "note": "Onyemata (groin) underwent core-muscle surgery Wednesday, Antwan V. Staley of the New York Daily News reports."
+    }
+   ]
+  },
+  {
+   "team": "Philadelphia Eagles",
+   "teamId": "21",
+   "injuries": [
+    {
+     "player": "Tank Bigsby",
+     "position": "RB",
+     "team": "PHI",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2026-11-08",
+     "date": "2026-10-05T21:17Z",
+     "note": "Bigsby will undergo core muscle surgery and be placed on injured reserve, Ian Rapoport of NFL Network reports."
+    },
+    {
+     "player": "DeVonta Smith",
+     "position": "WR",
+     "team": "PHI",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:00Z",
+     "note": "out"
+    },
+    {
+     "player": "Fred Johnson",
+     "position": "OT",
+     "team": "PHI",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:00Z",
+     "note": "out"
+    },
+    {
+     "player": "Lane Johnson",
+     "position": "OT",
+     "team": "PHI",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:00Z",
+     "note": "out"
+    },
+    {
+     "player": "Marcus Epps",
+     "position": "S",
+     "team": "PHI",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:00Z",
+     "note": "out"
+    },
+    {
+     "player": "Dallas Goedert",
+     "position": "TE",
+     "team": "PHI",
+     "status": "Out",
+     "injury": "Sprain",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:00Z",
+     "note": "out"
+    },
+    {
+     "player": "Zack Baun",
+     "position": "LB",
+     "team": "PHI",
+     "status": "Out",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:00Z",
+     "note": "out"
+    },
+    {
+     "player": "Hollywood Brown",
+     "position": "WR",
+     "team": "PHI",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:00Z",
+     "note": "out"
+    },
+    {
+     "player": "Cam Jurgens",
+     "position": "C",
+     "team": "PHI",
+     "status": "Questionable",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T01:31Z",
+     "note": "Jurgens entered the NFL's five-step concussion protocol Monday, Mike Garafolo of NFL Network reports."
+    },
+    {
+     "player": "Saquon Barkley",
+     "position": "RB",
+     "team": "PHI",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T00:37Z",
+     "note": "Barkley (hamstring) is considered week-to-week, though the Eagles don't view the injury as long term, Ian Rapoport of NFL Network reports."
+    }
+   ]
+  },
+  {
+   "team": "Pittsburgh Steelers",
+   "teamId": "23",
+   "injuries": [
+    {
+     "player": "Rico Dowdle",
+     "position": "RB",
+     "team": "PIT",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T20:38Z",
+     "note": "Head coach Mike McCarthy said that Dowdle (toe) had a positive workout Friday and is \"making progress\" in his recovery, but the Steelers ar…"
+    },
+    {
+     "player": "Jamel Dean",
+     "position": "CB",
+     "team": "PIT",
+     "status": "Doubtful",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T13:10Z",
+     "note": "The Steelers could be without Dean for \"a couple of weeks\" after he exited Thursday's 27-24 loss to the Browns due to an ankle injury, Ian …"
+    },
+    {
+     "player": "Derrick Harmon",
+     "position": "DT",
+     "team": "PIT",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-11-15",
+     "date": "2026-10-05T21:23Z",
+     "note": "The Steelers placed Harmon (foot) on injured reserve Monday, Teresa Varley of the team's official site reports."
+    }
+   ]
+  },
+  {
+   "team": "San Francisco 49ers",
+   "teamId": "25",
+   "injuries": [
+    {
+     "player": "James Thompson Jr.",
+     "position": "DT",
+     "team": "SF",
+     "status": "Out",
+     "injury": "Sprain",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-06T00:40Z",
+     "note": "Coach Kyle Shanahan said Monday that Thompson (ankle) is not expected back for Week 5, Cam Inman of The San Jose Mercury News reports."
+    },
+    {
+     "player": "Nick Bosa",
+     "position": "DE",
+     "team": "SF",
+     "status": "Out",
+     "injury": "Strain",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:47Z",
+     "note": "Bosa (calf) is unlikely to be ready for the 49ers' Week 5 matchup against the Seahawks, Cam Inman of The San Jose Mercury News reports."
+    },
+    {
+     "player": "Marques Sigle",
+     "position": "S",
+     "team": "SF",
+     "status": "Doubtful",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:46Z",
+     "note": "Sigle is expected to miss multiple weeks due to a high-ankle injury that he sustained during the 49ers' 24-14 win over the Broncos on Sunda…"
+    },
+    {
+     "player": "Kyle Juszczyk",
+     "position": "FB",
+     "team": "SF",
+     "status": "Doubtful",
+     "injury": "Sprain",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T14:13Z",
+     "note": "Juszczyk is believed to have sustained a sprained right knee in Sunday's 24-14 win over the Broncos and is likely to miss \"several weeks,\" …"
+    },
+    {
+     "player": "Christian Kirk",
+     "position": "WR",
+     "team": "SF",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-02T21:08Z",
+     "note": "Head coach Kyle Shanahan said Friday that the 49ers could open Kirk's (calf) practice window to return from injured reserve in two weeks, M…"
+    }
+   ]
+  },
+  {
+   "team": "Seattle Seahawks",
+   "teamId": "26",
+   "injuries": [
+    {
+     "player": "Ty Okada",
+     "position": "S",
+     "team": "SEA",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:05Z",
+     "note": "out"
+    },
+    {
+     "player": "Chazz Surratt",
+     "position": "LB",
+     "team": "SEA",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:05Z",
+     "note": "out"
+    },
+    {
+     "player": "Zach Charbonnet",
+     "position": "RB",
+     "team": "SEA",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2026-10-15",
+     "date": "2026-10-05T17:05Z",
+     "note": "Seahawks head coach Mike Macdonald said Monday that Charbonnet (knee) won't be activated from the reserve/PUP list in advance of Sunday's g…"
+    },
+    {
+     "player": "Leonard Williams",
+     "position": "DT",
+     "team": "SEA",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T23:32Z",
+     "note": "Head coach Mike Macdonald said Monday that he expects Williams (ankle) to be available for this Sunday's NFC West showdown against the 49er…"
+    },
+    {
+     "player": "Jadarian Price",
+     "position": "RB",
+     "team": "SEA",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-11-02",
+     "date": "2026-10-03T20:02Z",
+     "note": "Price (chest) was placed on injured reserve Saturday, Adam Schefter of ESPN reports."
+    }
+   ]
+  },
+  {
+   "team": "Tennessee Titans",
+   "teamId": "10",
+   "injuries": [
+    {
+     "player": "Jackson Slater",
+     "position": "G",
+     "team": "TEN",
+     "status": "Injured Reserve",
+     "injury": "Not Specified",
+     "returnDate": "2026-11-01",
+     "date": "2026-09-30T01:02Z",
+     "note": "The Titans placed Slater (foot) on injured reserve Tuesday, Jim Wyatt of the team's official site reports."
+    },
+    {
+     "player": "Fernando Carmona",
+     "position": "G",
+     "team": "TEN",
+     "status": "Injured Reserve",
+     "injury": "Sprain",
+     "returnDate": "2026-11-01",
+     "date": "2026-09-30T00:57Z",
+     "note": "The Titans placed Carmona (ankle) on injured reserve Tuesday, Jim Wyatt of the team's official site reports."
+    }
+   ]
+  },
+  {
+   "team": "Washington Commanders",
+   "teamId": "28",
+   "injuries": [
+    {
+     "player": "Jaylin Lane",
+     "position": "WR",
+     "team": "WSH",
+     "status": "Out",
+     "injury": "Surgery",
+     "returnDate": "2027-02-15",
+     "date": "2026-10-05T23:04Z",
+     "note": "Head coach Dan Quinn confirmed Monday that Lane (ankle) will miss the remainder of the season."
+    },
+    {
+     "player": "Rachaad White",
+     "position": "RB",
+     "team": "WSH",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:41Z",
+     "note": "Coach Dan Quinn said Monday that White (shoulder) \"should\" practice this week, Tashan Reed of The Washington Post reports."
+    },
+    {
+     "player": "Terry McLaurin",
+     "position": "WR",
+     "team": "WSH",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:36Z",
+     "note": "Coach Dan Quinn said Monday that the Commanders continue to assess what McLaurin (hamstring) may be able to do at Wednesday's practice, Joh…"
+    },
+    {
+     "player": "Jayden Daniels",
+     "position": "QB",
+     "team": "WSH",
+     "status": "Out",
+     "injury": "Dislocated",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:29Z",
+     "note": "Coach Dan Quinn said Monday that the Commanders are aiming for Daniels (left elbow) to have a full practice week and then start Sunday's ga…"
+    },
+    {
+     "player": "Marcus Mariota",
+     "position": "QB",
+     "team": "WSH",
+     "status": "Doubtful",
+     "injury": "Sprain",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T22:23Z",
+     "note": "Coach Dan Quinn confirmed Monday that Mariota has been diagnosed with a sprained MCL in his right knee, and the quarterback's recovery time…"
+    },
+    {
+     "player": "Sam Cosmi",
+     "position": "G",
+     "team": "WSH",
+     "status": "Out",
+     "injury": "Concussion",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:09Z",
+     "note": "out"
+    },
+    {
+     "player": "Nick Cross",
+     "position": "S",
+     "team": "WSH",
+     "status": "Out",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-05T19:09Z",
+     "note": "out"
+    },
+    {
+     "player": "Tyler Owens",
+     "position": "S",
+     "team": "WSH",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T16:27Z",
+     "note": "Owens (hamstring) is questionable to return to Sunday's game against the Colts."
+    },
+    {
+     "player": "Jeremy Reaves",
+     "position": "S",
+     "team": "WSH",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T16:02Z",
+     "note": "Reaves (finger) is questionable to return to Sunday's game against the Colts."
+    },
+    {
+     "player": "Charles Omenihu",
+     "position": "DE",
+     "team": "WSH",
+     "status": "Questionable",
+     "injury": "Not Specified",
+     "returnDate": "2026-10-11",
+     "date": "2026-10-04T15:20Z",
+     "note": "Omenihu (groin) has been ruled out for the remainder of Sunday's Week 4 matchup versus the Colts in London, Nicki Jhabvala of The Athletic …"
+    }
+   ]
+  }
+ ]
+}

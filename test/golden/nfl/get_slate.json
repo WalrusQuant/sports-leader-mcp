@@ -1,0 +1,1257 @@
+{
+ "sport": "football",
+ "league": "nfl",
+ "gameCount": 13,
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "keyInjuryStatuses": [
+  "Out",
+  "Doubtful"
+ ],
+ "injuriesAvailable": true,
+ "games": [
+  {
+   "eventId": "401872981",
+   "startUtc": "2026-10-11T13:30Z",
+   "name": "PHI VS JAX",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 9:30 AM EDT"
+   },
+   "neutralSite": true,
+   "home": {
+    "id": "30",
+    "abbrev": "JAX",
+    "name": "Jacksonville Jaguars",
+    "record": "3-1",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Christian Braswell",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Montaric Brown",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 2
+   },
+   "away": {
+    "id": "21",
+    "abbrev": "PHI",
+    "name": "Philadelphia Eagles",
+    "record": "2-2",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Tank Bigsby",
+      "position": "RB",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2026-11-08"
+     },
+     {
+      "player": "DeVonta Smith",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Fred Johnson",
+      "position": "OT",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Lane Johnson",
+      "position": "OT",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Marcus Epps",
+      "position": "S",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Dallas Goedert",
+      "position": "TE",
+      "status": "Out",
+      "injury": "Sprain",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Zack Baun",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Concussion",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Hollywood Brown",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 2
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.7095,
+    "awayNoVigProb": 0.2905,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -285,
+    "awayMoneyLine": 230,
+    "drawMoneyLine": null,
+    "homeSpread": -6.5,
+    "total": 42.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872990",
+   "startUtc": "2026-10-11T17:00Z",
+   "name": "CHI @ GB",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "9",
+    "abbrev": "GB",
+    "name": "Green Bay Packers",
+    "record": "2-2",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Micah Parsons",
+      "position": "DE",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2026-10-18"
+     },
+     {
+      "player": "Jacob Monk",
+      "position": "C",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Aaron Banks",
+      "position": "G",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Anthony Campbell",
+      "position": "DT",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Edgerrin Cooper",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2027-02-15"
+     }
+    ],
+    "otherInjuryCount": 5
+   },
+   "away": {
+    "id": "3",
+    "abbrev": "CHI",
+    "name": "Chicago Bears",
+    "record": "3-1",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Caleb Williams",
+      "position": "QB",
+      "status": "Out",
+      "injury": "Strain",
+      "returnDate": "2026-10-18"
+     },
+     {
+      "player": "Cam Lewis",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Kyler Gordon",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Shemar Turner",
+      "position": "DT",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Noah Sewell",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 3
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.417,
+    "awayNoVigProb": 0.583,
+    "drawNoVigProb": null,
+    "homeMoneyLine": 130,
+    "awayMoneyLine": -155,
+    "drawMoneyLine": null,
+    "homeSpread": 3,
+    "total": 45.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872984",
+   "startUtc": "2026-10-11T17:00Z",
+   "name": "HOU @ TEN",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "10",
+    "abbrev": "TEN",
+    "name": "Tennessee Titans",
+    "record": "0-4",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 2
+   },
+   "away": {
+    "id": "34",
+    "abbrev": "HOU",
+    "name": "Houston Texans",
+    "record": "0-4",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Azeez Al-Shaair",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 5
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.2591,
+    "awayNoVigProb": 0.7409,
+    "drawNoVigProb": null,
+    "homeMoneyLine": 270,
+    "awayMoneyLine": -340,
+    "drawMoneyLine": null,
+    "homeSpread": 7,
+    "total": 39.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872982",
+   "startUtc": "2026-10-11T17:00Z",
+   "name": "CIN @ MIA",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "15",
+    "abbrev": "MIA",
+    "name": "Miami Dolphins",
+    "record": "0-4",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Reese Taylor",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-25"
+     },
+     {
+      "player": "Caleb Douglas",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Robert Beal Jr.",
+      "position": "DE",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Storm Duck",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 4
+   },
+   "away": {
+    "id": "4",
+    "abbrev": "CIN",
+    "name": "Cincinnati Bengals",
+    "record": "2-2",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Colbie Young",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Bryan Cook",
+      "position": "S",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Kyle Dugger",
+      "position": "S",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "B.J. Hill",
+      "position": "DT",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Swayze Bozeman",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 3
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.2559,
+    "awayNoVigProb": 0.7441,
+    "drawNoVigProb": null,
+    "homeMoneyLine": 275,
+    "awayMoneyLine": -345,
+    "drawMoneyLine": null,
+    "homeSpread": 7,
+    "total": 42.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872986",
+   "startUtc": "2026-10-11T17:00Z",
+   "name": "LV @ NE",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "17",
+    "abbrev": "NE",
+    "name": "New England Patriots",
+    "record": "2-2",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Christian Gonzalez",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Christian Barmore",
+      "position": "DT",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Channing Canada",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 5
+   },
+   "away": {
+    "id": "13",
+    "abbrev": "LV",
+    "name": "Las Vegas Raiders",
+    "record": "3-1",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Jackson Powers-Johnson",
+      "position": "G",
+      "status": "Out",
+      "injury": "Soreness",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 4
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.6309,
+    "awayNoVigProb": 0.3691,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -192,
+    "awayMoneyLine": 160,
+    "drawMoneyLine": null,
+    "homeSpread": -3.5,
+    "total": 45.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872987",
+   "startUtc": "2026-10-11T17:00Z",
+   "name": "MIN @ NO",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "18",
+    "abbrev": "NO",
+    "name": "New Orleans Saints",
+    "record": "1-3",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Christen Miller",
+      "position": "DT",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Zach Wilson",
+      "position": "QB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Noah Fant",
+      "position": "TE",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Decamerion Richardson",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Kaden Elliss",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Carl Granderson",
+      "position": "DE",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Anfernee Jennings",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 3
+   },
+   "away": {
+    "id": "16",
+    "abbrev": "MIN",
+    "name": "Minnesota Vikings",
+    "record": "4-0",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Donovan Jackson",
+      "position": "G",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2027-01-17"
+     },
+     {
+      "player": "Brett Thorson",
+      "position": "P",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Justin Jefferson",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Sprain",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Charles Demmings",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 2
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.4573,
+    "awayNoVigProb": 0.5427,
+    "drawNoVigProb": null,
+    "homeMoneyLine": 110,
+    "awayMoneyLine": -130,
+    "drawMoneyLine": null,
+    "homeSpread": 1.5,
+    "total": 42.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872983",
+   "startUtc": "2026-10-11T17:00Z",
+   "name": "CLE @ NYJ",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "20",
+    "abbrev": "NYJ",
+    "name": "New York Jets",
+    "record": "1-3",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Braiden McGregor",
+      "position": "DE",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2027-02-15"
+     },
+     {
+      "player": "Mason Taylor",
+      "position": "TE",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Dylan Parham",
+      "position": "G",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Kiko Mauigoa",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Adonai Mitchell",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Kingsley Enagbare",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Breece Hall",
+      "position": "RB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 3
+   },
+   "away": {
+    "id": "5",
+    "abbrev": "CLE",
+    "name": "Cleveland Browns",
+    "record": "3-1",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Tylan Wallace",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Elgton Jenkins",
+      "position": "C",
+      "status": "Out",
+      "injury": "Concussion",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Teven Jenkins",
+      "position": "G",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 1
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.5427,
+    "awayNoVigProb": 0.4573,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -130,
+    "awayMoneyLine": 110,
+    "drawMoneyLine": null,
+    "homeSpread": -2.5,
+    "total": 39.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872985",
+   "startUtc": "2026-10-11T17:00Z",
+   "name": "IND @ PIT",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "23",
+    "abbrev": "PIT",
+    "name": "Pittsburgh Steelers",
+    "record": "2-2",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Rico Dowdle",
+      "position": "RB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Jamel Dean",
+      "position": "CB",
+      "status": "Doubtful",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 1
+   },
+   "away": {
+    "id": "11",
+    "abbrev": "IND",
+    "name": "Indianapolis Colts",
+    "record": "2-2",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Arden Key",
+      "position": "DE",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-18"
+     },
+     {
+      "player": "Keenan Allen",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 2
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.5514,
+    "awayNoVigProb": 0.4486,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -135,
+    "awayMoneyLine": 114,
+    "drawMoneyLine": null,
+    "homeSpread": -2.5,
+    "total": 44.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872988",
+   "startUtc": "2026-10-11T17:00Z",
+   "name": "NYG @ WSH",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 1:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "28",
+    "abbrev": "WSH",
+    "name": "Washington Commanders",
+    "record": "1-3",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Jaylin Lane",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2027-02-15"
+     },
+     {
+      "player": "Rachaad White",
+      "position": "RB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Terry McLaurin",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Jayden Daniels",
+      "position": "QB",
+      "status": "Out",
+      "injury": "Dislocated",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Marcus Mariota",
+      "position": "QB",
+      "status": "Doubtful",
+      "injury": "Sprain",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Sam Cosmi",
+      "position": "G",
+      "status": "Out",
+      "injury": "Concussion",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Nick Cross",
+      "position": "S",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 3
+   },
+   "away": {
+    "id": "19",
+    "abbrev": "NYG",
+    "name": "New York Giants",
+    "record": "3-1",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Braxton Berrios",
+      "position": "WR",
+      "status": "Doubtful",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 2
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.5996,
+    "awayNoVigProb": 0.4004,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -166,
+    "awayMoneyLine": 140,
+    "drawMoneyLine": null,
+    "homeSpread": -3,
+    "total": 43.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872989",
+   "startUtc": "2026-10-11T20:05Z",
+   "name": "DEN @ LAC",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 4:05 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "24",
+    "abbrev": "LAC",
+    "name": "Los Angeles Chargers",
+    "record": "0-4",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Derwin James Jr.",
+      "position": "S",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Rashawn Slater",
+      "position": "OT",
+      "status": "Out",
+      "injury": "Sprain",
+      "returnDate": "2026-11-01"
+     },
+     {
+      "player": "Brenen Thompson",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Dalvin Tomlinson",
+      "position": "DT",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Charlie Kolar",
+      "position": "TE",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Kayode Awosika",
+      "position": "G",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 4
+   },
+   "away": {
+    "id": "7",
+    "abbrev": "DEN",
+    "name": "Denver Broncos",
+    "record": "2-2",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Dondrea Tillman",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Pat Surtain II",
+      "position": "CB",
+      "status": "Doubtful",
+      "injury": "Sprain",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Pat Bryant",
+      "position": "WR",
+      "status": "Doubtful",
+      "injury": "Sprain",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 2
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.3775,
+    "awayNoVigProb": 0.6225,
+    "drawNoVigProb": null,
+    "homeMoneyLine": 154,
+    "awayMoneyLine": -185,
+    "drawMoneyLine": null,
+    "homeSpread": 3.5,
+    "total": 42.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872991",
+   "startUtc": "2026-10-11T20:25Z",
+   "name": "DET @ ARI",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 4:25 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "22",
+    "abbrev": "ARI",
+    "name": "Arizona Cardinals",
+    "record": "1-3",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Paris Johnson Jr.",
+      "position": "OT",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2027-02-15"
+     },
+     {
+      "player": "Dadrion Taylor-Demerson",
+      "position": "S",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 4
+   },
+   "away": {
+    "id": "8",
+    "abbrev": "DET",
+    "name": "Detroit Lions",
+    "record": "2-2",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Rock Ya-Sin",
+      "position": "CB",
+      "status": "Doubtful",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Ben Bartch",
+      "position": "G",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Brian Branch",
+      "position": "S",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 2
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.3425,
+    "awayNoVigProb": 0.6575,
+    "drawNoVigProb": null,
+    "homeMoneyLine": 180,
+    "awayMoneyLine": -218,
+    "drawMoneyLine": null,
+    "homeSpread": 4.5,
+    "total": 54.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872992",
+   "startUtc": "2026-10-11T20:25Z",
+   "name": "SF @ SEA",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 4:25 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "26",
+    "abbrev": "SEA",
+    "name": "Seattle Seahawks",
+    "record": "3-1",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Ty Okada",
+      "position": "S",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Chazz Surratt",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Zach Charbonnet",
+      "position": "RB",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2026-10-15"
+     }
+    ],
+    "otherInjuryCount": 2
+   },
+   "away": {
+    "id": "25",
+    "abbrev": "SF",
+    "name": "San Francisco 49ers",
+    "record": "4-0",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "James Thompson Jr.",
+      "position": "DT",
+      "status": "Out",
+      "injury": "Sprain",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Nick Bosa",
+      "position": "DE",
+      "status": "Out",
+      "injury": "Strain",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Marques Sigle",
+      "position": "S",
+      "status": "Doubtful",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Kyle Juszczyk",
+      "position": "FB",
+      "status": "Doubtful",
+      "injury": "Sprain",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 1
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.5721,
+    "awayNoVigProb": 0.4279,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -148,
+    "awayMoneyLine": 124,
+    "drawMoneyLine": null,
+    "homeSpread": -2.5,
+    "total": 47.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401872993",
+   "startUtc": "2026-10-12T00:20Z",
+   "name": "BAL @ ATL",
+   "status": {
+    "state": "pre",
+    "detail": "10/11 - 8:20 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "1",
+    "abbrev": "ATL",
+    "name": "Atlanta Falcons",
+    "record": "2-2",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Jared Ivey",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Cooper Rush",
+      "position": "QB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Ethan Onianwa",
+      "position": "OT",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Jack Strand",
+      "position": "QB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Robert Longerbeam",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Malcolm DeWalt IV",
+      "position": "CB",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 2
+   },
+   "away": {
+    "id": "33",
+    "abbrev": "BAL",
+    "name": "Baltimore Ravens",
+    "record": "3-1",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Chris Moore",
+      "position": "WR",
+      "status": "Out",
+      "injury": "Not Specified",
+      "returnDate": "2026-10-11"
+     },
+     {
+      "player": "Trey Hendrickson",
+      "position": "LB",
+      "status": "Out",
+      "injury": "Fracture",
+      "returnDate": "2026-10-11"
+     }
+    ],
+    "otherInjuryCount": 7
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.5721,
+    "awayNoVigProb": 0.4279,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -148,
+    "awayMoneyLine": 124,
+    "drawMoneyLine": null,
+    "homeSpread": -2.5,
+    "total": 44.5,
+    "reason": null
+   }
+  }
+ ]
+}

@@ -1,0 +1,1397 @@
+{
+ "game": {
+  "id": "401907991",
+  "date": "2026-10-05T21:00Z",
+  "status": {
+   "state": "post",
+   "detail": "Final"
+  },
+  "competitors": [
+   {
+    "homeAway": "home",
+    "winner": false,
+    "team": {
+     "id": "5",
+     "abbrev": "CLE",
+     "name": "Guardians",
+     "displayName": "Cleveland Guardians"
+    },
+    "score": "3",
+    "linescores": [
+     "2",
+     "0",
+     "0",
+     "0",
+     "0",
+     "0",
+     "0",
+     "1",
+     "0"
+    ]
+   },
+   {
+    "homeAway": "away",
+    "winner": true,
+    "team": {
+     "id": "4",
+     "abbrev": "CHW",
+     "name": "White Sox",
+     "displayName": "Chicago White Sox"
+    },
+    "score": "4",
+    "linescores": [
+     "0",
+     "0",
+     "0",
+     "1",
+     "0",
+     "3",
+     "0",
+     "0",
+     "0"
+    ]
+   }
+  ]
+ },
+ "boxscore": {
+  "teams": [
+   {
+    "team": {
+     "id": "4",
+     "abbrev": "CHW",
+     "name": "White Sox",
+     "displayName": "Chicago White Sox"
+    },
+    "stats": [
+     {
+      "label": "batting",
+      "displayValue": ""
+     },
+     {
+      "label": "pitching",
+      "displayValue": ""
+     },
+     {
+      "label": "fielding",
+      "displayValue": ""
+     },
+     {
+      "label": "records",
+      "displayValue": ""
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "5",
+     "abbrev": "CLE",
+     "name": "Guardians",
+     "displayName": "Cleveland Guardians"
+    },
+    "stats": [
+     {
+      "label": "batting",
+      "displayValue": ""
+     },
+     {
+      "label": "pitching",
+      "displayValue": ""
+     },
+     {
+      "label": "fielding",
+      "displayValue": ""
+     },
+     {
+      "label": "records",
+      "displayValue": ""
+     }
+    ]
+   }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "4",
+     "abbrev": "CHW",
+     "name": "White Sox",
+     "displayName": "Chicago White Sox"
+    },
+    "categories": [
+     {
+      "name": "",
+      "athletes": [
+       {
+        "id": "5207167",
+        "name": "Sam Antonacci",
+        "stats": {
+         "H-AB": "0-4",
+         "AB": "4",
+         "R": "0",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "1",
+         "#P": "23",
+         "AVG": ".167",
+         "OBP": ".286",
+         "SLG": ".250"
+        }
+       },
+       {
+        "id": "4743772",
+        "name": "Kyle Teel",
+        "stats": {
+         "H-AB": "1-4",
+         "AB": "4",
+         "R": "1",
+         "H": "1",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "2",
+         "#P": "16",
+         "AVG": ".235",
+         "OBP": ".278",
+         "SLG": ".235"
+        }
+       },
+       {
+        "id": "42453",
+        "name": "Miguel Vargas",
+        "stats": {
+         "H-AB": "1-2",
+         "AB": "2",
+         "R": "1",
+         "H": "1",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "2",
+         "K": "0",
+         "#P": "22",
+         "AVG": ".154",
+         "OBP": ".389",
+         "SLG": ".154"
+        }
+       },
+       {
+        "id": "4872595",
+        "name": "Munetaka Murakami",
+        "stats": {
+         "H-AB": "1-4",
+         "AB": "4",
+         "R": "0",
+         "H": "1",
+         "RBI": "1",
+         "HR": "0",
+         "BB": "0",
+         "K": "1",
+         "#P": "12",
+         "AVG": ".250",
+         "OBP": ".278",
+         "SLG": ".438"
+        }
+       },
+       {
+        "id": "34986",
+        "name": "Andrew Benintendi",
+        "stats": {
+         "H-AB": "0-2",
+         "AB": "2",
+         "R": "0",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "2",
+         "#P": "8",
+         "AVG": ".200",
+         "OBP": ".429",
+         "SLG": ".200"
+        }
+       },
+       {
+        "id": "31399",
+        "name": "Randal Grichuk",
+        "stats": {
+         "H-AB": "0-1",
+         "AB": "1",
+         "R": "1",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "1",
+         "K": "1",
+         "#P": "9",
+         "AVG": ".333",
+         "OBP": ".429",
+         "SLG": ".333"
+        }
+       },
+       {
+        "id": "5085893",
+        "name": "Tristan Peters",
+        "stats": {
+         "H-AB": "0-2",
+         "AB": "2",
+         "R": "0",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "1",
+         "#P": "7",
+         "AVG": ".273",
+         "OBP": ".333",
+         "SLG": ".273"
+        }
+       },
+       {
+        "id": "31208",
+        "name": "Tommy Pham",
+        "stats": {
+         "H-AB": "0-1",
+         "AB": "1",
+         "R": "0",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "0",
+         "#P": "5",
+         "AVG": ".000",
+         "OBP": ".250",
+         "SLG": ".000"
+        }
+       },
+       {
+        "id": "42462",
+        "name": "Brenton Doyle",
+        "stats": {
+         "H-AB": "0-1",
+         "AB": "1",
+         "R": "0",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "0",
+         "#P": "4",
+         "AVG": ".167",
+         "OBP": ".167",
+         "SLG": ".167"
+        }
+       },
+       {
+        "id": "4950345",
+        "name": "Braden Montgomery",
+        "stats": {
+         "H-AB": "1-4",
+         "AB": "4",
+         "R": "1",
+         "H": "1",
+         "RBI": "2",
+         "HR": "0",
+         "BB": "0",
+         "K": "2",
+         "#P": "14",
+         "AVG": ".200",
+         "OBP": ".200",
+         "SLG": ".267"
+        }
+       },
+       {
+        "id": "5136929",
+        "name": "Chase Meidroth",
+        "stats": {
+         "H-AB": "2-4",
+         "AB": "4",
+         "R": "0",
+         "H": "2",
+         "RBI": "1",
+         "HR": "0",
+         "BB": "0",
+         "K": "1",
+         "#P": "10",
+         "AVG": ".400",
+         "OBP": ".438",
+         "SLG": ".600"
+        }
+       },
+       {
+        "id": "4872685",
+        "name": "Colson Montgomery",
+        "stats": {
+         "H-AB": "0-3",
+         "AB": "3",
+         "R": "0",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "1",
+         "K": "2",
+         "#P": "17",
+         "AVG": ".250",
+         "OBP": ".400",
+         "SLG": ".583"
+        }
+       }
+      ],
+      "totals": {
+       "H-AB": "6-32",
+       "AB": "32",
+       "R": "4",
+       "H": "6",
+       "RBI": "4",
+       "HR": "0",
+       "BB": "4",
+       "K": "13",
+       "#P": "147",
+       "AVG": "",
+       "OBP": "",
+       "SLG": ""
+      }
+     },
+     {
+      "name": "",
+      "athletes": [
+       {
+        "id": "40947",
+        "name": "Anthony Kay",
+        "stats": {
+         "IP": "0.1",
+         "H": "1",
+         "R": "2",
+         "ER": "1",
+         "BB": "1",
+         "K": "0",
+         "HR": "0",
+         "PC-ST": "17-8",
+         "ERA": "3.86",
+         "PC": "17"
+        }
+       },
+       {
+        "id": "33856",
+        "name": "Sean Newcomb",
+        "stats": {
+         "IP": "2.0",
+         "H": "1",
+         "R": "0",
+         "ER": "0",
+         "BB": "1",
+         "K": "3",
+         "HR": "0",
+         "PC-ST": "40-24",
+         "ERA": "6.00",
+         "PC": "40"
+        }
+       },
+       {
+        "id": "4867679",
+        "name": "Sean Burke",
+        "stats": {
+         "IP": "5.1",
+         "H": "1",
+         "R": "1",
+         "ER": "1",
+         "BB": "1",
+         "K": "6",
+         "HR": "0",
+         "PC-ST": "83-53",
+         "ERA": "3.86",
+         "PC": "83"
+        }
+       },
+       {
+        "id": "4927630",
+        "name": "Grant Taylor",
+        "stats": {
+         "IP": "1.1",
+         "H": "1",
+         "R": "0",
+         "ER": "0",
+         "BB": "0",
+         "K": "0",
+         "HR": "0",
+         "PC-ST": "7-7",
+         "ERA": "0.00",
+         "PC": "7"
+        }
+       }
+      ],
+      "totals": {
+       "IP": "9.0",
+       "H": "4",
+       "R": "3",
+       "ER": "2",
+       "BB": "3",
+       "K": "9",
+       "HR": "0",
+       "PC-ST": "147-92",
+       "ERA": "",
+       "PC": "147"
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "5",
+     "abbrev": "CLE",
+     "name": "Guardians",
+     "displayName": "Cleveland Guardians"
+    },
+    "categories": [
+     {
+      "name": "",
+      "athletes": [
+       {
+        "id": "41996",
+        "name": "Steven Kwan",
+        "stats": {
+         "H-AB": "1-4",
+         "AB": "4",
+         "R": "1",
+         "H": "1",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "0",
+         "#P": "18",
+         "AVG": ".143",
+         "OBP": ".250",
+         "SLG": ".143"
+        }
+       },
+       {
+        "id": "32801",
+        "name": "Jose Ramirez",
+        "stats": {
+         "H-AB": "0-3",
+         "AB": "3",
+         "R": "1",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "1",
+         "K": "2",
+         "#P": "22",
+         "AVG": ".000",
+         "OBP": ".250",
+         "SLG": ".000"
+        }
+       },
+       {
+        "id": "4619649",
+        "name": "Chase DeLauter",
+        "stats": {
+         "H-AB": "2-4",
+         "AB": "4",
+         "R": "1",
+         "H": "2",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "0",
+         "#P": "22",
+         "AVG": ".250",
+         "OBP": ".250",
+         "SLG": ".250"
+        }
+       },
+       {
+        "id": "40854",
+        "name": "Jo Adell",
+        "stats": {
+         "H-AB": "1-3",
+         "AB": "3",
+         "R": "0",
+         "H": "1",
+         "RBI": "1",
+         "HR": "0",
+         "BB": "1",
+         "K": "2",
+         "#P": "13",
+         "AVG": ".143",
+         "OBP": ".250",
+         "SLG": ".429"
+        }
+       },
+       {
+        "id": "40538",
+        "name": "Nathaniel Lowe",
+        "stats": {
+         "H-AB": "0-4",
+         "AB": "4",
+         "R": "0",
+         "H": "0",
+         "RBI": "1",
+         "HR": "0",
+         "BB": "0",
+         "K": "1",
+         "#P": "11",
+         "AVG": ".167",
+         "OBP": ".286",
+         "SLG": ".333"
+        }
+       },
+       {
+        "id": "42497",
+        "name": "Angel Martinez",
+        "stats": {
+         "H-AB": "0-4",
+         "AB": "4",
+         "R": "0",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "2",
+         "#P": "16",
+         "AVG": ".000",
+         "OBP": ".000",
+         "SLG": ".000"
+        }
+       },
+       {
+        "id": "5007707",
+        "name": "Travis Bazzana",
+        "stats": {
+         "H-AB": "0-3",
+         "AB": "3",
+         "R": "0",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "1",
+         "K": "1",
+         "#P": "19",
+         "AVG": ".143",
+         "OBP": ".250",
+         "SLG": ".286"
+        }
+       },
+       {
+        "id": "4345843",
+        "name": "Patrick Bailey",
+        "stats": {
+         "H-AB": "0-4",
+         "AB": "4",
+         "R": "0",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "1",
+         "#P": "11",
+         "AVG": ".200",
+         "OBP": ".200",
+         "SLG": ".200"
+        }
+       },
+       {
+        "id": "41217",
+        "name": "Brayan Rocchio",
+        "stats": {
+         "H-AB": "0-3",
+         "AB": "3",
+         "R": "0",
+         "H": "0",
+         "RBI": "0",
+         "HR": "0",
+         "BB": "0",
+         "K": "0",
+         "#P": "15",
+         "AVG": ".000",
+         "OBP": ".167",
+         "SLG": ".000"
+        }
+       }
+      ],
+      "totals": {
+       "H-AB": "4-32",
+       "AB": "32",
+       "R": "3",
+       "H": "4",
+       "RBI": "2",
+       "HR": "0",
+       "BB": "3",
+       "K": "9",
+       "#P": "147",
+       "AVG": "",
+       "OBP": "",
+       "SLG": ""
+      }
+     },
+     {
+      "name": "",
+      "athletes": [
+       {
+        "id": "4345076",
+        "name": "Gavin Williams",
+        "stats": {
+         "IP": "5.0",
+         "H": "4",
+         "R": "2",
+         "ER": "2",
+         "BB": "3",
+         "K": "11",
+         "HR": "0",
+         "PC-ST": "98-59",
+         "ERA": "3.60",
+         "PC": "98"
+        }
+       },
+       {
+        "id": "5194333",
+        "name": "Erik Sabrowski",
+        "stats": {
+         "IP": "0.2",
+         "H": "1",
+         "R": "2",
+         "ER": "2",
+         "BB": "1",
+         "K": "0",
+         "HR": "0",
+         "PC-ST": "11-4",
+         "ERA": "11.57",
+         "PC": "11"
+        }
+       },
+       {
+        "id": "4187661",
+        "name": "Hunter Gaddis",
+        "stats": {
+         "IP": "1.0",
+         "H": "1",
+         "R": "0",
+         "ER": "0",
+         "BB": "0",
+         "K": "1",
+         "HR": "0",
+         "PC-ST": "17-10",
+         "ERA": "0.00",
+         "PC": "17"
+        }
+       },
+       {
+        "id": "33499",
+        "name": "Shawn Armstrong",
+        "stats": {
+         "IP": "1.1",
+         "H": "0",
+         "R": "0",
+         "ER": "0",
+         "BB": "0",
+         "K": "1",
+         "HR": "0",
+         "PC-ST": "16-12",
+         "ERA": "0.00",
+         "PC": "16"
+        }
+       },
+       {
+        "id": "4987924",
+        "name": "Cade Smith",
+        "stats": {
+         "IP": "1.0",
+         "H": "0",
+         "R": "0",
+         "ER": "0",
+         "BB": "0",
+         "K": "0",
+         "HR": "0",
+         "PC-ST": "5-5",
+         "ERA": "0.00",
+         "PC": "5"
+        }
+       }
+      ],
+      "totals": {
+       "IP": "9.0",
+       "H": "6",
+       "R": "4",
+       "ER": "4",
+       "BB": "4",
+       "K": "13",
+       "HR": "0",
+       "PC-ST": "147-90",
+       "ERA": "",
+       "PC": "147"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "plays": {
+  "count": 80,
+  "scoring": [
+   {
+    "id": "4019079910105990057",
+    "period": 1,
+    "text": "Kwan scored and Ramírez scored on error, Lowe safe at first on throwing error by pitcher Newcomb, Adell safe at third on error.",
+    "scoringPlay": true,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "5"
+   }
+  ],
+  "recent": [
+   {
+    "id": "4019079910104040081",
+    "period": 1,
+    "text": "Pitch 3 : Automatic Ball - IBB 3",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "4"
+   },
+   {
+    "id": "4019079910104050081",
+    "period": 1,
+    "text": "Pitch 4 : Automatic Ball - IBB 4",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "4"
+   },
+   {
+    "id": "4019079910104990057",
+    "period": 1,
+    "text": "Adell intentionally walked.",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "5"
+   },
+   {
+    "id": "4019079910104990099",
+    "period": 1,
+    "text": "",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "5"
+   },
+   {
+    "id": "4019079910105010001",
+    "period": 1,
+    "text": "Sean Newcomb pitches to Nathaniel Lowe",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "5"
+   },
+   {
+    "id": "4019079910105020010",
+    "period": 1,
+    "text": "Pitch 1 : Ball In Play",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "4"
+   },
+   {
+    "id": "4019079910105990057",
+    "period": 1,
+    "text": "Kwan scored and Ramírez scored on error, Lowe safe at first on throwing error by pitcher Newcomb, Adell safe at third on error.",
+    "scoringPlay": true,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "5"
+   },
+   {
+    "id": "4019079910105990099",
+    "period": 1,
+    "text": "",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "5"
+   },
+   {
+    "id": "4019079910106010001",
+    "period": 1,
+    "text": "Sean Newcomb pitches to Angel Martinez",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "5"
+   },
+   {
+    "id": "4019079910106020021",
+    "period": 1,
+    "text": "Pitch 1 : Strike 1 Foul",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "4"
+   },
+   {
+    "id": "4019079910106030037",
+    "period": 1,
+    "text": "Pitch 2 : Strike 2 Swinging",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "4"
+   },
+   {
+    "id": "4019079910106040037",
+    "period": 1,
+    "text": "Pitch 3 : Strike 3 Swinging",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "4"
+   },
+   {
+    "id": "4019079910106990057",
+    "period": 1,
+    "text": "Martínez struck out swinging.",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "5"
+   },
+   {
+    "id": "4019079910106990099",
+    "period": 1,
+    "text": "",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "5"
+   },
+   {
+    "id": "4019079910107010001",
+    "period": 1,
+    "text": "Sean Newcomb pitches to Travis Bazzana",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "5"
+   },
+   {
+    "id": "4019079910107020036",
+    "period": 1,
+    "text": "Pitch 1 : Strike 1 Looking",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "4"
+   },
+   {
+    "id": "4019079910107030005",
+    "period": 1,
+    "text": "Pitch 2 : Ball 1",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "4"
+   },
+   {
+    "id": "4019079910107040021",
+    "period": 1,
+    "text": "Pitch 3 : Strike 2 Foul",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "4"
+   },
+   {
+    "id": "4019079910107050021",
+    "period": 1,
+    "text": "Pitch 4 : Strike 2 Foul",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "4"
+   },
+   {
+    "id": "4019079910107060005",
+    "period": 1,
+    "text": "Pitch 5 : Ball 2",
+    "scoringPlay": false,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "4"
+   }
+  ]
+ },
+ "winProbability": {
+  "count": 71,
+  "samples": [
+   {
+    "playId": "4019079910001990057",
+    "homeWinPercentage": 0.61
+   },
+   {
+    "playId": "4019079910101990057",
+    "homeWinPercentage": 0.671
+   },
+   {
+    "playId": "4019079910105990057",
+    "homeWinPercentage": 0.834
+   },
+   {
+    "playId": "4019079910202990057",
+    "homeWinPercentage": 0.803
+   },
+   {
+    "playId": "4019079910303990057",
+    "homeWinPercentage": 0.79
+   },
+   {
+    "playId": "4019079910501990057",
+    "homeWinPercentage": 0.804
+   },
+   {
+    "playId": "4019079910601990057",
+    "homeWinPercentage": 0.735
+   },
+   {
+    "playId": "4019079910605990057",
+    "homeWinPercentage": 0.695
+   },
+   {
+    "playId": "4019079910703990057",
+    "homeWinPercentage": 0.721
+   },
+   {
+    "playId": "4019079910803990057",
+    "homeWinPercentage": 0.726
+   },
+   {
+    "playId": "4019079910903990057",
+    "homeWinPercentage": 0.715
+   },
+   {
+    "playId": "4019079911004990057",
+    "homeWinPercentage": 0.696
+   },
+   {
+    "playId": "4019079911101990057",
+    "homeWinPercentage": 0.216
+   },
+   {
+    "playId": "4019079911202990057",
+    "homeWinPercentage": 0.196
+   },
+   {
+    "playId": "4019079911303990057",
+    "homeWinPercentage": 0.145
+   },
+   {
+    "playId": "4019079911501990057",
+    "homeWinPercentage": 0.12
+   },
+   {
+    "playId": "4019079911505990057",
+    "homeWinPercentage": 0.15
+   },
+   {
+    "playId": "4019079911701990057",
+    "homeWinPercentage": 0.09
+   },
+   {
+    "playId": "4019079911703990057",
+    "homeWinPercentage": 0
+   }
+  ]
+ },
+ "gameInfo": {
+  "venue": {
+   "id": "5",
+   "fullName": "Progressive Field",
+   "address": {
+    "city": "Cleveland",
+    "state": "Ohio",
+    "zipCode": "44115"
+   }
+  },
+  "attendance": 32050,
+  "officials": [
+   {
+    "displayName": "Gabe Morales",
+    "position": {
+     "name": "Home Plate Umpire",
+     "displayName": "Home Plate Umpire",
+     "id": "206"
+    },
+    "order": 1
+   },
+   {
+    "displayName": "Todd Tichenor",
+    "position": {
+     "name": "First Base Umpire",
+     "displayName": "First Base Umpire",
+     "id": "207"
+    },
+    "order": 2
+   },
+   {
+    "displayName": "Jansen Visconti",
+    "position": {
+     "name": "Second Base Umpire",
+     "displayName": "Second Base Umpire",
+     "id": "208"
+    },
+    "order": 3
+   },
+   {
+    "displayName": "Vic Carapazza",
+    "position": {
+     "name": "Third Base Umpire",
+     "displayName": "Third Base Umpire",
+     "id": "209"
+    },
+    "order": 4
+   },
+   {
+    "displayName": "Tom  Hanahan",
+    "position": {
+     "name": "Left Field Umpire",
+     "displayName": "Left Field Umpire",
+     "id": "210"
+    },
+    "order": 5
+   },
+   {
+    "displayName": "Cory Blaser",
+    "position": {
+     "name": "Right Field Umpire",
+     "displayName": "Right Field Umpire",
+     "id": "211"
+    },
+    "order": 6
+   }
+  ],
+  "gameDuration": "3:06"
+ },
+ "broadcasts": [
+  {
+   "type": {
+    "id": "5",
+    "longName": "Radio"
+   },
+   "station": "13715732",
+   "stationKey": "espn",
+   "market": {
+    "id": "1",
+    "type": "National"
+   },
+   "lang": "en",
+   "region": "us",
+   "isNational": true
+  }
+ ],
+ "standings": {
+  "fullViewLink": {
+   "text": "Full Standings"
+  },
+  "groups": [
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "Cleveland",
+       "id": "5",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 77,
+         "displayValue": "77"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": -1,
+         "displayValue": "L1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.52469134,
+         "displayValue": ".525"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 85,
+         "displayValue": "85"
+        }
+       ]
+      },
+      {
+       "team": "Chicago",
+       "id": "4",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 78,
+         "displayValue": "78"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 1,
+         "displayValue": "W1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.5185185,
+         "displayValue": ".519"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 84,
+         "displayValue": "84"
+        }
+       ]
+      },
+      {
+       "team": "Minnesota",
+       "id": "9",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 8,
+         "displayValue": "8"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 85,
+         "displayValue": "85"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 1,
+         "displayValue": "W1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.47530866,
+         "displayValue": ".475"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 77,
+         "displayValue": "77"
+        }
+       ]
+      },
+      {
+       "team": "Detroit",
+       "id": "6",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 9,
+         "displayValue": "9"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 86,
+         "displayValue": "86"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": -1,
+         "displayValue": "L1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.4691358,
+         "displayValue": ".469"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 76,
+         "displayValue": "76"
+        }
+       ]
+      },
+      {
+       "team": "Kansas City",
+       "id": "7",
+       "stats": [
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "gamesbehind",
+         "value": 16,
+         "displayValue": "16"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 93,
+         "displayValue": "93"
+        },
+        {
+         "name": "streak",
+         "displayName": "Streak",
+         "description": "Current Streak",
+         "abbreviation": "STRK",
+         "type": "streak",
+         "value": 1,
+         "displayValue": "W1"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.42592594,
+         "displayValue": ".426"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 69,
+         "displayValue": "69"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2026 American League Central Standings"
+   }
+  ]
+ },
+ "odds": {
+  "markets": [
+   {
+    "provider": "DraftKings",
+    "providerId": "100",
+    "threeWay": false,
+    "homeMoneyLine": -157,
+    "awayMoneyLine": 130,
+    "drawMoneyLine": null,
+    "homeImpliedProb": 0.6109,
+    "awayImpliedProb": 0.4348,
+    "drawImpliedProb": null,
+    "homeNoVigProb": 0.5842,
+    "awayNoVigProb": 0.4158,
+    "drawNoVigProb": null,
+    "overround": 0.0457,
+    "noVigReason": null,
+    "homeSpread": -1.5,
+    "total": 6.5
+   }
+  ],
+  "consensus": {
+   "providerCount": 1,
+   "providers": [
+    "DraftKings"
+   ],
+   "homeNoVigProb": 0.5842,
+   "awayNoVigProb": 0.4158,
+   "drawNoVigProb": null,
+   "homeSpread": -1.5,
+   "total": 6.5,
+   "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+   "reason": null
+  },
+  "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+  "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+ }
+}

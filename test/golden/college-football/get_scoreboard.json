@@ -1,0 +1,294 @@
+{
+ "events": [
+  {
+   "id": "401870766",
+   "date": "2026-10-08T23:00Z",
+   "name": "SHSU @ LIB",
+   "status": {
+    "state": "pre",
+    "detail": "10/8 - 7:00 PM EDT"
+   },
+   "venue": {
+    "name": "Williams Stadium (VA)",
+    "city": "Lynchburg"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "2335",
+      "abbrev": "LIB",
+      "name": "Flames",
+      "displayName": "Liberty Flames"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "2534",
+      "abbrev": "SHSU",
+      "name": "Bearkats",
+      "displayName": "Sam Houston Bearkats"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -600,
+      "awayMoneyLine": 440,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.8571,
+      "awayImpliedProb": 0.1852,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.8223,
+      "awayNoVigProb": 0.1777,
+      "drawNoVigProb": null,
+      "overround": 0.0423,
+      "noVigReason": null,
+      "homeSpread": -13.5,
+      "total": 52.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.8223,
+     "awayNoVigProb": 0.1777,
+     "drawNoVigProb": null,
+     "homeSpread": -13.5,
+     "total": 52.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401871052",
+   "date": "2026-10-08T23:00Z",
+   "name": "MOST @ WKU",
+   "status": {
+    "state": "pre",
+    "detail": "10/8 - 7:00 PM EDT"
+   },
+   "venue": {
+    "name": "Houchens Industries-L.T. Smith Stadium",
+    "city": "Bowling Green"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "98",
+      "abbrev": "WKU",
+      "name": "Hilltoppers",
+      "displayName": "Western Kentucky Hilltoppers"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "2623",
+      "abbrev": "MOST",
+      "name": "Bears",
+      "displayName": "Missouri State Bears"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -135,
+      "awayMoneyLine": 114,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5745,
+      "awayImpliedProb": 0.4673,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5514,
+      "awayNoVigProb": 0.4486,
+      "drawNoVigProb": null,
+      "overround": 0.0418,
+      "noVigReason": null,
+      "homeSpread": -2.5,
+      "total": 56.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.5514,
+     "awayNoVigProb": 0.4486,
+     "drawNoVigProb": null,
+     "homeSpread": -2.5,
+     "total": 56.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401862794",
+   "date": "2026-10-08T23:30Z",
+   "name": "USF @ UTSA",
+   "status": {
+    "state": "pre",
+    "detail": "10/8 - 7:30 PM EDT"
+   },
+   "venue": {
+    "name": "Alamodome",
+    "city": "San Antonio"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "2636",
+      "abbrev": "UTSA",
+      "name": "Roadrunners",
+      "displayName": "UTSA Roadrunners"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "58",
+      "abbrev": "USF",
+      "name": "Bulls",
+      "displayName": "South Florida Bulls"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -278,
+      "awayMoneyLine": 225,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.7354,
+      "awayImpliedProb": 0.3077,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.705,
+      "awayNoVigProb": 0.295,
+      "drawNoVigProb": null,
+      "overround": 0.0431,
+      "noVigReason": null,
+      "homeSpread": -7,
+      "total": 49.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.705,
+     "awayNoVigProb": 0.295,
+     "drawNoVigProb": null,
+     "homeSpread": -7,
+     "total": 49.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401869933",
+   "date": "2026-10-08T23:30Z",
+   "name": "USA @ ARST",
+   "status": {
+    "state": "pre",
+    "detail": "10/8 - 7:30 PM EDT"
+   },
+   "venue": {
+    "name": "Centennial Bank Stadium",
+    "city": "Jonesboro"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "2032",
+      "abbrev": "ARST",
+      "name": "Red Wolves",
+      "displayName": "Arkansas State Red Wolves"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "6",
+      "abbrev": "USA",
+      "name": "Jaguars",
+      "displayName": "South Alabama Jaguars"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "Draft Kings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -115,
+      "awayMoneyLine": -105,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5349,
+      "awayImpliedProb": 0.5122,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5108,
+      "awayNoVigProb": 0.4892,
+      "drawNoVigProb": null,
+      "overround": 0.0471,
+      "noVigReason": null,
+      "homeSpread": -1.5,
+      "total": 57.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "Draft Kings"
+     ],
+     "homeNoVigProb": 0.5108,
+     "awayNoVigProb": 0.4892,
+     "drawNoVigProb": null,
+     "homeSpread": -1.5,
+     "total": 57.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  }
+ ],
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+}

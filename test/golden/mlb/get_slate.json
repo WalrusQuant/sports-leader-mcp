@@ -1,0 +1,98 @@
+{
+ "sport": "baseball",
+ "league": "mlb",
+ "gameCount": 2,
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "keyInjuryStatuses": [
+  "Out",
+  "Doubtful"
+ ],
+ "injuriesAvailable": true,
+ "games": [
+  {
+   "eventId": "401908015",
+   "startUtc": "2026-10-06T22:00Z",
+   "name": "LAD @ ATL",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 6:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "15",
+    "abbrev": "ATL",
+    "name": "Atlanta Braves",
+    "record": "94-68",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 10
+   },
+   "away": {
+    "id": "19",
+    "abbrev": "LAD",
+    "name": "Los Angeles Dodgers",
+    "record": "100-62",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 7
+   },
+   "odds": {
+    "providers": [
+     "DraftKings"
+    ],
+    "homeNoVigProb": 0.4989,
+    "awayNoVigProb": 0.5011,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -109,
+    "awayMoneyLine": -110,
+    "drawMoneyLine": null,
+    "homeSpread": 1.5,
+    "total": 6,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401908004",
+   "startUtc": "2026-10-07T01:30Z",
+   "name": "MIL @ SD",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 9:30 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "25",
+    "abbrev": "SD",
+    "name": "San Diego Padres",
+    "record": "91-71",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 8
+   },
+   "away": {
+    "id": "8",
+    "abbrev": "MIL",
+    "name": "Milwaukee Brewers",
+    "record": "103-59",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 5
+   },
+   "odds": {
+    "providers": [
+     "DraftKings"
+    ],
+    "homeNoVigProb": 0.5537,
+    "awayNoVigProb": 0.4463,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -138,
+    "awayMoneyLine": 114,
+    "drawMoneyLine": null,
+    "homeSpread": -1.5,
+    "total": 7.5,
+    "reason": null
+   }
+  }
+ ]
+}

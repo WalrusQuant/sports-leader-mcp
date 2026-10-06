@@ -1,0 +1,2381 @@
+{
+ "game": {
+  "id": "401892445",
+  "date": "2026-10-05T23:00Z",
+  "status": {
+   "state": "post",
+   "detail": "Final"
+  },
+  "competitors": [
+   {
+    "homeAway": "home",
+    "winner": true,
+    "team": {
+     "id": "20",
+     "abbrev": "TB",
+     "name": "Lightning",
+     "displayName": "Tampa Bay Lightning"
+    },
+    "score": "4",
+    "linescores": [
+     "1",
+     "1",
+     "2"
+    ]
+   },
+   {
+    "homeAway": "away",
+    "winner": false,
+    "team": {
+     "id": "15",
+     "abbrev": "PHI",
+     "name": "Flyers",
+     "displayName": "Philadelphia Flyers"
+    },
+    "score": "1",
+    "linescores": [
+     "0",
+     "1",
+     "0"
+    ]
+   }
+  ]
+ },
+ "boxscore": {
+  "teams": [
+   {
+    "team": {
+     "id": "15",
+     "abbrev": "PHI",
+     "name": "Flyers",
+     "displayName": "Philadelphia Flyers"
+    },
+    "stats": [
+     {
+      "label": "Blocked Shots",
+      "displayValue": "19"
+     },
+     {
+      "label": "Hits",
+      "displayValue": "23"
+     },
+     {
+      "label": "Takeaways",
+      "displayValue": "5"
+     },
+     {
+      "label": "Shots",
+      "displayValue": "14"
+     },
+     {
+      "label": "Power Play Goals",
+      "displayValue": "0"
+     },
+     {
+      "label": "Power Play Opportunities",
+      "displayValue": "3"
+     },
+     {
+      "label": "Power Play Percentage",
+      "displayValue": "0.0"
+     },
+     {
+      "label": "Short Handed Goals",
+      "displayValue": "0"
+     },
+     {
+      "label": "Shootout Goals",
+      "displayValue": "0"
+     },
+     {
+      "label": "Faceoffs Won",
+      "displayValue": "34"
+     },
+     {
+      "label": "Faceoff Win Percent",
+      "displayValue": "54.0"
+     },
+     {
+      "label": "Giveaways",
+      "displayValue": "16"
+     },
+     {
+      "label": "Total Penalties",
+      "displayValue": "4"
+     },
+     {
+      "label": "Penalty Minutes",
+      "displayValue": "11"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "20",
+     "abbrev": "TB",
+     "name": "Lightning",
+     "displayName": "Tampa Bay Lightning"
+    },
+    "stats": [
+     {
+      "label": "Blocked Shots",
+      "displayValue": "11"
+     },
+     {
+      "label": "Hits",
+      "displayValue": "15"
+     },
+     {
+      "label": "Takeaways",
+      "displayValue": "3"
+     },
+     {
+      "label": "Shots",
+      "displayValue": "36"
+     },
+     {
+      "label": "Power Play Goals",
+      "displayValue": "0"
+     },
+     {
+      "label": "Power Play Opportunities",
+      "displayValue": "3"
+     },
+     {
+      "label": "Power Play Percentage",
+      "displayValue": "0.0"
+     },
+     {
+      "label": "Short Handed Goals",
+      "displayValue": "0"
+     },
+     {
+      "label": "Shootout Goals",
+      "displayValue": "0"
+     },
+     {
+      "label": "Faceoffs Won",
+      "displayValue": "29"
+     },
+     {
+      "label": "Faceoff Win Percent",
+      "displayValue": "46.0"
+     },
+     {
+      "label": "Giveaways",
+      "displayValue": "10"
+     },
+     {
+      "label": "Total Penalties",
+      "displayValue": "4"
+     },
+     {
+      "label": "Penalty Minutes",
+      "displayValue": "11"
+     }
+    ]
+   }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "15",
+     "abbrev": "PHI",
+     "name": "Flyers",
+     "displayName": "Philadelphia Flyers"
+    },
+    "categories": [
+     {
+      "name": "forwards",
+      "athletes": [
+       {
+        "id": "3096237",
+        "name": "Noel Acciari",
+        "jersey": "52",
+        "stats": {
+         "BS": "0",
+         "HT": "3",
+         "TK": "0",
+         "+/-": "0",
+         "TOI": "13:39",
+         "PPTOI": "0:00",
+         "SHTOI": "2:14",
+         "ESTOI": "11:25",
+         "SHFT": "20",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "0",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "5",
+         "FL": "5",
+         "FO%": "50.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "5173105",
+        "name": "Denver Barkey",
+        "jersey": "86",
+        "stats": {
+         "BS": "0",
+         "HT": "0",
+         "TK": "1",
+         "+/-": "0",
+         "TOI": "13:06",
+         "PPTOI": "2:05",
+         "SHTOI": "0:00",
+         "ESTOI": "11:01",
+         "SHFT": "20",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "0",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "1",
+         "FL": "0",
+         "FO%": "100.0",
+         "GV": "1",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4419682",
+        "name": "Noah Cates",
+        "jersey": "27",
+        "stats": {
+         "BS": "0",
+         "HT": "3",
+         "TK": "0",
+         "+/-": "-1",
+         "TOI": "11:12",
+         "PPTOI": "0:12",
+         "SHTOI": "2:50",
+         "ESTOI": "8:10",
+         "SHFT": "17",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "0",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "7",
+         "FL": "4",
+         "FO%": "63.6",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "2562601",
+        "name": "Sean Couturier",
+        "jersey": "14",
+        "stats": {
+         "BS": "0",
+         "HT": "3",
+         "TK": "0",
+         "+/-": "0",
+         "TOI": "16:35",
+         "PPTOI": "1:01",
+         "SHTOI": "2:05",
+         "ESTOI": "13:29",
+         "SHFT": "24",
+         "G": "0",
+         "YTDG": "0",
+         "A": "1",
+         "S": "1",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "8",
+         "FL": "3",
+         "FO%": "72.7",
+         "GV": "2",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "3115035",
+        "name": "Christian Dvorak",
+        "jersey": "22",
+        "stats": {
+         "BS": "1",
+         "HT": "2",
+         "TK": "0",
+         "+/-": "0",
+         "TOI": "14:24",
+         "PPTOI": "0:15",
+         "SHTOI": "0:56",
+         "ESTOI": "13:13",
+         "SHFT": "19",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "1",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "7",
+         "FL": "9",
+         "FO%": "43.8",
+         "GV": "1",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4697406",
+        "name": "Tyson Foerster",
+        "jersey": "71",
+        "stats": {
+         "BS": "1",
+         "HT": "1",
+         "TK": "0",
+         "+/-": "-3",
+         "TOI": "18:55",
+         "PPTOI": "3:32",
+         "SHTOI": "3:53",
+         "ESTOI": "11:30",
+         "SHFT": "23",
+         "G": "1",
+         "YTDG": "1",
+         "A": "0",
+         "S": "4",
+         "SM": "3",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4271565",
+        "name": "Carl Grundstrom",
+        "jersey": "91",
+        "stats": {
+         "BS": "1",
+         "HT": "2",
+         "TK": "1",
+         "+/-": "0",
+         "TOI": "10:12",
+         "PPTOI": "0:00",
+         "SHTOI": "0:00",
+         "ESTOI": "10:12",
+         "SHFT": "14",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "1",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "3900169",
+        "name": "Travis Konecny",
+        "jersey": "11",
+        "stats": {
+         "BS": "0",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "-2",
+         "TOI": "19:05",
+         "PPTOI": "3:21",
+         "SHTOI": "0:00",
+         "ESTOI": "15:44",
+         "SHFT": "23",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "2",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "1",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "5291941",
+        "name": "Porter Martone",
+        "jersey": "94",
+        "stats": {
+         "BS": "0",
+         "HT": "1",
+         "TK": "0",
+         "+/-": "-2",
+         "TOI": "14:36",
+         "PPTOI": "1:38",
+         "SHTOI": "0:00",
+         "ESTOI": "12:58",
+         "SHFT": "19",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "0",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "5149170",
+        "name": "Matvei Michkov",
+        "jersey": "39",
+        "stats": {
+         "BS": "0",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "-1",
+         "TOI": "16:40",
+         "PPTOI": "3:42",
+         "SHTOI": "0:00",
+         "ESTOI": "12:58",
+         "SHFT": "20",
+         "G": "0",
+         "YTDG": "1",
+         "A": "0",
+         "S": "1",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "1",
+         "FL": "1",
+         "FO%": "50.0",
+         "GV": "1",
+         "PN": "1",
+         "PIM": "2"
+        }
+       },
+       {
+        "id": "4392072",
+        "name": "Owen Tippett",
+        "jersey": "74",
+        "stats": {
+         "BS": "2",
+         "HT": "2",
+         "TK": "0",
+         "+/-": "0",
+         "TOI": "13:58",
+         "PPTOI": "2:05",
+         "SHTOI": "0:00",
+         "ESTOI": "11:53",
+         "SHFT": "21",
+         "G": "0",
+         "YTDG": "1",
+         "A": "0",
+         "S": "0",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "2",
+         "PN": "1",
+         "PIM": "2"
+        }
+       },
+       {
+        "id": "4565230",
+        "name": "Trevor Zegras",
+        "jersey": "46",
+        "stats": {
+         "BS": "1",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "-2",
+         "TOI": "18:19",
+         "PPTOI": "3:41",
+         "SHTOI": "0:00",
+         "ESTOI": "14:38",
+         "SHFT": "24",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "0",
+         "SM": "2",
+         "SOG": "0",
+         "FW": "5",
+         "FL": "7",
+         "FO%": "41.7",
+         "GV": "0",
+         "PN": "1",
+         "PIM": "2"
+        }
+       }
+      ],
+      "totals": {}
+     },
+     {
+      "name": "defenses",
+      "athletes": [
+       {
+        "id": "4392642",
+        "name": "Simon Benoit",
+        "jersey": "44",
+        "stats": {
+         "BS": "1",
+         "HT": "2",
+         "TK": "0",
+         "+/-": "0",
+         "TOI": "11:52",
+         "PPTOI": "0:00",
+         "SHTOI": "1:55",
+         "ESTOI": "9:57",
+         "SHFT": "18",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "0",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "1",
+         "PN": "1",
+         "PIM": "5"
+        }
+       },
+       {
+        "id": "4697387",
+        "name": "Jamie Drysdale",
+        "jersey": "9",
+        "stats": {
+         "BS": "1",
+         "HT": "0",
+         "TK": "1",
+         "+/-": "-1",
+         "TOI": "18:10",
+         "PPTOI": "3:39",
+         "SHTOI": "0:13",
+         "ESTOI": "14:18",
+         "SHFT": "26",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "0",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "1",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "5080147",
+        "name": "David Jiricek",
+        "jersey": "5",
+        "stats": {
+         "BS": "2",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "0",
+         "TOI": "17:42",
+         "PPTOI": "2:29",
+         "SHTOI": "0:00",
+         "ESTOI": "15:13",
+         "SHFT": "26",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "1",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "1",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "3114757",
+        "name": "Travis Sanheim",
+        "jersey": "6",
+        "stats": {
+         "BS": "5",
+         "HT": "0",
+         "TK": "1",
+         "+/-": "-2",
+         "TOI": "25:04",
+         "PPTOI": "0:00",
+         "SHTOI": "3:52",
+         "ESTOI": "21:12",
+         "SHFT": "29",
+         "G": "0",
+         "YTDG": "1",
+         "A": "0",
+         "S": "1",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "2",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "2564164",
+        "name": "Nick Seeler",
+        "jersey": "24",
+        "stats": {
+         "BS": "2",
+         "HT": "3",
+         "TK": "1",
+         "+/-": "1",
+         "TOI": "19:36",
+         "PPTOI": "0:00",
+         "SHTOI": "2:16",
+         "ESTOI": "17:20",
+         "SHFT": "24",
+         "G": "0",
+         "YTDG": "0",
+         "A": "1",
+         "S": "0",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "1",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4565235",
+        "name": "Cam York",
+        "jersey": "8",
+        "stats": {
+         "BS": "2",
+         "HT": "1",
+         "TK": "0",
+         "+/-": "-3",
+         "TOI": "23:31",
+         "PPTOI": "2:20",
+         "SHTOI": "3:46",
+         "ESTOI": "17:25",
+         "SHFT": "29",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "2",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       }
+      ],
+      "totals": {}
+     },
+     {
+      "name": "skaters",
+      "athletes": [],
+      "totals": {}
+     },
+     {
+      "name": "goalies",
+      "athletes": [
+       {
+        "id": "3942459",
+        "name": "Dan Vladar",
+        "jersey": "80",
+        "stats": {
+         "GA": "3",
+         "SA": "35",
+         "SOS": "0",
+         "SOSA": "0",
+         "SV": "32",
+         "SV%": ".914",
+         "ESSV": "28",
+         "PPSV": "4",
+         "SHSV": "0",
+         "TOI": "57:24",
+         "YTDG": "0",
+         "PIM": "0"
+        }
+       }
+      ],
+      "totals": {}
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "20",
+     "abbrev": "TB",
+     "name": "Lightning",
+     "displayName": "Tampa Bay Lightning"
+    },
+    "categories": [
+     {
+      "name": "forwards",
+      "athletes": [
+       {
+        "id": "3941973",
+        "name": "Anthony Cirelli",
+        "jersey": "71",
+        "stats": {
+         "BS": "1",
+         "HT": "1",
+         "TK": "0",
+         "+/-": "1",
+         "TOI": "16:31",
+         "PPTOI": "0:25",
+         "SHTOI": "1:25",
+         "ESTOI": "14:41",
+         "SHFT": "22",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "1",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "10",
+         "FL": "10",
+         "FO%": "50.0",
+         "GV": "0",
+         "PN": "1",
+         "PIM": "2"
+        }
+       },
+       {
+        "id": "5080155",
+        "name": "Conor Geekie",
+        "jersey": "94",
+        "stats": {
+         "BS": "0",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "0",
+         "TOI": "11:47",
+         "PPTOI": "0:30",
+         "SHTOI": "0:00",
+         "ESTOI": "11:17",
+         "SHFT": "14",
+         "G": "0",
+         "YTDG": "1",
+         "A": "0",
+         "S": "2",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "3",
+         "FL": "8",
+         "FO%": "27.3",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "2968829",
+        "name": "Zemgus Girgensons",
+        "jersey": "28",
+        "stats": {
+         "BS": "2",
+         "HT": "4",
+         "TK": "0",
+         "+/-": "1",
+         "TOI": "14:23",
+         "PPTOI": "0:07",
+         "SHTOI": "2:45",
+         "ESTOI": "11:31",
+         "SHFT": "20",
+         "G": "0",
+         "YTDG": "0",
+         "A": "1",
+         "S": "0",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "7",
+         "FL": "8",
+         "FO%": "46.7",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4697470",
+        "name": "Gage Goncalves",
+        "jersey": "93",
+        "stats": {
+         "BS": "0",
+         "HT": "1",
+         "TK": "1",
+         "+/-": "1",
+         "TOI": "16:12",
+         "PPTOI": "0:27",
+         "SHTOI": "0:33",
+         "ESTOI": "15:12",
+         "SHFT": "20",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "2",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "3042083",
+        "name": "Jake Guentzel",
+        "jersey": "59",
+        "stats": {
+         "BS": "0",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "0",
+         "TOI": "21:20",
+         "PPTOI": "5:26",
+         "SHTOI": "2:26",
+         "ESTOI": "13:28",
+         "SHFT": "23",
+         "G": "0",
+         "YTDG": "1",
+         "A": "0",
+         "S": "5",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "3",
+         "FL": "3",
+         "FO%": "50.0",
+         "GV": "2",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4065019",
+        "name": "Brandon Hagel",
+        "jersey": "38",
+        "stats": {
+         "BS": "1",
+         "HT": "0",
+         "TK": "1",
+         "+/-": "1",
+         "TOI": "20:11",
+         "PPTOI": "5:18",
+         "SHTOI": "1:56",
+         "ESTOI": "12:57",
+         "SHFT": "23",
+         "G": "1",
+         "YTDG": "1",
+         "A": "0",
+         "S": "8",
+         "SM": "2",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "1",
+         "PN": "1",
+         "PIM": "2"
+        }
+       },
+       {
+        "id": "4588205",
+        "name": "Pontus Holmberg",
+        "jersey": "29",
+        "stats": {
+         "BS": "1",
+         "HT": "1",
+         "TK": "0",
+         "+/-": "1",
+         "TOI": "13:05",
+         "PPTOI": "0:09",
+         "SHTOI": "0:00",
+         "ESTOI": "12:56",
+         "SHFT": "19",
+         "G": "1",
+         "YTDG": "1",
+         "A": "1",
+         "S": "3",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "2",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "2563060",
+        "name": "Nikita Kucherov",
+        "jersey": "86",
+        "stats": {
+         "BS": "0",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "2",
+         "TOI": "21:59",
+         "PPTOI": "5:54",
+         "SHTOI": "0:00",
+         "ESTOI": "16:05",
+         "SHFT": "19",
+         "G": "0",
+         "YTDG": "1",
+         "A": "2",
+         "S": "1",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "4",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4422415",
+        "name": "Ilya Mikheyev",
+        "jersey": "95",
+        "stats": {
+         "BS": "0",
+         "HT": "1",
+         "TK": "0",
+         "+/-": "1",
+         "TOI": "16:43",
+         "PPTOI": "0:00",
+         "SHTOI": "2:49",
+         "ESTOI": "13:54",
+         "SHFT": "22",
+         "G": "1",
+         "YTDG": "1",
+         "A": "1",
+         "S": "1",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "3151187",
+        "name": "Brayden Point",
+        "jersey": "21",
+        "stats": {
+         "BS": "1",
+         "HT": "0",
+         "TK": "1",
+         "+/-": "1",
+         "TOI": "18:09",
+         "PPTOI": "5:20",
+         "SHTOI": "0:00",
+         "ESTOI": "12:49",
+         "SHFT": "18",
+         "G": "1",
+         "YTDG": "1",
+         "A": "0",
+         "S": "3",
+         "SM": "2",
+         "SOG": "0",
+         "FW": "6",
+         "FL": "3",
+         "FO%": "66.7",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4588188",
+        "name": "Jeffrey Viel",
+        "jersey": "25",
+        "stats": {
+         "BS": "0",
+         "HT": "1",
+         "TK": "0",
+         "+/-": "0",
+         "TOI": "8:49",
+         "PPTOI": "0:06",
+         "SHTOI": "0:00",
+         "ESTOI": "8:43",
+         "SHFT": "12",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "1",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "1",
+         "PIM": "5"
+        }
+       }
+      ],
+      "totals": {}
+     },
+     {
+      "name": "defenses",
+      "athletes": [
+       {
+        "id": "5118",
+        "name": "John Carlson",
+        "jersey": "74",
+        "stats": {
+         "BS": "0",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "1",
+         "TOI": "17:51",
+         "PPTOI": "5:24",
+         "SHTOI": "0:00",
+         "ESTOI": "12:27",
+         "SHFT": "16",
+         "G": "0",
+         "YTDG": "0",
+         "A": "1",
+         "S": "1",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "3904178",
+        "name": "Erik Cernak",
+        "jersey": "81",
+        "stats": {
+         "BS": "1",
+         "HT": "3",
+         "TK": "0",
+         "+/-": "3",
+         "TOI": "22:15",
+         "PPTOI": "0:00",
+         "SHTOI": "3:42",
+         "ESTOI": "18:33",
+         "SHFT": "28",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "1",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "5104716",
+        "name": "Maxwell Crozier",
+        "jersey": "24",
+        "stats": {
+         "BS": "1",
+         "HT": "3",
+         "TK": "0",
+         "+/-": "-1",
+         "TOI": "15:24",
+         "PPTOI": "0:09",
+         "SHTOI": "0:00",
+         "ESTOI": "15:15",
+         "SHFT": "20",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "2",
+         "SM": "1",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "1",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4588175",
+        "name": "Charle-Edouard D'Astous",
+        "jersey": "51",
+        "stats": {
+         "BS": "1",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "-1",
+         "TOI": "10:56",
+         "PPTOI": "0:33",
+         "SHTOI": "0:00",
+         "ESTOI": "10:23",
+         "SHFT": "17",
+         "G": "0",
+         "YTDG": "1",
+         "A": "0",
+         "S": "1",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "1",
+         "PIM": "2"
+        }
+       },
+       {
+        "id": "5157",
+        "name": "Victor Hedman",
+        "jersey": "77",
+        "stats": {
+         "BS": "0",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "0",
+         "TOI": "16:01",
+         "PPTOI": "0:00",
+         "SHTOI": "2:12",
+         "ESTOI": "13:49",
+         "SHFT": "18",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "1",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "1",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4954",
+        "name": "Ryan McDonagh",
+        "jersey": "27",
+        "stats": {
+         "BS": "1",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "2",
+         "TOI": "15:21",
+         "PPTOI": "0:12",
+         "SHTOI": "3:50",
+         "ESTOI": "11:19",
+         "SHFT": "19",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "0",
+         "SM": "0",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "1",
+         "PN": "0",
+         "PIM": "0"
+        }
+       },
+       {
+        "id": "4874929",
+        "name": "J.J. Moser",
+        "jersey": "90",
+        "stats": {
+         "BS": "1",
+         "HT": "0",
+         "TK": "0",
+         "+/-": "2",
+         "TOI": "17:03",
+         "PPTOI": "0:00",
+         "SHTOI": "2:22",
+         "ESTOI": "14:41",
+         "SHFT": "19",
+         "G": "0",
+         "YTDG": "0",
+         "A": "0",
+         "S": "3",
+         "SM": "3",
+         "SOG": "0",
+         "FW": "0",
+         "FL": "0",
+         "FO%": "0.0",
+         "GV": "0",
+         "PN": "0",
+         "PIM": "0"
+        }
+       }
+      ],
+      "totals": {}
+     },
+     {
+      "name": "skaters",
+      "athletes": [],
+      "totals": {}
+     },
+     {
+      "name": "goalies",
+      "athletes": [
+       {
+        "id": "2976847",
+        "name": "Andrei Vasilevskiy",
+        "jersey": "88",
+        "stats": {
+         "GA": "1",
+         "SA": "14",
+         "SOS": "0",
+         "SOSA": "0",
+         "SV": "13",
+         "SV%": ".929",
+         "ESSV": "10",
+         "PPSV": "3",
+         "SHSV": "0",
+         "TOI": "60:00",
+         "YTDG": "0",
+         "PIM": "0"
+        }
+       }
+      ],
+      "totals": {}
+     }
+    ]
+   }
+  ]
+ },
+ "leaders": [
+  {
+   "team": {
+    "id": "20",
+    "abbrev": "TB",
+    "name": "Tampa Bay Lightning",
+    "displayName": "Tampa Bay Lightning"
+   },
+   "categories": [
+    {
+     "name": "goals",
+     "displayName": "Goals",
+     "leaders": [
+      {
+       "athleteId": "4422415",
+       "athlete": "Ilya Mikheyev",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "name": "assists",
+     "displayName": "Assists",
+     "leaders": [
+      {
+       "athleteId": "2563060",
+       "athlete": "Nikita Kucherov",
+       "value": "2"
+      }
+     ]
+    },
+    {
+     "name": "points",
+     "displayName": "Points",
+     "leaders": [
+      {
+       "athleteId": "4422415",
+       "athlete": "Ilya Mikheyev",
+       "value": "2"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "team": {
+    "id": "15",
+    "abbrev": "PHI",
+    "name": "Philadelphia Flyers",
+    "displayName": "Philadelphia Flyers"
+   },
+   "categories": [
+    {
+     "name": "goals",
+     "displayName": "Goals",
+     "leaders": [
+      {
+       "athleteId": "4697406",
+       "athlete": "Tyson Foerster",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "name": "assists",
+     "displayName": "Assists",
+     "leaders": [
+      {
+       "athleteId": "2564164",
+       "athlete": "Nick Seeler",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "name": "points",
+     "displayName": "Points",
+     "leaders": [
+      {
+       "athleteId": "4697406",
+       "athlete": "Tyson Foerster",
+       "value": "1"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "plays": {
+  "count": 80,
+  "scoring": [
+   {
+    "id": "401892445000003220",
+    "period": 1,
+    "clock": "16:05",
+    "text": "Brayden Point Goal (1) Tip-In, assists: John Carlson (2), Nikita Kucherov (2)",
+    "scoringPlay": true,
+    "homeScore": "1",
+    "awayScore": "0",
+    "teamId": "20"
+   }
+  ],
+  "recent": [
+   {
+    "id": "401892445000002930",
+    "period": 1,
+    "clock": "13:58",
+    "text": "Gage Goncalves Tip-In saved by Dan Vladar",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "20"
+   },
+   {
+    "id": "401892445000000170",
+    "period": 1,
+    "clock": "14:00",
+    "text": "Goalie Stopped",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0"
+   },
+   {
+    "id": "401892445000002940",
+    "period": 1,
+    "clock": "14:00",
+    "text": "Sean Couturier faceoff won against Conor Geekie",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "15"
+   },
+   {
+    "id": "401892445000002990",
+    "period": 1,
+    "clock": "14:06",
+    "text": "Conor Geekie Tip-In High and Wide Left",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "20"
+   },
+   {
+    "id": "401892445000000180",
+    "period": 1,
+    "clock": "14:09",
+    "text": "Puck in Netting",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0"
+   },
+   {
+    "id": "401892445000003000",
+    "period": 1,
+    "clock": "14:09",
+    "text": "Christian Dvorak faceoff won against Anthony Cirelli",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "15"
+   },
+   {
+    "id": "401892445000002040",
+    "period": 1,
+    "clock": "14:51",
+    "text": "Jake Guentzel Snap Shot saved by Dan Vladar",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "20"
+   },
+   {
+    "id": "401892445000003260",
+    "period": 1,
+    "clock": "15:19",
+    "text": "Zemgus Girgensons hit Nick Seeler",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "20"
+   },
+   {
+    "id": "401892445000003150",
+    "period": 1,
+    "clock": "15:31",
+    "text": "Tyson Foerster Backhand saved by Andrei Vasilevskiy",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "15"
+   },
+   {
+    "id": "401892445000003270",
+    "period": 1,
+    "clock": "15:43",
+    "text": "Ilya Mikheyev hit Travis Sanheim",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "20"
+   },
+   {
+    "id": "401892445000000200",
+    "period": 1,
+    "clock": "16:01",
+    "text": "Icing",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0"
+   },
+   {
+    "id": "401892445000003190",
+    "period": 1,
+    "clock": "16:01",
+    "text": "Brayden Point faceoff won against Trevor Zegras",
+    "scoringPlay": false,
+    "homeScore": "0",
+    "awayScore": "0",
+    "teamId": "20"
+   },
+   {
+    "id": "401892445000003220",
+    "period": 1,
+    "clock": "16:05",
+    "text": "Brayden Point Goal (1) Tip-In, assists: John Carlson (2), Nikita Kucherov (2)",
+    "scoringPlay": true,
+    "homeScore": "1",
+    "awayScore": "0",
+    "teamId": "20"
+   },
+   {
+    "id": "401892445000003230",
+    "period": 1,
+    "clock": "16:05",
+    "text": "Trevor Zegras faceoff won against Brayden Point",
+    "scoringPlay": false,
+    "homeScore": "1",
+    "awayScore": "0",
+    "teamId": "15"
+   },
+   {
+    "id": "401892445000003480",
+    "period": 1,
+    "clock": "16:22",
+    "text": "Giveaway by Denver Barkey",
+    "scoringPlay": false,
+    "homeScore": "1",
+    "awayScore": "0",
+    "teamId": "15"
+   },
+   {
+    "id": "401892445000003410",
+    "period": 1,
+    "clock": "16:34",
+    "text": "Owen Tippett hit J.J. Moser",
+    "scoringPlay": false,
+    "homeScore": "1",
+    "awayScore": "0",
+    "teamId": "15"
+   },
+   {
+    "id": "401892445000003500",
+    "period": 1,
+    "clock": "16:38",
+    "text": "Giveaway by Jamie Drysdale",
+    "scoringPlay": false,
+    "homeScore": "1",
+    "awayScore": "0",
+    "teamId": "15"
+   },
+   {
+    "id": "401892445000003280",
+    "period": 1,
+    "clock": "16:56",
+    "text": "J.J. Moser Wrist Shot saved by Dan Vladar",
+    "scoringPlay": false,
+    "homeScore": "1",
+    "awayScore": "0",
+    "teamId": "20"
+   },
+   {
+    "id": "401892445000003490",
+    "period": 1,
+    "clock": "17:20",
+    "text": "Max Crozier hit Sean Couturier",
+    "scoringPlay": false,
+    "homeScore": "1",
+    "awayScore": "0",
+    "teamId": "20"
+   },
+   {
+    "id": "401892445000003360",
+    "period": 1,
+    "clock": "17:39",
+    "text": "Ilya Mikheyev shot blocked by David Jiricek",
+    "scoringPlay": false,
+    "homeScore": "1",
+    "awayScore": "0",
+    "teamId": "15"
+   }
+  ]
+ },
+ "gameInfo": {
+  "venue": {
+   "id": "1396",
+   "fullName": "Benchmark International Arena",
+   "address": {
+    "city": "Tampa",
+    "state": "FL",
+    "country": "USA"
+   },
+   "grass": false
+  },
+  "attendance": 19092,
+  "officials": [
+   {
+    "fullName": "Shandor Alphonso",
+    "displayName": "Shandor Alphonso",
+    "position": {
+     "name": "Linesman",
+     "displayName": "Linesman",
+     "id": "25"
+    },
+    "order": 0
+   },
+   {
+    "fullName": "Garrett Rank",
+    "displayName": "Garrett Rank",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "24"
+    },
+    "order": 0
+   },
+   {
+    "fullName": "Beau Halkidis",
+    "displayName": "Beau Halkidis",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "24"
+    },
+    "order": 0
+   },
+   {
+    "fullName": "Kyle Flemington",
+    "displayName": "Kyle Flemington",
+    "position": {
+     "name": "Linesman",
+     "displayName": "Linesman",
+     "id": "25"
+    },
+    "order": 0
+   }
+  ]
+ },
+ "standings": {
+  "fullViewLink": {
+   "text": "Full Standings"
+  },
+  "groups": [
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "NY Rangers",
+       "id": "13",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 6,
+         "displayValue": "6"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 3,
+         "displayValue": "3"
+        }
+       ]
+      },
+      {
+       "team": "Pittsburgh",
+       "id": "16",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        }
+       ]
+      },
+      {
+       "team": "Carolina",
+       "id": "7",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "NY Islanders",
+       "id": "12",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "Washington",
+       "id": "23",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "Columbus",
+       "id": "29",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "New Jersey",
+       "id": "11",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "Philadelphia",
+       "id": "15",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2026-27 Metropolitan Division Standings"
+   },
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "Ottawa",
+       "id": "14",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        }
+       ]
+      },
+      {
+       "team": "Tampa Bay",
+       "id": "20",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        }
+       ]
+      },
+      {
+       "team": "Florida",
+       "id": "26",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "Boston",
+       "id": "1",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        }
+       ]
+      },
+      {
+       "team": "Montreal",
+       "id": "10",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "Buffalo",
+       "id": "2",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "Toronto",
+       "id": "21",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        }
+       ]
+      },
+      {
+       "team": "Detroit",
+       "id": "5",
+       "stats": [
+        {
+         "name": "otLosses",
+         "displayName": "Overtime Losses",
+         "description": "Number of Overtime Losses",
+         "abbreviation": "OTL",
+         "type": "otlosses",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "points",
+         "displayName": "Points",
+         "description": "Total Points",
+         "abbreviation": "PTS",
+         "type": "points",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2026-27 Atlantic Division Standings"
+   }
+  ]
+ },
+ "odds": {
+  "markets": [
+   {
+    "provider": "Draft Kings",
+    "providerId": "100",
+    "threeWay": false,
+    "homeMoneyLine": -218,
+    "awayMoneyLine": 180,
+    "drawMoneyLine": null,
+    "homeImpliedProb": 0.6855,
+    "awayImpliedProb": 0.3571,
+    "drawImpliedProb": null,
+    "homeNoVigProb": 0.6575,
+    "awayNoVigProb": 0.3425,
+    "drawNoVigProb": null,
+    "overround": 0.0427,
+    "noVigReason": null,
+    "homeSpread": -1.5,
+    "total": 5.5
+   }
+  ],
+  "consensus": {
+   "providerCount": 1,
+   "providers": [
+    "Draft Kings"
+   ],
+   "homeNoVigProb": 0.6575,
+   "awayNoVigProb": 0.3425,
+   "drawNoVigProb": null,
+   "homeSpread": -1.5,
+   "total": 5.5,
+   "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+   "reason": null
+  },
+  "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+  "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+ }
+}

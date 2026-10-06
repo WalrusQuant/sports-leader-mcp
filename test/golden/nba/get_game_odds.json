@@ -1,0 +1,77 @@
+{
+ "eventId": "401901820",
+ "startUtc": "2026-10-06T23:00Z",
+ "homeTeam": {
+  "id": "30",
+  "abbrev": "CHA"
+ },
+ "awayTeam": {
+  "id": "17",
+  "abbrev": "BKN"
+ },
+ "consensus": {
+  "providerCount": 1,
+  "providers": [
+   "Draft Kings"
+  ],
+  "homeNoVigProb": 0.669,
+  "awayNoVigProb": 0.331,
+  "drawNoVigProb": null,
+  "homeSpread": -7.5,
+  "total": 211.5,
+  "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+  "reason": null
+ },
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "count": 1,
+ "odds": [
+  {
+   "provider": "Draft Kings",
+   "details": "CHA -7.5",
+   "spread": -7.5,
+   "overUnder": 211.5,
+   "overOdds": -110,
+   "underOdds": -110,
+   "home": {
+    "favorite": true,
+    "moneyLine": -230,
+    "spreadOdds": -105
+   },
+   "away": {
+    "favorite": false,
+    "moneyLine": 190,
+    "spreadOdds": -115
+   },
+   "open": {
+    "total": "212.5",
+    "homeSpread": "-4.5",
+    "homeMoneyLine": "-192",
+    "awaySpread": "+4.5",
+    "awayMoneyLine": "+160"
+   },
+   "current": {
+    "total": "211.5",
+    "homeSpread": "-7.5",
+    "homeMoneyLine": "-230",
+    "awaySpread": "+7.5",
+    "awayMoneyLine": "+190"
+   },
+   "providerId": "100",
+   "threeWay": false,
+   "homeMoneyLine": -230,
+   "awayMoneyLine": 190,
+   "drawMoneyLine": null,
+   "homeImpliedProb": 0.697,
+   "awayImpliedProb": 0.3448,
+   "drawImpliedProb": null,
+   "homeNoVigProb": 0.669,
+   "awayNoVigProb": 0.331,
+   "drawNoVigProb": null,
+   "overround": 0.0418,
+   "noVigReason": null,
+   "homeSpread": -7.5,
+   "total": 211.5
+  }
+ ]
+}

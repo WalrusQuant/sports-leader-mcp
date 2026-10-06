@@ -1,0 +1,150 @@
+{
+ "events": [
+  {
+   "id": "401908015",
+   "date": "2026-10-06T22:00Z",
+   "name": "LAD @ ATL",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 6:00 PM EDT"
+   },
+   "venue": {
+    "name": "Truist Park",
+    "city": "Atlanta"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "15",
+      "abbrev": "ATL",
+      "name": "Braves",
+      "displayName": "Atlanta Braves"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "19",
+      "abbrev": "LAD",
+      "name": "Dodgers",
+      "displayName": "Los Angeles Dodgers"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "DraftKings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -109,
+      "awayMoneyLine": -110,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5215,
+      "awayImpliedProb": 0.5238,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.4989,
+      "awayNoVigProb": 0.5011,
+      "drawNoVigProb": null,
+      "overround": 0.0453,
+      "noVigReason": null,
+      "homeSpread": 1.5,
+      "total": 6
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "DraftKings"
+     ],
+     "homeNoVigProb": 0.4989,
+     "awayNoVigProb": 0.5011,
+     "drawNoVigProb": null,
+     "homeSpread": 1.5,
+     "total": 6,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401908004",
+   "date": "2026-10-07T01:30Z",
+   "name": "MIL @ SD",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 9:30 PM EDT"
+   },
+   "venue": {
+    "name": "Petco Park",
+    "city": "San Diego"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "25",
+      "abbrev": "SD",
+      "name": "Padres",
+      "displayName": "San Diego Padres"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "8",
+      "abbrev": "MIL",
+      "name": "Brewers",
+      "displayName": "Milwaukee Brewers"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "DraftKings",
+      "providerId": "100",
+      "threeWay": false,
+      "homeMoneyLine": -138,
+      "awayMoneyLine": 114,
+      "drawMoneyLine": null,
+      "homeImpliedProb": 0.5798,
+      "awayImpliedProb": 0.4673,
+      "drawImpliedProb": null,
+      "homeNoVigProb": 0.5537,
+      "awayNoVigProb": 0.4463,
+      "drawNoVigProb": null,
+      "overround": 0.0471,
+      "noVigReason": null,
+      "homeSpread": -1.5,
+      "total": 7.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "DraftKings"
+     ],
+     "homeNoVigProb": 0.5537,
+     "awayNoVigProb": 0.4463,
+     "drawNoVigProb": null,
+     "homeSpread": -1.5,
+     "total": 7.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  }
+ ],
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+}

@@ -1,0 +1,183 @@
+{
+ "sport": "football",
+ "league": "college-football",
+ "gameCount": 4,
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "keyInjuryStatuses": [
+  "Out",
+  "Doubtful"
+ ],
+ "injuriesAvailable": true,
+ "injuriesNote": "ESPN returned an empty injury report for this league; an empty keyInjuries list does not confirm a healthy roster.",
+ "games": [
+  {
+   "eventId": "401870766",
+   "startUtc": "2026-10-08T23:00Z",
+   "name": "SHSU @ LIB",
+   "status": {
+    "state": "pre",
+    "detail": "10/8 - 7:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "2335",
+    "abbrev": "LIB",
+    "name": "Liberty Flames",
+    "record": "4-1",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "2534",
+    "abbrev": "SHSU",
+    "name": "Sam Houston Bearkats",
+    "record": "1-3",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.8223,
+    "awayNoVigProb": 0.1777,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -600,
+    "awayMoneyLine": 440,
+    "drawMoneyLine": null,
+    "homeSpread": -13.5,
+    "total": 52.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401871052",
+   "startUtc": "2026-10-08T23:00Z",
+   "name": "MOST @ WKU",
+   "status": {
+    "state": "pre",
+    "detail": "10/8 - 7:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "98",
+    "abbrev": "WKU",
+    "name": "Western Kentucky Hilltoppers",
+    "record": "1-4",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "2623",
+    "abbrev": "MOST",
+    "name": "Missouri State Bears",
+    "record": "1-3",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.5514,
+    "awayNoVigProb": 0.4486,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -135,
+    "awayMoneyLine": 114,
+    "drawMoneyLine": null,
+    "homeSpread": -2.5,
+    "total": 56.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401862794",
+   "startUtc": "2026-10-08T23:30Z",
+   "name": "USF @ UTSA",
+   "status": {
+    "state": "pre",
+    "detail": "10/8 - 7:30 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "2636",
+    "abbrev": "UTSA",
+    "name": "UTSA Roadrunners",
+    "record": "4-1",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "58",
+    "abbrev": "USF",
+    "name": "South Florida Bulls",
+    "record": "4-1",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.705,
+    "awayNoVigProb": 0.295,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -278,
+    "awayMoneyLine": 225,
+    "drawMoneyLine": null,
+    "homeSpread": -7,
+    "total": 49.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401869933",
+   "startUtc": "2026-10-08T23:30Z",
+   "name": "USA @ ARST",
+   "status": {
+    "state": "pre",
+    "detail": "10/8 - 7:30 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "2032",
+    "abbrev": "ARST",
+    "name": "Arkansas State Red Wolves",
+    "record": "2-3",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "away": {
+    "id": "6",
+    "abbrev": "USA",
+    "name": "South Alabama Jaguars",
+    "record": "3-2",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 0
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.5108,
+    "awayNoVigProb": 0.4892,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -115,
+    "awayMoneyLine": -105,
+    "drawMoneyLine": null,
+    "homeSpread": -1.5,
+    "total": 57.5,
+    "reason": null
+   }
+  }
+ ]
+}

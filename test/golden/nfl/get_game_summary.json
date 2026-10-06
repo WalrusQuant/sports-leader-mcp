@@ -1,0 +1,2517 @@
+{
+ "game": {
+  "id": "401872965",
+  "date": "2026-10-04T13:30Z",
+  "status": {
+   "state": "post",
+   "detail": "Final"
+  },
+  "competitors": [
+   {
+    "homeAway": "home",
+    "winner": false,
+    "team": {
+     "id": "28",
+     "abbrev": "WSH",
+     "name": "Commanders",
+     "displayName": "Washington Commanders"
+    },
+    "score": "13",
+    "linescores": [
+     "6",
+     "0",
+     "7",
+     "0"
+    ]
+   },
+   {
+    "homeAway": "away",
+    "winner": true,
+    "team": {
+     "id": "11",
+     "abbrev": "IND",
+     "name": "Colts",
+     "displayName": "Indianapolis Colts"
+    },
+    "score": "30",
+    "linescores": [
+     "0",
+     "10",
+     "10",
+     "10"
+    ]
+   }
+  ]
+ },
+ "boxscore": {
+  "teams": [
+   {
+    "team": {
+     "id": "11",
+     "abbrev": "IND",
+     "name": "Colts",
+     "displayName": "Indianapolis Colts"
+    },
+    "stats": [
+     {
+      "label": "1st Downs",
+      "displayValue": "17"
+     },
+     {
+      "label": "Passing 1st downs",
+      "displayValue": "6"
+     },
+     {
+      "label": "Rushing 1st downs",
+      "displayValue": "10"
+     },
+     {
+      "label": "1st downs from penalties",
+      "displayValue": "1"
+     },
+     {
+      "label": "3rd down efficiency",
+      "displayValue": "5-16"
+     },
+     {
+      "label": "4th down efficiency",
+      "displayValue": "1-1"
+     },
+     {
+      "label": "Total Plays",
+      "displayValue": "66"
+     },
+     {
+      "label": "Total Yards",
+      "displayValue": "257"
+     },
+     {
+      "label": "Yards per Play",
+      "displayValue": "3.9"
+     },
+     {
+      "label": "Total Drives",
+      "displayValue": "13"
+     },
+     {
+      "label": "Passing",
+      "displayValue": "129"
+     },
+     {
+      "label": "Comp/Att",
+      "displayValue": "19/34"
+     },
+     {
+      "label": "Yards per pass",
+      "displayValue": "3.6"
+     },
+     {
+      "label": "Interceptions thrown",
+      "displayValue": "1"
+     },
+     {
+      "label": "Sacks-Yards Lost",
+      "displayValue": "2-14"
+     },
+     {
+      "label": "Rushing",
+      "displayValue": "128"
+     },
+     {
+      "label": "Rushing Attempts",
+      "displayValue": "30"
+     },
+     {
+      "label": "Yards per rush",
+      "displayValue": "4.3"
+     },
+     {
+      "label": "Red Zone (Made-Att)",
+      "displayValue": "3-3"
+     },
+     {
+      "label": "Penalties",
+      "displayValue": "1-5"
+     },
+     {
+      "label": "Turnovers",
+      "displayValue": "2"
+     },
+     {
+      "label": "Fumbles lost",
+      "displayValue": "1"
+     },
+     {
+      "label": "Interceptions thrown",
+      "displayValue": "1"
+     },
+     {
+      "label": "Defensive / Special Teams TDs",
+      "displayValue": "0"
+     },
+     {
+      "label": "Possession",
+      "displayValue": "30:40"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "28",
+     "abbrev": "WSH",
+     "name": "Commanders",
+     "displayName": "Washington Commanders"
+    },
+    "stats": [
+     {
+      "label": "1st Downs",
+      "displayValue": "12"
+     },
+     {
+      "label": "Passing 1st downs",
+      "displayValue": "7"
+     },
+     {
+      "label": "Rushing 1st downs",
+      "displayValue": "4"
+     },
+     {
+      "label": "1st downs from penalties",
+      "displayValue": "1"
+     },
+     {
+      "label": "3rd down efficiency",
+      "displayValue": "2-15"
+     },
+     {
+      "label": "4th down efficiency",
+      "displayValue": "1-4"
+     },
+     {
+      "label": "Total Plays",
+      "displayValue": "61"
+     },
+     {
+      "label": "Total Yards",
+      "displayValue": "317"
+     },
+     {
+      "label": "Yards per Play",
+      "displayValue": "5.2"
+     },
+     {
+      "label": "Total Drives",
+      "displayValue": "12"
+     },
+     {
+      "label": "Passing",
+      "displayValue": "217"
+     },
+     {
+      "label": "Comp/Att",
+      "displayValue": "18/37"
+     },
+     {
+      "label": "Yards per pass",
+      "displayValue": "5.6"
+     },
+     {
+      "label": "Interceptions thrown",
+      "displayValue": "1"
+     },
+     {
+      "label": "Sacks-Yards Lost",
+      "displayValue": "2-15"
+     },
+     {
+      "label": "Rushing",
+      "displayValue": "100"
+     },
+     {
+      "label": "Rushing Attempts",
+      "displayValue": "22"
+     },
+     {
+      "label": "Yards per rush",
+      "displayValue": "4.5"
+     },
+     {
+      "label": "Red Zone (Made-Att)",
+      "displayValue": "0-2"
+     },
+     {
+      "label": "Penalties",
+      "displayValue": "10-84"
+     },
+     {
+      "label": "Turnovers",
+      "displayValue": "1"
+     },
+     {
+      "label": "Fumbles lost",
+      "displayValue": "0"
+     },
+     {
+      "label": "Interceptions thrown",
+      "displayValue": "1"
+     },
+     {
+      "label": "Defensive / Special Teams TDs",
+      "displayValue": "0"
+     },
+     {
+      "label": "Possession",
+      "displayValue": "29:20"
+     }
+    ]
+   }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "11",
+     "abbrev": "IND",
+     "name": "Colts",
+     "displayName": "Indianapolis Colts"
+    },
+    "categories": [
+     {
+      "name": "passing",
+      "athletes": [
+       {
+        "id": "3917792",
+        "name": "Daniel Jones",
+        "jersey": "17",
+        "stats": {
+         "C/ATT": "19/34",
+         "YDS": "143",
+         "AVG": "4.2",
+         "TD": "0",
+         "INT": "1",
+         "SACKS": "2-14",
+         "QBR": "19.6",
+         "RTG": "53.9"
+        }
+       }
+      ],
+      "totals": {
+       "C/ATT": "19/34",
+       "YDS": "129",
+       "AVG": "4.2",
+       "TD": "0",
+       "INT": "1",
+       "SACKS": "2-14",
+       "QBR": "--",
+       "RTG": "53.9"
+      }
+     },
+     {
+      "name": "rushing",
+      "athletes": [
+       {
+        "id": "4242335",
+        "name": "Jonathan Taylor",
+        "jersey": "28",
+        "stats": {
+         "CAR": "20",
+         "YDS": "95",
+         "AVG": "4.8",
+         "TD": "2",
+         "LONG": "12"
+        }
+       },
+       {
+        "id": "4686468",
+        "name": "Seth McGowan",
+        "jersey": "20",
+        "stats": {
+         "CAR": "6",
+         "YDS": "31",
+         "AVG": "5.2",
+         "TD": "0",
+         "LONG": "11"
+        }
+       },
+       {
+        "id": "3917792",
+        "name": "Daniel Jones",
+        "jersey": "17",
+        "stats": {
+         "CAR": "4",
+         "YDS": "2",
+         "AVG": "0.5",
+         "TD": "1",
+         "LONG": "4"
+        }
+       }
+      ],
+      "totals": {
+       "CAR": "30",
+       "YDS": "128",
+       "AVG": "4.3",
+       "TD": "3",
+       "LONG": "12"
+      }
+     },
+     {
+      "name": "receiving",
+      "athletes": [
+       {
+        "id": "3051889",
+        "name": "Laquon Treadwell",
+        "jersey": "13",
+        "stats": {
+         "REC": "5",
+         "YDS": "42",
+         "AVG": "8.4",
+         "TD": "0",
+         "LONG": "13",
+         "TGTS": "6"
+        }
+       },
+       {
+        "id": "4431459",
+        "name": "Tyler Warren",
+        "jersey": "84",
+        "stats": {
+         "REC": "5",
+         "YDS": "41",
+         "AVG": "8.2",
+         "TD": "0",
+         "LONG": "13",
+         "TGTS": "5"
+        }
+       },
+       {
+        "id": "4061956",
+        "name": "Ashton Dulin",
+        "jersey": "16",
+        "stats": {
+         "REC": "3",
+         "YDS": "29",
+         "AVG": "9.7",
+         "TD": "0",
+         "LONG": "23",
+         "TGTS": "6"
+        }
+       },
+       {
+        "id": "4688813",
+        "name": "Josh Downs",
+        "jersey": "2",
+        "stats": {
+         "REC": "3",
+         "YDS": "16",
+         "AVG": "5.3",
+         "TD": "0",
+         "LONG": "9",
+         "TGTS": "4"
+        }
+       },
+       {
+        "id": "4686468",
+        "name": "Seth McGowan",
+        "jersey": "20",
+        "stats": {
+         "REC": "1",
+         "YDS": "7",
+         "AVG": "7.0",
+         "TD": "0",
+         "LONG": "7",
+         "TGTS": "2"
+        }
+       },
+       {
+        "id": "4683151",
+        "name": "Deion Burks",
+        "jersey": "80",
+        "stats": {
+         "REC": "1",
+         "YDS": "6",
+         "AVG": "6.0",
+         "TD": "0",
+         "LONG": "6",
+         "TGTS": "2"
+        }
+       },
+       {
+        "id": "4242335",
+        "name": "Jonathan Taylor",
+        "jersey": "28",
+        "stats": {
+         "REC": "1",
+         "YDS": "2",
+         "AVG": "2.0",
+         "TD": "0",
+         "LONG": "2",
+         "TGTS": "4"
+        }
+       }
+      ],
+      "totals": {
+       "REC": "19",
+       "YDS": "143",
+       "AVG": "7.5",
+       "TD": "0",
+       "LONG": "23",
+       "TGTS": "29"
+      }
+     },
+     {
+      "name": "fumbles",
+      "athletes": [
+       {
+        "id": "3917792",
+        "name": "Daniel Jones",
+        "jersey": "17",
+        "stats": {
+         "FUM": "1",
+         "LOST": "1",
+         "REC": "0"
+        }
+       }
+      ],
+      "totals": {
+       "FUM": "1",
+       "LOST": "1",
+       "REC": "0"
+      }
+     },
+     {
+      "name": "defensive",
+      "athletes": [
+       {
+        "id": "4682909",
+        "name": "Justin Walley",
+        "jersey": "27",
+        "stats": {
+         "TOT": "8",
+         "SOLO": "5",
+         "SACKS": "1",
+         "TFL": "1",
+         "PD": "0",
+         "QB HTS": "1",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "3917142",
+        "name": "Akeem Davis-Gaither",
+        "jersey": "51",
+        "stats": {
+         "TOT": "8",
+         "SOLO": "5",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4058825",
+        "name": "Grover Stewart",
+        "jersey": "90",
+        "stats": {
+         "TOT": "6",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "2",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4601021",
+        "name": "Jaylon Carlies",
+        "jersey": "57",
+        "stats": {
+         "TOT": "5",
+         "SOLO": "3",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5088571",
+        "name": "Bryce Boettcher",
+        "jersey": "50",
+        "stats": {
+         "TOT": "5",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "3863182",
+        "name": "Jerry Tillery",
+        "jersey": "94",
+        "stats": {
+         "TOT": "5",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "1",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "2971282",
+        "name": "DeForest Buckner",
+        "jersey": "99",
+        "stats": {
+         "TOT": "4",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "1",
+         "PD": "1",
+         "QB HTS": "3",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4374171",
+        "name": "Austin Ajiake",
+        "jersey": "58",
+        "stats": {
+         "TOT": "4",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4685324",
+        "name": "Caden Curry",
+        "jersey": "55",
+        "stats": {
+         "TOT": "4",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4905664",
+        "name": "A.J. Haulcy",
+        "jersey": "25",
+        "stats": {
+         "TOT": "3",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4426473",
+        "name": "Laiatu Latu",
+        "jersey": "97",
+        "stats": {
+         "TOT": "3",
+         "SOLO": "1",
+         "SACKS": "0.5",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "4",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4427250",
+        "name": "Sauce Gardner",
+        "jersey": "1",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "2",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "3843843",
+        "name": "Arden Key",
+        "jersey": "98",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4566154",
+        "name": "Jaylahn Tuimoloau",
+        "jersey": "91",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4035861",
+        "name": "Cam Bynum",
+        "jersey": "0",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HTS": "1",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4037361",
+        "name": "Charvarius Ward",
+        "jersey": "7",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "3",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4061956",
+        "name": "Ashton Dulin",
+        "jersey": "16",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4331768",
+        "name": "Jonathan Owens",
+        "jersey": "38",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "3929785",
+        "name": "Nick Westbrook-Ikhine",
+        "jersey": "12",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4427635",
+        "name": "Adetomiwa Adebawore",
+        "jersey": "95",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "0",
+         "SACKS": "0.5",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "2",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4722908",
+        "name": "Drew Ogletree",
+        "jersey": "85",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4361196",
+        "name": "Cam Taylor-Britt",
+        "jersey": "29",
+        "stats": {
+         "TOT": "0",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       }
+      ],
+      "totals": {
+       "TOT": "68",
+       "SOLO": "33",
+       "SACKS": "2",
+       "TFL": "5",
+       "PD": "10",
+       "QB HTS": "11",
+       "TD": "0"
+      }
+     },
+     {
+      "name": "interceptions",
+      "athletes": [
+       {
+        "id": "4601021",
+        "name": "Jaylon Carlies",
+        "jersey": "57",
+        "stats": {
+         "INT": "1",
+         "YDS": "7",
+         "TD": "0"
+        }
+       }
+      ],
+      "totals": {
+       "INT": "1",
+       "YDS": "7",
+       "TD": "0"
+      }
+     },
+     {
+      "name": "kickReturns",
+      "athletes": [
+       {
+        "id": "4686468",
+        "name": "Seth McGowan",
+        "jersey": "20",
+        "stats": {
+         "NO": "4",
+         "YDS": "102",
+         "AVG": "25.5",
+         "LONG": "29",
+         "TD": "0"
+        }
+       }
+      ],
+      "totals": {
+       "NO": "4",
+       "YDS": "102",
+       "AVG": "25.5",
+       "LONG": "29",
+       "TD": "0"
+      }
+     },
+     {
+      "name": "puntReturns",
+      "athletes": [],
+      "totals": {}
+     },
+     {
+      "name": "kicking",
+      "athletes": [
+       {
+        "id": "4571557",
+        "name": "Spencer Shrader",
+        "jersey": "3",
+        "stats": {
+         "FG": "3/3",
+         "PCT": "100.0",
+         "LONG": "52",
+         "XP": "3/3",
+         "PTS": "12"
+        }
+       }
+      ],
+      "totals": {
+       "FG": "3/3",
+       "PCT": "100.0",
+       "LONG": "52",
+       "XP": "3/3",
+       "PTS": "12"
+      }
+     },
+     {
+      "name": "punting",
+      "athletes": [
+       {
+        "id": "3914922",
+        "name": "Rigoberto Sanchez",
+        "jersey": "8",
+        "stats": {
+         "NO": "4",
+         "YDS": "213",
+         "AVG": "53.3",
+         "TB": "0",
+         "In 20": "3",
+         "LONG": "59"
+        }
+       }
+      ],
+      "totals": {
+       "NO": "4",
+       "YDS": "213",
+       "AVG": "53.3",
+       "TB": "0",
+       "In 20": "3",
+       "LONG": "59"
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "28",
+     "abbrev": "WSH",
+     "name": "Commanders",
+     "displayName": "Washington Commanders"
+    },
+    "categories": [
+     {
+      "name": "passing",
+      "athletes": [
+       {
+        "id": "4432722",
+        "name": "Athan Kaliakmanis",
+        "jersey": "16",
+        "stats": {
+         "C/ATT": "15/33",
+         "YDS": "186",
+         "AVG": "5.6",
+         "TD": "1",
+         "INT": "1",
+         "SACKS": "1-9",
+         "QBR": "20.7",
+         "RTG": "60.9"
+        }
+       },
+       {
+        "id": "2576980",
+        "name": "Marcus Mariota",
+        "jersey": "8",
+        "stats": {
+         "C/ATT": "3/4",
+         "YDS": "46",
+         "AVG": "11.5",
+         "TD": "0",
+         "INT": "0",
+         "SACKS": "1-6",
+         "QBR": "88.3",
+         "RTG": "112.5"
+        }
+       }
+      ],
+      "totals": {
+       "C/ATT": "18/37",
+       "YDS": "217",
+       "AVG": "6.3",
+       "TD": "1",
+       "INT": "1",
+       "SACKS": "2-15",
+       "QBR": "--",
+       "RTG": "66.5"
+      }
+     },
+     {
+      "name": "rushing",
+      "athletes": [
+       {
+        "id": "2576980",
+        "name": "Marcus Mariota",
+        "jersey": "8",
+        "stats": {
+         "CAR": "1",
+         "YDS": "35",
+         "AVG": "35.0",
+         "TD": "0",
+         "LONG": "35"
+        }
+       },
+       {
+        "id": "3068267",
+        "name": "Austin Ekeler",
+        "jersey": "30",
+        "stats": {
+         "CAR": "4",
+         "YDS": "29",
+         "AVG": "7.3",
+         "TD": "0",
+         "LONG": "10"
+        }
+       },
+       {
+        "id": "4432722",
+        "name": "Athan Kaliakmanis",
+        "jersey": "16",
+        "stats": {
+         "CAR": "3",
+         "YDS": "16",
+         "AVG": "5.3",
+         "TD": "0",
+         "LONG": "9"
+        }
+       },
+       {
+        "id": "4575131",
+        "name": "Jacory Croskey-Merritt",
+        "jersey": "22",
+        "stats": {
+         "CAR": "9",
+         "YDS": "15",
+         "AVG": "1.7",
+         "TD": "0",
+         "LONG": "6"
+        }
+       },
+       {
+        "id": "4421446",
+        "name": "Craig Reynolds",
+        "jersey": "32",
+        "stats": {
+         "CAR": "2",
+         "YDS": "4",
+         "AVG": "2.0",
+         "TD": "0",
+         "LONG": "4"
+        }
+       },
+       {
+        "id": "4685246",
+        "name": "Kaytron Allen",
+        "jersey": "31",
+        "stats": {
+         "CAR": "3",
+         "YDS": "1",
+         "AVG": "0.3",
+         "TD": "0",
+         "LONG": "2"
+        }
+       }
+      ],
+      "totals": {
+       "CAR": "22",
+       "YDS": "100",
+       "AVG": "4.5",
+       "TD": "0",
+       "LONG": "35"
+      }
+     },
+     {
+      "name": "receiving",
+      "athletes": [
+       {
+        "id": "4361577",
+        "name": "Dyami Brown",
+        "jersey": "6",
+        "stats": {
+         "REC": "3",
+         "YDS": "65",
+         "AVG": "21.7",
+         "TD": "0",
+         "LONG": "48",
+         "TGTS": "4"
+        }
+       },
+       {
+        "id": "4567156",
+        "name": "Treylon Burks",
+        "jersey": "13",
+        "stats": {
+         "REC": "1",
+         "YDS": "47",
+         "AVG": "47.0",
+         "TD": "1",
+         "LONG": "47",
+         "TGTS": "3"
+        }
+       },
+       {
+        "id": "4575131",
+        "name": "Jacory Croskey-Merritt",
+        "jersey": "22",
+        "stats": {
+         "REC": "2",
+         "YDS": "35",
+         "AVG": "17.5",
+         "TD": "0",
+         "LONG": "35",
+         "TGTS": "4"
+        }
+       },
+       {
+        "id": "2976212",
+        "name": "Stefon Diggs",
+        "jersey": "3",
+        "stats": {
+         "REC": "5",
+         "YDS": "35",
+         "AVG": "7.0",
+         "TD": "0",
+         "LONG": "10",
+         "TGTS": "9"
+        }
+       },
+       {
+        "id": "5081432",
+        "name": "Antonio Williams",
+        "jersey": "14",
+        "stats": {
+         "REC": "3",
+         "YDS": "21",
+         "AVG": "7.0",
+         "TD": "0",
+         "LONG": "9",
+         "TGTS": "8"
+        }
+       },
+       {
+        "id": "4685030",
+        "name": "Brandon Coleman",
+        "jersey": "74",
+        "stats": {
+         "REC": "1",
+         "YDS": "13",
+         "AVG": "13.0",
+         "TD": "0",
+         "LONG": "13",
+         "TGTS": "1"
+        }
+       },
+       {
+        "id": "3068267",
+        "name": "Austin Ekeler",
+        "jersey": "30",
+        "stats": {
+         "REC": "1",
+         "YDS": "11",
+         "AVG": "11.0",
+         "TD": "0",
+         "LONG": "11",
+         "TGTS": "2"
+        }
+       },
+       {
+        "id": "4360635",
+        "name": "Chig Okonkwo",
+        "jersey": "85",
+        "stats": {
+         "REC": "2",
+         "YDS": "5",
+         "AVG": "2.5",
+         "TD": "0",
+         "LONG": "3",
+         "TGTS": "4"
+        }
+       },
+       {
+        "id": "4361088",
+        "name": "Colson Yankoff",
+        "jersey": "80",
+        "stats": {
+         "REC": "0",
+         "YDS": "0",
+         "AVG": "0.0",
+         "TD": "0",
+         "LONG": "0",
+         "TGTS": "1"
+        }
+       }
+      ],
+      "totals": {
+       "REC": "18",
+       "YDS": "232",
+       "AVG": "12.9",
+       "TD": "1",
+       "LONG": "48",
+       "TGTS": "36"
+      }
+     },
+     {
+      "name": "fumbles",
+      "athletes": [
+       {
+        "id": "4361422",
+        "name": "Odafe Oweh",
+        "jersey": "98",
+        "stats": {
+         "FUM": "0",
+         "LOST": "0",
+         "REC": "1"
+        }
+       }
+      ],
+      "totals": {
+       "FUM": "0",
+       "LOST": "0",
+       "REC": "1"
+      }
+     },
+     {
+      "name": "defensive",
+      "athletes": [
+       {
+        "id": "4239694",
+        "name": "Amik Robertson",
+        "jersey": "2",
+        "stats": {
+         "TOT": "9",
+         "SOLO": "7",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "3125248",
+        "name": "Jeremy Reaves",
+        "jersey": "39",
+        "stats": {
+         "TOT": "8",
+         "SOLO": "4",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5081807",
+        "name": "Sonny Styles",
+        "jersey": "52",
+        "stats": {
+         "TOT": "8",
+         "SOLO": "4",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "3943270",
+        "name": "Rasul Douglas",
+        "jersey": "29",
+        "stats": {
+         "TOT": "6",
+         "SOLO": "5",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "1",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4360378",
+        "name": "Quan Martin",
+        "jersey": "20",
+        "stats": {
+         "TOT": "5",
+         "SOLO": "3",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "3127273",
+        "name": "Frankie Luvu",
+        "jersey": "4",
+        "stats": {
+         "TOT": "5",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "1",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "3925354",
+        "name": "Daron Payne",
+        "jersey": "94",
+        "stats": {
+         "TOT": "4",
+         "SOLO": "3",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "2",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4242205",
+        "name": "K'Lavon Chaisson",
+        "jersey": "45",
+        "stats": {
+         "TOT": "4",
+         "SOLO": "0",
+         "SACKS": "0.5",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "1",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4259491",
+        "name": "Javon Kinlaw",
+        "jersey": "99",
+        "stats": {
+         "TOT": "3",
+         "SOLO": "3",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "2",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4363097",
+        "name": "Percy Butler",
+        "jersey": "35",
+        "stats": {
+         "TOT": "3",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4572460",
+        "name": "Tyler Owens",
+        "jersey": "18",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "3929956",
+        "name": "Tim Settle",
+        "jersey": "97",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "0",
+         "SACKS": "0.5",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "1",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4361577",
+        "name": "Dyami Brown",
+        "jersey": "6",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4427984",
+        "name": "Kain Medrano",
+        "jersey": "56",
+        "stats": {
+         "TOT": "2",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4361422",
+        "name": "Odafe Oweh",
+        "jersey": "98",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "1",
+         "TFL": "1",
+         "PD": "0",
+         "QB HTS": "1",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "2971586",
+        "name": "Fabian Moreau",
+        "jersey": "24",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4685326",
+        "name": "Josh Conerly Jr.",
+        "jersey": "72",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "1",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "5081392",
+        "name": "Joshua Josephs",
+        "jersey": "48",
+        "stats": {
+         "TOT": "1",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "0",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "3928979",
+        "name": "Dorance Armstrong",
+        "jersey": "92",
+        "stats": {
+         "TOT": "0",
+         "SOLO": "0",
+         "SACKS": "0",
+         "TFL": "0",
+         "PD": "0",
+         "QB HTS": "1",
+         "TD": "0"
+        }
+       }
+      ],
+      "totals": {
+       "TOT": "67",
+       "SOLO": "35",
+       "SACKS": "2",
+       "TFL": "2",
+       "PD": "4",
+       "QB HTS": "6",
+       "TD": "0"
+      }
+     },
+     {
+      "name": "interceptions",
+      "athletes": [
+       {
+        "id": "3943270",
+        "name": "Rasul Douglas",
+        "jersey": "29",
+        "stats": {
+         "INT": "1",
+         "YDS": "3",
+         "TD": "0"
+        }
+       }
+      ],
+      "totals": {
+       "INT": "1",
+       "YDS": "3",
+       "TD": "0"
+      }
+     },
+     {
+      "name": "kickReturns",
+      "athletes": [
+       {
+        "id": "4361577",
+        "name": "Dyami Brown",
+        "jersey": "6",
+        "stats": {
+         "NO": "3",
+         "YDS": "82",
+         "AVG": "27.3",
+         "LONG": "37",
+         "TD": "0"
+        }
+       },
+       {
+        "id": "4602667",
+        "name": "Jaylin Lane",
+        "jersey": "83",
+        "stats": {
+         "NO": "3",
+         "YDS": "80",
+         "AVG": "26.7",
+         "LONG": "27",
+         "TD": "0"
+        }
+       }
+      ],
+      "totals": {
+       "NO": "6",
+       "YDS": "162",
+       "AVG": "27.0",
+       "LONG": "37",
+       "TD": "0"
+      }
+     },
+     {
+      "name": "puntReturns",
+      "athletes": [
+       {
+        "id": "4602667",
+        "name": "Jaylin Lane",
+        "jersey": "83",
+        "stats": {
+         "NO": "2",
+         "YDS": "17",
+         "AVG": "8.5",
+         "LONG": "9",
+         "TD": "0"
+        }
+       }
+      ],
+      "totals": {
+       "NO": "2",
+       "YDS": "17",
+       "AVG": "8.5",
+       "LONG": "9",
+       "TD": "0"
+      }
+     },
+     {
+      "name": "kicking",
+      "athletes": [
+       {
+        "id": "5081335",
+        "name": "Drew Stevens",
+        "jersey": "19",
+        "stats": {
+         "FG": "2/2",
+         "PCT": "100.0",
+         "LONG": "31",
+         "XP": "1/1",
+         "PTS": "7"
+        }
+       }
+      ],
+      "totals": {
+       "FG": "2/2",
+       "PCT": "100.0",
+       "LONG": "31",
+       "XP": "1/1",
+       "PTS": "7"
+      }
+     },
+     {
+      "name": "punting",
+      "athletes": [
+       {
+        "id": "16166",
+        "name": "Tress Way",
+        "jersey": "10",
+        "stats": {
+         "NO": "5",
+         "YDS": "189",
+         "AVG": "37.8",
+         "TB": "0",
+         "In 20": "3",
+         "LONG": "49"
+        }
+       }
+      ],
+      "totals": {
+       "NO": "5",
+       "YDS": "189",
+       "AVG": "37.8",
+       "TB": "0",
+       "In 20": "3",
+       "LONG": "49"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "leaders": [
+  {
+   "team": {
+    "id": "28",
+    "abbrev": "WSH",
+    "name": "Washington Commanders",
+    "displayName": "Washington Commanders"
+   },
+   "categories": [
+    {
+     "name": "passingYards",
+     "displayName": "Passing Yards",
+     "leaders": [
+      {
+       "athleteId": "4432722",
+       "athlete": "Athan Kaliakmanis",
+       "value": "15/33, 186 YDS, 1 TD, 1 INT"
+      }
+     ]
+    },
+    {
+     "name": "rushingYards",
+     "displayName": "Rushing Yards",
+     "leaders": [
+      {
+       "athleteId": "2576980",
+       "athlete": "Marcus Mariota",
+       "value": "1 CAR, 35 YDS"
+      }
+     ]
+    },
+    {
+     "name": "receivingYards",
+     "displayName": "Receiving Yards",
+     "leaders": [
+      {
+       "athleteId": "4361577",
+       "athlete": "Dyami Brown",
+       "value": "3 REC, 65 YDS"
+      }
+     ]
+    },
+    {
+     "name": "sacks",
+     "displayName": "Sacks",
+     "leaders": [
+      {
+       "athleteId": "4361422",
+       "athlete": "Odafe Oweh",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "name": "totalTackles",
+     "displayName": "Tackles",
+     "leaders": [
+      {
+       "athleteId": "4239694",
+       "athlete": "Amik Robertson",
+       "value": "9"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "team": {
+    "id": "11",
+    "abbrev": "IND",
+    "name": "Indianapolis Colts",
+    "displayName": "Indianapolis Colts"
+   },
+   "categories": [
+    {
+     "name": "passingYards",
+     "displayName": "Passing Yards",
+     "leaders": [
+      {
+       "athleteId": "3917792",
+       "athlete": "Daniel Jones",
+       "value": "19/34, 143 YDS, 1 INT"
+      }
+     ]
+    },
+    {
+     "name": "rushingYards",
+     "displayName": "Rushing Yards",
+     "leaders": [
+      {
+       "athleteId": "4242335",
+       "athlete": "Jonathan Taylor",
+       "value": "20 CAR, 95 YDS, 2 TD"
+      }
+     ]
+    },
+    {
+     "name": "receivingYards",
+     "displayName": "Receiving Yards",
+     "leaders": [
+      {
+       "athleteId": "3051889",
+       "athlete": "Laquon Treadwell",
+       "value": "5 REC, 42 YDS"
+      }
+     ]
+    },
+    {
+     "name": "sacks",
+     "displayName": "Sacks",
+     "leaders": [
+      {
+       "athleteId": "4682909",
+       "athlete": "Justin Walley",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "name": "totalTackles",
+     "displayName": "Tackles",
+     "leaders": [
+      {
+       "athleteId": "3917142",
+       "athlete": "Akeem Davis-Gaither",
+       "value": "8"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "winProbability": {
+  "count": 80,
+  "samples": [
+   {
+    "playId": "4018729651",
+    "homeWinPercentage": 0.4343
+   },
+   {
+    "playId": "401872965115",
+    "homeWinPercentage": 0.5309
+   },
+   {
+    "playId": "401872965200",
+    "homeWinPercentage": 0.4966
+   },
+   {
+    "playId": "401872965288",
+    "homeWinPercentage": 0.5329
+   },
+   {
+    "playId": "401872965368",
+    "homeWinPercentage": 0.5574
+   },
+   {
+    "playId": "401872965473",
+    "homeWinPercentage": 0.6194
+   },
+   {
+    "playId": "401872965535",
+    "homeWinPercentage": 0.5836
+   },
+   {
+    "playId": "401872965639",
+    "homeWinPercentage": 0.6035
+   },
+   {
+    "playId": "401872965761",
+    "homeWinPercentage": 0.6132
+   },
+   {
+    "playId": "401872965844",
+    "homeWinPercentage": 0.5955
+   },
+   {
+    "playId": "401872965928",
+    "homeWinPercentage": 0.6179
+   },
+   {
+    "playId": "4018729651018",
+    "homeWinPercentage": 0.6218
+   },
+   {
+    "playId": "4018729651114",
+    "homeWinPercentage": 0.6201
+   },
+   {
+    "playId": "4018729651192",
+    "homeWinPercentage": 0.5775
+   },
+   {
+    "playId": "4018729651269",
+    "homeWinPercentage": 0.6266
+   },
+   {
+    "playId": "4018729651345",
+    "homeWinPercentage": 0.5945
+   },
+   {
+    "playId": "4018729651443",
+    "homeWinPercentage": 0.6156
+   },
+   {
+    "playId": "4018729651529",
+    "homeWinPercentage": 0.5532
+   },
+   {
+    "playId": "4018729651618",
+    "homeWinPercentage": 0.4873
+   },
+   {
+    "playId": "4018729651738",
+    "homeWinPercentage": 0.4333
+   },
+   {
+    "playId": "4018729651811",
+    "homeWinPercentage": 0.4647
+   }
+  ]
+ },
+ "gameInfo": {
+  "venue": {
+   "id": "5534",
+   "fullName": "Tottenham Hotspur Stadium",
+   "address": {
+    "city": "London",
+    "country": "England"
+   },
+   "grass": true
+  },
+  "attendance": 60907,
+  "officials": [
+   {
+    "fullName": "Greg Bradley",
+    "displayName": "Greg Bradley",
+    "position": {
+     "name": "Line Judge",
+     "displayName": "Line Judge",
+     "id": "113"
+    },
+    "order": 1
+   },
+   {
+    "fullName": "Paul King",
+    "displayName": "Paul King",
+    "position": {
+     "name": "Umpire",
+     "displayName": "Umpire",
+     "id": "116"
+    },
+    "order": 2
+   },
+   {
+    "fullName": "Dale Shaw",
+    "displayName": "Dale Shaw",
+    "position": {
+     "name": "Side Judge",
+     "displayName": "Side Judge",
+     "id": "115"
+    },
+    "order": 3
+   },
+   {
+    "fullName": "Alan Eck",
+    "displayName": "Alan Eck",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "114"
+    },
+    "order": 4
+   },
+   {
+    "fullName": "David Oliver",
+    "displayName": "David Oliver",
+    "position": {
+     "name": "Down Judge",
+     "displayName": "Down Judge",
+     "id": "112"
+    },
+    "order": 5
+   },
+   {
+    "fullName": "Grantis Bell",
+    "displayName": "Grantis Bell",
+    "position": {
+     "name": "Back Judge",
+     "displayName": "Back Judge",
+     "id": "110"
+    },
+    "order": 6
+   },
+   {
+    "fullName": "Anthony Flemming",
+    "displayName": "Anthony Flemming",
+    "position": {
+     "name": "Field Judge",
+     "displayName": "Field Judge",
+     "id": "111"
+    },
+    "order": 7
+   }
+  ]
+ },
+ "standings": {
+  "fullViewLink": {
+   "text": "Full Standings"
+  },
+  "header": "2026 Standings",
+  "groups": [
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "Jacksonville",
+       "id": "30",
+       "stats": [
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "pointsAgainst",
+         "displayName": "Points Against",
+         "description": "Total Points Against",
+         "abbreviation": "PA",
+         "type": "pointsagainst",
+         "value": 53,
+         "displayValue": "53"
+        },
+        {
+         "name": "pointsFor",
+         "displayName": "Points For",
+         "description": "Total Points For",
+         "abbreviation": "PF",
+         "type": "pointsfor",
+         "value": 104,
+         "displayValue": "104"
+        },
+        {
+         "name": "ties",
+         "displayName": "Ties",
+         "description": "Ties",
+         "abbreviation": "T",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.75,
+         "displayValue": ".750"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        }
+       ]
+      },
+      {
+       "team": "Indianapolis",
+       "id": "11",
+       "stats": [
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "pointsAgainst",
+         "displayName": "Points Against",
+         "description": "Total Points Against",
+         "abbreviation": "PA",
+         "type": "pointsagainst",
+         "value": 104,
+         "displayValue": "104"
+        },
+        {
+         "name": "pointsFor",
+         "displayName": "Points For",
+         "description": "Total Points For",
+         "abbreviation": "PF",
+         "type": "pointsfor",
+         "value": 102,
+         "displayValue": "102"
+        },
+        {
+         "name": "ties",
+         "displayName": "Ties",
+         "description": "Ties",
+         "abbreviation": "T",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.5,
+         "displayValue": ".500"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "2-2",
+         "displayValue": "2-2"
+        }
+       ]
+      },
+      {
+       "team": "Houston",
+       "id": "34",
+       "stats": [
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "pointsAgainst",
+         "displayName": "Points Against",
+         "description": "Total Points Against",
+         "abbreviation": "PA",
+         "type": "pointsagainst",
+         "value": 109,
+         "displayValue": "109"
+        },
+        {
+         "name": "pointsFor",
+         "displayName": "Points For",
+         "description": "Total Points For",
+         "abbreviation": "PF",
+         "type": "pointsfor",
+         "value": 84,
+         "displayValue": "84"
+        },
+        {
+         "name": "ties",
+         "displayName": "Ties",
+         "description": "Ties",
+         "abbreviation": "T",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0,
+         "displayValue": ".000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "0-4",
+         "displayValue": "0-4"
+        }
+       ]
+      },
+      {
+       "team": "Tennessee",
+       "id": "10",
+       "stats": [
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 4,
+         "displayValue": "4"
+        },
+        {
+         "name": "pointsAgainst",
+         "displayName": "Points Against",
+         "description": "Total Points Against",
+         "abbreviation": "PA",
+         "type": "pointsagainst",
+         "value": 83,
+         "displayValue": "83"
+        },
+        {
+         "name": "pointsFor",
+         "displayName": "Points For",
+         "description": "Total Points For",
+         "abbreviation": "PF",
+         "type": "pointsfor",
+         "value": 55,
+         "displayValue": "55"
+        },
+        {
+         "name": "ties",
+         "displayName": "Ties",
+         "description": "Ties",
+         "abbreviation": "T",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0,
+         "displayValue": ".000"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "0-4",
+         "displayValue": "0-4"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2026 AFC South Standings",
+    "conferenceHeader": "American Football Conference",
+    "divisionHeader": "AFC South"
+   },
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "New York",
+       "id": "19",
+       "stats": [
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "name": "pointsAgainst",
+         "displayName": "Points Against",
+         "description": "Total Points Against",
+         "abbreviation": "PA",
+         "type": "pointsagainst",
+         "value": 79,
+         "displayValue": "79"
+        },
+        {
+         "name": "pointsFor",
+         "displayName": "Points For",
+         "description": "Total Points For",
+         "abbreviation": "PF",
+         "type": "pointsfor",
+         "value": 82,
+         "displayValue": "82"
+        },
+        {
+         "name": "ties",
+         "displayName": "Ties",
+         "description": "Ties",
+         "abbreviation": "T",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.75,
+         "displayValue": ".750"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        }
+       ]
+      },
+      {
+       "team": "Philadelphia",
+       "id": "21",
+       "stats": [
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "pointsAgainst",
+         "displayName": "Points Against",
+         "description": "Total Points Against",
+         "abbreviation": "PA",
+         "type": "pointsagainst",
+         "value": 93,
+         "displayValue": "93"
+        },
+        {
+         "name": "pointsFor",
+         "displayName": "Points For",
+         "description": "Total Points For",
+         "abbreviation": "PF",
+         "type": "pointsfor",
+         "value": 75,
+         "displayValue": "75"
+        },
+        {
+         "name": "ties",
+         "displayName": "Ties",
+         "description": "Ties",
+         "abbreviation": "T",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.5,
+         "displayValue": ".500"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "2-2",
+         "displayValue": "2-2"
+        }
+       ]
+      },
+      {
+       "team": "Dallas",
+       "id": "6",
+       "stats": [
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "name": "pointsAgainst",
+         "displayName": "Points Against",
+         "description": "Total Points Against",
+         "abbreviation": "PA",
+         "type": "pointsagainst",
+         "value": 112,
+         "displayValue": "112"
+        },
+        {
+         "name": "pointsFor",
+         "displayName": "Points For",
+         "description": "Total Points For",
+         "abbreviation": "PF",
+         "type": "pointsfor",
+         "value": 122,
+         "displayValue": "122"
+        },
+        {
+         "name": "ties",
+         "displayName": "Ties",
+         "description": "Ties",
+         "abbreviation": "T",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.5,
+         "displayValue": ".500"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 2,
+         "displayValue": "2"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "2-2",
+         "displayValue": "2-2"
+        }
+       ]
+      },
+      {
+       "team": "Washington",
+       "id": "28",
+       "stats": [
+        {
+         "name": "losses",
+         "displayName": "Losses",
+         "description": "Losses",
+         "abbreviation": "L",
+         "type": "losses",
+         "value": 3,
+         "displayValue": "3"
+        },
+        {
+         "name": "pointsAgainst",
+         "displayName": "Points Against",
+         "description": "Total Points Against",
+         "abbreviation": "PA",
+         "type": "pointsagainst",
+         "value": 122,
+         "displayValue": "122"
+        },
+        {
+         "name": "pointsFor",
+         "displayName": "Points For",
+         "description": "Total Points For",
+         "abbreviation": "PF",
+         "type": "pointsfor",
+         "value": 88,
+         "displayValue": "88"
+        },
+        {
+         "name": "ties",
+         "displayName": "Ties",
+         "description": "Ties",
+         "abbreviation": "T",
+         "type": "ties",
+         "value": 0,
+         "displayValue": "0"
+        },
+        {
+         "name": "winPercent",
+         "displayName": "Win Percentage",
+         "description": "Winning Percentage",
+         "abbreviation": "PCT",
+         "type": "winpercent",
+         "value": 0.25,
+         "displayValue": ".250"
+        },
+        {
+         "name": "wins",
+         "displayName": "Wins",
+         "description": "Wins",
+         "abbreviation": "W",
+         "type": "wins",
+         "value": 1,
+         "displayValue": "1"
+        },
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Any",
+         "type": "total",
+         "summary": "1-3",
+         "displayValue": "1-3"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2026 NFC East Standings",
+    "conferenceHeader": "National Football Conference",
+    "divisionHeader": "NFC East"
+   }
+  ],
+  "isSameConference": false
+ },
+ "odds": {
+  "markets": [
+   {
+    "provider": "Draft Kings",
+    "providerId": "100",
+    "threeWay": false,
+    "homeMoneyLine": 185,
+    "awayMoneyLine": -225,
+    "drawMoneyLine": null,
+    "homeImpliedProb": 0.3509,
+    "awayImpliedProb": 0.6923,
+    "drawImpliedProb": null,
+    "homeNoVigProb": 0.3364,
+    "awayNoVigProb": 0.6636,
+    "drawNoVigProb": null,
+    "overround": 0.0432,
+    "noVigReason": null,
+    "homeSpread": 4.5,
+    "total": 46.5
+   }
+  ],
+  "consensus": {
+   "providerCount": 1,
+   "providers": [
+    "Draft Kings"
+   ],
+   "homeNoVigProb": 0.3364,
+   "awayNoVigProb": 0.6636,
+   "drawNoVigProb": null,
+   "homeSpread": 4.5,
+   "total": 46.5,
+   "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+   "reason": null
+  },
+  "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+  "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+ }
+}

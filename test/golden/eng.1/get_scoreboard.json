@@ -1,0 +1,450 @@
+{
+ "events": [
+  {
+   "id": "401879268",
+   "date": "2026-10-10T11:30Z",
+   "name": "LEE @ ARS",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "venue": {
+    "name": "Emirates Stadium",
+    "city": "London"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "359",
+      "abbrev": "ARS",
+      "name": "Arsenal",
+      "displayName": "Arsenal"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "357",
+      "abbrev": "LEE",
+      "name": "Leeds United",
+      "displayName": "Leeds United"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "DraftKings",
+      "providerId": "100",
+      "threeWay": true,
+      "homeMoneyLine": -275,
+      "awayMoneyLine": 700,
+      "drawMoneyLine": 400,
+      "homeImpliedProb": 0.7333,
+      "awayImpliedProb": 0.125,
+      "drawImpliedProb": 0.2,
+      "homeNoVigProb": 0.6929,
+      "awayNoVigProb": 0.1181,
+      "drawNoVigProb": 0.189,
+      "overround": 0.0583,
+      "noVigReason": null,
+      "homeSpread": -1.5,
+      "total": 2.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "DraftKings"
+     ],
+     "homeNoVigProb": 0.6929,
+     "awayNoVigProb": 0.1181,
+     "drawNoVigProb": 0.189,
+     "homeSpread": -1.5,
+     "total": 2.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401878776",
+   "date": "2026-10-10T14:00Z",
+   "name": "BRE @ AVL",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "venue": {
+    "name": "Villa Park",
+    "city": "Birmingham"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "362",
+      "abbrev": "AVL",
+      "name": "Aston Villa",
+      "displayName": "Aston Villa"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "337",
+      "abbrev": "BRE",
+      "name": "Brentford",
+      "displayName": "Brentford"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "DraftKings",
+      "providerId": "100",
+      "threeWay": true,
+      "homeMoneyLine": 160,
+      "awayMoneyLine": 155,
+      "drawMoneyLine": 255,
+      "homeImpliedProb": 0.3846,
+      "awayImpliedProb": 0.3922,
+      "drawImpliedProb": 0.2817,
+      "homeNoVigProb": 0.3634,
+      "awayNoVigProb": 0.3705,
+      "drawNoVigProb": 0.2661,
+      "overround": 0.0585,
+      "noVigReason": null,
+      "homeSpread": 0.5,
+      "total": 2.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "DraftKings"
+     ],
+     "homeNoVigProb": 0.3634,
+     "awayNoVigProb": 0.3705,
+     "drawNoVigProb": 0.2661,
+     "homeSpread": 0.5,
+     "total": 2.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401878775",
+   "date": "2026-10-10T14:00Z",
+   "name": "BOU @ CHE",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "venue": {
+    "name": "Stamford Bridge",
+    "city": "London"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "363",
+      "abbrev": "CHE",
+      "name": "Chelsea",
+      "displayName": "Chelsea"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "349",
+      "abbrev": "BOU",
+      "name": "AFC Bournemouth",
+      "displayName": "AFC Bournemouth"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "DraftKings",
+      "providerId": "100",
+      "threeWay": true,
+      "homeMoneyLine": -145,
+      "awayMoneyLine": 340,
+      "drawMoneyLine": 310,
+      "homeImpliedProb": 0.5918,
+      "awayImpliedProb": 0.2273,
+      "drawImpliedProb": 0.2439,
+      "homeNoVigProb": 0.5568,
+      "awayNoVigProb": 0.2138,
+      "drawNoVigProb": 0.2294,
+      "overround": 0.063,
+      "noVigReason": null,
+      "homeSpread": -0.5,
+      "total": 3.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "DraftKings"
+     ],
+     "homeNoVigProb": 0.5568,
+     "awayNoVigProb": 0.2138,
+     "drawNoVigProb": 0.2294,
+     "homeSpread": -0.5,
+     "total": 3.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401879265",
+   "date": "2026-10-10T14:00Z",
+   "name": "FUL @ IPS",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "venue": {
+    "name": "Portman Road",
+    "city": "Ipswich"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "373",
+      "abbrev": "IPS",
+      "name": "Ipswich Town",
+      "displayName": "Ipswich Town"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "370",
+      "abbrev": "FUL",
+      "name": "Fulham",
+      "displayName": "Fulham"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "DraftKings",
+      "providerId": "100",
+      "threeWay": true,
+      "homeMoneyLine": 165,
+      "awayMoneyLine": 150,
+      "drawMoneyLine": 255,
+      "homeImpliedProb": 0.3774,
+      "awayImpliedProb": 0.4,
+      "drawImpliedProb": 0.2817,
+      "homeNoVigProb": 0.3563,
+      "awayNoVigProb": 0.3777,
+      "drawNoVigProb": 0.266,
+      "overround": 0.059,
+      "noVigReason": null,
+      "homeSpread": 0.5,
+      "total": 2.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "DraftKings"
+     ],
+     "homeNoVigProb": 0.3563,
+     "awayNoVigProb": 0.3777,
+     "drawNoVigProb": 0.266,
+     "homeSpread": 0.5,
+     "total": 2.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401878772",
+   "date": "2026-10-10T14:00Z",
+   "name": "BHA @ SUN",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "venue": {
+    "name": "Stadium of Light",
+    "city": "Sunderland"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "366",
+      "abbrev": "SUN",
+      "name": "Sunderland",
+      "displayName": "Sunderland"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "331",
+      "abbrev": "BHA",
+      "name": "Brighton & Hove Albion",
+      "displayName": "Brighton & Hove Albion"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "DraftKings",
+      "providerId": "100",
+      "threeWay": true,
+      "homeMoneyLine": 185,
+      "awayMoneyLine": 135,
+      "drawMoneyLine": 250,
+      "homeImpliedProb": 0.3509,
+      "awayImpliedProb": 0.4255,
+      "drawImpliedProb": 0.2857,
+      "homeNoVigProb": 0.3304,
+      "awayNoVigProb": 0.4006,
+      "drawNoVigProb": 0.269,
+      "overround": 0.0621,
+      "noVigReason": null,
+      "homeSpread": 0.5,
+      "total": 2.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "DraftKings"
+     ],
+     "homeNoVigProb": 0.3304,
+     "awayNoVigProb": 0.4006,
+     "drawNoVigProb": 0.269,
+     "homeSpread": 0.5,
+     "total": 2.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  },
+  {
+   "id": "401878773",
+   "date": "2026-10-10T16:30Z",
+   "name": "TOT @ MAN",
+   "status": {
+    "state": "pre",
+    "detail": "Scheduled"
+   },
+   "venue": {
+    "name": "Old Trafford",
+    "city": "Manchester"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "360",
+      "abbrev": "MAN",
+      "name": "Manchester United",
+      "displayName": "Manchester United"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "367",
+      "abbrev": "TOT",
+      "name": "Tottenham Hotspur",
+      "displayName": "Tottenham Hotspur"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ],
+   "odds": {
+    "markets": [
+     {
+      "provider": "DraftKings",
+      "providerId": "100",
+      "threeWay": true,
+      "homeMoneyLine": -145,
+      "awayMoneyLine": 340,
+      "drawMoneyLine": 320,
+      "homeImpliedProb": 0.5918,
+      "awayImpliedProb": 0.2273,
+      "drawImpliedProb": 0.2381,
+      "homeNoVigProb": 0.5598,
+      "awayNoVigProb": 0.215,
+      "drawNoVigProb": 0.2252,
+      "overround": 0.0572,
+      "noVigReason": null,
+      "homeSpread": -0.5,
+      "total": 3.5
+     }
+    ],
+    "consensus": {
+     "providerCount": 1,
+     "providers": [
+      "DraftKings"
+     ],
+     "homeNoVigProb": 0.5598,
+     "awayNoVigProb": 0.215,
+     "drawNoVigProb": 0.2252,
+     "homeSpread": -0.5,
+     "total": 3.5,
+     "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+     "reason": null
+    }
+   }
+  }
+ ],
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+}

@@ -1,0 +1,197 @@
+{
+ "sport": "basketball",
+ "league": "nba",
+ "gameCount": 4,
+ "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+ "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets).",
+ "keyInjuryStatuses": [
+  "Out",
+  "Doubtful"
+ ],
+ "injuriesAvailable": true,
+ "games": [
+  {
+   "eventId": "401901820",
+   "startUtc": "2026-10-06T23:00Z",
+   "name": "BKN @ CHA",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 7:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "30",
+    "abbrev": "CHA",
+    "name": "Charlotte Hornets",
+    "record": "0-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 5
+   },
+   "away": {
+    "id": "17",
+    "abbrev": "BKN",
+    "name": "Brooklyn Nets",
+    "record": "0-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 2
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.669,
+    "awayNoVigProb": 0.331,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -230,
+    "awayMoneyLine": 190,
+    "drawMoneyLine": null,
+    "homeSpread": -7.5,
+    "total": 211.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401898389",
+   "startUtc": "2026-10-07T00:00Z",
+   "name": "NO VS OKC",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 8:00 PM EDT"
+   },
+   "neutralSite": true,
+   "home": {
+    "id": "25",
+    "abbrev": "OKC",
+    "name": "Oklahoma City Thunder",
+    "record": "0-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 8
+   },
+   "away": {
+    "id": "3",
+    "abbrev": "NO",
+    "name": "New Orleans Pelicans",
+    "record": "0-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 1
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.5635,
+    "awayNoVigProb": 0.4365,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -142,
+    "awayMoneyLine": 120,
+    "drawMoneyLine": null,
+    "homeSpread": -3.5,
+    "total": 222.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401914128",
+   "startUtc": "2026-10-07T01:00Z",
+   "name": "DEN @ UTAH",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 9:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "26",
+    "abbrev": "UTAH",
+    "name": "Utah Jazz",
+    "record": "1-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 4
+   },
+   "away": {
+    "id": "7",
+    "abbrev": "DEN",
+    "name": "Denver Nuggets",
+    "record": "0-1",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 2
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.4892,
+    "awayNoVigProb": 0.5108,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -105,
+    "awayMoneyLine": -115,
+    "drawMoneyLine": null,
+    "homeSpread": 1.5,
+    "total": 230.5,
+    "reason": null
+   }
+  },
+  {
+   "eventId": "401898390",
+   "startUtc": "2026-10-07T02:00Z",
+   "name": "LAL @ GS",
+   "status": {
+    "state": "pre",
+    "detail": "10/6 - 10:00 PM EDT"
+   },
+   "neutralSite": false,
+   "home": {
+    "id": "9",
+    "abbrev": "GS",
+    "name": "Golden State Warriors",
+    "record": "0-1",
+    "score": null,
+    "keyInjuries": [
+     {
+      "player": "Jimmy Butler III",
+      "position": "F",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2027-01-02"
+     },
+     {
+      "player": "Moses Moody",
+      "position": "G",
+      "status": "Out",
+      "injury": "Surgery",
+      "returnDate": "2026-12-01"
+     }
+    ],
+    "otherInjuryCount": 1
+   },
+   "away": {
+    "id": "13",
+    "abbrev": "LAL",
+    "name": "Los Angeles Lakers",
+    "record": "1-0",
+    "score": null,
+    "keyInjuries": [],
+    "otherInjuryCount": 4
+   },
+   "odds": {
+    "providers": [
+     "Draft Kings"
+    ],
+    "homeNoVigProb": 0.583,
+    "awayNoVigProb": 0.417,
+    "drawNoVigProb": null,
+    "homeMoneyLine": -155,
+    "awayMoneyLine": 130,
+    "drawMoneyLine": null,
+    "homeSpread": -3.5,
+    "total": 220.5,
+    "reason": null
+   }
+  }
+ ]
+}
