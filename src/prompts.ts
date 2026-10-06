@@ -75,19 +75,18 @@ Follow these steps in order:
             type: "text" as const,
             text: `You are a sports data assistant. The user wants an in-depth analysis of event_id="${args.event_id}" in ${args.sport.toUpperCase()} / ${args.league.toUpperCase()}.
 
-Gather data by calling all of the following tools in parallel where possible:
-1. \`get_game_summary\` — Full game overview: box score, scoring leaders, team stats, and game notes.
-2. \`get_game_odds\` — Betting lines, spread, over/under, and movement throughout the game.
-3. \`get_game_plays\` — Full play-by-play or key plays/drives log.
-4. \`get_game_probabilities\` — Win probability chart and key momentum shifts.
-
-All calls should use sport="${args.sport}", league="${args.league}", and eventId="${args.event_id}".
+Gather data in this order (use sport="${args.sport}" and league="${args.league}" throughout):
+1. \`get_slate\` with the game's date (YYYYMMDD) — one call that gives this game's start time (UTC), team IDs/abbreviations, status and score, consensus no-vig win probabilities, moneylines, signed homeSpread (negative = home favored), total, and key Out/Doubtful injuries for both teams. Find eventId="${args.event_id}" in \`games\`. If you don't know the date, skip to step 2.
+2. \`get_game_summary\` with eventId="${args.event_id}" — box score, leaders, scoring plays, sampled win probability, and pick-center odds.
+3. \`get_game_odds\` with eventId="${args.event_id}" — only if you need every sportsbook's line, open vs. current movement, or overround.
+4. \`get_game_plays\` / \`get_game_probabilities\` — only for turning-point analysis of an in-progress or completed game.
 
 After collecting the data, produce a structured analysis that includes:
 - Game overview (final score, venue, attendance, key storylines)
 - Statistical leaders on both sides
+- Key injuries and how they affect each side
 - Turning-point plays identified from the play log and probability shifts
-- Odds context (favorite, closing/current line, and whether the favorite covered when the result permits it)`,
+- Odds context: consensus no-vig win probability for each side, favorite and homeSpread, line movement, and whether the favorite covered when the result permits it`,
           },
         },
       ],

@@ -230,3 +230,60 @@ export const gamelogOutput = withEnvelope({
   ),
 });
 
+// ─── get_slate ────────────────────────────────────────────────────────────────
+
+const keyInjurySchema = obj({
+  athleteId: optStr,
+  player: str,
+  position: optStr,
+  status: str,
+  injury: optStr,
+  returnDate: optStr,
+});
+
+const slateSideSchema = obj({
+  id: str,
+  abbrev: str,
+  name: str,
+  record: optStr,
+  winner: z.boolean().optional(),
+  score: z.string().nullable(),
+  keyInjuries: z.array(keyInjurySchema).nullable().describe("null = injury report unavailable."),
+  keyInjuriesOmitted: z.number().optional(),
+  otherInjuryCount: z.number().optional().describe("Injured players with other statuses (Questionable, IL, IR, ...)."),
+});
+
+export const slateOutput = withEnvelope({
+  sport: optStr,
+  league: optStr,
+  date: optStr,
+  gameCount: z.number(),
+  spreadConvention: str,
+  noVigMethod: str,
+  keyInjuryStatuses: z.array(str),
+  injuriesAvailable: z.boolean(),
+  injuriesNote: optStr,
+  games: z.array(
+    obj({
+      eventId: str,
+      startUtc: z.string().nullable(),
+      name: str,
+      status: statusSchema,
+      neutralSite: z.boolean(),
+      home: slateSideSchema,
+      away: slateSideSchema,
+      odds: obj({
+        providers: z.array(str),
+        homeNoVigProb: nullableNum,
+        awayNoVigProb: nullableNum,
+        drawNoVigProb: nullableNum,
+        homeMoneyLine: nullableNum,
+        awayMoneyLine: nullableNum,
+        drawMoneyLine: nullableNum,
+        homeSpread: nullableNum,
+        total: nullableNum,
+        reason: z.string().nullable(),
+      }),
+    }),
+  ),
+});

@@ -832,3 +832,135 @@ export function transformNews(data: unknown): unknown {
   };
 }
 
+// ─── Slate ────────────────────────────────────────────────────────────────────
+
+/** Injury statuses that get_slate surfaces as "key" (case-insensitive). */
+export const KEY_INJURY_STATUSES = ["Out", "Doubtful"];
+const KEY_INJURY_SET = new Set(KEY_INJURY_STATUSES.map((s) => s.toLowerCase()));
+/** Cap per team so a long injured list can't blow the token budget. */
+export const SLATE_MAX_KEY_INJURIES_PER_TEAM = 12;
+
+export interface SlateRaw {
+  scoreboard: unknown;
+  injuries?: unknown;
+  injuriesError?: string;
+}
+
+interface KeyInjury {
+  athleteId?: string;
+  player: string;
+  position?: string;
+  status: string;
+  injury?: string;
+  returnDate?: string;
+}
+
+function keyInjuriesByTeam(raw: unknown): Map<string, { key: KeyInjury[]; otherCount: number }> {
+  const byTeam = new Map<string, { key: KeyInjury[]; otherCount: number }>();
+  for (const bucket of arr<AnyObj>(d(raw).injuries)) {
+    const teamId = bucket.id !== undefined ? String(bucket.id) : "";
+    if (!teamId) continue;
+    const entry = { key: [] as KeyInjury[], otherCount: 0 };
+    for (const inj of arr<AnyObj>(bucket.injuries)) {
+      const status = String(inj.status ?? "");
+      if (NON_INJURY_STATUSES.has(status)) continue;
+      if (!KEY_INJURY_SET.has(status.toLowerCase())) {
+        entry.otherCount++;
+        continue;
+      }
+      const athlete = d(inj.athlete);
+      const details = d(inj.details);
+      entry.key.push(prune({
+        athleteId: athlete.id !== undefined ? String(athlete.id) : undefined,
+        player: String(athlete.displayName ?? ""),
+        position: d(athlete.position).abbreviation ?? undefined,
+        status,
+        injury: details.detail ? String(details.detail) : details.type ? String(details.type) : undefined,
+        returnDate: details.returnDate ? String(details.returnDate) : undefined,
+      }) as KeyInjury);
+    }
+    byTeam.set(teamId, entry);
+  }
+  return byTeam;
+}
+
+/**
+ * Slate: one row per game for a date with identity, status/score, consensus
+ * no-vig probabilities, and key (Out/Doubtful) injuries for both teams.
+ * Built from exactly two upstream documents: the scoreboard and the
+ * league-wide injury report (both cached).
+ */
+export function transformSlate(data: unknown, ctx?: Ctx): unknown {
+  const raw = d(data) as SlateRaw;
+  const sb = d(raw.scoreboard);
+  const injuriesAvailable = raw.injuries !== undefined && !raw.injuriesError;
+  const injuries = injuriesAvailable ? keyInjuriesByTeam(raw.injuries) : new Map();
+
+  const side = (c: AnyObj | undefined, state: string) => {
+    const comp = d(c);
+    const team = d(comp.team);
+    const id = String(team.id ?? comp.id ?? "");
+    const inj = injuries.get(id);
+    const key = inj?.key ?? [];
+    return {
+      ...prune({
+        id,
+        abbrev: String(team.abbreviation ?? ""),
+        name: String(team.displayName ?? team.name ?? ""),
+        record: arr<AnyObj>(comp.records)[0]?.summary ?? arr<AnyObj>(comp.records)[0]?.displayValue,
+        winner: comp.winner,
+      }),
+      // ESPN reports "0" before kickoff; null makes "not started" unambiguous.
+      score: state !== "pre" && comp.score !== undefined && comp.score !== "" ? String(comp.score) : null,
+      // null = injury report unavailable; [] = no Out/Doubtful players listed.
+      keyInjuries: injuriesAvailable ? key.slice(0, SLATE_MAX_KEY_INJURIES_PER_TEAM) : null,
+      ...(injuriesAvailable && key.length > SLATE_MAX_KEY_INJURIES_PER_TEAM
+        ? { keyInjuriesOmitted: key.length - SLATE_MAX_KEY_INJURIES_PER_TEAM }
+        : {}),
+      ...(injuriesAvailable ? { otherInjuryCount: inj?.otherCount ?? 0 } : {}),
+    };
+  };
+
+  const games = arr<AnyObj>(sb.events).map((ev) => {
+    const comp = d(arr<AnyObj>(ev.competitions)[0]);
+    const competitors = arr<AnyObj>(comp.competitors);
+    const odds = compactOddsBlock(comp.odds, ctx);
+    const c = odds?.consensus;
+    const status = compactStatus(d(ev.status));
+    return {
+      eventId: String(ev.id ?? ""),
+      startUtc: ev.date ? String(ev.date) : comp.date ? String(comp.date) : null,
+      name: String(ev.shortName ?? ev.name ?? ""),
+      status,
+      neutralSite: comp.neutralSite === true,
+      home: side(competitors.find((x) => x.homeAway === "home"), status.state),
+      away: side(competitors.find((x) => x.homeAway === "away"), status.state),
+      odds: {
+        providers: c?.providers ?? [],
+        homeNoVigProb: c?.homeNoVigProb ?? null,
+        awayNoVigProb: c?.awayNoVigProb ?? null,
+        drawNoVigProb: c?.drawNoVigProb ?? null,
+        homeMoneyLine: odds?.markets[0]?.homeMoneyLine ?? null,
+        awayMoneyLine: odds?.markets[0]?.awayMoneyLine ?? null,
+        drawMoneyLine: odds?.markets[0]?.drawMoneyLine ?? null,
+        homeSpread: c?.homeSpread ?? null,
+        total: c?.total ?? null,
+        reason: c ? c.reason : "no odds on the scoreboard for this game (common for completed or far-future games)",
+      },
+    };
+  });
+
+  const args = ctx?.args ?? {};
+  return prune({
+    sport: args.sport !== undefined ? String(args.sport) : undefined,
+    league: args.league !== undefined ? String(args.league) : (arr<AnyObj>(sb.leagues)[0]?.slug ?? undefined),
+    date: args.date !== undefined ? String(args.date) : d(sb.day).date ?? undefined,
+    gameCount: games.length,
+    spreadConvention: SPREAD_CONVENTION,
+    noVigMethod: NO_VIG_METHOD,
+    keyInjuryStatuses: KEY_INJURY_STATUSES,
+    injuriesAvailable,
+    ...(raw.injuriesError ? { injuriesNote: `Injury report unavailable: ${raw.injuriesError}` } : {}),
+    games,
+  });
+}

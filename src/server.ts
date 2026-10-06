@@ -6,6 +6,7 @@ import { leagueTools } from "./tools/league.js";
 import { teamTools } from "./tools/teams.js";
 import { athleteTools } from "./tools/athletes.js";
 import { discoveryTools } from "./tools/discovery.js";
+import { slateTools } from "./tools/slate.js";
 import type { AnyToolDef } from "./tool.js";
 import { UpstreamError } from "./client.js";
 import { applyBudget } from "./transforms.js";
@@ -19,6 +20,7 @@ export const ALL_TOOLS: AnyToolDef[] = [
   ...teamTools,
   ...athleteTools,
   ...discoveryTools,
+  ...slateTools,
 ];
 
 /**
