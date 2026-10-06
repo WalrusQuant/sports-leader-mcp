@@ -7,6 +7,9 @@ import { LEAGUE_CATALOG } from "./catalog.js";
  * is derived from ENDPOINT_DOCS (the same source `BASE` is built from) so the
  * documented URLs can't drift from the ones the code actually calls.
  */
+/** Static reference data: same for every caller, changes only with a deploy. */
+const STATIC_HINT = { ttlMs: 86_400_000, cacheScope: "public" } as const;
+
 export function registerResources(server: McpServer): void {
   // sports-leagues: curated list of valid sport/league slug pairs
   server.registerResource(
@@ -16,6 +19,7 @@ export function registerResources(server: McpServer): void {
       description:
         "Curated list of verified sport and league slug pairs for ESPN API tools. Read this once to choose sport and league parameters; list_sports_and_leagues returns the same compact catalog.",
       mimeType: "application/json",
+      cacheHint: STATIC_HINT,
     },
     async (uri) => ({
       contents: [
@@ -45,6 +49,7 @@ export function registerResources(server: McpServer): void {
       description:
         "Mapping of seasonType numeric codes used by ESPN API tools. Pass these as the `seasonType` parameter.",
       mimeType: "application/json",
+      cacheHint: STATIC_HINT,
     },
     async (uri) => ({
       contents: [
@@ -77,6 +82,7 @@ export function registerResources(server: McpServer): void {
       description:
         "Sportsbook provider IDs for the `providerId` parameter in the get_game_odds tool.",
       mimeType: "application/json",
+      cacheHint: STATIC_HINT,
     },
     async (uri) => ({
       contents: [
@@ -111,6 +117,7 @@ export function registerResources(server: McpServer): void {
       description:
         "ESPN API base URL domains used by this server. Useful when constructing custom URLs via the espn_fetch tool.",
       mimeType: "application/json",
+      cacheHint: STATIC_HINT,
     },
     async (uri) => ({
       contents: [

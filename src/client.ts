@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from "node:async_hooks";
 import { TtlCache } from "./cache.js";
 import { VERSION } from "./version.js";
 
@@ -78,6 +79,50 @@ function getTtlMs(path: string): number {
 export interface FetchOptions {
   params?: Record<string, string | number | boolean | undefined>;
   timeoutMs?: number;
+  /**
+   * Caller cancellation. Defaults to the signal of the MCP request currently
+   * being served (see {@link withRequestSignal}), so tool handlers don't have
+   * to thread it through every call site.
+   */
+  signal?: AbortSignal;
+}
+
+/**
+ * The MCP request's cancel signal, scoped to the async work of one tool call or
+ * resource read. When the client cancels (notifications/cancelled, or the HTTP
+ * request is closed), in-flight ESPN fetches are aborted and not retried.
+ */
+const requestSignal = new AsyncLocalStorage<AbortSignal | undefined>();
+
+export function withRequestSignal<T>(signal: AbortSignal | undefined, fn: () => Promise<T>): Promise<T> {
+  return requestSignal.run(signal, fn);
+}
+
+export function currentRequestSignal(): AbortSignal | undefined {
+  return requestSignal.getStore();
+}
+
+/** Thrown when the caller cancelled; never cached, never retried. */
+export class CancelledError extends Error {
+  constructor(reason?: unknown) {
+    super(`Request cancelled${reason instanceof Error ? `: ${reason.message}` : ""}`);
+    this.name = "CancelledError";
+  }
+}
+
+function sleep(ms: number, signal?: AbortSignal): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) return reject(new CancelledError(signal.reason));
+    const t = setTimeout(() => {
+      signal?.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+    const onAbort = () => {
+      clearTimeout(t);
+      reject(new CancelledError(signal?.reason));
+    };
+    signal?.addEventListener("abort", onAbort, { once: true });
+  });
 }
 
 export async function fetchJson<T = unknown>(
@@ -85,6 +130,7 @@ export async function fetchJson<T = unknown>(
   opts: FetchOptions = {},
 ): Promise<T> {
   const { params, timeoutMs = DEFAULT_TIMEOUT_MS } = opts;
+  const callerSignal = opts.signal ?? currentRequestSignal();
 
   const u = new URL(url);
   if (params) {
@@ -101,6 +147,7 @@ export async function fetchJson<T = unknown>(
   // Cache check
   const cached = apiCache.get<T>(resolvedUrl);
   if (cached !== undefined) return cached;
+  if (callerSignal?.aborted) throw new CancelledError(callerSignal.reason);
 
   const maxAttempts = 3;
   let lastErr: unknown;
@@ -115,12 +162,11 @@ export async function fetchJson<T = unknown>(
           "User-Agent": USER_AGENT,
           Accept: "application/json",
         },
-        signal: controller.signal,
+        signal: callerSignal ? AbortSignal.any([controller.signal, callerSignal]) : controller.signal,
       });
 
       if (res.status === 429 && attempt < maxAttempts) {
-        const backoff = 500 * 2 ** (attempt - 1);
-        await new Promise((r) => setTimeout(r, backoff));
+        await sleep(500 * 2 ** (attempt - 1), callerSignal);
         continue;
       }
 
@@ -139,10 +185,10 @@ export async function fetchJson<T = unknown>(
       return data;
     } catch (err) {
       lastErr = err;
-      if (err instanceof UpstreamError) throw err;
+      if (err instanceof UpstreamError || err instanceof CancelledError) throw err;
+      if (callerSignal?.aborted) throw new CancelledError(callerSignal.reason);
       if (attempt === maxAttempts) break;
-      const backoff = 500 * 2 ** (attempt - 1);
-      await new Promise((r) => setTimeout(r, backoff));
+      await sleep(500 * 2 ** (attempt - 1), callerSignal);
     } finally {
       clearTimeout(timer);
     }

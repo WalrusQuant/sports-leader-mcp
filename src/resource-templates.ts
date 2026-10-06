@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { McpServer, ResourceTemplate, ProtocolError, ProtocolErrorCode } from "@modelcontextprotocol/server";
 import type { AnyToolDef } from "./tool.js";
+import { withRequestSignal } from "./client.js";
 import { RESOURCE_TEMPLATES } from "./links.js";
 
 type Produce = (tool: AnyToolDef, args: Record<string, unknown>) => Promise<unknown>;
@@ -19,8 +20,15 @@ export function registerResourceTemplates(server: McpServer, tools: AnyToolDef[]
     server.registerResource(
       def.name,
       new ResourceTemplate(def.uriTemplate, { list: undefined }),
-      { title: def.title, description: def.description, mimeType: "application/json" },
-      async (uri, variables) => {
+      {
+        title: def.title,
+        description: def.description,
+        mimeType: "application/json",
+        // 2026-07-28 cache hint for resources/read; public because the data is
+        // the same for every caller (no auth, no per-user state).
+        cacheHint: { ttlMs: def.ttlMs, cacheScope: "public" },
+      },
+      async (uri, variables, ctx) => {
         const args: Record<string, unknown> = {};
         for (const [k, v] of Object.entries(variables)) {
           args[k] = decodeURIComponent(Array.isArray(v) ? v[0] : v);
@@ -32,7 +40,8 @@ export function registerResourceTemplates(server: McpServer, tools: AnyToolDef[]
             `Invalid ${def.uriTemplate} variables: ${parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`,
           );
         }
-        const data = await produce(tool, parsed.data);
+        // Client cancellation aborts the in-flight ESPN fetches.
+        const data = await withRequestSignal(ctx.mcpReq.signal, () => produce(tool, parsed.data));
         return {
           contents: [{ uri: uri.toString(), mimeType: "application/json", text: JSON.stringify(data) }],
         };

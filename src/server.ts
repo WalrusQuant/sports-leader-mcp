@@ -7,7 +7,7 @@ import { athleteTools } from "./tools/athletes.js";
 import { discoveryTools } from "./tools/discovery.js";
 import { slateTools } from "./tools/slate.js";
 import type { AnyToolDef } from "./tool.js";
-import { UpstreamError } from "./client.js";
+import { UpstreamError, CancelledError, withRequestSignal } from "./client.js";
 import { applyBudget } from "./transforms.js";
 import { registerPrompts } from "./prompts.js";
 import { registerResources } from "./resources.js";
@@ -64,7 +64,9 @@ function toTextResult(data: unknown, structured?: unknown): ToolResult {
 
 function toErrorResult(err: unknown): ToolResult {
   let message: string;
-  if (err instanceof UpstreamError) {
+  if (err instanceof CancelledError) {
+    message = err.message;
+  } else if (err instanceof UpstreamError) {
     message = `Upstream error ${err.status} from ${err.url}: ${err.message}${err.body ? `\n${err.body}` : ""}`;
   } else if (err instanceof Error) {
     message = err.message;
@@ -138,11 +140,34 @@ const READ_ONLY_ANNOTATIONS = {
   openWorldHint: true,
 } as const;
 
+/**
+ * 2026-07-28 cache hints for list results. The catalog only changes with a
+ * deploy, and it is identical for every caller, so lists are publicly
+ * cacheable for an hour. 2025-era responses never carry these fields.
+ * Per-template `resources/read` hints live in links.ts.
+ */
+export const LIST_CACHE_HINTS = {
+  "tools/list": { ttlMs: 3_600_000, cacheScope: "public" },
+  "prompts/list": { ttlMs: 3_600_000, cacheScope: "public" },
+  "resources/list": { ttlMs: 3_600_000, cacheScope: "public" },
+  "resources/templates/list": { ttlMs: 3_600_000, cacheScope: "public" },
+  "server/discover": { ttlMs: 3_600_000, cacheScope: "public" },
+} as const;
+
+/**
+ * Build a fresh server instance. This is the factory handed to
+ * createMcpHandler (HTTP, one instance per request) and serveStdio (one per
+ * connection), so it must stay cheap and side-effect free. Tools are
+ * registered in ALL_TOOLS order, which is the fixed order tools/list returns.
+ */
 export function createServer(): McpServer {
-  const server = new McpServer({
-    name: "sports-leader-mcp",
-    version: VERSION,
-  });
+  const server = new McpServer(
+    {
+      name: "sports-leader-mcp",
+      version: VERSION,
+    },
+    { cacheHints: LIST_CACHE_HINTS },
+  );
 
   for (const tool of ALL_TOOLS) {
     server.registerTool(
@@ -158,7 +183,10 @@ export function createServer(): McpServer {
           ...(tool.annotations ?? {}),
         },
       },
-      async (args: Record<string, unknown>) => runTool(tool, args),
+      // The request's cancel signal (notifications/cancelled on 2025-era
+      // connections, a closed HTTP exchange on 2026-07-28) aborts in-flight
+      // ESPN fetches made anywhere under this call.
+      async (args: Record<string, unknown>, ctx) => withRequestSignal(ctx.mcpReq.signal, () => runTool(tool, args)),
     );
   }
 

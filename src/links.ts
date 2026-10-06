@@ -17,6 +17,12 @@ export interface TemplateDef {
   uriTemplate: string;
   /** Tool whose compact output a read returns. */
   tool: string;
+  /**
+   * How long a read of this template may be cached by the client (2026-07-28
+   * cache hint). Mirrors the upstream TTL in client.ts; live-game data stays
+   * short. Ignored by 2025-era clients.
+   */
+  ttlMs: number;
   description: string;
 }
 
@@ -26,6 +32,7 @@ export const RESOURCE_TEMPLATES: TemplateDef[] = [
     title: "Game summary",
     uriTemplate: "espn://{sport}/{league}/game/{eventId}/summary",
     tool: "get_game_summary",
+    ttlMs: 60_000,
     description: "Compact game summary (same as get_game_summary).",
   },
   {
@@ -33,6 +40,7 @@ export const RESOURCE_TEMPLATES: TemplateDef[] = [
     title: "Game play-by-play",
     uriTemplate: "espn://{sport}/{league}/game/{eventId}/plays",
     tool: "get_game_plays",
+    ttlMs: 60_000,
     description: "Compact play-by-play (same as get_game_plays, default limit). Large: fetch only when needed.",
   },
   {
@@ -40,6 +48,7 @@ export const RESOURCE_TEMPLATES: TemplateDef[] = [
     title: "Game win-probability timeline",
     uriTemplate: "espn://{sport}/{league}/game/{eventId}/probabilities",
     tool: "get_game_probabilities",
+    ttlMs: 60_000,
     description: "Full win-probability timeline (same as get_game_probabilities).",
   },
   {
@@ -47,6 +56,7 @@ export const RESOURCE_TEMPLATES: TemplateDef[] = [
     title: "Game odds",
     uriTemplate: "espn://{sport}/{league}/game/{eventId}/odds",
     tool: "get_game_odds",
+    ttlMs: 60_000,
     description: "Per-provider odds with no-vig probabilities and consensus (same as get_game_odds).",
   },
   {
@@ -54,6 +64,7 @@ export const RESOURCE_TEMPLATES: TemplateDef[] = [
     title: "League injury report",
     uriTemplate: "espn://{sport}/{league}/injuries",
     tool: "get_injuries",
+    ttlMs: 300_000,
     description: "League-wide compact injury report (same as get_injuries). Large for NFL.",
   },
   {
@@ -61,6 +72,7 @@ export const RESOURCE_TEMPLATES: TemplateDef[] = [
     title: "Team injury report",
     uriTemplate: "espn://{sport}/{league}/team/{teamId}/injuries",
     tool: "get_team_injuries",
+    ttlMs: 300_000,
     description: "One team's injury report (same as get_team_injuries). Note: ESPN's site endpoint behind it currently returns an empty document; prefer the league report.",
   },
   {
@@ -68,6 +80,7 @@ export const RESOURCE_TEMPLATES: TemplateDef[] = [
     title: "Daily slate",
     uriTemplate: "espn://{sport}/{league}/slate/{date}",
     tool: "get_slate",
+    ttlMs: 30_000,
     description: "Games for an ESPN game day (YYYYMMDD) with consensus no-vig odds and key injuries (same as get_slate).",
   },
 ];
