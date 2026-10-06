@@ -1,7 +1,7 @@
 {
   "name": "sports-leader-mcp",
   "version": "0.1.0",
-  "description": "MCP server for live sports data: scores, standings, rosters, stats, odds, play-by-play, injuries, and news across 17 sports and 139 leagues.",
+  "description": "MCP server for live sports data: scores, standings, rosters, stats, odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports.",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "npm run build && node --test dist/transforms.test.js dist/odds.test.js dist/golden.test.js dist/server.test.js",
+    "test": "npm run build && node --test dist/transforms.test.js dist/odds.test.js dist/golden.test.js dist/server.test.js dist/docs.test.js",
     "test:update-golden": "npm run build && UPDATE_GOLDEN=1 node --test dist/golden.test.js",
     "fixtures:capture": "node scripts/capture-fixtures.mjs",
     "start": "node dist/index.js",

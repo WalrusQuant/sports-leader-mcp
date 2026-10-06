@@ -1,6 +1,6 @@
 # Tools
 
-Overview of all 20 tools available in sports-leader-mcp.
+Overview of all 21 tools available in sports-leader-mcp.
 
 Compact JSON is the default. Every tool accepts optional `raw: true`; oversized output is replaced with a valid `{ "truncated": true, ... }` envelope instead of partial JSON.
 
@@ -19,8 +19,9 @@ Compact JSON is the default. Every tool accepts optional `raw: true`; oversized 
 | [`get_scoreboard`](scoreboard.md#get_scoreboard) | Get live and scheduled games. Entry point for finding eventIds. |
 | [`get_game_summary`](scoreboard.md#get_game_summary) | Score, team/player boxscore, leaders, key plays, sampled win probability. |
 | [`get_game_plays`](scoreboard.md#get_game_plays) | Full play-by-play data for a game. |
-| [`get_game_odds`](scoreboard.md#get_game_odds) | Betting odds — spread, moneyline, over/under. |
+| [`get_game_odds`](scoreboard.md#get_game_odds) | Betting odds per provider with numeric moneylines, implied and no-vig probabilities, signed `homeSpread`, and consensus. |
 | [`get_game_probabilities`](scoreboard.md#get_game_probabilities) | Win probability timeline for a game. |
+| [`get_slate`](scoreboard.md#get_slate) | One-call daily slate: games, team IDs, status/score, consensus no-vig probabilities, key Out/Doubtful injuries. |
 
 ## Teams
 

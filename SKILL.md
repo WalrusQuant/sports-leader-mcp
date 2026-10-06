@@ -1,6 +1,6 @@
 ---
 name: espn-api
-description: Query ESPN's public API for live scores, standings, rosters, player stats, odds, play-by-play, injuries, transactions, news, and more across 17 sports and 139 leagues. Use when the user needs sports data from ESPN, wants to build a sports app, fetch scores or schedules, look up player or team stats, get betting odds, or pull any structured sports data. Triggers on mentions of ESPN, sports scores, standings, box scores, player stats, game data, or league data.
+description: Query ESPN's public API for live scores, standings, rosters, player stats, odds, play-by-play, injuries, transactions, news, and more across 30 verified leagues across 11 sports. Use when the user needs sports data from ESPN, wants to build a sports app, fetch scores or schedules, look up player or team stats, get betting odds, or pull any structured sports data. Triggers on mentions of ESPN, sports scores, standings, box scores, player stats, game data, or league data.
 license: MIT
 metadata:
   author: sejaldua

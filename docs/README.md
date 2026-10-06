@@ -1,6 +1,6 @@
 # sports-leader-mcp
 
-A free [Model Context Protocol](https://modelcontextprotocol.io) server for live sports data across **17 sports and 139 leagues**.
+A free [Model Context Protocol](https://modelcontextprotocol.io) server for live sports data across **30 verified leagues across 11 sports**.
 
 Built on ESPN's public JSON APIs. No authentication required — just connect your MCP client and start querying.
 

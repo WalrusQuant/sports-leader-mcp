@@ -4,7 +4,7 @@ All tools return compact JSON by default and accept optional `raw: true`.
 
 ## `get_scoreboard`
 
-Entry point for games. Returns event IDs, dates, status, teams, final/current scores, period scores, records, and venue.
+Entry point for games. Returns event IDs, dates, status, teams, final/current scores, period scores, records, and venue. When ESPN lists odds for an event, it also includes an `odds` block (`markets` + `consensus`) using the normalized fields described under `get_game_odds`.
 
 Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`), `dateRange` (`YYYYMMDD-YYYYMMDD`), `week`, `seasonType`, and `raw`.
 
@@ -51,9 +51,33 @@ Parameters: `sport`, `league`, `eventId`, optional `limit` (default `400`), and 
 
 ## `get_game_odds`
 
-Returns one compact record per provider: provider, favorite, spread, total, moneylines, prices, and available open/current line fields.
+Returns event identity plus one record per provider. Each record keeps the original fields (provider, details, spread, overUnder, prices, home/away, open/current) and adds normalized numbers for comparison with prediction-market prices.
 
-Parameters: `sport`, `league`, `eventId`, optional `providerId`, and `raw`.
+Parameters: `sport`, `league`, `eventId`, optional `providerId`, and `raw`. Compact mode makes one extra small, cached core-API event call to get the start time and team abbreviations.
+
+Compact shape (abridged):
+
+```json
+{
+  "eventId": "401872980",
+  "startUtc": "2026-10-09T00:15Z",
+  "homeTeam": { "id": "6", "abbrev": "DAL" },
+  "awayTeam": { "id": "27", "abbrev": "TB" },
+  "consensus": { "providerCount": 1, "providers": ["Draft Kings"], "homeNoVigProb": 0.7958, "awayNoVigProb": 0.2042, "drawNoVigProb": null, "homeSpread": -9.5, "total": 47.5, "method": "...", "reason": null },
+  "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored ...",
+  "odds": [{
+    "provider": "Draft Kings", "details": "DAL -9.5", "spread": -9.5, "overUnder": 47.5,
+    "home": { "favorite": true, "moneyLine": -485 }, "away": { "favorite": false, "moneyLine": 370 },
+    "providerId": "100", "threeWay": false,
+    "homeMoneyLine": -485, "awayMoneyLine": 370, "drawMoneyLine": null,
+    "homeImpliedProb": 0.8291, "awayImpliedProb": 0.2128,
+    "homeNoVigProb": 0.7958, "awayNoVigProb": 0.2042, "overround": 0.0418,
+    "noVigReason": null, "homeSpread": -9.5, "total": 47.5
+  }]
+}
+```
+
+Soccer markets are three-way: `drawMoneyLine`, `drawImpliedProb`, and `drawNoVigProb` are filled in, and the no-vig split covers all three outcomes. When a price is missing, the no-vig fields are `null` and `noVigReason` explains why.
 
 Provider IDs are available at `sports://reference/betting-providers`.
 
@@ -62,3 +86,12 @@ Provider IDs are available at `sports://reference/betting-providers`.
 Returns the full compact probability series as `{ playId, homeWinPct, awayWinPct }` records.
 
 Parameters: `sport`, `league`, `eventId`, optional `limit` (default `200`), and `raw`.
+
+## `get_slate`
+
+One call per game day. Returns every game with `eventId`, `startUtc`, `name`, `status`, `neutralSite`, `home`/`away` (`id`, `abbrev`, `name`, `record`, `score` — `null` before start — `keyInjuries`, `otherInjuryCount`), and `odds` (consensus `homeNoVigProb`/`awayNoVigProb`/`drawNoVigProb`, first provider's moneylines, `homeSpread`, `total`, `reason` when there are no odds).
+
+Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`, ESPN's US-Eastern game day; omit for the current slate), optional `includeInjuries` (default `true`), and `raw`.
+
+`keyInjuries` lists players marked `Out` or `Doubtful` (up to 12 per team). It is `null` when the injury report is unavailable, and `injuriesNote` explains why. ESPN returns empty injury reports for some leagues (for example EPL and NCAAF); `injuriesNote` flags that too. Upstream cost is two cached calls: the scoreboard and the league injury report.
+

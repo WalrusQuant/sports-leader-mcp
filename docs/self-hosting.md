@@ -176,6 +176,6 @@ docker run -p 3000:3000 \
 
 ## Next Steps
 
-- Browse the [Tools](tools/) to see all 20 tools with parameters and examples
+- Browse the [Tools](tools/) to see all 21 tools with parameters and examples
 - Read [Gotchas & Pitfalls](../references/gotchas.md) for ESPN API quirks
 - Check the [API Endpoints](../references/endpoints.md) reference for the raw ESPN API catalog
