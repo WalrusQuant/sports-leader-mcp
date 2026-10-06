@@ -41,7 +41,7 @@ To run as an HTTP service instead of stdio, set `PORT`:
 PORT=3000 npm start
 ```
 
-This enables session management, built-in caching, rate limiting, and monitoring endpoints. See the [Self-Hosting Guide](self-hosting.md) for full configuration options.
+This enables stateless HTTP serving (MCP 2026-07-28 plus every 2025-era client), built-in caching, rate limiting, and monitoring endpoints. See the [Self-Hosting Guide](self-hosting.md) for full configuration options.
 
 ## Your First Queries
 

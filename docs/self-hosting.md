@@ -14,7 +14,7 @@ npm run build
 PORT=3000 npm start
 ```
 
-Setting `PORT` switches the server from stdio mode (for local MCP clients) to HTTP mode with full session management, caching, rate limiting, and monitoring.
+Setting `PORT` switches the server from stdio mode (for local MCP clients) to HTTP mode with caching, rate limiting, and monitoring. HTTP serving is stateless (see [Protocol versions](#protocol-versions-and-stateless-http)).
 
 ---
 
@@ -28,9 +28,21 @@ Setting `PORT` switches the server from stdio mode (for local MCP clients) to HT
 | `RATE_LIMIT_PER_MIN` | `60` | Max requests per IP per minute |
 | `RATE_LIMIT_PER_DAY` | `1000` | Max requests per IP per day |
 | `SPORTS_LEADER_MAX_TOKENS` | `50000` | Estimated-token ceiling for one MCP result; oversized results become valid truncation metadata |
-| `MAX_SESSIONS` | `1000` | Maximum concurrent HTTP MCP sessions |
 | `CACHE_MAX_ENTRIES` | `250` | Maximum raw ESPN responses retained in the in-memory LRU/TTL cache |
 | `CACHE_MAX_BYTES` | `67108864` | Approximate maximum cache bytes (64 MiB by default) |
+
+---
+
+## Protocol versions and stateless HTTP
+
+The server is built on MCP TypeScript SDK v2 and speaks two protocol eras on the same `/mcp` endpoint and the same stdio binary:
+
+- **2026-07-28** (stateless MCP): no `initialize` handshake and no `Mcp-Session-Id`; each request carries its own protocol version. List results (`tools/list`, `prompts/list`, `resources/list`, `resources/templates/list`, `server/discover`) carry `ttlMs: 3600000, cacheScope: "public"`; static resources 24 h; `espn://` template reads 30 s (slate), 60 s (game data) or 5 min (injuries).
+- **2025-11-25 and older** (2025-06-18, 2025-03-26, 2024-11-05, 2024-10-07): the classic `initialize` handshake still works. Over HTTP it is served statelessly: every POST is answered by a fresh server instance, no `Mcp-Session-Id` is issued, and `GET`/`DELETE /mcp` return `405`. Clients that follow the spec treat a missing session id as "stateless server" and need no changes. Over stdio the connection is pinned to one instance, exactly as before.
+
+There is no session map to size, so `MAX_SESSIONS` is gone. Every POST builds a fresh server, so any replica can serve any request and you can scale horizontally without sticky sessions.
+
+Cancellation: if a client cancels a call (2026-07-28: by closing the request; 2025-era stdio: `notifications/cancelled`; any HTTP client: dropping the connection), the in-flight ESPN fetches are aborted rather than left to time out. Over stateless 2025-era HTTP, a `notifications/cancelled` POST cannot reach the running call; only closing the connection cancels it.
 
 ---
 
@@ -111,9 +123,14 @@ Basic liveness check. Always responds, even when the kill switch is active.
 ```json
 {
   "status": "ok",
+  "version": "0.1.0",
   "uptime": 3621.5,
-  "tools": 20,
-  "sessions": 3
+  "tools": 21,
+  "stateless": true,
+  "protocolVersions": {
+    "modern": ["2026-07-28"],
+    "legacy": ["2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05", "2024-10-07"]
+  }
 }
 ```
 
@@ -139,7 +156,6 @@ Detailed operational metrics. Always responds, even when the kill switch is acti
     }
   },
   "uptime": 3621.5,
-  "sessions": 3,
   "killSwitch": false
 }
 ```
@@ -149,7 +165,6 @@ Detailed operational metrics. Always responds, even when the kill switch is acti
 - **`cache.hitRatePercent`** — Should stabilize above 50% under normal usage. Low hit rates mean clients are requesting many unique URLs or TTLs are too short.
 - **`cache.size`** — Number of entries currently in cache. If this grows unexpectedly large, investigate what URLs are being cached.
 - **`rateLimit.trackedIps`** — Number of unique IPs with recent activity. A sudden spike may indicate bot traffic.
-- **`sessions`** — Active MCP sessions. Each connected client holds one session.
 
 ---
 

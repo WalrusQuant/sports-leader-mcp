@@ -46,7 +46,9 @@ type ToolResult = {
 /**
  * Render compact JSON without pretty-print whitespace. Object responses are
  * also exposed through structuredContent. Top-level arrays are wrapped as
- * `{ items: [...] }` because the current SDK requires an object there.
+ * `{ items: [...] }`. Spec 2026-07-28 would allow a bare array, but the SDK
+ * re-wraps bare arrays as `{ result: [...] }` for 2025-era clients, so the
+ * wrapper is kept so that both eras see the same, already-published shape.
  */
 function toTextResult(data: unknown, structured?: unknown): ToolResult {
   const text = typeof data === "string" ? data : JSON.stringify(data);

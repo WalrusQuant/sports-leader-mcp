@@ -134,6 +134,17 @@ Football (NFL, NCAA FBS, CFL, UFL) · Basketball (NBA, WNBA, NCAA men's and wome
 
 ESPN exposes other leagues too; their slugs may work with the same tools or with `espn_fetch`, but they are not verified here.
 
+## Protocol compatibility
+
+Built on MCP TypeScript SDK v2 (`@modelcontextprotocol/server`). One server serves both protocol eras, over HTTP and stdio:
+
+| Client speaks | Works? | How |
+|---|---|---|
+| 2026-07-28 (stateless MCP) | Yes | Per-request, no handshake; list results carry cache hints |
+| 2025-11-25, 2025-06-18, 2025-03-26, 2024-11-05 | Yes | Classic `initialize` handshake. Over HTTP it is served statelessly (no `Mcp-Session-Id`; `GET`/`DELETE /mcp` return 405) |
+
+Tool names, inputs, compact output, `outputSchema`/`structuredContent` and `resource_link` items are the same in both eras. `npm test` checks this with a v2 client at 2026-07-28 and an unmodified SDK 1.29 client. Node.js 20+ is required.
+
 ## Local Development
 
 After cloning and installing (see [Install](#install)):
