@@ -4,6 +4,10 @@ Overview of all 21 tools available in sports-leader-mcp.
 
 Compact JSON is the default. Every tool accepts optional `raw: true`; oversized output is replaced with a valid `{ "truncated": true, ... }` envelope instead of partial JSON.
 
+Results carry the compact JSON as a text block and as MCP `structuredContent` (top-level arrays as `{ "items": [...] }`). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, and `get_slate` also publish an `outputSchema`; schemas allow extra properties because fields are only ever added. With `raw: true` the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`.
+
+Large sub-payloads are also available as `espn://` resource templates (see the [README](../../README.md#resource-templates)); `get_game_summary` and `get_slate` return `resource_link` items that point at them.
+
 ## Discovery & Search
 
 | Tool | Description |

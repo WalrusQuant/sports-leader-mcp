@@ -32,7 +32,7 @@ Compact shape:
 
 ## `get_athlete_gamelog`
 
-Returns compact game records containing date, opponent, home/away, result, score, and named statistics. It removes the large duplicate event/reference structures from ESPN's response.
+Returns compact game records containing date, opponent, home/away, result, score, and named statistics. Each record carries `eventId` for joining with game tools. It removes the large duplicate event/reference structures from ESPN's response. Publishes an MCP `outputSchema`.
 
 Parameters: `sport`, `league`, `athleteId`, optional `season`, and `raw`.
 

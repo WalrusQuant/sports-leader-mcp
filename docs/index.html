@@ -534,7 +534,7 @@
         <div class="feature-card fade-in">
           <div class="feature-icon">&#128176;</div>
           <h3>Betting Odds</h3>
-          <p>Spreads, moneylines, and over/unders from DraftKings, FanDuel, Caesars, BetMGM, ESPN BET, and Bet365.</p>
+          <p>Spreads, moneylines, and over/unders from DraftKings, FanDuel, Caesars, BetMGM, ESPN BET, and Bet365, normalized to implied and no-vig probabilities for comparison with prediction markets.</p>
         </div>
         <div class="feature-card fade-in">
           <div class="feature-icon">&#127941;</div>
@@ -553,7 +553,7 @@
   <!-- TOOLS -->
   <section class="tools-section" id="tools">
     <div class="section-inner">
-      <div class="section-label fade-in">20 MCP Tools</div>
+      <div class="section-label fade-in">21 MCP Tools</div>
       <h2 class="section-title fade-in">The Full Toolkit</h2>
       <p class="section-desc fade-in">Each tool is documented with parameters, examples, and response schemas. <a href="docs.html#tools/">Read the full docs.</a></p>
 
@@ -585,10 +585,13 @@
             <div><div class="tool-name">get_game_plays</div><div class="tool-desc">Full play-by-play data for any game</div></div>
           </div>
           <div class="tool-card">
-            <div><div class="tool-name">get_game_odds</div><div class="tool-desc">Spread, moneyline, over/under from top sportsbooks</div></div>
+            <div><div class="tool-name">get_game_odds</div><div class="tool-desc">Moneylines, spread, total per sportsbook, plus implied and no-vig probabilities and a consensus</div></div>
           </div>
           <div class="tool-card">
             <div><div class="tool-name">get_game_probabilities</div><div class="tool-desc">Win probability timeline throughout the game</div></div>
+          </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_slate</div><div class="tool-desc">A whole game day in one call: games, team IDs, scores, consensus no-vig odds, key injuries</div></div>
           </div>
         </div>
       </div>

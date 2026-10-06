@@ -29,3 +29,5 @@ Prefer `get_team_injuries` over `get_team(view="injuries")` when you need the no
 Returns actual injury entries for one team and filters ESPN's `Active` news-only records. Fields can include player, position, status, injury detail, return date, report date, and a capped note.
 
 Parameters: `sport`, `league`, `teamId`, and optional `raw`.
+
+Known upstream issue (October 2026): ESPN's per-team injuries endpoint currently returns an empty document, so this tool returns no entries. Use `get_injuries` (league-wide, includes `teamId`) and filter by team instead.

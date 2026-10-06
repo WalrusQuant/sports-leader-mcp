@@ -180,6 +180,15 @@ async function getNBAScoreboard(date?: string) {
 - The API is undocumented, so always validate response shape before accessing nested fields
 - Use `User-Agent` header to identify your app
 
+## Using the sports-leader MCP server instead of raw URLs
+
+If the sports-leader MCP server is connected, prefer its tools over hand-built URLs: they return compact JSON and validate slugs.
+
+- `get_slate(sport, league, date?)`: every game for a day with team IDs, status/score, consensus no-vig probabilities, and Out/Doubtful injuries. Start here.
+- `get_game_odds(sport, league, eventId)`: per-book numeric American moneylines, `*ImpliedProb` (vig included), `*NoVigProb` (normalized to 1; three-way for soccer), `homeSpread` (**negative = home team favored**), `total`, and a `consensus`.
+- `get_game_summary`: box score, leaders, key plays, plus `resource_link` items to `espn://` resources for full plays, probabilities, odds, and injuries.
+- `raw: true` on any tool returns the untouched ESPN response.
+
 ## For Deeper Reference
 
 - **Full endpoint catalog:** [references/endpoints.md](references/endpoints.md)

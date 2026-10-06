@@ -1,7 +1,7 @@
 # sports-leader-mcp
 
 
-Free MCP server for live sports data. **21 tools, 4 resources, 5 prompts** covering scores, standings, rosters, player stats, betting odds, play-by-play, injuries, transactions, and news across **30 verified leagues in 11 sports**.
+Free MCP server for live sports data. **21 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player stats, betting odds, play-by-play, injuries, transactions, and news across **30 verified leagues in 11 sports**.
 
 No ESPN auth or API keys. Stdio mode has no server-side request quota; HTTP mode applies configurable per-IP limits.
 
@@ -9,7 +9,7 @@ No ESPN auth or API keys. Stdio mode has no server-side request quota; HTTP mode
 
 ## Install
 
-Clone and build:
+Requires Node.js 20 or newer. Clone and build:
 ```bash
 git clone https://github.com/WalrusQuant/sports-leader-mcp.git
 cd sports-leader-mcp
@@ -143,7 +143,12 @@ Built on MCP TypeScript SDK v2 (`@modelcontextprotocol/server`). One server serv
 | 2026-07-28 (stateless MCP) | Yes | Per-request, no handshake; list results carry cache hints |
 | 2025-11-25, 2025-06-18, 2025-03-26, 2024-11-05 | Yes | Classic `initialize` handshake. Over HTTP it is served statelessly (no `Mcp-Session-Id`; `GET`/`DELETE /mcp` return 405) |
 
-Tool names, inputs, compact output, `outputSchema`/`structuredContent` and `resource_link` items are the same in both eras. `npm test` checks this with a v2 client at 2026-07-28 and an unmodified SDK 1.29 client. Node.js 20+ is required.
+Tool names, inputs, compact output, `outputSchema`/`structuredContent` and `resource_link` items are the same in both eras. `npm test` checks this with a v2 client at 2026-07-28 and an unmodified SDK 1.29 client.
+
+- **Stateless HTTP:** no session map, no `Mcp-Session-Id`, no `MAX_SESSIONS`; any replica can answer any request. See the [Self-Hosting Guide](docs/self-hosting.md#protocol-versions-and-stateless-http).
+- **Cache hints (2026-07-28 only):** list results are `public` for 1 h, static `sports://` resources 24 h, `espn://` template reads 30 s (slate), 60 s (game data) or 5 min (injuries).
+- **Cancellation:** cancelling a call aborts its in-flight ESPN requests (they are not retried).
+- **Requirements:** Node.js 20+; schemas are authored with zod 4 (`^4.2.0`, required by SDK v2).
 
 ## Local Development
 
@@ -161,7 +166,7 @@ npm run fixtures:capture    # re-record raw ESPN fixtures into test/fixtures
 
 Dedicated tools return compact, curated JSON by default. Every tool accepts `raw: true`, but raw ESPN responses can be extremely large and should be used only to recover a specific omitted field. Responses over `SPORTS_LEADER_MAX_TOKENS` are replaced with valid truncation metadata; the server never cuts JSON mid-document.
 
-Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent` when the result is an object. `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, and `get_slate` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
+Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent`; a top-level array result is exposed as `structuredContent: { "items": [...] }` (same shape for every protocol era). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, and `get_slate` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
 
 ### Odds conventions
 

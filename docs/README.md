@@ -1,6 +1,6 @@
 # sports-leader-mcp
 
-A free [Model Context Protocol](https://modelcontextprotocol.io) server for live sports data across **30 verified leagues across 11 sports**.
+A free [Model Context Protocol](https://modelcontextprotocol.io) server for live sports data across **30 verified leagues in 11 sports**: 21 tools, 4 resources, 7 resource templates, and 5 prompts.
 
 Built on ESPN's public JSON APIs. No authentication required — just connect your MCP client and start querying.
 
@@ -34,19 +34,31 @@ The scoped identifier above is a Smithery registry identifier, not this reposito
 }
 ```
 
-## 20 Tools at a Glance
+## 21 Tools at a Glance
 
 | Category | Tools |
 |----------|-------|
 | [Discovery](tools/discovery.md) | `list_sports_and_leagues`, `search`, `espn_fetch` |
-| [Scoreboard & Games](tools/scoreboard.md) | `get_scoreboard`, `get_game_summary`, `get_game_plays`, `get_game_odds`, `get_game_probabilities` |
+| [Scoreboard & Games](tools/scoreboard.md) | `get_scoreboard`, `get_game_summary`, `get_game_plays`, `get_game_odds`, `get_game_probabilities`, `get_slate` |
 | [Teams](tools/teams.md) | `get_teams`, `get_team`, `get_team_injuries` |
 | [Athletes](tools/athletes.md) | `get_athlete_overview`, `get_athlete_stats`, `get_athlete_gamelog`, `get_athlete_splits` |
 | [League-Wide](tools/league.md) | `get_standings`, `get_league_leaders`, `get_injuries`, `get_transactions`, `get_news` |
 
+Six tools (`get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_slate`) publish an MCP `outputSchema`. Odds are normalized for comparison with prediction markets: numeric American moneylines, implied and no-vig probabilities, and `homeSpread` (negative = home team favored). See [Scoreboard & Games](tools/scoreboard.md#get_game_odds).
+
+## Resources
+
+- 4 static resources: `sports://leagues`, `sports://reference/season-types`, `sports://reference/betting-providers`, `sports://reference/api-domains`.
+- 7 `espn://` resource templates that return the same compact JSON as the matching tool: game `summary`, `plays`, `probabilities`, `odds` (`espn://{sport}/{league}/game/{eventId}/...`), league injuries (`espn://{sport}/{league}/injuries`), team injuries (`espn://{sport}/{league}/team/{teamId}/injuries`), and the daily slate (`espn://{sport}/{league}/slate/{date}`).
+- `get_game_summary` and `get_slate` add `resource_link` items pointing at those templates.
+
+## Protocol compatibility
+
+Built on MCP TypeScript SDK v2. The same server answers MCP **2026-07-28** (stateless, per-request) and every 2025-era client (2025-11-25, 2025-06-18, 2025-03-26, 2024-11-05) over both stdio and HTTP. Requires Node.js 20+.
+
 ## Self-Hosting
 
-Running as a hosted HTTP service? See the [Self-Hosting Guide](self-hosting.md) for caching, rate limiting, monitoring, and the kill switch.
+Running as a hosted HTTP service? See the [Self-Hosting Guide](self-hosting.md) for stateless HTTP serving, caching, rate limiting, monitoring, and the kill switch. Release notes are in the [CHANGELOG](../CHANGELOG.md).
 
 ## Reference
 

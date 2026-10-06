@@ -2,8 +2,8 @@ name: sports-leader-mcp
 description: >-
   Free MCP server for live sports data — scores, standings, rosters, player stats,
   betting odds, play-by-play, injuries, transactions, and news across 30 verified
-  leagues in 11 sports. 21 tools, 4 resources, 5 prompts. No auth required.
-version: 0.1.0
+  leagues in 11 sports. 21 tools, 4 resources, 7 resource templates, 5 prompts. No auth required.
+version: 0.3.0
 license: MIT
 keywords:
   - sports

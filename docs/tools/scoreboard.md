@@ -1,6 +1,6 @@
 # Scoreboard and game tools
 
-All tools return compact JSON by default and accept optional `raw: true`.
+All tools return compact JSON by default and accept optional `raw: true`. `get_scoreboard`, `get_game_summary`, `get_game_odds`, and `get_slate` publish an MCP `outputSchema`.
 
 ## `get_scoreboard`
 
@@ -42,6 +42,8 @@ The richest compact single-game call. Returns:
 Parameters: `sport`, `league`, `eventId`, and optional `raw`.
 
 Use `get_game_plays` for every play and `get_game_probabilities` for the full probability timeline.
+
+When ESPN lists odds (pickcenter), the summary also includes an `odds` block with the normalized fields described under `get_game_odds`. After the text block, the result carries `resource_link` items for `espn://{sport}/{league}/game/{eventId}/plays`, `/probabilities`, `/odds`, and `espn://{sport}/{league}/injuries`; reading one returns the same compact JSON as the matching tool. Links are omitted in `raw` mode and on truncation envelopes.
 
 ## `get_game_plays`
 
@@ -95,3 +97,4 @@ Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`, ESPN's US-Eastern ga
 
 `keyInjuries` lists players marked `Out` or `Doubtful` (up to 12 per team). It is `null` when the injury report is unavailable, and `injuriesNote` explains why. ESPN returns empty injury reports for some leagues (for example EPL and NCAAF); `injuriesNote` flags that too. Upstream cost is two cached calls: the scoreboard and the league injury report.
 
+`get_slate` adds a `resource_link` to `espn://{sport}/{league}/injuries`. The slate itself is also readable as `espn://{sport}/{league}/slate/{date}`.

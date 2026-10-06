@@ -27,6 +27,8 @@ Add to your MCP client's config file:
 
 ### From Source
 
+Requires Node.js 20 or newer.
+
 ```bash
 git clone https://github.com/WalrusQuant/sports-leader-mcp.git
 cd sports-leader-mcp
@@ -65,6 +67,12 @@ The agent will call `get_standings` with `sport: "football"` and `league: "nfl"`
 
 The agent will call `search` with `query: "LeBron James"`, then use the returned `athleteId` to call `get_athlete_stats`.
 
+### Get tonight's slate in one call
+
+> "What's on the MLB slate today, with odds and key injuries?"
+
+The agent will call `get_slate` with `sport: "baseball"` and `league: "mlb"`, which returns every game with team IDs, status/score, consensus no-vig probabilities, and Out/Doubtful injuries.
+
 ### Get betting odds for a game
 
 > "What are the odds for tonight's Lakers game?"
@@ -99,7 +107,7 @@ The tool and `sports://leagues` return a curated catalog verified against the pu
 All tools accept `raw`:
 
 - Omit it or pass `false` for compact, agent-safe output.
-- Pass `true` only when you need a specific field removed by compaction.
+- Pass `true` only when you need a specific field removed by compaction. The text block is then the untouched ESPN JSON; tools with an `outputSchema` return `structuredContent` as `{ "raw": true, "response": ... }`.
 - If any output exceeds `SPORTS_LEADER_MAX_TOKENS`, the result is a valid JSON envelope with `truncated: true`, estimated size, budget, and root-shape metadata. Narrow the request instead of treating that envelope as sports data.
 
 ## Season Types

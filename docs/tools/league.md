@@ -16,7 +16,7 @@ Parameters: `sport`, `league`, optional `season`, and `raw`.
 
 ## `get_injuries`
 
-Returns league injuries grouped by team. It filters `Active`/news-only records and keeps player, team, position, status, injury detail, return date, report date, and a note capped at 140 characters.
+Returns league injuries grouped by team. It filters `Active`/news-only records and keeps player, team, position, status, injury detail, return date, report date, and a note capped at 140 characters. Each team carries `teamId` and each entry `athleteId` so you can join with other tools. Publishes an MCP `outputSchema`; also readable as `espn://{sport}/{league}/injuries`.
 
 Parameters: `sport`, `league`, and optional `raw`.
 
