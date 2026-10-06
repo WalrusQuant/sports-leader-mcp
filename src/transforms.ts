@@ -960,7 +960,11 @@ export function transformSlate(data: unknown, ctx?: Ctx): unknown {
     noVigMethod: NO_VIG_METHOD,
     keyInjuryStatuses: KEY_INJURY_STATUSES,
     injuriesAvailable,
-    ...(raw.injuriesError ? { injuriesNote: `Injury report unavailable: ${raw.injuriesError}` } : {}),
+    ...(raw.injuriesError
+      ? { injuriesNote: `Injury report unavailable: ${raw.injuriesError}` }
+      : injuriesAvailable && injuries.size === 0
+        ? { injuriesNote: "ESPN returned an empty injury report for this league; an empty keyInjuries list does not confirm a healthy roster." }
+        : {}),
     games,
   });
 }

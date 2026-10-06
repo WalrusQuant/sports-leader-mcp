@@ -14,6 +14,7 @@
  *
  * Conventions (also exposed in tool output as `spreadConvention`):
  *   - Moneylines are American odds as numbers (+185, -225). EVEN → +100.
+ *     Decimal/fractional prices (Bet365 records) are converted to American.
  *   - impliedProb = raw break-even probability of the price (includes vig).
  *   - noVigProb = impliedProb normalized so all outcomes sum to 1
  *     (proportional / multiplicative method). For three-way markets (soccer)
@@ -92,6 +93,26 @@ export function parseAmerican(value: unknown): number | null {
   return n;
 }
 
+/** Convert a decimal price (e.g. 1.38) to American odds, rounded to an integer. */
+export function decimalToAmerican(value: unknown): number | null {
+  const dec = typeof value === "number" ? value : Number(value);
+  if (!Number.isFinite(dec) || dec <= 1) return null;
+  return Math.round(dec >= 2 ? (dec - 1) * 100 : -100 / (dec - 1));
+}
+
+/** Convert a fractional price string (e.g. "19/50", "7/2", "EVS") to American odds. */
+export function fractionalToAmerican(value: unknown): number | null {
+  if (typeof value !== "string") return null;
+  const s = value.trim().toUpperCase();
+  if (s === "EVS" || s === "EVENS") return 100;
+  const m = s.match(/^(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
+  if (!m) return null;
+  const num = Number(m[1]);
+  const den = Number(m[2]);
+  if (!(num > 0) || !(den > 0)) return null;
+  return decimalToAmerican(1 + num / den);
+}
+
 /** Parse a spread/total line ("-3.5", "+1.5", "PK", "o47.5", "u6"). */
 export function parseLine(value: unknown): number | null {
   if (value === null || value === undefined) return null;
@@ -138,20 +159,30 @@ export function normalizeMarket(item: unknown, opts: NormalizeOptions = {}): Nor
   const ps = d(it.pointSpread);
   const total = d(it.total);
 
+  // Bet365-style records carry decimal `odds.value` and fractional
+  // `bettingOdds.teamOdds.preMatchFullTimeResult*` instead of American prices.
+  const teamOdds = d(d(it.bettingOdds).teamOdds);
+  const draw = d(it.drawOdds);
   const homeMoneyLine = firstNonNull(
     parseAmerican(home.moneyLine),
     parseAmerican(d(d(home.current).moneyLine).american),
     parseAmerican(d(d(ml.home).close).odds),
+    decimalToAmerican(d(home.odds).value),
+    fractionalToAmerican(d(teamOdds.preMatchFullTimeResultHome).value),
   );
   const awayMoneyLine = firstNonNull(
     parseAmerican(away.moneyLine),
     parseAmerican(d(d(away.current).moneyLine).american),
     parseAmerican(d(d(ml.away).close).odds),
+    decimalToAmerican(d(away.odds).value),
+    fractionalToAmerican(d(teamOdds.preMatchFullTimeResultAway).value),
   );
   const drawMoneyLine = firstNonNull(
-    parseAmerican(d(it.drawOdds).moneyLine),
-    parseAmerican(d(d(d(it.drawOdds).current).moneyLine).american),
+    parseAmerican(draw.moneyLine),
+    parseAmerican(d(d(draw.current).moneyLine).american),
     parseAmerican(d(d(ml.draw).close).odds),
+    decimalToAmerican(d(draw.odds).value),
+    fractionalToAmerican(d(teamOdds.preMatchFullTimeResultDraw).value),
   );
 
   const threeWay = drawMoneyLine !== null || opts.threeWay === true;
