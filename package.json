@@ -1,6 +1,6 @@
 {
   "name": "sports-leader-mcp",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "MCP server for live sports data: scores, standings, rosters, stats, odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports.",
   "license": "MIT",
   "type": "module",
