@@ -14,6 +14,33 @@
  */
 
 import { LEAGUE_CATALOG } from "./catalog.js";
+import {
+  NO_VIG_METHOD,
+  SPREAD_CONVENTION,
+  consensus,
+  normalizeMarket,
+  type NormalizeOptions,
+} from "./odds.js";
+
+/**
+ * Optional transform context. Transforms stay callable with just the raw data
+ * (pure function); the server passes tool args and any supplementary context.
+ */
+export interface Ctx {
+  args?: Record<string, unknown>;
+  context?: unknown;
+}
+
+function oddsOptions(ctx: Ctx | undefined): NormalizeOptions {
+  return { threeWay: ctx?.args?.sport === "soccer" };
+}
+
+/** Normalize an ESPN odds array (site or core shape) into markets + consensus. */
+function compactOddsBlock(items: unknown, ctx: Ctx | undefined) {
+  const markets = arr<AnyObj>(items).map((item) => normalizeMarket(item, oddsOptions(ctx)));
+  if (!markets.length) return undefined;
+  return { markets, consensus: consensus(markets) };
+}
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -172,10 +199,11 @@ function summarizeShape(data: unknown): AnyObj {
  * Scoreboard: events[] → dense game list.
  * Strips links (5/event), logos, boilerplate. Keeps scores, status, venue.
  */
-export function transformScoreboard(data: unknown): unknown {
+export function transformScoreboard(data: unknown, ctx?: Ctx): unknown {
   const root = d(data);
   const events = arr<AnyObj>(root.events);
-  return {
+  let anyOdds = false;
+  const out: AnyObj = {
     date: root.day,
     events: events.map((ev) => {
       const comp = d(arr<AnyObj>(ev.competitions)[0]);
@@ -202,9 +230,20 @@ export function transformScoreboard(data: unknown): unknown {
         status: compactStatus(d(ev.status)),
         venue: venue.fullName ? { name: String(venue.fullName), city: d(venue.address).city } : undefined,
         competitors,
+        ...(() => {
+          const odds = compactOddsBlock(comp.odds, ctx);
+          if (!odds) return {};
+          anyOdds = true;
+          return { odds };
+        })(),
       };
     }),
   };
+  if (anyOdds) {
+    out.spreadConvention = SPREAD_CONVENTION;
+    out.noVigMethod = NO_VIG_METHOD;
+  }
+  return out;
 }
 
 /**
@@ -212,7 +251,7 @@ export function transformScoreboard(data: unknown): unknown {
  * team and player box scores, leaders, scoring/recent plays, win probability,
  * venue/attendance, broadcasts, and compact standings context.
  */
-export function transformGameSummary(data: unknown): unknown {
+export function transformGameSummary(data: unknown, ctx?: Ctx): unknown {
   const root = d(data);
   const header = d(root.header);
   const competition = d(arr<AnyObj>(header.competitions)[0]);
@@ -303,6 +342,7 @@ export function transformGameSummary(data: unknown): unknown {
   const gameInfo = stripRefs(d(root.gameInfo));
   const broadcasts = stripRefs(d(root.broadcasts));
   const standings = stripRefs(d(root.standings));
+  const odds = compactOddsBlock(root.pickcenter, ctx);
 
   return {
     game,
@@ -315,6 +355,7 @@ export function transformGameSummary(data: unknown): unknown {
     ...(Object.keys(gameInfo).length ? { gameInfo } : {}),
     ...(Object.keys(broadcasts).length ? { broadcasts } : {}),
     ...(Object.keys(standings).length ? { standings } : {}),
+    ...(odds ? { odds: { ...odds, spreadConvention: SPREAD_CONVENTION, noVigMethod: NO_VIG_METHOD } } : {}),
   };
 }
 
@@ -368,13 +409,39 @@ export function transformGameProbabilities(data: unknown): unknown {
 }
 
 /** Betting odds: one concise record per provider, including open/current lines. */
-export function transformGameOdds(data: unknown): unknown {
+export function transformGameOdds(data: unknown, ctx?: Ctx): unknown {
   const root = d(data);
+  const items = arr<AnyObj>(root.items);
+  const markets = items.map((item) => normalizeMarket(item, oddsOptions(ctx)));
+  const event = eventContext(ctx?.context);
+  const teamIdFromOdds = (side: "homeTeamOdds" | "awayTeamOdds") => {
+    for (const item of items) {
+      const id = idFromRef(d(item[side]).team, "teams");
+      if (id) return id;
+    }
+    return null;
+  };
+  const homeTeam = {
+    id: event.home?.id ?? teamIdFromOdds("homeTeamOdds"),
+    abbrev: event.home?.abbrev ?? null,
+  };
+  const awayTeam = {
+    id: event.away?.id ?? teamIdFromOdds("awayTeamOdds"),
+    abbrev: event.away?.abbrev ?? null,
+  };
   return {
+    eventId: ctx?.args?.eventId !== undefined ? String(ctx.args.eventId) : event.id,
+    startUtc: event.startUtc,
+    homeTeam,
+    awayTeam,
+    consensus: consensus(markets),
+    spreadConvention: SPREAD_CONVENTION,
+    noVigMethod: NO_VIG_METHOD,
     count: root.count,
-    odds: arr<AnyObj>(root.items).map((item) => {
+    odds: items.map((item, i) => {
       const home = d(item.homeTeamOdds);
       const away = d(item.awayTeamOdds);
+      const { provider: _provider, ...market } = markets[i];
       return prune({
         provider: String(d(item.provider).name ?? d(item.provider).id ?? ""),
         details: item.details ? String(item.details) : undefined,
@@ -398,10 +465,49 @@ export function transformGameOdds(data: unknown): unknown {
           awaySpread: d(d(away.current).pointSpread).alternateDisplayValue,
           awayMoneyLine: d(d(away.current).moneyLine).alternateDisplayValue,
         }),
+        ...market,
       });
     }),
   };
 }
+
+interface EventCtx {
+  id: string | null;
+  startUtc: string | null;
+  home?: { id: string; abbrev: string | null };
+  away?: { id: string; abbrev: string | null };
+}
+
+/**
+ * Read event identity from a core-API event document
+ * (`/events/{id}`). ESPN's shortName is "AWAY @ HOME" or "AWAY VS HOME"
+ * (neutral site), which is where team abbreviations come from.
+ */
+export function eventContext(raw: unknown): EventCtx {
+  const ev = d(raw);
+  const comp = d(arr<AnyObj>(ev.competitions)[0]);
+  const competitors = arr<AnyObj>(comp.competitors);
+  const parts = String(ev.shortName ?? "").split(/\s+(?:@|vs\.?|VS\.?|at)\s+/);
+  const abbrevFor = (homeAway: string): string | null => {
+    if (parts.length !== 2) return null;
+    const v = (homeAway === "home" ? parts[1] : parts[0]).trim();
+    return /^[A-Za-z0-9&.\-]{1,8}$/.test(v) ? v : null;
+  };
+  const side = (homeAway: "home" | "away") => {
+    const c = competitors.find((x) => x.homeAway === homeAway);
+    if (!c) return undefined;
+    const id = String(c.id ?? idFromRef(c.team, "teams") ?? "");
+    return id ? { id, abbrev: abbrevFor(homeAway) } : undefined;
+  };
+  return {
+    id: ev.id !== undefined ? String(ev.id) : null,
+    startUtc: comp.date ? String(comp.date) : ev.date ? String(ev.date) : null,
+    home: side("home"),
+    away: side("away"),
+  };
+}
+
+
 
 /** Search: remove image variants and return IDs/slugs needed by later tools. */
 export function transformSearch(data: unknown): unknown {
@@ -555,6 +661,7 @@ export function transformInjuries(data: unknown): unknown {
     injuries: teams
       .map((bucket) => {
         const teamName = String(bucket.displayName ?? "");
+        const teamId = bucket.id !== undefined ? String(bucket.id) : undefined;
         const teamInjuries = arr<AnyObj>(bucket.injuries)
           .filter((inj) => !NON_INJURY_STATUSES.has(String(inj.status ?? "")))
           .map((inj) => {
@@ -563,6 +670,7 @@ export function transformInjuries(data: unknown): unknown {
             const team = d(athlete.team);
             return prune({
               player: String(athlete.displayName ?? ""),
+              athleteId: athlete.id !== undefined ? String(athlete.id) : undefined,
               position: d(athlete.position).abbreviation ?? undefined,
               team: team.abbreviation ? String(team.abbreviation) : teamName,
               status: String(inj.status ?? ""),
@@ -572,10 +680,10 @@ export function transformInjuries(data: unknown): unknown {
               note: truncate(inj.shortComment ? String(inj.shortComment) : undefined, NOTE_MAX_LEN),
             });
           });
-        return { team: teamName, injuries: teamInjuries };
+        return prune({ team: teamName, teamId, injuries: teamInjuries });
       })
       // drop teams with no real injuries
-      .filter((t) => t.injuries.length > 0),
+      .filter((t) => Array.isArray(t.injuries) && t.injuries.length > 0),
   };
 }
 
@@ -660,6 +768,7 @@ export function transformGamelog(data: unknown): unknown {
       const team = d(ev.team);
       const stats = statsByEventId.get(String(ev.id ?? gameId)) ?? [];
       return {
+        eventId: String(ev.id ?? gameId),
         date: ev.gameDate ? String(ev.gameDate) : undefined,
         opponent: opponent.abbreviation ? String(opponent.abbreviation) : String(opponent.displayName ?? ""),
         homeAway: team.id && ev.homeTeamId && String(team.id) === String(ev.homeTeamId) ? "H" : "A",
@@ -722,3 +831,4 @@ export function transformNews(data: unknown): unknown {
     }).map(prune),
   };
 }
+

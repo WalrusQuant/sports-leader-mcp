@@ -19,12 +19,13 @@ import {
   sportSchema,
   weekSchema,
 } from "../schemas.js";
+import { gameOddsOutput, gameSummaryOutput, scoreboardOutput } from "../output-schemas.js";
 
 export const getScoreboard = defineTool({
   name: "get_scoreboard",
   title: "Get scoreboard",
   description:
-    "Entry point for live, completed, and scheduled games. Returns eventId, start time, state/detail, competitors with team IDs, current/final and period scores, records, and venue. Pass eventId to the other game tools.",
+    "Entry point for live, completed, and scheduled games. Returns eventId, start time, state/detail, competitors with team IDs, current/final and period scores, records, and venue, plus normalized odds (numeric moneylines, implied and no-vig probabilities, signed homeSpread) when ESPN lists them. Pass eventId to the other game tools; use get_slate for a one-call daily view with injuries.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -42,6 +43,7 @@ export const getScoreboard = defineTool({
       },
     });
   },
+  outputSchema: scoreboardOutput,
   transform: transformScoreboard,
 });
 
@@ -49,7 +51,7 @@ export const getGameSummary = defineTool({
   name: "get_game_summary",
   title: "Get game summary",
   description:
-    "Get a compact full-game view: event identity and score, team/player box scores, correctly grouped leaders, scoring and recent plays, sampled win probability, venue, broadcasts, and standings context when ESPN supplies it.",
+    "Get a compact full-game view: event identity and score, team/player box scores, correctly grouped leaders, scoring and recent plays, sampled win probability, venue, broadcasts, standings context, and normalized pick-center odds (no-vig probabilities, signed homeSpread) when ESPN supplies them.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -60,6 +62,7 @@ export const getGameSummary = defineTool({
       params: { event: eventId },
     });
   },
+  outputSchema: gameSummaryOutput,
   transform: transformGameSummary,
 });
 
@@ -87,7 +90,7 @@ export const getGameOdds = defineTool({
   name: "get_game_odds",
   title: "Get game betting odds",
   description:
-    "Get compact betting markets by provider: favorite, spread, moneylines, total and prices, plus available open/current lines. Optionally filter by providerId from sports://reference/betting-providers.",
+    "Get compact betting markets by provider for one game, ready to compare with prediction-market prices: eventId, startUtc, home/away team IDs and abbreviations, numeric American moneylines, implied and no-vig probabilities (draw included for soccer), overround, signed homeSpread (negative = home favored), total, open/current lines, and a cross-provider consensus. Optionally filter by providerId from sports://reference/betting-providers.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -100,6 +103,11 @@ export const getGameOdds = defineTool({
       { params: { "provider.priority": providerId } },
     );
   },
+  outputSchema: gameOddsOutput,
+  // Event identity (start time, home/away team IDs and abbreviations) is not
+  // in the odds document; one small cached core-API event fetch supplies it.
+  context: async ({ sport, league, eventId }) =>
+    fetchJson(`${BASE.core}/${sport}/leagues/${league}/events/${eventId}`),
   transform: transformGameOdds,
 });
 

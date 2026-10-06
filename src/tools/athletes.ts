@@ -1,6 +1,7 @@
 import { BASE } from "../endpoints.js";
 import { fetchJson } from "../client.js";
 import { defineTool } from "../tool.js";
+import { gamelogOutput } from "../output-schemas.js";
 import {
   athleteIdSchema,
   leagueSchema,
@@ -61,6 +62,7 @@ export const getAthleteGamelog = defineTool({
       params: { season },
     });
   },
+  outputSchema: gamelogOutput,
   transform: transformGamelog,
 });
 

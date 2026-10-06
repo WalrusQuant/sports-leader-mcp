@@ -1,6 +1,7 @@
 import { BASE } from "../endpoints.js";
 import { fetchJson } from "../client.js";
 import { defineTool } from "../tool.js";
+import { injuriesOutput } from "../output-schemas.js";
 import {
   leagueSchema,
   limitSchema,
@@ -58,6 +59,7 @@ export const getInjuries = defineTool({
   handler: async ({ sport, league }) => {
     return fetchJson(`${BASE.site}/${sport}/${league}/injuries`);
   },
+  outputSchema: injuriesOutput,
   transform: transformInjuries,
 });
 
