@@ -13,6 +13,10 @@ export const fixtureState = {
   log: [] as string[],
   failInjuries: false,
   failEvents: false,
+  /** When true, ESPN fetches never resolve; they settle only by abort. */
+  hang: false,
+  /** Number of ESPN fetches that were aborted via their signal. */
+  aborted: 0,
 };
 
 function fixtureFor(url: URL): string | undefined {
@@ -43,9 +47,24 @@ export function hasFixture(league: string, name: string): boolean {
 export function installFixtureFetch(): () => void {
   const realFetch = globalThis.fetch;
   globalThis.fetch = (async (input: any, init?: RequestInit) => {
+    const url = new URL(typeof input === "string" ? input : input instanceof URL ? input.href : input.url);
+    // Non-ESPN traffic (test MCP clients talking to a local HTTP server) is real.
+    if (!url.hostname.endsWith("espn.com")) return realFetch(input, init);
     init?.signal?.throwIfAborted?.();
-    const url = new URL(typeof input === "string" ? input : input.url);
     fixtureState.log.push(url.pathname);
+    if (fixtureState.hang) {
+      return new Promise<Response>((_resolve, reject) => {
+        const signal = init?.signal;
+        signal?.addEventListener(
+          "abort",
+          () => {
+            fixtureState.aborted++;
+            reject(signal.reason ?? new DOMException("Aborted", "AbortError"));
+          },
+          { once: true },
+        );
+      });
+    }
     const file = fixtureFor(url);
     if (!file || !existsSync(file)) {
       return new Response(JSON.stringify({ error: "not found" }), { status: 404, statusText: "Not Found" });
