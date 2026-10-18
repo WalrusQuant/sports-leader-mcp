@@ -2,6 +2,14 @@
 
 All notable changes to sports-leader-mcp. Dates are US Central.
 
+
+## Unreleased
+
+- Fix `get_news` league/team filters (2026-10-18). ESPN's now.core feed ignores
+  `leagues` and `team`, so NFL + team=GB returned college-football previews.
+  With sport+league the tool now uses the Site API league feed and keeps only
+  articles tagged with the requested team (abbreviation or team ID). Site-API
+  articles get keywords from their team/league/athlete categories (max 12).
 ## 0.3.0 — 2026-10-06
 
 MCP TypeScript SDK v2 and spec 2026-07-28. Tool names, inputs, and compact output are unchanged from 0.2.0.

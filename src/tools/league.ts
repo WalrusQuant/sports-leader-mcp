@@ -77,6 +77,21 @@ export const getTransactions = defineTool({
   transform: stripRefs,
 });
 
+function arr<T>(v: unknown): T[] {
+  return Array.isArray(v) ? (v as T[]) : [];
+}
+
+/** True when an ESPN article is tagged with `team` (abbreviation or numeric team ID). */
+export function articleHasTeam(article: any, team: string): boolean {
+  const t = team.trim().toLowerCase();
+  return arr<any>(article?.categories).some((c) => {
+    if (c?.type !== "team") return false;
+    const abbr = String(c?.team?.abbreviation ?? "").toLowerCase();
+    const id = String(c?.teamId ?? c?.team?.id ?? "");
+    return (abbr !== "" && abbr === t) || id === t;
+  });
+}
+
 export const getNews = defineTool({
   name: "get_news",
   title: "Get sports news",
@@ -92,14 +107,28 @@ export const getNews = defineTool({
     limit: limitSchema,
   },
   handler: async ({ sport, league, team, limit }) => {
-    return fetchJson(BASE.now, {
-      params: {
-        sport,
-        leagues: league,
-        team,
-        limit: limit ?? 20,
-      },
+    const want = limit ?? 20;
+    // ESPN's now.core news feed ignores both `leagues` and `team` (verified
+    // 2026-10-18: NFL + team=GB returned college-football previews). The Site
+    // API league feed honors the league, and its `team` param is only a loose
+    // boost, so we over-fetch and keep articles tagged with that team.
+    if (sport && league) {
+      const raw = await fetchJson(`${BASE.site}/${sport}/${league}/news`, {
+        params: { team: team?.toLowerCase(), limit: team ? 50 : want },
+      });
+      const articles = arr<any>((raw as any)?.articles);
+      const kept = team ? articles.filter((a) => articleHasTeam(a, team)) : articles;
+      const headlines = kept.slice(0, want);
+      return { resultsCount: headlines.length, headlines };
+    }
+    const raw = await fetchJson(BASE.now, {
+      params: { sport, leagues: league, limit: team ? 100 : want },
     });
+    if (!team) return raw;
+    const headlines = arr<any>((raw as any)?.headlines)
+      .filter((a) => articleHasTeam(a, team))
+      .slice(0, want);
+    return { resultsCount: headlines.length, headlines };
   },
   transform: transformNews,
 });
