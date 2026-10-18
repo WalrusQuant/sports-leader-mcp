@@ -131,3 +131,14 @@ test("cache skips an item larger than its byte ceiling", () => {
   cache.set("large", { value: "x".repeat(100) }, 60_000);
   assert.equal(cache.stats().size, 0);
 });
+
+test("articleHasTeam matches team-tagged articles by abbreviation or ID only", async () => {
+  const { articleHasTeam } = await import("./tools/league.js");
+  const gb = { categories: [{ type: "league", description: "NFL" }, { type: "team", teamId: 9, team: { id: 9, abbreviation: "GB" } }] };
+  const cfb = { categories: [{ type: "league", description: "NCAA Football" }, { type: "team", teamId: 130, team: { id: 130, abbreviation: "MICH" } }] };
+  assert.equal(articleHasTeam(gb, "GB"), true);
+  assert.equal(articleHasTeam(gb, "gb"), true);
+  assert.equal(articleHasTeam(gb, "9"), true);
+  assert.equal(articleHasTeam(cfb, "GB"), false);
+  assert.equal(articleHasTeam({}, "GB"), false);
+});

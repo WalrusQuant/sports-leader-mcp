@@ -825,7 +825,13 @@ export function transformNews(data: unknown): unknown {
         description: h.description ? String(h.description) : undefined,
         published: h.published ? String(h.published) : undefined,
         source: h.source ? String(h.source) : undefined,
-        keywords: arr<any>(h.keywords),
+        keywords: arr<any>(h.keywords).length
+          ? arr<any>(h.keywords)
+          : arr<AnyObj>(h.categories)
+              .filter((c) => c.type === "team" || c.type === "league" || c.type === "athlete")
+              .map((c) => String(c.description ?? ""))
+              .filter(Boolean)
+              .slice(0, 12),
         link: webLink.href ? String(webLink.href) : undefined,
       };
     }).map(prune),
