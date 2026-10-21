@@ -695,8 +695,12 @@ export function transformTeamInjuries(data: unknown): unknown {
   const root = d(data);
   // Single-team injury endpoint returns similar structure
   const items = arr<AnyObj>(root.injuries ?? [root])
+    .filter((inj) => inj && (inj.athlete || inj.status))
     .filter((inj) => !NON_INJURY_STATUSES.has(String(inj.status ?? "")));
-  return {
+  return prune({
+    timestamp: root.timestamp,
+    teamId: root.teamId,
+    team: root.team,
     injuries: items.map((inj) => {
       const athlete = d(inj.athlete);
       const details = d(inj.details);
@@ -710,7 +714,7 @@ export function transformTeamInjuries(data: unknown): unknown {
         note: truncate(inj.shortComment ? String(inj.shortComment) : undefined, NOTE_MAX_LEN),
       });
     }),
-  };
+  });
 }
 
 /**
