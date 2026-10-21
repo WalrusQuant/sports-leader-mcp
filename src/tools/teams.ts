@@ -5,6 +5,22 @@ import { defineTool } from "../tool.js";
 import { leagueSchema, sportSchema, teamIdSchema } from "../schemas.js";
 import { transformTeams, transformTeam, transformTeamInjuries } from "../transforms.js";
 
+
+// ESPN's site /teams/{id}/injuries returns {} — use the (cached) league
+// report and keep only this team's bucket.
+async function leagueInjuriesForTeam(sport: string, league: string, teamId: string) {
+  const data = (await fetchJson(`${BASE.site}/${sport}/${league}/injuries`)) as any;
+  const buckets: any[] = Array.isArray(data?.injuries) ? data.injuries : [];
+  const bucket = buckets.find((b) => String(b?.id ?? "") === String(teamId));
+  return {
+    timestamp: data?.timestamp,
+    season: data?.season,
+    teamId: String(teamId),
+    team: bucket?.displayName,
+    injuries: Array.isArray(bucket?.injuries) ? bucket.injuries : [],
+  };
+}
+
 export const getTeams = defineTool({
   name: "get_teams",
   title: "Get teams",
@@ -51,6 +67,20 @@ export const getTeam = defineTool({
   },
   handler: async ({ sport, league, teamId, view }) => {
     const base = `${BASE.site}/${sport}/${league}/teams/${teamId}`;
+    // ESPN's /record and /injuries sub-resources return {} — serve them from
+    // the team detail record and the league injury report instead.
+    if (view === "record") {
+      const data = (await fetchJson(base)) as any;
+      const t = data?.team ?? {};
+      return {
+        team: { id: t.id, abbreviation: t.abbreviation, displayName: t.displayName },
+        standingSummary: t.standingSummary,
+        record: t.record,
+      };
+    }
+    if (view === "injuries") {
+      return transformTeamInjuries(await leagueInjuriesForTeam(sport, league, teamId));
+    }
     const path = view === "detail" ? base : `${base}/${view}`;
     return fetchJson(path);
   },
@@ -60,15 +90,13 @@ export const getTeam = defineTool({
 export const getTeamInjuries = defineTool({
   name: "get_team_injuries",
   title: "Get team injury report",
-  description: "Get a normalized injury report for one team. Filters Active/news-only entries and returns player, position, status, injury detail, dates, return date, and a capped note when supplied.",
+  description: "Get a normalized injury report for one team. Filters Active/news-only entries and returns player, position, status, injury detail, dates, return date, and a capped note when supplied. Built from the league injury report (ESPN's per-team endpoint returns an empty document).",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
     teamId: teamIdSchema,
   },
-  handler: async ({ sport, league, teamId }) => {
-    return fetchJson(`${BASE.site}/${sport}/${league}/teams/${teamId}/injuries`);
-  },
+  handler: async ({ sport, league, teamId }) => leagueInjuriesForTeam(sport, league, teamId),
   transform: transformTeamInjuries,
 });
 

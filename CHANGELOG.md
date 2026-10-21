@@ -49,7 +49,7 @@ Odds normalization, `get_slate`, output schemas, and resource templates on SDK 1
 - League/sport/tool counts in all docs (30 verified leagues in 11 sports, 21 tools).
 
 ### Known issues
-- ESPN's per-team injuries endpoint returns an empty document, so `get_team_injuries` returns no entries; use `get_injuries`.
+- ESPN's per-team injuries endpoint returns an empty document. As of 2026-10-19 `get_team_injuries` filters the league report by `teamId` instead (it previously returned one blank placeholder entry).
 
 ## 0.1.0
 

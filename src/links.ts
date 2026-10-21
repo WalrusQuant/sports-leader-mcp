@@ -73,7 +73,7 @@ export const RESOURCE_TEMPLATES: TemplateDef[] = [
     uriTemplate: "espn://{sport}/{league}/team/{teamId}/injuries",
     tool: "get_team_injuries",
     ttlMs: 300_000,
-    description: "One team's injury report (same as get_team_injuries). Note: ESPN's site endpoint behind it currently returns an empty document; prefer the league report.",
+    description: "One team's injury report (same as get_team_injuries), filtered from the cached league report because ESPN's per-team endpoint returns an empty document.",
   },
   {
     name: "slate",
@@ -125,7 +125,7 @@ export function summaryLinks(args: Record<string, unknown>): ResourceLinkContent
       "Every provider's line with no-vig probabilities and consensus."),
   ];
   // League report rather than per-team links: ESPN's site team-injuries
-  // endpoint currently returns {} (see get_team_injuries), while the league
+  // endpoint returns {} (get_team_injuries now filters the league report), while the league
   // report is populated and cached.
   links.push(link(leagueInjuriesUri(sport, league), "league-injuries", "League injury report",
     "Compact injury report for every team (filter by teamId for this game's teams)."));
