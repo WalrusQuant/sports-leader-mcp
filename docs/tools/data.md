@@ -8,16 +8,20 @@ Seasons start at 2021. NBA and NHL use the year the season ends (2026-27 is `202
 
 ## Setup
 
-No API key. The default directory is `https://bayesratings.com/data/v1/` (`DEFAULT_BAYES_DATA_BASE_URL`). It contains `manifest.json` and `<league>/<dataset>/<season>.parquet`. `www.bayesratings.com` returns a 301 to the apex, and requests follow that redirect.
+No API key. The default manifest is
 
-`BAYES_DATA_BASE_URL` overrides the constant. The ESPN tools do not use it.
+`https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json`
+
+(`DEFAULT_BAYES_DATA_MANIFEST_URL`). Every file entry includes a `url`. The release tag is `<league>_<dataset>` and the asset is `<season>.parquet`, for example `nba_games/2027.parquet`. GitHub answers `302` to a short-lived CDN URL (`cache-control: no-cache`, no ETag on that hop). The CDN can `304`, but the signed URL is different each time, so the cache trusts the manifest `sha256` and reports `updated_at`. Unchanged files are not downloaded again, which keeps unauthenticated GitHub requests low (the manifest is rechecked at most every 4 hours).
+
+`BAYES_DATA_MANIFEST_URL` replaces the manifest URL. `BAYES_DATA_BASE_URL` selects a directory mirror instead: `{base}/manifest.json`, and `{base}/<path>` only when a file has no `url`. The ESPN tools do not use either variable.
 
 | Variable | Default |
 |----------|---------|
 | `BAYES_DATA_CACHE_DIR` | `~/.cache/sports-leader-mcp/bayes-data` |
 | `BAYES_DATA_REVALIDATE_MS` | 4 hours |
 
-The public host sends `ETag` and answers `304`. The manifest is rechecked on that header. A cached parquet file is reused while its sha256 matches the manifest, including when a host omits `ETag`. `updated_at` is included on every result. `get_data_status` flags a current-season file older than 36 hours. The export rebuilds daily at about 7:15 AM CT.
+A cached parquet file is reused while its sha256 matches the manifest. `updated_at` is included on every result. `get_data_status` flags a current-season file older than 36 hours. The export is published to GitHub Releases nightly after about 7:15 AM CT.
 
 Queries use DuckDB (`@duckdb/node-api`). Filter values are parameters. Column names have to appear in the manifest.
 

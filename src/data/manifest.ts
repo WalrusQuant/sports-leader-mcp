@@ -15,6 +15,8 @@ export interface ManifestFile {
   bytes: number;
   sha256: string;
   updated_at: string;
+  /** Absolute download URL. GitHub Releases publishes one per file. */
+  url?: string;
 }
 
 export interface ManifestDataset {
@@ -101,6 +103,22 @@ export function parseManifest(raw: unknown): Manifest {
       }
       return { name: column.name, type: column.type };
     });
+    let url: string | undefined;
+    if (typeof entry.url === "string" && entry.url.length > 0) {
+      let parsed: URL;
+      try {
+        parsed = new URL(entry.url);
+      } catch {
+        throw new DataExportError(`manifest ${filePath} has an invalid url`);
+      }
+      if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+        throw new DataExportError(`manifest ${filePath} url must be http or https`);
+      }
+      if (parsed.username || parsed.password) {
+        throw new DataExportError(`manifest ${filePath} url must not include credentials`);
+      }
+      url = parsed.href;
+    }
     return {
       path: filePath,
       league,
@@ -111,6 +129,7 @@ export function parseManifest(raw: unknown): Manifest {
       bytes: reqNumber(entry, "bytes", label),
       sha256: sha256.toLowerCase(),
       updated_at: reqString(entry, "updated_at", label),
+      url,
     };
   });
 
