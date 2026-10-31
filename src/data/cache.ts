@@ -204,7 +204,6 @@ export interface StatusFile {
 export interface DataStatus {
   configured: true;
   baseUrl: string;
-  apiKeyConfigured: boolean;
   cacheDir: string;
   version: number;
   generated_at: string;
@@ -278,7 +277,6 @@ export async function dataStatus(config: DataConfig, deps: DataDeps, includeColu
   return {
     configured: true,
     baseUrl: config.baseUrl,
-    apiKeyConfigured: config.apiKey !== null,
     cacheDir: config.cacheDir,
     version: manifest.version,
     generated_at: manifest.generated_at,

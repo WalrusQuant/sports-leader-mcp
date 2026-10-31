@@ -8,18 +8,16 @@ Seasons start at 2021. NBA and NHL use the year the season ends (2026-27 is `202
 
 ## Setup
 
-The directory URL is `DEFAULT_BAYES_DATA_BASE_URL` in `src/data/config.ts`. Fill that constant in when the public host is chosen (GitHub release assets or another static host). The directory contains `manifest.json` and `<league>/<dataset>/<season>.parquet`.
+No API key. The default directory is `https://bayesratings.com/data/v1/` (`DEFAULT_BAYES_DATA_BASE_URL`). It contains `manifest.json` and `<league>/<dataset>/<season>.parquet`. `www.bayesratings.com` returns a 301 to the apex, and requests follow that redirect.
 
-`BAYES_DATA_BASE_URL` overrides the constant. A private export such as `https://bayesratings.com/data/v1` is that kind of override. `BAYES_DATA_API_KEY` is optional; `X-API-Key` is sent only when it is set, and only to the original host.
-
-If neither the constant nor the env var is set, these tools return `data export not configured`. The ESPN tools do not change.
+`BAYES_DATA_BASE_URL` overrides the constant. The ESPN tools do not use it.
 
 | Variable | Default |
 |----------|---------|
 | `BAYES_DATA_CACHE_DIR` | `~/.cache/sports-leader-mcp/bayes-data` |
 | `BAYES_DATA_REVALIDATE_MS` | 4 hours |
 
-The client follows redirects (a GitHub release asset answers 302 and the bytes come from a CDN). It does not require `ETag`. A cached file is reused while its sha256 matches the manifest. `updated_at` is included on every result. `get_data_status` flags a current-season file older than 36 hours.
+The public host sends `ETag` and answers `304`. The manifest is rechecked on that header. A cached parquet file is reused while its sha256 matches the manifest, including when a host omits `ETag`. `updated_at` is included on every result. `get_data_status` flags a current-season file older than 36 hours. The export rebuilds daily at about 7:15 AM CT.
 
 Queries use DuckDB (`@duckdb/node-api`). Filter values are parameters. Column names have to appear in the manifest.
 
@@ -29,7 +27,7 @@ Queries use DuckDB (`@duckdb/node-api`). Filter values are parameters. Column na
 
 No required arguments. Optional `includeColumns: true` adds each file's column names and types.
 
-The summary lists datasets, files, row counts, `updated_at`, whether the file is the current season, and `stale: true` when that current-season file is older than 36 hours. `apiKeyConfigured` is true only when a key is set. The key itself is never returned.
+The summary lists datasets, files, row counts, `updated_at`, whether the file is the current season, and `stale: true` when that current-season file is older than 36 hours.
 
 ## get_player_game_logs
 

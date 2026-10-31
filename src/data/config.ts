@@ -4,17 +4,12 @@ import path from "node:path";
 import { DataExportError } from "./errors.js";
 
 /**
- * Public base URL of the historical Parquet export.
- *
- * This is the directory that contains `manifest.json` and
- * `<league>/<dataset>/<season>.parquet` — a GitHub release download prefix,
- * or any other public static host with that layout.
- *
- * FILL IN when the public URL is chosen. An empty string means the data
- * tools return "data export not configured" until `BAYES_DATA_BASE_URL` is
- * set. Do not put an API key in this file.
+ * Public directory of the historical Parquet export. No API key.
+ * Contains `manifest.json` and `<league>/<dataset>/<season>.parquet`.
+ * Use the apex host: `www.bayesratings.com` answers 301 to this origin.
+ * Override with `BAYES_DATA_BASE_URL`.
  */
-export const DEFAULT_BAYES_DATA_BASE_URL = "";
+export const DEFAULT_BAYES_DATA_BASE_URL = "https://bayesratings.com/data/v1/";
 
 /** How long to trust a cached manifest before checking the host again. */
 export const DEFAULT_REVALIDATE_MS = 4 * 60 * 60 * 1000;
@@ -25,10 +20,8 @@ export const STALE_AFTER_MS = 36 * 60 * 60 * 1000;
 export const NOT_CONFIGURED = "data export not configured";
 
 export interface DataConfig {
-  /** Directory URL of the export. No API key is embedded. */
+  /** Directory URL of the export. Requests are anonymous. */
   baseUrl: string;
-  /** Sent as X-API-Key only when set. Public hosts leave this null. */
-  apiKey: string | null;
   cacheDir: string;
   revalidateMs: number;
 }
@@ -74,8 +67,8 @@ export function normalizeBaseUrl(raw: string): string {
 }
 
 /**
- * Resolve the export settings. The API key is optional. Returns null only
- * when neither the env override nor {@link DEFAULT_BAYES_DATA_BASE_URL} is set.
+ * Resolve the export settings. Returns null only when neither the env
+ * override nor {@link DEFAULT_BAYES_DATA_BASE_URL} is set. There is no API key.
  */
 export function readDataConfig(
   env: NodeJS.ProcessEnv = process.env,
@@ -83,13 +76,11 @@ export function readDataConfig(
 ): DataConfig | null {
   const baseRaw = resolvedBaseUrl(env, defaultBaseUrl);
   if (!baseRaw) return null;
-  const apiKey = env.BAYES_DATA_API_KEY?.trim() || null;
   const cacheDir = env.BAYES_DATA_CACHE_DIR?.trim()
     ? path.resolve(env.BAYES_DATA_CACHE_DIR.trim())
     : defaultCacheDir(env);
   return {
     baseUrl: normalizeBaseUrl(baseRaw),
-    apiKey,
     cacheDir,
     revalidateMs: readRevalidateMs(env.BAYES_DATA_REVALIDATE_MS),
   };
@@ -108,7 +99,7 @@ export function requireDataConfig(
   return config;
 }
 
-/** True when a base URL will be used (env or the built-in default), key or not. */
+/** True when a base URL will be used (env override or the built-in public default). */
 export function isDataExportConfigured(
   env: NodeJS.ProcessEnv = process.env,
   defaultBaseUrl: string = DEFAULT_BAYES_DATA_BASE_URL,

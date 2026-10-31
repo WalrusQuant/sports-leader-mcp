@@ -2,7 +2,7 @@ name: sports-leader-mcp
 description: >-
   Free MCP server for live sports data — scores, standings, rosters, player stats,
   betting odds, play-by-play, injuries, transactions, and news across 30 verified
-  leagues in 11 sports. 38 tools, 4 resources, 7 resource templates, 5 prompts. Live ESPN data needs no auth. The historical export uses DEFAULT_BAYES_DATA_BASE_URL, with an optional API key.
+  leagues in 11 sports. 38 tools, 4 resources, 7 resource templates, 5 prompts. No auth required. Historical MLB, NBA, NFL, and NHL data is included from the public bayesratings export.
 version: 0.5.0
 license: MIT
 keywords:
@@ -38,14 +38,10 @@ startCommand:
         type: string
         title: Historical data base URL
         description: >-
-          Overrides DEFAULT_BAYES_DATA_BASE_URL. The directory that contains
-          manifest.json and <league>/<dataset>/<season>.parquet. Leave empty
-          to use the built-in default.
-      bayesDataApiKey:
-        type: string
-        title: Historical data API key
-        description: >-
-          Optional. Sent as X-API-Key only when set. Public hosts do not need a key.
+          Overrides the public default https://bayesratings.com/data/v1/.
+          The directory that contains manifest.json and
+          <league>/<dataset>/<season>.parquet. No API key. Leave empty to
+          use the built-in default.
     additionalProperties: false
   commandFunction: |-
     (config) => ({
@@ -53,8 +49,7 @@ startCommand:
       args: ["dist/index.js"],
       env: {
         SPORTS_LEADER_TIMEOUT: String(config.timeout || 30000),
-        ...(config.bayesDataBaseUrl ? { BAYES_DATA_BASE_URL: String(config.bayesDataBaseUrl) } : {}),
-        ...(config.bayesDataApiKey ? { BAYES_DATA_API_KEY: String(config.bayesDataApiKey) } : {})
+        ...(config.bayesDataBaseUrl ? { BAYES_DATA_BASE_URL: String(config.bayesDataBaseUrl) } : {})
       }
     })
 build:

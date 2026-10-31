@@ -51,12 +51,11 @@ async function drain(res: Response): Promise<void> {
 }
 
 /**
- * GET one export object.
+ * GET one export object. Requests are anonymous: no API key is sent.
  *
- * Static hosts often 302 a release asset to a CDN and omit ETag. Redirects
- * are followed (up to 5). `X-API-Key` is sent only when a key is configured,
- * and only to the original host — a cross-origin CDN hop does not receive it.
- * `If-None-Match` is forwarded when we have an ETag; a missing ETag is normal.
+ * Redirects are followed (up to 5), including the 301 from www.bayesratings.com
+ * to the apex. `If-None-Match` is forwarded when we have an ETag; a missing
+ * ETag is normal and the cache then trusts the manifest checksum.
  */
 export async function dataFetch(
   config: DataConfig,
@@ -65,7 +64,6 @@ export async function dataFetch(
   etag?: string | null,
 ): Promise<DataResponse> {
   let current = dataUrl(config.baseUrl, rel);
-  const home = new URL(current).origin;
   let hops = 0;
 
   while (true) {
@@ -73,7 +71,6 @@ export async function dataFetch(
       Accept: "*/*",
       "User-Agent": `sports-leader-mcp/${VERSION}`,
     };
-    if (config.apiKey && new URL(current).origin === home) headers["X-API-Key"] = config.apiKey;
     if (etag) headers["If-None-Match"] = etag;
 
     let res: Response;
@@ -103,11 +100,7 @@ export async function dataFetch(
 
     if (res.status === 401) {
       await drain(res);
-      throw new DataExportError(
-        config.apiKey
-          ? "data export unauthorized (401). The server rejected X-API-Key."
-          : "data export unauthorized (401). This host requires X-API-Key; set BAYES_DATA_API_KEY.",
-      );
+      throw new DataExportError("data export unauthorized (401).");
     }
 
     if (res.status === 429) {

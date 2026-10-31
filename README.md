@@ -115,30 +115,27 @@ Filters: `league`, `season` / `seasons`, `from` / `to` (`YYYY-MM-DD`), `team` an
 
 #### Configuration
 
-Zero setup once the public host is filled in. The directory URL lives in one place:
+No API key. Install and the historical data is available: seasons from 2021, with the current season rebuilt daily at about 7:15 AM CT.
 
 ```ts
-// src/data/config.ts — FILL IN when the public URL is chosen.
-export const DEFAULT_BAYES_DATA_BASE_URL = "";
+// src/data/config.ts
+export const DEFAULT_BAYES_DATA_BASE_URL = "https://bayesratings.com/data/v1/";
 ```
 
-That directory contains `manifest.json` and `<league>/<dataset>/<season>.parquet` (GitHub release assets or any other static host). `BAYES_DATA_BASE_URL` overrides the constant. Until one of those is set, the data tools return `data export not configured` and the other 25 tools behave exactly as before.
-
-`BAYES_DATA_API_KEY` is optional. `X-API-Key` is sent only when it is set, and only to the original host. A private export can still be used by setting both variables, for example `BAYES_DATA_BASE_URL=https://bayesratings.com/data/v1` (the apex; `www` redirects). No key and no URL are committed.
+That directory contains `manifest.json` and `<league>/<dataset>/<season>.parquet`. Use the apex host. `www.bayesratings.com` returns a 301 to `https://bayesratings.com`, and the client follows redirects. `BAYES_DATA_BASE_URL` overrides the constant when you want a different directory. The other 25 tools do not use this URL.
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
-| `DEFAULT_BAYES_DATA_BASE_URL` | empty (fill in) | Built-in public directory URL |
+| `DEFAULT_BAYES_DATA_BASE_URL` | `https://bayesratings.com/data/v1/` | Public export directory |
 | `BAYES_DATA_BASE_URL` | the constant | Override that directory |
-| `BAYES_DATA_API_KEY` | unset | Optional `X-API-Key` |
 | `BAYES_DATA_CACHE_DIR` | `~/.cache/sports-leader-mcp/bayes-data` | On-disk file cache (`XDG_CACHE_HOME` is honored) |
 | `BAYES_DATA_REVALIDATE_MS` | `14400000` (4 hours) | How often to re-check the manifest |
 
-The manifest is cached and revalidated with `ETag` / `If-None-Match` when the host sends one. Static hosts often do not: GitHub release assets 302 to a CDN, and the client follows those redirects (the API key is not forwarded cross-origin). A parquet file is reused while its sha256 matches the manifest. Past seasons stay cached; the current season is picked up the next time the manifest is refreshed. `updated_at` from the manifest is what the tools report and what the 36-hour flag uses.
+The manifest is cached and revalidated with `ETag` / `If-None-Match` (the public host sends both, and answers `304`). A parquet file is reused while its sha256 matches the manifest, so past seasons stay on disk and the current season is picked up the next time the manifest changes. `updated_at` from the manifest is what the tools report and what the 36-hour flag uses.
 
 Files are queried with [DuckDB Neo](https://duckdb.org/) (`@duckdb/node-api`). It ships prebuilt binaries for glibc and musl, on x64 and arm64, so `npm ci` does not need a compiler on a normal Linux image or on Alpine.
 
-`npm run audit` calls the export whenever a base URL is configured (the constant or the env var), with or without a key: it reads the manifest, downloads one file per data set, and runs the matching tool. When no base URL is set, those checks are printed as skipped and do not fail the run.
+`npm run audit` reads the public manifest, downloads one file per data set, and runs the matching tool. No API key is used. Clearing the default and unsetting `BAYES_DATA_BASE_URL` prints those checks as skipped instead of failed.
 
 ## Prompts (5)
 
@@ -216,7 +213,7 @@ npm run test:update-golden  # regenerate test/golden after an intentional output
 npm run fixtures:capture    # re-record raw ESPN fixtures into test/fixtures
 ```
 
-`npm run audit` is not part of `npm test`. It calls the real ESPN APIs for MLB, NBA, NFL, NHL, college football, men's and women's college basketball, WNBA, and the Premier League, validates compact output against each tool's schema, and exits non-zero on a failure. Re-run it when a tool starts returning empty or upstream errors. MLB in late October and November is the offseason: the audit accepts an empty current scoreboard and checks 2026-07-04 instead. When `DEFAULT_BAYES_DATA_BASE_URL` or `BAYES_DATA_BASE_URL` is set, it also checks the historical export (no API key required). Otherwise those lines are `SKIP`, not failures.
+`npm run audit` is not part of `npm test`. It calls the real ESPN APIs for MLB, NBA, NFL, NHL, college football, men's and women's college basketball, WNBA, and the Premier League, validates compact output against each tool's schema, and exits non-zero on a failure. Re-run it when a tool starts returning empty or upstream errors. MLB in late October and November is the offseason: the audit accepts an empty current scoreboard and checks 2026-07-04 instead. It also checks the public historical export at `https://bayesratings.com/data/v1/` with no API key: one file per data set. Those lines are `SKIP` only when the default has been cleared and `BAYES_DATA_BASE_URL` is unset.
 
 ## Agent-safe responses
 

@@ -30,8 +30,7 @@ Setting `PORT` switches the server from stdio mode (for local MCP clients) to HT
 | `SPORTS_LEADER_MAX_TOKENS` | `50000` | Estimated-token ceiling for one MCP result; oversized results become valid truncation metadata |
 | `CACHE_MAX_ENTRIES` | `250` | Maximum raw ESPN responses retained in the in-memory LRU/TTL cache |
 | `CACHE_MAX_BYTES` | `67108864` | Approximate maximum cache bytes (64 MiB by default) |
-| `BAYES_DATA_BASE_URL` | `DEFAULT_BAYES_DATA_BASE_URL` | Directory of the historical Parquet export (`manifest.json` and `<league>/<dataset>/<season>.parquet`). Empty until that constant is filled in |
-| `BAYES_DATA_API_KEY` | *(unset)* | Optional. Sent as `X-API-Key` only when set |
+| `BAYES_DATA_BASE_URL` | `https://bayesratings.com/data/v1/` | Public historical Parquet directory (`manifest.json` and `<league>/<dataset>/<season>.parquet`). No API key. `www` redirects to the apex |
 | `BAYES_DATA_CACHE_DIR` | `~/.cache/sports-leader-mcp/bayes-data` | On-disk cache for export files |
 | `BAYES_DATA_REVALIDATE_MS` | `14400000` | How often to re-check the export manifest |
 

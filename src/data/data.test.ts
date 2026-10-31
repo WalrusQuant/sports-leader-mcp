@@ -256,7 +256,6 @@ function deps(state: MockState, now: () => number): DataDeps {
 function config(cacheDir: string, overrides: Partial<DataConfig> = {}): DataConfig {
   return {
     baseUrl: "https://files.example/export",
-    apiKey: null,
     cacheDir,
     revalidateMs: 60 * 60 * 1000,
     ...overrides,
@@ -264,25 +263,29 @@ function config(cacheDir: string, overrides: Partial<DataConfig> = {}): DataConf
 }
 
 describe("bayes data export", { concurrency: 1 }, () => {
-  test("base url is one constant, overridable, and the key is optional", () => {
-    assert.equal(typeof DEFAULT_BAYES_DATA_BASE_URL, "string");
+  test("the public export URL is the default and there is no API key", () => {
+    assert.equal(DEFAULT_BAYES_DATA_BASE_URL, "https://bayesratings.com/data/v1/");
+    const builtin = readDataConfig({});
+    assert.equal(builtin?.baseUrl, "https://bayesratings.com/data/v1");
+    assert.equal("apiKey" in (builtin ?? {}), false);
+    assert.equal(isDataExportConfigured({}), true);
     const fromDefault = readDataConfig({}, "https://cdn.example/releases/data/");
     assert.equal(fromDefault?.baseUrl, "https://cdn.example/releases/data");
-    assert.equal(fromDefault?.apiKey, null);
     const overridden = readDataConfig(
       { BAYES_DATA_BASE_URL: "https://override.example/data/v1" },
       "https://cdn.example/releases/data",
     );
     assert.equal(overridden?.baseUrl, "https://override.example/data/v1");
-    const keyed = readDataConfig({
-      BAYES_DATA_BASE_URL: "https://override.example/data/v1",
-      BAYES_DATA_API_KEY: "abc",
-    });
-    assert.equal(keyed?.apiKey, "abc");
     assert.equal(readDataConfig({ BAYES_DATA_BASE_URL: "  " }, ""), null);
-    assert.equal(isDataExportConfigured({}), DEFAULT_BAYES_DATA_BASE_URL.trim().length > 0);
     assert.equal(isDataExportConfigured({ BAYES_DATA_BASE_URL: "https://cdn.example/data" }), true);
-    assert.equal(isDataExportConfigured({ BAYES_DATA_API_KEY: "only-a-key" }, ""), false);
+    assert.equal(
+      dataUrl(normalizeBaseUrl(DEFAULT_BAYES_DATA_BASE_URL), "manifest.json"),
+      "https://bayesratings.com/data/v1/manifest.json",
+    );
+    assert.equal(
+      dataUrl(normalizeBaseUrl(DEFAULT_BAYES_DATA_BASE_URL), "nba/games/2027.parquet"),
+      "https://bayesratings.com/data/v1/nba/games/2027.parquet",
+    );
     assert.throws(() => normalizeBaseUrl("https://user:super-secret@files.example/data"), (err: unknown) => {
       assert.ok(err instanceof Error);
       assert.match(err.message, /credentials/);
@@ -336,7 +339,7 @@ describe("bayes data export", { concurrency: 1 }, () => {
       const stored = await buildFixtures(dir);
       const state = freshState(stored);
       let now = Date.parse("2026-10-31T18:00:00Z");
-      const cfg = config(dir, { apiKey: "super-secret-key-value" });
+      const cfg = config(dir);
       const run = (query: Parameters<typeof queryDataset>[1]) =>
         queryDataset(cfg, query, deps(state, () => now));
 
@@ -346,8 +349,7 @@ describe("bayes data export", { concurrency: 1 }, () => {
       assert.equal(games.rows[0]?.game_date, "2026-01-16");
       assert.equal(typeof games.rows[0]?.game_id, "number");
       assert.equal(games.files[0]?.updated_at, "2026-10-30T12:00:00Z");
-      assert.ok(state.calls.every((call) => call.key === "super-secret-key-value"));
-      assert.ok(state.calls.every((call) => !call.url.includes("super-secret-key-value")));
+      assert.ok(state.calls.every((call) => call.key === null));
 
       const byAbbr = await run({ dataset: "games", league: "nba", team: "LAL", opponent: "BOS" });
       assert.equal(byAbbr.rowCount, 2);
@@ -412,7 +414,7 @@ describe("bayes data export", { concurrency: 1 }, () => {
     }
   });
 
-  test("cache follows redirects, omits the key when unset, and trusts the manifest checksum", async () => {
+  test("cache follows redirects, sends no API key, and trusts the manifest checksum", async () => {
     const dir = await mkdtemp(path.join(tmpdir(), "bayes-cache-"));
     try {
       const columns = columnsFor("games", "nba");
@@ -428,19 +430,17 @@ describe("bayes data export", { concurrency: 1 }, () => {
       state.redirect = true;
       state.etag = null;
       let now = Date.parse("2026-10-31T18:00:00Z");
-      const cfg = config(dir, { apiKey: "super-secret-key-value", revalidateMs: 1_000 });
+      const cfg = config(dir, { revalidateMs: 1_000 });
       const clock = deps(state, () => now);
 
       const first = await queryDataset(cfg, { dataset: "games", league: "nba", seasons: [2027] }, clock);
       assert.equal(first.rows[0]?.game_id, 7);
       await queryDataset(cfg, { dataset: "games", league: "nba", seasons: [2025] }, clock);
-      const keyed = state.calls.filter((call) => new URL(call.url).hostname === "files.example");
+      const origin = state.calls.filter((call) => new URL(call.url).hostname === "files.example");
       const cdn = state.calls.filter((call) => new URL(call.url).hostname === "cdn.example");
-      assert.ok(keyed.length >= 1);
+      assert.ok(origin.length >= 1);
       assert.ok(cdn.length >= 1);
-      assert.ok(keyed.every((call) => call.key === "super-secret-key-value"));
-      assert.ok(cdn.every((call) => call.key === null));
-      assert.ok(state.calls.every((call) => !call.url.includes("super-secret")));
+      assert.ok(state.calls.every((call) => call.key === null));
 
       const beforeQuiet = state.calls.length;
       now += 100;
@@ -475,22 +475,8 @@ describe("bayes data export", { concurrency: 1 }, () => {
       now += 5_000;
       await assert.rejects(
         () => queryDataset(cfg, { dataset: "games", league: "nba", seasons: [2027] }, clock),
-        (err: unknown) => {
-          assert.ok(err instanceof Error);
-          assert.match(err.message, /401/);
-          assert.equal(err.message.includes("super-secret-key-value"), false);
-          return true;
-        },
+        /401/,
       );
-
-      const open = config(dir + "-open", { apiKey: null, revalidateMs: 1_000 });
-      const openDir = open.cacheDir;
-      const openState = freshState([current, past]);
-      openState.redirect = true;
-      openState.etag = null;
-      await queryDataset(open, { dataset: "games", league: "nba", seasons: [2027], limit: 1 }, deps(openState, () => now));
-      assert.ok(openState.calls.every((call) => call.key === null));
-      await rm(openDir, { recursive: true, force: true });
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
@@ -511,8 +497,9 @@ describe("bayes data export", { concurrency: 1 }, () => {
       state.calls.length = 0;
       const status = await dataStatus(cfg, deps(state, () => now));
       assert.equal(status.generated_at, "2026-10-31T12:00:00Z");
-      assert.equal(status.apiKeyConfigured, false);
+      assert.equal(status.baseUrl, "https://files.example/export");
       assert.ok(state.calls.some((call) => call.ifNoneMatch === "\"manifest-etag\""));
+      assert.ok(state.calls.every((call) => call.key === null));
       assert.equal(status.files.length, 1);
 
       const loop = freshState([file]);

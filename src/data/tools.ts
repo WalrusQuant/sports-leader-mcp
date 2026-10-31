@@ -88,7 +88,7 @@ const projection = { columns: columnsField, sort: sortField, order: orderField, 
 const seasoning = { season: seasonField, seasons: seasonsField };
 
 const EXPORT_HINT =
-  "Reads the historical Parquet export (see get_data_status). Works with no API key when DEFAULT_BAYES_DATA_BASE_URL or BAYES_DATA_BASE_URL is set; otherwise returns \"data export not configured\". Includes each file's updated_at. ESPN ids are on every row.";
+  "Reads the public historical Parquet export at https://bayesratings.com/data/v1/ (no API key; override the directory with BAYES_DATA_BASE_URL). Includes each file's updated_at. ESPN ids are on every row. Seasons start at 2021.";
 
 interface FilterArgs {
   league: string;
@@ -271,14 +271,11 @@ export const getDataStatus = defineTool({
   name: "get_data_status",
   title: "Get data export status",
   description:
-    "Manifest summary for the historical Parquet export: datasets, files, row counts, and updated_at. " +
-    "Flags any current-season file older than 36 hours (the nightly rebuild is about 7:15 AM CT; only that season is rewritten). " +
-    "The base URL is DEFAULT_BAYES_DATA_BASE_URL (fill that constant in with the public static host) or the BAYES_DATA_BASE_URL override. " +
-    "It must be the directory of manifest.json and <league>/<dataset>/<season>.parquet. " +
-    "X-API-Key is sent only when BAYES_DATA_API_KEY is set. " +
-    "If no base URL is configured, the data tools return \"data export not configured\" and the ESPN tools keep working. " +
-    "Optional BAYES_DATA_CACHE_DIR and BAYES_DATA_REVALIDATE_MS (default 4 hours). " +
-    "Redirects such as a GitHub release 302 are followed. Cache checks use the manifest sha256 and updated_at when the host sends no ETag.",
+    "Manifest summary for the public historical Parquet export: datasets, files, row counts, and updated_at. " +
+    "Flags any current-season file older than 36 hours. The export rebuilds daily at about 7:15 AM CT; only the current season is rewritten. " +
+    "Default directory is https://bayesratings.com/data/v1/ (apex; www redirects with a 301). No API key. " +
+    "Override with BAYES_DATA_BASE_URL. Optional BAYES_DATA_CACHE_DIR and BAYES_DATA_REVALIDATE_MS (default 4 hours). " +
+    "The manifest is revalidated with ETag when the host sends one. Cached parquet is reused while its sha256 matches the manifest.",
   inputShape: {
     includeColumns: z
       .boolean()

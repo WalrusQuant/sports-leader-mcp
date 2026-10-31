@@ -448,9 +448,9 @@ if (failed.length) {
 }
 
 /**
- * Historical Parquet export. Runs whenever a base URL is configured — the
- * built-in default or BAYES_DATA_BASE_URL — with or without an API key.
- * A missing base URL is a skip, not a failure. One file per data set.
+ * Historical Parquet export. The built-in default is the public
+ * bayesratings.com export, so this runs with no API key. A cleared default
+ * and an unset BAYES_DATA_BASE_URL is a skip, not a failure. One file per data set.
  */
 async function auditDataExport() {
   console.log("");
@@ -468,7 +468,7 @@ async function auditDataExport() {
     files = Array.isArray(data.files) ? data.files : [];
     if (files.length === 0) throw new Error("manifest has no files");
     const datasets = new Set(files.map((file) => file.dataset));
-    return `files=${files.length} datasets=${datasets.size} stale=${data.stale?.length ?? 0} key=${data.apiKeyConfigured ? "set" : "none"}`;
+    return `files=${files.length} datasets=${datasets.size} stale=${data.stale?.length ?? 0} generated=${data.generated_at}`;
   });
   if (!manifestOk) {
     for (const dataset of DATASET_NAMES) line("fail", "data export", dataset, "manifest check failed");
