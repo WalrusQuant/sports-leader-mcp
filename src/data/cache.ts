@@ -5,7 +5,7 @@ import path from "node:path";
 import { STALE_AFTER_MS, type DataConfig } from "./config.js";
 import { datasetInfo } from "./datasets.js";
 import { ChecksumMismatchError, DataExportError } from "./errors.js";
-import { dataFetch, type DataDeps } from "./http.js";
+import { dataFetch, fileDownloadUrl, type DataDeps } from "./http.js";
 import {
   currentSeasonByLeague,
   parseManifest,
@@ -80,7 +80,7 @@ async function fileSha256(file: string): Promise<string | null> {
 }
 
 export async function loadManifest(config: DataConfig, deps: DataDeps, opts?: { force?: boolean }): Promise<Manifest> {
-  return once(`manifest:${config.cacheDir}`, async () => {
+  return once(`manifest:${config.cacheDir}:${config.manifestUrl}`, async () => {
     const paths = cachePaths(config);
     const meta = await readJson<CacheMeta>(paths.manifestMeta);
     const fresh = meta !== null && !opts?.force && deps.now() - meta.checkedAt < config.revalidateMs;
@@ -89,7 +89,7 @@ export async function loadManifest(config: DataConfig, deps: DataDeps, opts?: { 
       if (cached) return parseManifest(cached);
     }
 
-    const res = await dataFetch(config, "manifest.json", deps, meta?.etag);
+    const res = await dataFetch(config.manifestUrl, deps, meta?.etag);
     if (res.status === 304) {
       await atomicWrite(paths.manifestMeta, JSON.stringify({ etag: res.etag ?? meta?.etag ?? null, checkedAt: deps.now() }));
       const cached = await readJson<unknown>(paths.manifest);
@@ -151,7 +151,9 @@ async function ensureParquetUncached(
     return dest;
   }
 
-  const res = await dataFetch(config, entry.path, deps);
+  // No If-None-Match: GitHub 302s to a new signed CDN URL every time, so a
+  // stored ETag cannot validate the file. The manifest sha256 is the check.
+  const res = await dataFetch(fileDownloadUrl(config, entry), deps);
   if (res.status === 304 || !res.body) {
     throw new DataExportError(`data export returned no body for ${entry.path}`);
   }
@@ -203,7 +205,8 @@ export interface StatusFile {
 
 export interface DataStatus {
   configured: true;
-  baseUrl: string;
+  manifestUrl: string;
+  baseUrl: string | null;
   cacheDir: string;
   version: number;
   generated_at: string;
@@ -276,6 +279,7 @@ export async function dataStatus(config: DataConfig, deps: DataDeps, includeColu
 
   return {
     configured: true,
+    manifestUrl: config.manifestUrl,
     baseUrl: config.baseUrl,
     cacheDir: config.cacheDir,
     version: manifest.version,

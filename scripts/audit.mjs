@@ -179,7 +179,7 @@ await check("espn_fetch", "nba league root", async () => {
 
 await check("endpoint", "cdn nba scoreboard xhr=1", async () => {
   const res = await fetch("https://cdn.espn.com/core/nba/scoreboard?xhr=1", {
-    headers: { "User-Agent": "sports-leader-mcp-audit/0.5.0", Accept: "application/json" },
+    headers: { "User-Agent": "sports-leader-mcp-audit/0.5.1", Accept: "application/json" },
   });
   const type = res.headers.get("content-type") ?? "";
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -448,15 +448,15 @@ if (failed.length) {
 }
 
 /**
- * Historical Parquet export. The built-in default is the public
- * bayesratings.com export, so this runs with no API key. A cleared default
- * and an unset BAYES_DATA_BASE_URL is a skip, not a failure. One file per data set.
+ * Historical Parquet export on GitHub Releases. No API key. A cleared
+ * manifest default with both BAYES_DATA_MANIFEST_URL and BAYES_DATA_BASE_URL
+ * unset is a skip, not a failure. One file per data set.
  */
 async function auditDataExport() {
   console.log("");
   console.log("data export");
   if (!isDataExportConfigured()) {
-    const reason = "skipped (no base URL: set BAYES_DATA_BASE_URL or fill DEFAULT_BAYES_DATA_BASE_URL)";
+    const reason = "skipped (no manifest URL: set BAYES_DATA_MANIFEST_URL or BAYES_DATA_BASE_URL)";
     for (const name of DATA_TOOL_NAMES) line("skip", name, "data export", reason);
     return;
   }

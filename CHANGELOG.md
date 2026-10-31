@@ -3,6 +3,16 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.5.1 — 2026-10-31
+
+The historical export moved from `bayesratings.com/data/v1` to GitHub Releases on [bayesratings-data](https://github.com/WalrusQuant/bayesratings-data).
+
+### Changed
+- Default manifest is `https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json`. Each file is downloaded from the `url` in the manifest (`releases/download/<league>_<dataset>/<season>.parquet`), not from a path joined onto one directory.
+- `BAYES_DATA_MANIFEST_URL` overrides that manifest. `BAYES_DATA_BASE_URL` still selects a directory mirror (`{base}/manifest.json`, and `{base}/<path>` only when a file has no `url`).
+- Release downloads 302 to a CDN and do not return 304 on the GitHub hop. Cached parquet is reused while its sha256 matches the manifest, so unauthenticated GitHub requests stay at the manifest check (at most every 4 hours) plus a download when a file actually changes. A `429` or a rate-limit `403` is reported as such.
+- `get_data_status` still flags current-season files older than 36 hours, and now includes `manifestUrl`.
+
 ## 0.5.0 — 2026-10-31
 
 Historical Parquet export for MLB, NBA, NFL, and NHL. The existing 25 ESPN tools are unchanged.
