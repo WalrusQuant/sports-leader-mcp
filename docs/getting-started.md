@@ -141,7 +141,7 @@ When filtering odds by sportsbook:
 
 ## Next Steps
 
-- Browse the [Tools](tools/) to see all 25 tools with parameters and examples
+- Browse the [Tools](tools/) to see all 38 tools with parameters and examples
 - Read the [Self-Hosting Guide](self-hosting.md) if running as an HTTP service
 - Check the [API Endpoints](../references/endpoints.md) reference for the raw ESPN API catalog
 - Read [Gotchas & Pitfalls](../references/gotchas.md) to avoid common mistakes

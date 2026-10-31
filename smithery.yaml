@@ -2,8 +2,8 @@ name: sports-leader-mcp
 description: >-
   Free MCP server for live sports data — scores, standings, rosters, player stats,
   betting odds, play-by-play, injuries, transactions, and news across 30 verified
-  leagues in 11 sports. 25 tools, 4 resources, 7 resource templates, 5 prompts. No auth required.
-version: 0.4.0
+  leagues in 11 sports. 38 tools, 4 resources, 7 resource templates, 5 prompts. Live ESPN data needs no auth. The historical export uses DEFAULT_BAYES_DATA_BASE_URL, with an optional API key.
+version: 0.5.0
 license: MIT
 keywords:
   - sports
@@ -34,13 +34,27 @@ startCommand:
         title: Request Timeout
         description: Timeout in milliseconds for upstream ESPN API calls. Default is 30000 (30 seconds).
         default: 30000
+      bayesDataBaseUrl:
+        type: string
+        title: Historical data base URL
+        description: >-
+          Overrides DEFAULT_BAYES_DATA_BASE_URL. The directory that contains
+          manifest.json and <league>/<dataset>/<season>.parquet. Leave empty
+          to use the built-in default.
+      bayesDataApiKey:
+        type: string
+        title: Historical data API key
+        description: >-
+          Optional. Sent as X-API-Key only when set. Public hosts do not need a key.
     additionalProperties: false
   commandFunction: |-
     (config) => ({
       command: "node",
       args: ["dist/index.js"],
       env: {
-        SPORTS_LEADER_TIMEOUT: String(config.timeout || 30000)
+        SPORTS_LEADER_TIMEOUT: String(config.timeout || 30000),
+        ...(config.bayesDataBaseUrl ? { BAYES_DATA_BASE_URL: String(config.bayesDataBaseUrl) } : {}),
+        ...(config.bayesDataApiKey ? { BAYES_DATA_API_KEY: String(config.bayesDataApiKey) } : {})
       }
     })
 build:

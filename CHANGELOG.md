@@ -3,6 +3,18 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.5.0 — 2026-10-31
+
+Historical Parquet export for MLB, NBA, NFL, and NHL. The existing 25 ESPN tools are unchanged.
+
+### Added
+- `get_games`, `get_team_box_scores`, `get_team_game_stats`, `get_player_game_logs` (NBA player, NHL skater/goalie, MLB batting/pitching, NFL passing/rushing/receiving), `get_rosters`, `get_injury_reports`, `get_transaction_log`, `get_depth_charts`, `get_probables`, `get_lineups`, `get_weather`, `get_published_ratings`, and `get_data_status`.
+- The export names `get_injury_reports` and `get_transaction_log` sit beside the live `get_injuries` and `get_transactions` tools.
+- Public, keyless access. `DEFAULT_BAYES_DATA_BASE_URL` in `src/data/config.ts` is the directory of `manifest.json` and `<league>/<dataset>/<season>.parquet` (fill it in when the static host is chosen). `BAYES_DATA_BASE_URL` overrides it. `BAYES_DATA_API_KEY` is optional and is sent as `X-API-Key` only when set.
+- Disk cache. The manifest is rechecked at most every 4 hours (`BAYES_DATA_REVALIDATE_MS`) and uses `ETag` when the host sends one. Parquet files are kept while their sha256 matches the manifest, so a host with no ETag (or a GitHub release 302 to a CDN) still validates. Past seasons are not re-downloaded. `get_data_status` flags a current-season file older than 36 hours.
+- Queries go through DuckDB Neo (`@duckdb/node-api`), which publishes glibc and musl builds. Filters are bound parameters; column names are checked against the manifest.
+- `npm run audit` runs the data tools whenever a base URL is configured, key or not. With no base URL those checks are skipped.
+
 ## 0.4.0 — 2026-10-31
 
 Live audit of the ESPN endpoints behind all 21 tools, then fixes and four new tools. `npm run audit` repeats that check.
