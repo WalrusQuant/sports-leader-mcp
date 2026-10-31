@@ -137,7 +137,7 @@ Not all Web API v3 athlete endpoints work for every sport:
 |----------|-----|-----|-----|-----|--------|
 | `overview` | Yes | Yes | Yes | Yes | Minimal |
 | `stats` | Yes | Yes | Yes | Yes | 404 |
-| `gamelog` | Yes | Yes | 404 | Yes | 400 |
+| `gamelog` | Yes | Yes | Yes (2026-10-31; previously 404) | Yes | 400 |
 | `splits` | Yes | Yes | Yes | Yes | No |
 | `statistics/byathlete` | Yes | Yes | Yes | Yes | No |
 
@@ -227,3 +227,47 @@ ESPN IDs for teams and athletes are not always obvious. Strategies:
 - **Athletes:** Use the search endpoint: `https://site.web.api.espn.com/apis/search/v2?query=Stephen+Curry&sport=basketball`
 - **Events:** Get from the scoreboard for a specific date
 - **From URLs:** ESPN website URLs contain IDs (e.g., `espn.com/nba/team/_/id/9/golden-state-warriors` means team ID = 9)
+
+---
+
+## 17. The Site Teams List Defaults to 50
+
+`/apis/site/v2/sports/{sport}/{league}/teams` returns 50 teams unless you pass `limit`. That is the whole NBA. It is not college football (about 760 teams) or college basketball (about 360). `get_teams` requests `limit=1000`.
+
+---
+
+## 18. `/leaders` Is All-Time and Ignores `season`
+
+`https://sports.core.api.espn.com/v2/sports/{sport}/leagues/{league}/leaders` is the all-time list. The `season` query is ignored. College football, college basketball, the WNBA, and soccer return 400 or 404 (`getLeadersAllTime not supported` / `No all-time leaders found`).
+
+Season leaders:
+
+```bash
+# Regular season for NFL, NBA, NHL, MLB, college. Type 2.
+curl ".../seasons/2026/types/2/leaders"
+
+# Soccer publishes type 1, not type 2.
+curl ".../soccer/leagues/eng.1/seasons/2025/types/1/leaders"
+```
+
+`get_league_leaders` tries type 2, then type 1. Team leaders use the same pattern under `/teams/{teamId}/leaders`.
+
+---
+
+## 19. Several Team Sub-Resources Return `{}`
+
+Verified 2026-10-31. These Site paths respond 200 with an empty object: `/teams/{id}/record`, `/injuries`, `/news`, `/transactions`, `/leaders`, `/history`.
+
+Working replacements: record and the current season live on the team detail document; injuries and news and transactions come from the league feeds filtered by team; leaders come from the Core season path in gotcha 18; history has no season-by-season public document (the Core franchise resource is identity only). `/teams/{id}/statistics` and `/depthcharts` do return data for the pros. College depth charts are often empty. An empty team schedule (college basketball preseason, or a club that is not in the current postseason) needs `seasontype=2` for the regular-season list. College basketball standings repeat each stat name once per split; the first copy is the overall record.
+
+---
+
+## 20. Win Probability 400s for Some Games
+
+`.../competitions/{id}/probabilities` returns HTTP 400 `Probabilities are not supported` for every NHL and soccer competition checked, and for college football games that have not started. A completed college football game still returns the timeline. `get_game_probabilities` turns that 400 into `unavailable` plus an empty list. A 404 (bad event id) is still an error.
+
+---
+
+## 21. Core API v3 Host Is Dead
+
+`https://sports.core.api.espn.com/v3/sports/...` returned 404 on 2026-10-31 for the athlete resources this catalog used to attribute to it. Use Web API v3 (`site.web.api.espn.com/apis/common/v3`) for athlete stats. The CDN base (`cdn.espn.com/core/{league}?xhr=1`) still returns JSON and is only an `espn_fetch` escape hatch; team schedules in the tools use the Site API.

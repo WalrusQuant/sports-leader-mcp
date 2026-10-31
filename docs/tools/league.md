@@ -10,9 +10,9 @@ Parameters: `sport`, `league`, optional `season`, and `raw`.
 
 ## `get_league_leaders`
 
-Returns named statistical categories with ranked leader values. ESPN Core sometimes provides athlete references without names; compact output extracts `athleteId` from those references so the caller can use athlete tools to resolve details.
+Returns named statistical categories with ranked leader values for one season. Omit `season` to use the league's current season year (NBA/NHL/college basketball use the ending year, so 2026-27 is `2027`). ESPN's bare `/leaders` collection is all-time, ignores `season`, and returns 400/404 for college, the WNBA, and soccer. This tool calls `/seasons/{year}/types/{seasonType}/leaders` instead: type `2` (regular season), then type `1` (what soccer publishes). Athlete names are often missing; compact output extracts `athleteId` from Core references.
 
-Parameters: `sport`, `league`, optional `season`, and `raw`.
+Parameters: `sport`, `league`, optional `season`, optional `seasonType` (`1`–`4`), and `raw`.
 
 ## `get_injuries`
 
@@ -32,4 +32,22 @@ Parameters: `sport`, `league`, and optional `raw`.
 
 Returns a compact headline list with ID, type, headline, description, publication time, source, keywords, and article link.
 
-Parameters: optional `sport`, `league`, team abbreviation as `team`, `limit`, and `raw`.
+Parameters: optional `sport`, `league`, team abbreviation or team id as `team`, `limit`, and `raw`.
+
+## `get_rankings`
+
+College poll rankings. Each poll has ordered `ranks` with `rank`, `previous`, `points`, `firstPlaceVotes`, `trend`, `record`, and compact `team` identity. Works for college football, men's college basketball, and women's college basketball. Pro leagues return `polls: []` and `unavailable` (ESPN has no rankings document for them). Omit `season` and `week` for the latest poll.
+
+Parameters: `sport`, `league`, optional `season`, optional `week`, and `raw`. Publishes an `outputSchema`.
+
+## `get_power_index`
+
+ESPN's team strength rating for a season. Basketball leagues (NBA, WNBA, men's college basketball) return BPI stats such as `bpi` and `bpirank`. Football (NFL, college football) returns FPI stats such as `fpi`, `fpirank`, and projected wins. Rows are sorted by rank. `teamId` is parsed from the Core reference; join `get_teams` for the name. The tool returns the full collection ESPN publishes for that season (college football was 138 teams on 2026-10-31; men's and women's college basketball were 25). NHL, MLB, and soccer are not published and return `teams: []` plus `unavailable`.
+
+Parameters: `sport`, `league`, optional `season`, and `raw`. Publishes an `outputSchema`.
+
+## `get_futures`
+
+Season futures (championship, conference, awards). Each market lists a provider and outcomes with American `odds` plus `teamId` and/or `athleteId`. This Core document does not include names. At most 40 outcomes are returned per market, in ESPN's order (favorites first); `outcomeCount` is the full book. An empty `markets` list means nothing is posted for that season yet.
+
+Parameters: `sport`, `league`, optional `season`, and `raw`. Publishes an `outputSchema`.

@@ -6,8 +6,10 @@ import {
   leagueSchema,
   limitSchema,
   seasonSchema,
+  seasonTypeSchema,
   sportSchema,
 } from "../schemas.js";
+import { fetchFirstOk, leagueSeasonYear, seasonLeadersPaths } from "../season.js";
 import { transformStandings, transformInjuries, transformNews, transformLeagueLeaders, stripRefs } from "../transforms.js";
 import { z } from "zod";
 
@@ -33,16 +35,27 @@ export const getLeagueLeaders = defineTool({
   name: "get_league_leaders",
   title: "Get league statistical leaders",
   description:
-    "Get compact league leader categories and ranked values. Athlete IDs are extracted from ESPN references; some Core responses do not include athlete names, so use the IDs with athlete tools when needed.",
+    "Get compact statistical leaders for a season. Omit season to use the league's current season year. ESPN's /leaders collection is all-time and 400/404s for college, WNBA, and soccer, and it ignores the season query. This tool calls /seasons/{year}/types/{seasonType}/leaders instead (type 2, then type 1 for soccer). Athlete IDs are extracted from Core references; names are often absent, so follow up with athlete tools.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
     season: seasonSchema,
+    seasonType: seasonTypeSchema,
   },
-  handler: async ({ sport, league, season }) => {
-    return fetchJson(`${BASE.core}/${sport}/leagues/${league}/leaders`, {
-      params: { season },
-    });
+  handler: async ({ sport, league, season, seasonType }) => {
+    const year = season ?? (await leagueSeasonYear(sport, league));
+    // Without an explicit season, try the previous year too so early-season
+    // college (no stats yet) still returns last season's leaders.
+    const years = season === undefined ? [year, year - 1] : [year];
+    const urls = years.flatMap((y) => seasonLeadersPaths(sport, league, y, { seasonType }));
+    try {
+      return await fetchFirstOk(urls);
+    } catch (err) {
+      if (season === undefined && seasonType === undefined) {
+        return await fetchJson(`${BASE.core}/${sport}/leagues/${league}/leaders`);
+      }
+      throw err;
+    }
   },
   transform: transformLeagueLeaders,
 });

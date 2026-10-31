@@ -33,7 +33,7 @@ There are six ESPN API domains. Choose based on your data need:
 | **Site API** | `https://site.api.espn.com/apis/site/v2/sports/{sport}/{league}/` | Scores, teams, rosters, news, injuries, game summaries |
 | **Site API v2** | `https://site.api.espn.com/apis/v2/sports/{sport}/{league}/` | Standings only (the site/v2 path returns a stub for standings) |
 | **Core API v2** | `https://sports.core.api.espn.com/v2/sports/{sport}/leagues/{league}/` | Athletes, detailed stats, odds, play-by-play, venues, coaches |
-| **Core API v3** | `https://sports.core.api.espn.com/v3/sports/{sport}/{league}/` | Enriched athlete data, leaders |
+| **Core API v3** | `https://sports.core.api.espn.com/v3/sports/{sport}/{league}/` | Dead as of 2026-10-31 (404). Use Web API v3 for athlete stats and Core API v2 `/seasons/{year}/types/{type}/leaders` for leaders. |
 | **Web API v3** | `https://site.web.api.espn.com/apis/common/v3/sports/{sport}/{league}/` | Player season stats, gamelogs, splits, leaderboards |
 | **CDN** | `https://cdn.espn.com/core/{league-abbrev}/` | Full game packages (boxscore + plays + win prob). Requires `?xhr=1` |
 | **Now API** | `https://now.core.api.espn.com/v1/sports/news` | Real-time news feed |

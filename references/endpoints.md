@@ -197,6 +197,8 @@ QBR `split` values: `0` = totals, `1` = home, `2` = away
 
 ## Core API v3 (Enriched Schema)
 
+**Not used by this server.** Checked 2026-10-31: `https://sports.core.api.espn.com/v3/sports/...` returns 404 for athlete overview, stats, and statistics paths (with and without `/leagues/`). Athlete stats, gamelogs, and splits that actually respond are on the Web API v3 below. Season leaders that respond are Core API v2 `/seasons/{year}/types/{type}/leaders`.
+
 **Pattern:** `https://sports.core.api.espn.com/v3/sports/{sport}/{league}/{resource}`
 
 | Endpoint | Description |

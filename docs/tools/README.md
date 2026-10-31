@@ -1,10 +1,10 @@
 # Tools
 
-Overview of all 21 tools available in sports-leader-mcp.
+Overview of all 25 tools available in sports-leader-mcp.
 
 Compact JSON is the default. Every tool accepts optional `raw: true`; oversized output is replaced with a valid `{ "truncated": true, ... }` envelope instead of partial JSON.
 
-Results carry the compact JSON as a text block and as MCP `structuredContent` (top-level arrays as `{ "items": [...] }`). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, and `get_slate` also publish an `outputSchema`; schemas allow extra properties because fields are only ever added. With `raw: true` the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`.
+Results carry the compact JSON as a text block and as MCP `structuredContent` (top-level arrays as `{ "items": [...] }`). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_slate`, `get_team_stats`, `get_rankings`, `get_power_index`, and `get_futures` also publish an `outputSchema`; schemas allow extra properties because fields are only ever added. With `raw: true` the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`.
 
 Large sub-payloads are also available as `espn://` resource templates (see the [README](../../README.md#resource-templates)); `get_game_summary` and `get_slate` return `resource_link` items that point at them.
 
@@ -34,6 +34,7 @@ Large sub-payloads are also available as `espn://` resource templates (see the [
 | [`get_teams`](teams.md#get_teams) | Compact team identity records and IDs. |
 | [`get_team`](teams.md#get_team) | Team info, roster, schedule, record, depth chart, injuries, transactions, history, news, or leaders. |
 | [`get_team_injuries`](teams.md#get_team_injuries) | Injury report for a single team. |
+| [`get_team_stats`](teams.md#get_team_stats) | Team season stat line (totals only). |
 
 ## Athletes
 
@@ -53,3 +54,6 @@ Large sub-payloads are also available as `espn://` resource templates (see the [
 | [`get_injuries`](league.md#get_injuries) | League-wide injury report. |
 | [`get_transactions`](league.md#get_transactions) | Recent signings, trades, waivers. |
 | [`get_news`](league.md#get_news) | Real-time sports news feed. |
+| [`get_rankings`](league.md#get_rankings) | College poll rankings. |
+| [`get_power_index`](league.md#get_power_index) | BPI or FPI team ratings. |
+| [`get_futures`](league.md#get_futures) | Season futures odds. |
