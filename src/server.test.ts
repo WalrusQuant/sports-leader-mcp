@@ -20,7 +20,11 @@ const ORIGINAL_TOOLS = [
   "get_athlete_overview", "get_athlete_stats", "get_athlete_gamelog", "get_athlete_splits",
   "list_sports_and_leagues", "search", "espn_fetch",
 ];
-const SCHEMA_TOOLS = ["get_scoreboard", "get_game_summary", "get_game_odds", "get_injuries", "get_athlete_gamelog", "get_slate"];
+const SCHEMA_TOOLS = [
+  "get_scoreboard", "get_game_summary", "get_game_odds", "get_injuries", "get_athlete_gamelog", "get_slate",
+  "get_team_stats", "get_rankings", "get_power_index", "get_futures",
+];
+const ADDED_TOOLS = ["get_slate", "get_team_stats", "get_rankings", "get_power_index", "get_futures"];
 
 test.after(installFixtureFetch());
 
@@ -45,8 +49,8 @@ test("tools/list keeps every existing tool, adds get_slate, and publishes output
   const { tools } = await connect();
   const names = tools.map((t) => t.name);
   for (const n of ORIGINAL_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
-  assert.ok(names.includes("get_slate"));
-  assert.equal(names.length, ORIGINAL_TOOLS.length + 1);
+  for (const n of ADDED_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
+  assert.equal(names.length, ORIGINAL_TOOLS.length + ADDED_TOOLS.length);
   for (const t of tools) {
     if (SCHEMA_TOOLS.includes(t.name)) {
       assert.equal((t.outputSchema as any)?.type, "object", `${t.name} outputSchema`);

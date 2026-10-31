@@ -167,7 +167,10 @@ function readPositiveInt(value: string | undefined, fallback: number): number {
  * Under-budget data passes through unchanged.
  */
 export function applyBudget(data: unknown): unknown {
-  const json = JSON.stringify(data, null, 2);
+  // Measure the compact JSON the tool actually returns (toTextResult does
+  // not pretty-print). Indenting here overstated the size and truncated
+  // college-basketball standings that fit in the budget.
+  const json = JSON.stringify(data);
   if (json === undefined) return data;
   const estTokens = Math.ceil(json.length / 4);
   if (estTokens <= MAX_TOKENS) return data;
@@ -214,10 +217,15 @@ export function transformScoreboard(data: unknown, ctx?: Ctx): unknown {
           String(ls.displayValue ?? ls.value ?? ""),
         );
         const records = arr<AnyObj>(c.records);
+        const athlete = d(c.athlete);
+        const athleteName = athlete.displayName ?? athlete.fullName;
         return {
           homeAway: String(c.homeAway ?? ""),
           winner: c.winner ?? undefined,
           team,
+          // Individual sports (golf, tennis, racing) carry the player in c.athlete, not c.team.
+          ...(athleteName ? { athlete: { id: String(athlete.id ?? c.id ?? ""), name: String(athleteName) } } : {}),
+          ...(c.order != null && athleteName ? { order: Number(c.order) } : {}),
           score: String(c.score ?? ""),
           ...(linescores.length ? { linescores } : {}),
           ...(records.length ? { record: String(records[0]?.displayValue ?? "") } : {}),
@@ -399,7 +407,8 @@ export function transformGameProbabilities(data: unknown): unknown {
   const root = d(data);
   const items = arr<AnyObj>(root.items);
   return {
-    count: root.count,
+    count: root.count ?? items.length,
+    ...(root.unavailable ? { unavailable: String(root.unavailable) } : {}),
     probabilities: items.map((item) => ({
       playId: String(item.playId ?? ""),
       homeWinPct: item.homeWinPercentage ?? undefined,
@@ -548,7 +557,9 @@ export function transformSportsAndLeagues(_data: unknown): unknown {
 /** League leaders: normalize categories and extract athlete IDs from Core refs. */
 export function transformLeagueLeaders(data: unknown): unknown {
   const root = d(data);
+  const seasonMatch = String(root.$ref ?? "").match(/\/seasons\/(\d+)\//);
   return {
+    ...(seasonMatch ? { season: Number(seasonMatch[1]) } : {}),
     scope: prune({ id: root.id ? String(root.id) : undefined, name: root.name, type: root.type }),
     categories: arr<AnyObj>(root.categories).map((category) => ({
       name: String(category.name ?? ""),
@@ -593,7 +604,13 @@ export function transformTeams(data: unknown): unknown {
 /**
  * Team detail: pass through stripRefs for the profile, but compact roster.
  */
-export function transformTeam(data: unknown): unknown {
+export function transformTeam(data: unknown, ctx?: Ctx): unknown {
+  const view = ctx?.args?.view;
+  if (view === "news") return transformNews(data);
+  if (view === "leaders") return transformLeagueLeaders(data);
+  if (view === "schedule") return transformTeamSchedule(data);
+  if (view === "depthcharts") return transformDepthChart(data);
+  if (view === "history") return transformTeamHistory(data);
   const root = stripRefs(d(data));
   // If roster present, compact each athlete
   const roster = arr<AnyObj>((root as AnyObj).athletes);
@@ -607,6 +624,92 @@ export function transformTeam(data: unknown): unknown {
     }));
   }
   return root;
+}
+
+/** Team schedule: one row per game. The raw document is hundreds of kilobytes. */
+export function transformTeamSchedule(data: unknown): unknown {
+  const root = d(data);
+  const events = arr<AnyObj>(root.events).map((ev) => {
+    const comp = d(arr<AnyObj>(ev.competitions)[0]);
+    const competitors = arr<AnyObj>(comp.competitors).length
+      ? arr<AnyObj>(comp.competitors)
+      : arr<AnyObj>(ev.competitors);
+    const statusSource = d(comp.status).type ? comp.status : ev.status;
+    return prune({
+      id: String(ev.id ?? comp.id ?? ""),
+      date: ev.date ? String(ev.date) : comp.date ? String(comp.date) : undefined,
+      name: String(ev.shortName ?? ev.name ?? comp.shortName ?? ""),
+      status: compactStatus(d(statusSource)),
+      competitors: competitors.map((c) => prune({
+        homeAway: c.homeAway ? String(c.homeAway) : undefined,
+        team: compactTeam(d(c.team)),
+        score: c.score !== undefined && c.score !== "" ? String(c.score) : undefined,
+      })),
+    });
+  });
+  const season = d(root.requestedSeason).year ? root.requestedSeason : root.season;
+  return prune({
+    season: season ? { year: d(season).year, name: d(season).displayName ?? d(season).name } : undefined,
+    team: compactTeam(d(root.team)),
+    eventCount: events.length,
+    events,
+  });
+}
+
+/** Depth chart: formation → position → ordered athletes. Drops per-player link arrays. */
+export function transformDepthChart(data: unknown): unknown {
+  const root = d(data);
+  const formations = Object.values(d(root.depthchart))
+    .filter((f) => f && typeof f === "object")
+    .map((formation) => {
+      const f = d(formation);
+      return {
+        name: String(f.name ?? ""),
+        positions: Object.entries(d(f.positions)).map(([key, val]) => {
+          const position = d(val);
+          return {
+            position: String(position.abbreviation ?? position.name ?? key),
+            athletes: arr<AnyObj>(position.athletes).map((a) => prune({
+              id: a.id !== undefined ? String(a.id) : undefined,
+              name: String(a.displayName ?? a.fullName ?? ""),
+            })),
+          };
+        }),
+      };
+    });
+  return {
+    ...prune({
+      season: root.season ? { year: d(root.season).year, name: d(root.season).name } : undefined,
+      team: compactTeam(d(root.team)),
+      ...(formations.length
+        ? {}
+        : { note: "ESPN published no depth chart for this team (common for college and some leagues)." }),
+    }),
+    formations,
+  };
+}
+
+/**
+ * `/teams/{id}/history` is an empty document. The handler supplies the core
+ * franchise identity and the current record from team detail instead.
+ */
+export function transformTeamHistory(data: unknown): unknown {
+  const root = d(data);
+  const franchise = d(root.franchise);
+  return prune({
+    note: root.note ? String(root.note) : undefined,
+    franchise: franchise.id
+      ? prune({
+          id: String(franchise.id),
+          abbrev: franchise.abbreviation ? String(franchise.abbreviation) : undefined,
+          name: franchise.name ? String(franchise.name) : undefined,
+          displayName: franchise.displayName ? String(franchise.displayName) : undefined,
+          location: franchise.location ? String(franchise.location) : undefined,
+        })
+      : undefined,
+    team: compactTeam(d(root.team)),
+    record: Object.keys(d(root.record)).length ? stripRefs(root.record) : undefined,
+  });
 }
 
 /**
@@ -625,9 +728,13 @@ export function transformStandings(data: unknown): unknown {
           const team = compactTeam(d(entry.team)) ?? {};
           const statsArr = arr<AnyObj>(entry.stats);
           const stats: Record<string, string> = {};
+          // College standings repeat the same stat names once per split
+          // (overall, home, road, conference). The first block is the overall
+          // record; later copies must not overwrite it.
           for (const s of statsArr) {
             const name = String(s.name ?? s.abbreviation ?? "");
-            if (name) stats[name] = String(s.displayValue ?? s.value ?? "");
+            if (!name || name in stats) continue;
+            stats[name] = String(s.displayValue ?? s.value ?? "");
           }
           return { team, stats };
         }),
@@ -976,5 +1083,143 @@ export function transformSlate(data: unknown, ctx?: Ctx): unknown {
         ? { injuriesNote: "ESPN returned an empty injury report for this league; an empty keyInjuries list does not confirm a healthy roster." }
         : {}),
     games,
+  });
+}
+
+function yearOf(value: unknown): number | undefined {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string" && /^\d+$/.test(value)) return Number(value);
+  if (value && typeof value === "object" && "year" in (value as AnyObj)) return yearOf((value as AnyObj).year);
+  if (value && typeof value === "object" && "number" in (value as AnyObj)) return yearOf((value as AnyObj).number);
+  return undefined;
+}
+
+/** College polls (AP, coaches, CFP). Pro leagues 404; the handler returns `unavailable`. */
+export function transformRankings(data: unknown): unknown {
+  const root = d(data);
+  const polls = arr<AnyObj>(root.rankings).map((poll) => ({
+    name: String(poll.name ?? ""),
+    shortName: poll.shortName ? String(poll.shortName) : undefined,
+    ranks: arr<AnyObj>(poll.ranks).flatMap((row) => {
+      const rank = Number(row.current);
+      if (!Number.isFinite(rank)) return [];
+      const num = (value: unknown) => {
+        if (value === undefined || value === null || value === "") return undefined;
+        const n = Number(value);
+        return Number.isFinite(n) ? n : undefined;
+      };
+      return [prune({
+        rank,
+        previous: num(row.previous),
+        points: num(row.points),
+        firstPlaceVotes: num(row.firstPlaceVotes),
+        trend: row.trend !== undefined ? String(row.trend) : undefined,
+        record: row.recordSummary ? String(row.recordSummary) : undefined,
+        team: compactTeam(d(row.team)),
+      })];
+    }),
+  }));
+  return prune({
+    season: yearOf(root.latestSeason) ?? yearOf(root.requestedSeason) ?? yearOf(root.season),
+    week: yearOf(root.latestWeek) ?? yearOf(root.week),
+    unavailable: root.unavailable ? String(root.unavailable) : undefined,
+    polls,
+  });
+}
+
+function powerRank(stats: Record<string, string>): number {
+  for (const key of ["fpirank", "bpirank"]) {
+    if (stats[key] !== undefined) {
+      const n = parseFloat(stats[key]);
+      if (Number.isFinite(n)) return n;
+    }
+  }
+  return Number.POSITIVE_INFINITY;
+}
+
+/** BPI (basketball) and FPI (football). Team id is taken from the Core $ref. */
+export function transformPowerIndex(data: unknown): unknown {
+  const root = d(data);
+  const teams = arr<AnyObj>(root.items).map((item) => {
+    const stats: Record<string, string> = {};
+    for (const bucket of [item.stats, item.predictives, item.efficiencies]) {
+      for (const stat of arr<AnyObj>(bucket)) {
+        const name = String(stat.name ?? "");
+        if (!name || name in stats) continue;
+        stats[name] = String(stat.displayValue ?? stat.value ?? "");
+      }
+    }
+    return {
+      teamId: idFromRef(item.team, "teams") ?? "",
+      stats,
+    };
+  }).sort((a, b) => powerRank(a.stats) - powerRank(b.stats));
+  return prune({
+    season: yearOf(root.season),
+    unavailable: root.unavailable ? String(root.unavailable) : undefined,
+    teams,
+  });
+}
+
+const FUTURES_OUTCOME_CAP = 40;
+
+/** Championship and award futures. Names are not inline; ids come from $ref. */
+export function transformFutures(data: unknown): unknown {
+  const root = d(data);
+  const markets = arr<AnyObj>(root.items).flatMap((market) =>
+    arr<AnyObj>(market.futures).map((book) => {
+      const outcomes = arr<AnyObj>(book.books);
+      return {
+        id: String(market.id ?? ""),
+        name: String(market.displayName ?? market.name ?? ""),
+        provider: d(book.provider).name ? String(d(book.provider).name) : undefined,
+        outcomeCount: outcomes.length,
+        outcomes: outcomes.slice(0, FUTURES_OUTCOME_CAP).map((row) => prune({
+          teamId: idFromRef(row.team, "teams"),
+          athleteId: idFromRef(row.athlete, "athletes"),
+          odds: String(row.value ?? ""),
+        })),
+      };
+    }),
+  );
+  return prune({
+    season: yearOf(root.season),
+    unavailable: root.unavailable ? String(root.unavailable) : undefined,
+    note: !root.unavailable && markets.length === 0
+      ? "ESPN published no futures for this season."
+      : undefined,
+    markets,
+  });
+}
+
+/** Team season stat line. Keeps the total split only; per-situation splits are omitted. */
+export function transformTeamStats(data: unknown): unknown {
+  const root = d(data);
+  const results = d(root.results);
+  const totals = d(results.stats);
+  const categories = arr<AnyObj>(totals.categories).map((category) => {
+    const stats: Record<string, string> = {};
+    for (const stat of arr<AnyObj>(category.stats)) {
+      const key = String(stat.abbreviation ?? stat.name ?? "");
+      if (!key) continue;
+      stats[key] = String(stat.displayValue ?? stat.value ?? "");
+    }
+    return {
+      name: String(category.name ?? ""),
+      displayName: category.displayName ? String(category.displayName) : undefined,
+      stats,
+    };
+  });
+  const season = d(root.season).year ? root.season : root.requestedSeason;
+  return prune({
+    season: season
+      ? prune({
+          year: d(season).year !== undefined ? Number(d(season).year) : undefined,
+          name: d(season).displayName ? String(d(season).displayName) : undefined,
+          type: d(season).name ? String(d(season).name) : undefined,
+        })
+      : undefined,
+    team: compactTeam(d(root.team)),
+    categories,
   });
 }

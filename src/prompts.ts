@@ -95,6 +95,8 @@ Gather data by calling all of the following tools (use sport="${args.sport}" and
 3. \`get_injuries\` — Significant player injuries and their expected return timelines.
 4. \`get_news\` — Latest league news, trades, and headlines.
 5. \`get_transactions\` — Recent roster moves, signings, waivers, and trades.
+6. For college football or college basketball, \`get_rankings\` — the latest polls.
+7. \`get_power_index\` — BPI or FPI when the league publishes one (NBA, WNBA, NFL, college football, college basketball). Skip it when the tool returns \`unavailable\`.
 
 Synthesize the results into a league pulse report covering: standings race highlights, top performers, injury impact on contenders, and notable recent transactions.`,
                   },
@@ -121,12 +123,14 @@ For team1 (teamId="${args.team1_id}"):
 - \`get_team\` with view="record" — season record and standings position
 - \`get_team\` with view="roster" — current active roster
 - \`get_team\` with view="leaders" — statistical leaders on the team
+- \`get_team_stats\` — team season stat line
 - \`get_team\` with view="injuries" — current injury report
 
 For team2 (teamId="${args.team2_id}"):
 - \`get_team\` with view="record" — season record and standings position
 - \`get_team\` with view="roster" — current active roster
 - \`get_team\` with view="leaders" — statistical leaders on the team
+- \`get_team_stats\` — team season stat line
 - \`get_team\` with view="injuries" — current injury report
 
 After collecting all data, produce a side-by-side comparison covering:

@@ -63,10 +63,14 @@ function getTtlMs(path: string): number {
   if (path.includes("/news")) return 300_000;
   if (path.includes("/search")) return 300_000;
 
-  // 3600s — standings, league, teams
+  // 3600s — standings, league, teams, slow-moving research data
   if (path.includes("/standings")) return 3_600_000;
   if (path.includes("/leaders")) return 3_600_000;
   if (path.includes("/teams")) return 3_600_000;
+  if (path.includes("/rankings")) return 3_600_000;
+  if (path.includes("/powerindex")) return 3_600_000;
+  if (path.includes("/futures")) return 3_600_000;
+  if (path.includes("/statistics")) return 3_600_000;
 
   // 86400s — athletes, ontology
   if (path.includes("/athletes/")) return 86_400_000;
