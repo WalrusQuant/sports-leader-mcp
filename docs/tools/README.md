@@ -1,6 +1,6 @@
 # Tools
 
-Overview of all 25 tools available in sports-leader-mcp.
+Overview of all 38 tools available in sports-leader-mcp.
 
 Compact JSON is the default. Every tool accepts optional `raw: true`; oversized output is replaced with a valid `{ "truncated": true, ... }` envelope instead of partial JSON.
 
@@ -57,3 +57,23 @@ Large sub-payloads are also available as `espn://` resource templates (see the [
 | [`get_rankings`](league.md#get_rankings) | College poll rankings. |
 | [`get_power_index`](league.md#get_power_index) | BPI or FPI team ratings. |
 | [`get_futures`](league.md#get_futures) | Season futures odds. |
+
+## Historical export
+
+Parquet files for MLB, NBA, NFL, and NHL. See [Historical data](data.md). The live `get_injuries` and `get_transactions` tools are unchanged.
+
+| Tool | Description |
+|------|-------------|
+| [`get_games`](data.md#get_games) | Schedule and results. |
+| [`get_team_box_scores`](data.md#tools) | Team box line. |
+| [`get_team_game_stats`](data.md#tools) | Team counting stats for and against. |
+| [`get_player_game_logs`](data.md#get_player_game_logs) | Player box lines. `statGroup` picks the league's file. |
+| [`get_rosters`](data.md#tools) | Roster spans. |
+| [`get_injury_reports`](data.md#tools) | Injury history from the export. |
+| [`get_transaction_log`](data.md#tools) | Transaction history from the export. |
+| [`get_depth_charts`](data.md#tools) | NFL depth chart. |
+| [`get_probables`](data.md#tools) | Probable pitchers and goalies. |
+| [`get_lineups`](data.md#tools) | Announced lineups. |
+| [`get_weather`](data.md#tools) | Game weather. |
+| [`get_published_ratings`](data.md#tools) | Published team rating and range. |
+| [`get_data_status`](data.md#get_data_status) | Manifest summary and freshness. |

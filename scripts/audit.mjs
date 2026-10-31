@@ -16,6 +16,8 @@
 
 import { ALL_TOOLS, produce } from "../dist/server.js";
 import { apiCache } from "../dist/client.js";
+import { isDataExportConfigured } from "../dist/data/config.js";
+import { DATASET_NAMES, DATA_TOOL_NAMES, auditCallForFile } from "../dist/data/tools.js";
 
 const tools = new Map(ALL_TOOLS.map((tool) => [tool.name, tool]));
 const today = new Intl.DateTimeFormat("en-CA", {
@@ -43,7 +45,7 @@ const rows = [];
 
 function line(status, tool, label, detail) {
   rows.push({ status, tool, label, detail });
-  const tag = status === "pass" ? "PASS" : "FAIL";
+  const tag = status === "pass" ? "PASS" : status === "skip" ? "SKIP" : "FAIL";
   console.log(`${tag}  ${tool.padEnd(26)} ${label.padEnd(32)} ${detail}`);
 }
 
@@ -177,7 +179,7 @@ await check("espn_fetch", "nba league root", async () => {
 
 await check("endpoint", "cdn nba scoreboard xhr=1", async () => {
   const res = await fetch("https://cdn.espn.com/core/nba/scoreboard?xhr=1", {
-    headers: { "User-Agent": "sports-leader-mcp-audit/0.4.0", Accept: "application/json" },
+    headers: { "User-Agent": "sports-leader-mcp-audit/0.5.0", Accept: "application/json" },
   });
   const type = res.headers.get("content-type") ?? "";
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -432,11 +434,65 @@ apiCache.clear();
 
 await pool([...gameJobs, ...leagueJobs], 4);
 
+await auditDataExport();
+
 const failed = rows.filter((row) => row.status === "fail");
+const skipped = rows.filter((row) => row.status === "skip");
+const passed = rows.filter((row) => row.status === "pass");
 console.log("");
-console.log(`${rows.length - failed.length} passed, ${failed.length} failed, ${rows.length} total`);
+console.log(`${passed.length} passed, ${failed.length} failed, ${skipped.length} skipped, ${rows.length} total`);
 if (failed.length) {
   console.log("Failures:");
   for (const row of failed) console.log(`  ${row.tool}  ${row.label}  ${row.detail}`);
   process.exit(1);
+}
+
+/**
+ * Historical Parquet export. The built-in default is the public
+ * bayesratings.com export, so this runs with no API key. A cleared default
+ * and an unset BAYES_DATA_BASE_URL is a skip, not a failure. One file per data set.
+ */
+async function auditDataExport() {
+  console.log("");
+  console.log("data export");
+  if (!isDataExportConfigured()) {
+    const reason = "skipped (no base URL: set BAYES_DATA_BASE_URL or fill DEFAULT_BAYES_DATA_BASE_URL)";
+    for (const name of DATA_TOOL_NAMES) line("skip", name, "data export", reason);
+    return;
+  }
+
+  let files = [];
+  const manifestOk = await check("get_data_status", "manifest", async () => {
+    const data = await call("get_data_status", {});
+    if (!data?.generated_at) throw new Error("missing generated_at");
+    files = Array.isArray(data.files) ? data.files : [];
+    if (files.length === 0) throw new Error("manifest has no files");
+    const datasets = new Set(files.map((file) => file.dataset));
+    return `files=${files.length} datasets=${datasets.size} stale=${data.stale?.length ?? 0} generated=${data.generated_at}`;
+  });
+  if (!manifestOk) {
+    for (const dataset of DATASET_NAMES) line("fail", "data export", dataset, "manifest check failed");
+    return;
+  }
+
+  for (const dataset of DATASET_NAMES) {
+    const file = files.find((item) => item.dataset === dataset);
+    if (!file) {
+      line("fail", "data export", dataset, "missing from manifest");
+      continue;
+    }
+    let spec;
+    try {
+      spec = auditCallForFile(file);
+    } catch (err) {
+      line("fail", "data export", dataset, err instanceof Error ? err.message : String(err));
+      continue;
+    }
+    await check(spec.tool, `${dataset} ${file.league} ${file.season}`, async () => {
+      const data = await call(spec.tool, spec.args);
+      if (data?.dataset !== dataset) throw new Error(`dataset ${data?.dataset ?? "?"}`);
+      if (!data.updated_at) throw new Error("missing updated_at");
+      return `rows=${data.rowCount} updated_at=${data.updated_at}`;
+    });
+  }
 }

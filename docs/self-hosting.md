@@ -30,6 +30,9 @@ Setting `PORT` switches the server from stdio mode (for local MCP clients) to HT
 | `SPORTS_LEADER_MAX_TOKENS` | `50000` | Estimated-token ceiling for one MCP result; oversized results become valid truncation metadata |
 | `CACHE_MAX_ENTRIES` | `250` | Maximum raw ESPN responses retained in the in-memory LRU/TTL cache |
 | `CACHE_MAX_BYTES` | `67108864` | Approximate maximum cache bytes (64 MiB by default) |
+| `BAYES_DATA_BASE_URL` | `https://bayesratings.com/data/v1/` | Public historical Parquet directory (`manifest.json` and `<league>/<dataset>/<season>.parquet`). No API key. `www` redirects to the apex |
+| `BAYES_DATA_CACHE_DIR` | `~/.cache/sports-leader-mcp/bayes-data` | On-disk cache for export files |
+| `BAYES_DATA_REVALIDATE_MS` | `14400000` | How often to re-check the export manifest |
 
 ---
 
@@ -123,9 +126,9 @@ Basic liveness check. Always responds, even when the kill switch is active.
 ```json
 {
   "status": "ok",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "uptime": 3621.5,
-  "tools": 25,
+  "tools": 38,
   "stateless": true,
   "protocolVersions": {
     "modern": ["2026-07-28"],
@@ -191,7 +194,7 @@ docker run -p 3000:3000 \
 
 ## Next Steps
 
-- Browse the [Tools](tools/) to see all 25 tools with parameters and examples
+- Browse the [Tools](tools/) to see all 38 tools with parameters and examples
 - Run `npm run audit` from a checkout to hit every tool against live ESPN and print a pass/fail report
 - Read [Gotchas & Pitfalls](../references/gotchas.md) for ESPN API quirks
 - Check the [API Endpoints](../references/endpoints.md) reference for the raw ESPN API catalog

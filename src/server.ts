@@ -7,6 +7,7 @@ import { athleteTools } from "./tools/athletes.js";
 import { discoveryTools } from "./tools/discovery.js";
 import { slateTools } from "./tools/slate.js";
 import { researchTools } from "./tools/research.js";
+import { dataTools } from "./data/tools.js";
 import type { AnyToolDef } from "./tool.js";
 import { UpstreamError, CancelledError, withRequestSignal } from "./client.js";
 import { applyBudget } from "./transforms.js";
@@ -24,6 +25,7 @@ export const ALL_TOOLS: AnyToolDef[] = [
   ...discoveryTools,
   ...slateTools,
   ...researchTools,
+  ...dataTools,
 ];
 
 /**
