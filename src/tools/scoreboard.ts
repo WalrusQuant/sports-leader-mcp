@@ -1,5 +1,6 @@
 import { BASE } from "../endpoints.js";
-import { fetchJson } from "../client.js";
+import { UpstreamError, fetchJson } from "../client.js";
+import { upstreamDetail } from "../season.js";
 import { defineTool } from "../tool.js";
 import {
   transformScoreboard,
@@ -26,7 +27,7 @@ export const getScoreboard = defineTool({
   name: "get_scoreboard",
   title: "Get scoreboard",
   description:
-    "Entry point for live, completed, and scheduled games. Returns eventId, start time, state/detail, competitors with team IDs, current/final and period scores, records, and venue, plus normalized odds (numeric moneylines, implied and no-vig probabilities, signed homeSpread) when ESPN lists them. Pass eventId to the other game tools; use get_slate for a one-call daily view with injuries.",
+    "Entry point for live, completed, and scheduled games. Returns eventId, start time, state/detail, competitors with team IDs, current/final and period scores, records, and venue, plus normalized odds (numeric moneylines, implied and no-vig probabilities, signed homeSpread) when ESPN lists them. Individual sports (golf, tennis, racing) include competitor.athlete (name, id) and order. Pass eventId to the other game tools; use get_slate for a one-call daily view with injuries.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -117,7 +118,7 @@ export const getGameProbabilities = defineTool({
   name: "get_game_probabilities",
   title: "Get game win probabilities",
   description:
-    "Get the full compact win-probability timeline keyed by playId with homeWinPct and awayWinPct. Use get_game_summary when sampled probability points are sufficient.",
+    "Get the full compact win-probability timeline keyed by playId with homeWinPct and awayWinPct. Use get_game_summary when sampled probability points are sufficient. Hockey, soccer, and games that have not started return count 0 plus unavailable instead of an error — ESPN answers those with HTTP 400.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -125,10 +126,19 @@ export const getGameProbabilities = defineTool({
     limit: limitSchema,
   },
   handler: async ({ sport, league, eventId, limit }) => {
-    return fetchJson(
-      `${BASE.core}/${sport}/leagues/${league}/events/${eventId}/competitions/${eventId}/probabilities`,
-      { params: { limit: limit ?? 200 } },
-    );
+    try {
+      return await fetchJson(
+        `${BASE.core}/${sport}/leagues/${league}/events/${eventId}/competitions/${eventId}/probabilities`,
+        { params: { limit: limit ?? 200 } },
+      );
+    } catch (err) {
+      // 400 = not published (NHL and soccer never; college football before kickoff).
+      // 404 still means a bad event id and is returned as a tool error.
+      if (err instanceof UpstreamError && err.status === 400) {
+        return { count: 0, items: [], unavailable: upstreamDetail(err) };
+      }
+      throw err;
+    }
   },
   transform: transformGameProbabilities,
 });

@@ -8,6 +8,8 @@ Entry point for games. Returns event IDs, dates, status, teams, final/current sc
 
 Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`), `dateRange` (`YYYYMMDD-YYYYMMDD`), `week`, `seasonType`, and `raw`.
 
+Individual sports (golf, tennis, racing) put the player on `competitor.athlete` rather than `competitor.team`. Compact output adds `athlete` (`id`, `name`) and `order` when that name is present. Team sports are unchanged.
+
 Compact shape:
 
 ```json
@@ -88,6 +90,8 @@ Provider IDs are available at `sports://reference/betting-providers`.
 Returns the full compact probability series as `{ playId, homeWinPct, awayWinPct }` records.
 
 Parameters: `sport`, `league`, `eventId`, optional `limit` (default `200`), and `raw`.
+
+Hockey and soccer are not published on this Core endpoint, and a game that has not started often is not either. Those return HTTP 400. The tool then returns `count: 0`, `probabilities: []`, and `unavailable` with ESPN's message instead of a tool error. A bad event id is still an error (HTTP 404).
 
 ## `get_slate`
 

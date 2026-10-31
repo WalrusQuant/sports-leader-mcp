@@ -1,7 +1,7 @@
 # sports-leader-mcp
 
 
-Free MCP server for live sports data. **21 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player stats, betting odds, play-by-play, injuries, transactions, and news across **30 verified leagues in 11 sports**.
+Free MCP server for live sports data. **25 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, and futures across **30 verified leagues in 11 sports**.
 
 No ESPN auth or API keys. Stdio mode has no server-side request quota; HTTP mode applies configurable per-IP limits.
 
@@ -37,14 +37,14 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 |---|---|
 | **Live Scores** | Real-time scoreboards for every game in every league |
 | **Player Stats** | Season stats, game logs, home/away splits, career data |
-| **Standings & Leaders** | Current standings and statistical leaders for any league |
+| **Standings, Rankings & Power Index** | Standings, statistical leaders, college polls, and BPI/FPI |
 | **Betting Odds** | Spreads, moneylines, totals by sportsbook, normalized to implied and no-vig probabilities for comparison with prediction markets |
 | **Game Deep-Dives** | Boxscores, full play-by-play, win probability timelines |
 | **Injuries & Transactions** | League-wide injury reports, signings, trades, waivers |
 | **News** | Real-time sports news filtered by sport, league, or team |
 | **Search** | Find any athlete, team, or article across ESPN |
 
-## Tools (21)
+## Tools (25)
 
 ### Discovery
 | Tool | Description |
@@ -69,6 +69,7 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | `get_teams` | Compact team IDs, names, abbreviations, locations, and venues |
 | `get_team` | Team detail, roster, schedule, record, depth chart, injuries, transactions, history, news, or leaders |
 | `get_team_injuries` | Injury report for a single team |
+| `get_team_stats` | Team season stat line (totals, not every split) |
 
 ### Athletes
 | Tool | Description |
@@ -86,6 +87,9 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | `get_injuries` | League-wide injury report |
 | `get_transactions` | Recent signings, trades, waivers |
 | `get_news` | Real-time sports news feed |
+| `get_rankings` | College poll rankings (AP, coaches, and the other polls ESPN publishes) |
+| `get_power_index` | BPI (basketball) or FPI (football) with rank and projections |
+| `get_futures` | Season futures odds (championship, awards) with team or athlete ids |
 
 ## Prompts (5)
 
@@ -158,9 +162,12 @@ npm run dev       # watch mode — recompiles on file changes
 npm start         # run the server via stdio
 PORT=3000 npm start  # run as HTTP server on port 3000
 npm test          # build and run unit, golden-file, and MCP end-to-end tests
+npm run audit     # live pass/fail check of every tool against ESPN (needs network)
 npm run test:update-golden  # regenerate test/golden after an intentional output change
 npm run fixtures:capture    # re-record raw ESPN fixtures into test/fixtures
 ```
+
+`npm run audit` is not part of `npm test`. It calls the real ESPN APIs for MLB, NBA, NFL, NHL, college football, men's and women's college basketball, WNBA, and the Premier League, validates compact output against each tool's schema, and exits non-zero on a failure. Re-run it when a tool starts returning empty or upstream errors. MLB in late October and November is the offseason: the audit accepts an empty current scoreboard and checks 2026-07-04 instead.
 
 ## Agent-safe responses
 

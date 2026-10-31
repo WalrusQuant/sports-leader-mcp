@@ -34,21 +34,16 @@ export const ENDPOINT_DOCS: EndpointDoc[] = [
       "Play-by-play, odds, win probabilities, league leaders, athlete stats — the Core API with deep game data.",
   },
   {
-    key: "coreV3",
-    base: "https://sports.core.api.espn.com/v3/sports",
-    usedFor:
-      "Athlete statistics with structured split/category breakdowns (v3 Core API).",
-  },
-  {
     key: "web",
     base: "https://site.web.api.espn.com/apis/common/v3/sports",
     usedFor:
-      "Team rosters — the web-facing common API used by ESPN's own front-end.",
+      "Athlete overview, season stats, gamelogs, and splits — the web common v3 API. (The sports.core.api.espn.com/v3 host returns 404 for these resources.)",
   },
   {
     key: "cdn",
     base: "https://cdn.espn.com/core",
-    usedFor: "Team schedules — served from ESPN's CDN edge layer.",
+    usedFor:
+      "Alternate CDN game packages. Requires ?xhr=1 and the league slug (nba, not basketball). Dedicated tools use the Site API for schedules; this base is for espn_fetch.",
   },
   {
     key: "now",

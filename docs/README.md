@@ -1,6 +1,6 @@
 # sports-leader-mcp
 
-A free [Model Context Protocol](https://modelcontextprotocol.io) server for live sports data across **30 verified leagues in 11 sports**: 21 tools, 4 resources, 7 resource templates, and 5 prompts.
+A free [Model Context Protocol](https://modelcontextprotocol.io) server for live sports data across **30 verified leagues in 11 sports**: 25 tools, 4 resources, 7 resource templates, and 5 prompts.
 
 Built on ESPN's public JSON APIs. No authentication required — just connect your MCP client and start querying.
 
@@ -34,17 +34,17 @@ The scoped identifier above is a Smithery registry identifier, not this reposito
 }
 ```
 
-## 21 Tools at a Glance
+## 25 Tools at a Glance
 
 | Category | Tools |
 |----------|-------|
 | [Discovery](tools/discovery.md) | `list_sports_and_leagues`, `search`, `espn_fetch` |
 | [Scoreboard & Games](tools/scoreboard.md) | `get_scoreboard`, `get_game_summary`, `get_game_plays`, `get_game_odds`, `get_game_probabilities`, `get_slate` |
-| [Teams](tools/teams.md) | `get_teams`, `get_team`, `get_team_injuries` |
+| [Teams](tools/teams.md) | `get_teams`, `get_team`, `get_team_injuries`, `get_team_stats` |
 | [Athletes](tools/athletes.md) | `get_athlete_overview`, `get_athlete_stats`, `get_athlete_gamelog`, `get_athlete_splits` |
-| [League-Wide](tools/league.md) | `get_standings`, `get_league_leaders`, `get_injuries`, `get_transactions`, `get_news` |
+| [League-Wide](tools/league.md) | `get_standings`, `get_league_leaders`, `get_injuries`, `get_transactions`, `get_news`, `get_rankings`, `get_power_index`, `get_futures` |
 
-Six tools (`get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_slate`) publish an MCP `outputSchema`. Odds are normalized for comparison with prediction markets: numeric American moneylines, implied and no-vig probabilities, and `homeSpread` (negative = home team favored). See [Scoreboard & Games](tools/scoreboard.md#get_game_odds).
+Ten tools (`get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_slate`, `get_team_stats`, `get_rankings`, `get_power_index`, `get_futures`) publish an MCP `outputSchema`. Odds are normalized for comparison with prediction markets: numeric American moneylines, implied and no-vig probabilities, and `homeSpread` (negative = home team favored). See [Scoreboard & Games](tools/scoreboard.md#get_game_odds).
 
 ## Resources
 

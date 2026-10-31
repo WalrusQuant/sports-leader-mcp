@@ -3,13 +3,28 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
-## Unreleased
+## 0.4.0 — 2026-10-31
 
-- Fix `get_news` league/team filters (2026-10-18). ESPN's now.core feed ignores
-  `leagues` and `team`, so NFL + team=GB returned college-football previews.
-  With sport+league the tool now uses the Site API league feed and keeps only
-  articles tagged with the requested team (abbreviation or team ID). Site-API
-  articles get keywords from their team/league/athlete categories (max 12).
+Live audit of the ESPN endpoints behind all 21 tools, then fixes and four new tools. `npm run audit` repeats that check.
+
+### Added
+- `get_rankings` — college polls (football, men's and women's basketball). Pro leagues return `unavailable` instead of an error.
+- `get_power_index` — BPI (basketball) and FPI (football), sorted by rank, team id taken from the Core reference. NHL, MLB, and soccer return `unavailable`.
+- `get_team_stats` — team season totals. Per-situation splits are left out (the MLB document is ~700 KB).
+- `get_futures` — season futures with American odds and team or athlete ids (names are not in the Core document; 40 outcomes per market).
+- `npm run audit` — calls every tool live (MLB, NBA, NFL, NHL, college football, men's and women's college basketball, WNBA, Premier League, plus a PGA scoreboard) and prints pass/fail. Not part of `npm test`.
+- Scoreboard competitors for individual sports include `athlete` (`id`, `name`) and `order` (golf, tennis, racing).
+
+### Fixed
+- `get_teams` requested no limit, so college football and college basketball stopped at ESPN's default of 50. It now asks for 1000.
+- `get_league_leaders` called the all-time `/leaders` collection, which ignores `season` and returns 400/404 for college, the WNBA, and soccer. It now calls `/seasons/{year}/types/{seasonType}/leaders` (type 2, then type 1 for soccer).
+- `get_team` views `news`, `transactions`, `leaders`, and `history` read Site paths that return `{}`. News, transactions, and leaders now use the league news feed, league transactions, and Core season leaders. History returns the core franchise identity, the current record, and a note that season-by-season history is not published.
+- `get_team` schedule retries the regular season (`seasontype=2`) when the default document has no events. That covers college basketball's empty preseason in October and an MLB team's empty postseason in November. Schedule and depth-chart views are compacted so they are not token-truncated.
+- `get_standings` kept the last copy of repeated stat names, so college basketball wins/losses were a split (home, road, conference) instead of the overall record. The first value is kept. The token budget is measured on the compact JSON that is actually returned, so a full college basketball standings list is no longer replaced by a truncation envelope.
+- `get_game_probabilities` returned an error on HTTP 400. Hockey, soccer, and not-yet-started games now return an empty timeline plus `unavailable`. A bad event id (404) is still an error.
+- `get_news` league/team filters (2026-10-18). ESPN's now.core feed ignores `leagues` and `team`, so NFL + team=GB returned college-football previews. With sport+league the tool uses the Site API league feed and keeps articles tagged with the requested team. Site-API articles get keywords from their team/league/athlete categories (max 12).
+- Removed the unused `coreV3` base (`sports.core.api.espn.com/v3`), which 404s. Athlete stats stay on the Web API v3 host. The CDN base is documented as an `espn_fetch` escape hatch (`xhr=1`), not as the schedule implementation.
+
 ## 0.3.0 — 2026-10-06
 
 MCP TypeScript SDK v2 and spec 2026-07-28. Tool names, inputs, and compact output are unchanged from 0.2.0.

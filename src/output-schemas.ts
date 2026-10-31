@@ -107,6 +107,8 @@ export const scoreboardOutput = withEnvelope({
           homeAway: str,
           winner: z.boolean().optional(),
           team: obj({ id: optStr, abbrev: optStr, name: optStr, displayName: optStr }),
+          athlete: obj({ id: optStr, name: optStr }).optional(),
+          order: z.number().optional(),
           score: str,
           linescores: z.array(str).optional(),
           record: optStr,
@@ -251,6 +253,75 @@ const slateSideSchema = obj({
   keyInjuries: z.array(keyInjurySchema).nullable().describe("null = injury report unavailable."),
   keyInjuriesOmitted: z.number().optional(),
   otherInjuryCount: z.number().optional().describe("Injured players with other statuses (Questionable, IL, IR, ...)."),
+});
+
+const teamIdentity = obj({ id: optStr, abbrev: optStr, name: optStr, displayName: optStr });
+
+export const rankingsOutput = withEnvelope({
+  season: z.number().optional(),
+  week: z.number().optional(),
+  unavailable: optStr,
+  polls: z.array(
+    obj({
+      name: str,
+      shortName: optStr,
+      ranks: z.array(
+        obj({
+          rank: z.number(),
+          previous: z.number().optional(),
+          points: z.number().optional(),
+          firstPlaceVotes: z.number().optional(),
+          trend: optStr,
+          record: optStr,
+          team: teamIdentity.optional(),
+        }),
+      ),
+    }),
+  ),
+});
+
+export const powerIndexOutput = withEnvelope({
+  season: z.number().optional(),
+  unavailable: optStr,
+  teams: z.array(
+    obj({
+      teamId: str,
+      stats: z.record(z.string(), str),
+    }),
+  ),
+});
+
+export const teamStatsOutput = withEnvelope({
+  season: obj({ year: z.number().optional(), name: optStr, type: optStr }).optional(),
+  team: teamIdentity.optional(),
+  categories: z.array(
+    obj({
+      name: str,
+      displayName: optStr,
+      stats: z.record(z.string(), str),
+    }),
+  ),
+});
+
+export const futuresOutput = withEnvelope({
+  season: z.number().optional(),
+  unavailable: optStr,
+  note: optStr,
+  markets: z.array(
+    obj({
+      id: str,
+      name: str,
+      provider: optStr,
+      outcomeCount: z.number(),
+      outcomes: z.array(
+        obj({
+          teamId: optStr,
+          athleteId: optStr,
+          odds: str,
+        }),
+      ),
+    }),
+  ),
 });
 
 export const slateOutput = withEnvelope({
