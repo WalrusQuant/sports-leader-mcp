@@ -10,7 +10,7 @@ import path from "node:path";
 
 import { ALL_TOOLS, runTool } from "../server.js";
 import {
-  DEFAULT_BAYES_DATA_BASE_URL,
+  DEFAULT_BAYES_DATA_MANIFEST_URL,
   isDataExportConfigured,
   normalizeBaseUrl,
   readDataConfig,
@@ -220,6 +220,18 @@ function mockFetch(state: MockState): DataDeps["fetch"] {
       next.hostname = `hop${state.calls.length}.example`;
       return new Response(null, { status: 302, headers: { Location: next.href } });
     }
+    const release = url.pathname.match(/^\/([a-z]+)_([a-z0-9_]+)\/(\d{4})\.parquet$/);
+    if (url.hostname === "releases.example" && release) {
+      const dest = new URL(url.href);
+      dest.hostname = "cdn.example";
+      return new Response(null, { status: 302, headers: { Location: dest.href, "Cache-Control": "no-cache" } });
+    }
+    if (release && url.hostname === "cdn.example") {
+      const key = `${release[1]}/${release[2]}/${release[3]}.parquet`;
+      const file = state.files.get(key);
+      if (!file) return new Response("missing", { status: 404 });
+      return new Response(new Uint8Array(file), { status: 200, headers: { ETag: "\"0xCDN\"" } });
+    }
     if (state.redirect && url.hostname === "files.example") {
       const dest = new URL(url.href);
       dest.hostname = "cdn.example";
@@ -255,6 +267,7 @@ function deps(state: MockState, now: () => number): DataDeps {
 
 function config(cacheDir: string, overrides: Partial<DataConfig> = {}): DataConfig {
   return {
+    manifestUrl: "https://files.example/export/manifest.json",
     baseUrl: "https://files.example/export",
     cacheDir,
     revalidateMs: 60 * 60 * 1000,
@@ -263,29 +276,25 @@ function config(cacheDir: string, overrides: Partial<DataConfig> = {}): DataConf
 }
 
 describe("bayes data export", { concurrency: 1 }, () => {
-  test("the public export URL is the default and there is no API key", () => {
-    assert.equal(DEFAULT_BAYES_DATA_BASE_URL, "https://bayesratings.com/data/v1/");
+  test("GitHub Releases is the default manifest and directory overrides still work", () => {
+    assert.equal(
+      DEFAULT_BAYES_DATA_MANIFEST_URL,
+      "https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json",
+    );
     const builtin = readDataConfig({});
-    assert.equal(builtin?.baseUrl, "https://bayesratings.com/data/v1");
-    assert.equal("apiKey" in (builtin ?? {}), false);
+    assert.equal(builtin?.manifestUrl, DEFAULT_BAYES_DATA_MANIFEST_URL);
+    assert.equal(builtin?.baseUrl, null);
     assert.equal(isDataExportConfigured({}), true);
-    const fromDefault = readDataConfig({}, "https://cdn.example/releases/data/");
-    assert.equal(fromDefault?.baseUrl, "https://cdn.example/releases/data");
-    const overridden = readDataConfig(
-      { BAYES_DATA_BASE_URL: "https://override.example/data/v1" },
-      "https://cdn.example/releases/data",
-    );
-    assert.equal(overridden?.baseUrl, "https://override.example/data/v1");
-    assert.equal(readDataConfig({ BAYES_DATA_BASE_URL: "  " }, ""), null);
+    const directory = readDataConfig({ BAYES_DATA_BASE_URL: "https://cdn.example/releases/data/" });
+    assert.equal(directory?.baseUrl, "https://cdn.example/releases/data");
+    assert.equal(directory?.manifestUrl, "https://cdn.example/releases/data/manifest.json");
+    const manifestOnly = readDataConfig({
+      BAYES_DATA_MANIFEST_URL: "https://example.com/custom/manifest.json",
+    });
+    assert.equal(manifestOnly?.manifestUrl, "https://example.com/custom/manifest.json");
+    assert.equal(manifestOnly?.baseUrl, null);
+    assert.equal(readDataConfig({ BAYES_DATA_BASE_URL: "  ", BAYES_DATA_MANIFEST_URL: "  " }, ""), null);
     assert.equal(isDataExportConfigured({ BAYES_DATA_BASE_URL: "https://cdn.example/data" }), true);
-    assert.equal(
-      dataUrl(normalizeBaseUrl(DEFAULT_BAYES_DATA_BASE_URL), "manifest.json"),
-      "https://bayesratings.com/data/v1/manifest.json",
-    );
-    assert.equal(
-      dataUrl(normalizeBaseUrl(DEFAULT_BAYES_DATA_BASE_URL), "nba/games/2027.parquet"),
-      "https://bayesratings.com/data/v1/nba/games/2027.parquet",
-    );
     assert.throws(() => normalizeBaseUrl("https://user:super-secret@files.example/data"), (err: unknown) => {
       assert.ok(err instanceof Error);
       assert.match(err.message, /credentials/);
@@ -300,7 +309,7 @@ describe("bayes data export", { concurrency: 1 }, () => {
   });
 
   test("tools report data export not configured when no base url is set", async () => {
-    assert.throws(() => requireDataConfig({ BAYES_DATA_BASE_URL: "" }, ""), /data export not configured/);
+    assert.throws(() => requireDataConfig({ BAYES_DATA_BASE_URL: "", BAYES_DATA_MANIFEST_URL: "" }, ""), /data export not configured/);
     if (!isDataExportConfigured()) {
       const result = await runTool(getGames, { league: "nba" });
       assert.equal(result.isError, true);
@@ -497,6 +506,7 @@ describe("bayes data export", { concurrency: 1 }, () => {
       state.calls.length = 0;
       const status = await dataStatus(cfg, deps(state, () => now));
       assert.equal(status.generated_at, "2026-10-31T12:00:00Z");
+      assert.equal(status.manifestUrl, "https://files.example/export/manifest.json");
       assert.equal(status.baseUrl, "https://files.example/export");
       assert.ok(state.calls.some((call) => call.ifNoneMatch === "\"manifest-etag\""));
       assert.ok(state.calls.every((call) => call.key === null));
@@ -510,6 +520,31 @@ describe("bayes data export", { concurrency: 1 }, () => {
         /exceeded 5 redirects/,
       );
       await rm(loopDir, { recursive: true, force: true });
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("manifest file urls are fetched through the release redirect, not a built path", async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), "bayes-url-"));
+    try {
+      const columns = columnsFor("games", "nba");
+      const body = await writeParquet(path.join(dir, "seed.parquet"), columns, [row(columns, "nba", { game_id: 11 })]);
+      const file = fileEntry("games", "nba", 2027, columns, body, 1, "2026-10-31T12:00:00Z");
+      file.entry.url = "https://releases.example/nba_games/2027.parquet";
+      const state = freshState([file]);
+      const cfg = config(dir, { baseUrl: null });
+      const now = Date.parse("2026-10-31T18:00:00Z");
+      const result = await queryDataset(cfg, { dataset: "games", league: "nba", seasons: [2027], limit: 1 }, deps(state, () => now));
+      assert.equal(result.rows[0]?.game_id, 11);
+      assert.ok(state.calls.some((call) => call.url.startsWith("https://releases.example/nba_games/2027.parquet")));
+      assert.ok(state.calls.some((call) => call.url.startsWith("https://cdn.example/nba_games/2027.parquet")));
+      assert.equal(state.calls.some((call) => call.url.includes("/nba/games/2027.parquet")), false);
+      const release = state.calls.find((call) => call.url.startsWith("https://releases.example/"));
+      assert.equal(release?.ifNoneMatch, null);
+      const before = state.calls.length;
+      await queryDataset(cfg, { dataset: "games", league: "nba", seasons: [2027], limit: 1 }, deps(state, () => now));
+      assert.equal(state.calls.length, before, "sha256 match skips the release download");
     } finally {
       await rm(dir, { recursive: true, force: true });
     }

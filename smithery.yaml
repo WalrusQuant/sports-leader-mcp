@@ -2,8 +2,8 @@ name: sports-leader-mcp
 description: >-
   Free MCP server for live sports data — scores, standings, rosters, player stats,
   betting odds, play-by-play, injuries, transactions, and news across 30 verified
-  leagues in 11 sports. 38 tools, 4 resources, 7 resource templates, 5 prompts. No auth required. Historical MLB, NBA, NFL, and NHL data is included from the public bayesratings export.
-version: 0.5.0
+  leagues in 11 sports. 38 tools, 4 resources, 7 resource templates, 5 prompts. No auth required. Historical MLB, NBA, NFL, and NHL data comes from the public bayesratings-data GitHub Releases.
+version: 0.5.1
 license: MIT
 keywords:
   - sports
@@ -34,14 +34,20 @@ startCommand:
         title: Request Timeout
         description: Timeout in milliseconds for upstream ESPN API calls. Default is 30000 (30 seconds).
         default: 30000
+      bayesDataManifestUrl:
+        type: string
+        title: Historical data manifest URL
+        description: >-
+          Overrides the GitHub Releases manifest
+          (bayesratings-data releases/download/manifest/manifest.json).
+          No API key. Leave empty to use the built-in default.
       bayesDataBaseUrl:
         type: string
-        title: Historical data base URL
+        title: Historical data directory URL
         description: >-
-          Overrides the public default https://bayesratings.com/data/v1/.
-          The directory that contains manifest.json and
-          <league>/<dataset>/<season>.parquet. No API key. Leave empty to
-          use the built-in default.
+          Directory mirror. Manifest is fetched from {base}/manifest.json.
+          Files with no url in the manifest are {base}/<league>/<dataset>/<season>.parquet.
+          Leave empty to use GitHub Releases.
     additionalProperties: false
   commandFunction: |-
     (config) => ({
@@ -49,6 +55,7 @@ startCommand:
       args: ["dist/index.js"],
       env: {
         SPORTS_LEADER_TIMEOUT: String(config.timeout || 30000),
+        ...(config.bayesDataManifestUrl ? { BAYES_DATA_MANIFEST_URL: String(config.bayesDataManifestUrl) } : {}),
         ...(config.bayesDataBaseUrl ? { BAYES_DATA_BASE_URL: String(config.bayesDataBaseUrl) } : {})
       }
     })
