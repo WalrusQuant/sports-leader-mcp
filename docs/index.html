@@ -9,7 +9,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="sports-leader-mcp — Live Sports Data for AI Agents">
-  <meta property="og:description" content="Free MCP server with 25 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports. No auth required.">
+  <meta property="og:description" content="Free MCP server with 38 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports. No auth required.">
   <meta property="og:image" content="https://walrusquant.github.io/sports-leader-mcp/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -19,7 +19,7 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="sports-leader-mcp — Live Sports Data for AI Agents">
-  <meta name="twitter:description" content="Free MCP server with 25 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports.">
+  <meta name="twitter:description" content="Free MCP server with 38 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports.">
   <meta name="twitter:image" content="https://walrusquant.github.io/sports-leader-mcp/assets/og-image.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -489,7 +489,7 @@
 
       <div class="stats-bar">
         <div class="stat">
-          <div class="stat-number">25</div>
+          <div class="stat-number">38</div>
           <div class="stat-label">Tools</div>
         </div>
         <div class="stat">
@@ -553,7 +553,7 @@
   <!-- TOOLS -->
   <section class="tools-section" id="tools">
     <div class="section-inner">
-      <div class="section-label fade-in">25 MCP Tools</div>
+      <div class="section-label fade-in">38 MCP Tools</div>
       <h2 class="section-title fade-in">The Full Toolkit</h2>
       <p class="section-desc fade-in">Each tool is documented with parameters, examples, and response schemas. <a href="docs.html#tools/">Read the full docs.</a></p>
 
@@ -659,6 +659,25 @@
           <div class="tool-card">
             <div><div class="tool-name">get_futures</div><div class="tool-desc">Season futures odds with team or athlete ids</div></div>
           </div>
+        </div>
+      </div>
+
+      <div class="tool-group fade-in">
+        <div class="tool-group-label">Historical export</div>
+        <div class="tool-list">
+          <div class="tool-card"><div><div class="tool-name">get_games</div><div class="tool-desc">Schedule and results from the Parquet export</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_team_box_scores</div><div class="tool-desc">Team box line, one row per team per game</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_team_game_stats</div><div class="tool-desc">Team counting stats for and against</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_player_game_logs</div><div class="tool-desc">Player logs; statGroup picks skater, pitching, passing, and the rest</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_rosters</div><div class="tool-desc">Roster spans, valid_to empty when still current</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_injury_reports</div><div class="tool-desc">Injury history from the export</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_transaction_log</div><div class="tool-desc">Transaction history from the export</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_depth_charts</div><div class="tool-desc">NFL depth-chart slots</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_probables</div><div class="tool-desc">Probable pitchers and goalies</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_lineups</div><div class="tool-desc">Announced lineups</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_weather</div><div class="tool-desc">Game weather for MLB and NFL</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_published_ratings</div><div class="tool-desc">Published team rating and range</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_data_status</div><div class="tool-desc">Manifest summary and files older than 36 hours</div></div></div>
         </div>
       </div>
     </div>
