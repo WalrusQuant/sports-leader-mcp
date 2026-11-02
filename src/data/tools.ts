@@ -88,7 +88,12 @@ const projection = { columns: columnsField, sort: sortField, order: orderField, 
 const seasoning = { season: seasonField, seasons: seasonsField };
 
 const EXPORT_HINT =
-  "Reads the public historical Parquet export from GitHub Releases (https://github.com/WalrusQuant/bayesratings-data, no API key). Each file is downloaded from the url in the manifest. Includes updated_at. ESPN ids are on every row. Seasons start at 2021.";
+  "Reads the public historical Parquet export (no API key). " +
+  "Default manifest: https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json. " +
+  "Each file is downloaded from its manifest url (GitHub Releases tag <league>_<dataset>, asset <season>.parquet). " +
+  "Override that manifest with BAYES_DATA_MANIFEST_URL. " +
+  "BAYES_DATA_BASE_URL is an optional directory mirror: {base}/manifest.json, and {base}/<path> only when a file has no url. " +
+  "Includes updated_at. ESPN ids are on every row. Seasons start at 2021.";
 
 interface FilterArgs {
   league: string;
@@ -272,11 +277,13 @@ export const getDataStatus = defineTool({
   title: "Get data export status",
   description:
     "Manifest summary for the public historical Parquet export: datasets, files, row counts, urls, and updated_at. " +
-    "Flags any current-season file older than 36 hours. The export is rebuilt nightly after about 7:15 AM CT and published to GitHub Releases. " +
-    "Default manifest is https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json. No API key. " +
-    "Override with BAYES_DATA_MANIFEST_URL, or BAYES_DATA_BASE_URL for a directory mirror ({base}/manifest.json). " +
+    "Flags any current-season file older than 36 hours. Published to GitHub Releases nightly after about 7:15 AM CT. " +
+    "Default manifest: https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json. No API key. " +
+    "Override that manifest with BAYES_DATA_MANIFEST_URL. " +
+    "BAYES_DATA_BASE_URL is an optional directory mirror ({base}/manifest.json, and {base}/<path> only when a file has no url). " +
     "Optional BAYES_DATA_CACHE_DIR and BAYES_DATA_REVALIDATE_MS (default 4 hours). " +
-    "Release downloads 302 to a CDN and do not 304 on that first hop; cached parquet is reused while its sha256 matches the manifest.",
+    "Release downloads 302 to a short-lived CDN URL and do not 304 on that GitHub hop. " +
+    "A cached parquet file is reused while its sha256 matches the manifest.",
   inputShape: {
     includeColumns: z
       .boolean()

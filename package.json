@@ -1,7 +1,7 @@
 {
   "name": "sports-leader-mcp",
-  "version": "0.5.1",
-  "description": "MCP server for live sports data: scores, standings, rosters, stats, odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports, plus an optional historical Parquet export.",
+  "version": "0.5.2",
+  "description": "MCP server for live sports data: scores, standings, rosters, stats, odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports, plus historical MLB, NBA, NFL, and NHL Parquet from GitHub Releases (no API key).",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",

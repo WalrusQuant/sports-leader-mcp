@@ -22,7 +22,7 @@ import { columnsFor, DATASET_INFO, type ColumnDef, type ColType } from "./datase
 import { dataUrl, type DataDeps } from "./http.js";
 import type { ManifestFile } from "./manifest.js";
 import { queryDataset } from "./query.js";
-import { DATA_TOOL_NAMES, getGames, getPlayerGameLogs } from "./tools.js";
+import { DATA_TOOL_NAMES, dataTools, getGames, getPlayerGameLogs } from "./tools.js";
 
 const SQL_TYPE: Record<ColType, string> = {
   str: "VARCHAR",
@@ -306,6 +306,17 @@ describe("bayes data export", { concurrency: 1 }, () => {
       "https://github.com/org/repo/releases/download/data/nba/games/2027.parquet",
     );
     assert.equal(dataUrl("https://files.example/export/", "manifest.json"), "https://files.example/export/manifest.json");
+  });
+
+  test("data tool descriptions name the GitHub Releases manifest, not the retired directory", () => {
+    const manifest = "https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json";
+    for (const tool of dataTools) {
+      assert.equal(/bayesratings\.com\/data/i.test(tool.description), false, tool.name);
+      assert.ok(tool.description.includes(manifest), tool.name);
+      assert.match(tool.description, /BAYES_DATA_MANIFEST_URL/, tool.name);
+      assert.match(tool.description, /BAYES_DATA_BASE_URL/, tool.name);
+      assert.match(tool.description, /directory mirror/, tool.name);
+    }
   });
 
   test("tools report data export not configured when no base url is set", async () => {

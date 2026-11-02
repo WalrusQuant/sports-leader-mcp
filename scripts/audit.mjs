@@ -179,7 +179,7 @@ await check("espn_fetch", "nba league root", async () => {
 
 await check("endpoint", "cdn nba scoreboard xhr=1", async () => {
   const res = await fetch("https://cdn.espn.com/core/nba/scoreboard?xhr=1", {
-    headers: { "User-Agent": "sports-leader-mcp-audit/0.5.1", Accept: "application/json" },
+    headers: { "User-Agent": "sports-leader-mcp-audit/0.5.2", Accept: "application/json" },
   });
   const type = res.headers.get("content-type") ?? "";
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
