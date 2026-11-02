@@ -3,6 +3,14 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.5.2 — 2026-11-02
+
+User-facing text for the historical export names the GitHub Releases manifest. It no longer describes the retired site directory as the source.
+
+### Changed
+- All 13 data-tool descriptions name `https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json`, `BAYES_DATA_MANIFEST_URL` as the manifest override, and `BAYES_DATA_BASE_URL` as the optional directory mirror (`{base}/manifest.json`, and `{base}/<path>` only when a file has no `url`).
+- README, docs, Smithery, and the package description match that. Caching text still says release downloads 302 to a short-lived CDN URL and that a file stays cached while its sha256 matches the manifest. `get_data_status` still flags current-season files older than 36 hours.
+
 ## 0.5.1 — 2026-10-31
 
 The historical export moved from `bayesratings.com/data/v1` to GitHub Releases on [bayesratings-data](https://github.com/WalrusQuant/bayesratings-data).
