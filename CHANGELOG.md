@@ -3,6 +3,18 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.5.3 — 2026-11-04
+
+The public export no longer publishes `team_ratings`. This server drops that tool and treats a missing data set as a normal answer, not an audit failure.
+
+### Removed
+- `get_published_ratings`. The export is game, roster, injury, transaction, lineup, and weather data. 37 tools.
+
+### Changed
+- Asking for a data set the manifest does not include returns an error that names the data set and points at `get_data_status`.
+- `npm run audit` checks the data sets in the live manifest. A data set with no tool is skipped. A data set that is gone is not a failure.
+- `SPORTSLEADER_DATA_MANIFEST_URL` and `SPORTSLEADER_DATA_BASE_URL` are the preferred overrides. `BAYES_DATA_MANIFEST_URL` and `BAYES_DATA_BASE_URL` still work; the new name wins when both are set. The default manifest URL is unchanged.
+
 ## 0.5.2 — 2026-11-02
 
 User-facing text for the historical export names the GitHub Releases manifest. It no longer describes the retired site directory as the source.

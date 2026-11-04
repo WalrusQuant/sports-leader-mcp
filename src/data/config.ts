@@ -8,9 +8,11 @@ import { dataUrl } from "./http.js";
  * Public manifest for the historical Parquet export. No API key.
  * Each file entry has its own `url` (GitHub Releases:
  * `releases/download/<league>_<dataset>/<season>.parquet`).
- * `www` is not used. Override with `BAYES_DATA_MANIFEST_URL`.
- * `BAYES_DATA_BASE_URL` still selects a directory-style mirror
- * (`{base}/manifest.json` and `{base}/<path>` when a file has no url).
+ * `www` is not used. Override with `SPORTSLEADER_DATA_MANIFEST_URL`
+ * (`BAYES_DATA_MANIFEST_URL` is the same setting).
+ * `SPORTSLEADER_DATA_BASE_URL` (`BAYES_DATA_BASE_URL` still works) selects a
+ * directory-style mirror (`{base}/manifest.json` and `{base}/<path>` when a
+ * file has no url).
  */
 export const DEFAULT_BAYES_DATA_MANIFEST_URL =
   "https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json";
@@ -66,10 +68,19 @@ export function normalizeBaseUrl(raw: string, label = "BAYES_DATA_BASE_URL"): st
   return url.href.replace(/\/+$/, "") || url.origin;
 }
 
+function firstEnv(env: NodeJS.ProcessEnv, names: readonly string[]): { name: string; value: string } | null {
+  for (const name of names) {
+    const value = env[name]?.trim() ?? "";
+    if (value) return { name, value };
+  }
+  return null;
+}
+
 /**
  * Resolve the export settings.
- * `BAYES_DATA_MANIFEST_URL` wins for the manifest location.
- * `BAYES_DATA_BASE_URL` alone uses the directory layout (`{base}/manifest.json`).
+ * `SPORTSLEADER_DATA_MANIFEST_URL` wins, then `BAYES_DATA_MANIFEST_URL`.
+ * A base URL alone (`SPORTSLEADER_DATA_BASE_URL`, then `BAYES_DATA_BASE_URL`)
+ * uses the directory layout (`{base}/manifest.json`).
  * With neither set, the GitHub Releases manifest is used.
  * Returns null only when every source is empty (tests).
  */
@@ -77,15 +88,15 @@ export function readDataConfig(
   env: NodeJS.ProcessEnv = process.env,
   defaultManifestUrl: string = DEFAULT_BAYES_DATA_MANIFEST_URL,
 ): DataConfig | null {
-  const manifestEnv = env.BAYES_DATA_MANIFEST_URL?.trim() ?? "";
-  const baseEnv = env.BAYES_DATA_BASE_URL?.trim() ?? "";
+  const manifestEnv = firstEnv(env, ["SPORTSLEADER_DATA_MANIFEST_URL", "BAYES_DATA_MANIFEST_URL"]);
+  const baseEnv = firstEnv(env, ["SPORTSLEADER_DATA_BASE_URL", "BAYES_DATA_BASE_URL"]);
   let manifestUrl = "";
   let baseUrl: string | null = null;
   if (manifestEnv) {
-    manifestUrl = normalizeBaseUrl(manifestEnv, "BAYES_DATA_MANIFEST_URL");
-    baseUrl = baseEnv ? normalizeBaseUrl(baseEnv) : null;
+    manifestUrl = normalizeBaseUrl(manifestEnv.value, manifestEnv.name);
+    baseUrl = baseEnv ? normalizeBaseUrl(baseEnv.value, baseEnv.name) : null;
   } else if (baseEnv) {
-    baseUrl = normalizeBaseUrl(baseEnv);
+    baseUrl = normalizeBaseUrl(baseEnv.value, baseEnv.name);
     manifestUrl = dataUrl(baseUrl, "manifest.json");
   } else if (defaultManifestUrl.trim()) {
     manifestUrl = normalizeBaseUrl(defaultManifestUrl, "DEFAULT_BAYES_DATA_MANIFEST_URL");
@@ -110,7 +121,8 @@ export function requireDataConfig(
   const config = readDataConfig(env, defaultManifestUrl);
   if (!config) {
     throw new DataExportError(
-      `${NOT_CONFIGURED}: set BAYES_DATA_MANIFEST_URL or BAYES_DATA_BASE_URL`,
+      `${NOT_CONFIGURED}: set SPORTSLEADER_DATA_MANIFEST_URL or SPORTSLEADER_DATA_BASE_URL ` +
+        "(BAYES_DATA_MANIFEST_URL and BAYES_DATA_BASE_URL still work)",
     );
   }
   return config;
@@ -121,7 +133,7 @@ export function isDataExportConfigured(
   env: NodeJS.ProcessEnv = process.env,
   defaultManifestUrl: string = DEFAULT_BAYES_DATA_MANIFEST_URL,
 ): boolean {
-  if (env.BAYES_DATA_MANIFEST_URL?.trim()) return true;
-  if (env.BAYES_DATA_BASE_URL?.trim()) return true;
+  if (env.SPORTSLEADER_DATA_MANIFEST_URL?.trim() || env.BAYES_DATA_MANIFEST_URL?.trim()) return true;
+  if (env.SPORTSLEADER_DATA_BASE_URL?.trim() || env.BAYES_DATA_BASE_URL?.trim()) return true;
   return defaultManifestUrl.trim().length > 0;
 }
