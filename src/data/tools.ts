@@ -91,8 +91,8 @@ const EXPORT_HINT =
   "Reads the public historical Parquet export (no API key). " +
   "Default manifest: https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json. " +
   "Each file is downloaded from its manifest url (GitHub Releases tag <league>_<dataset>, asset <season>.parquet). " +
-  "Override that manifest with BAYES_DATA_MANIFEST_URL. " +
-  "BAYES_DATA_BASE_URL is an optional directory mirror: {base}/manifest.json, and {base}/<path> only when a file has no url. " +
+  "Override that manifest with SPORTSLEADER_DATA_MANIFEST_URL (BAYES_DATA_MANIFEST_URL still works). " +
+  "SPORTSLEADER_DATA_BASE_URL is an optional directory mirror (BAYES_DATA_BASE_URL still works): {base}/manifest.json, and {base}/<path> only when a file has no url. " +
   "Includes updated_at. ESPN ids are on every row. Seasons start at 2021.";
 
 interface FilterArgs {
@@ -264,14 +264,6 @@ export const getWeather = defineTool({
   handler: (args) => run("weather", args),
 });
 
-export const getPublishedRatings = defineTool({
-  name: "get_published_ratings",
-  title: "Get published ratings",
-  description: `Published team rating and its range, by day, as shown on the site (rating, rating_low, rating_high, rank). Not forecasts or model internals. ${EXPORT_HINT}`,
-  inputShape: { league: leagueField, ...seasoning, ...range, team: teamField, ...projection },
-  handler: (args) => run("team_ratings", args),
-});
-
 export const getDataStatus = defineTool({
   name: "get_data_status",
   title: "Get data export status",
@@ -279,8 +271,8 @@ export const getDataStatus = defineTool({
     "Manifest summary for the public historical Parquet export: datasets, files, row counts, urls, and updated_at. " +
     "Flags any current-season file older than 36 hours. Published to GitHub Releases nightly after about 7:15 AM CT. " +
     "Default manifest: https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json. No API key. " +
-    "Override that manifest with BAYES_DATA_MANIFEST_URL. " +
-    "BAYES_DATA_BASE_URL is an optional directory mirror ({base}/manifest.json, and {base}/<path> only when a file has no url). " +
+    "Override that manifest with SPORTSLEADER_DATA_MANIFEST_URL (BAYES_DATA_MANIFEST_URL still works). " +
+    "SPORTSLEADER_DATA_BASE_URL is an optional directory mirror (BAYES_DATA_BASE_URL still works): {base}/manifest.json, and {base}/<path> only when a file has no url. " +
     "Optional BAYES_DATA_CACHE_DIR and BAYES_DATA_REVALIDATE_MS (default 4 hours). " +
     "Release downloads 302 to a short-lived CDN URL and do not 304 on that GitHub hop. " +
     "A cached parquet file is reused while its sha256 matches the manifest.",
@@ -305,7 +297,6 @@ export const dataTools = [
   getProbables,
   getLineups,
   getWeather,
-  getPublishedRatings,
   getDataStatus,
 ];
 
@@ -330,13 +321,12 @@ const DATASET_TOOL: Record<string, { tool: string; statGroup?: string }> = {
   probables: { tool: "get_probables" },
   lineups: { tool: "get_lineups" },
   weather: { tool: "get_weather" },
-  team_ratings: { tool: "get_published_ratings" },
 };
 
 /** One live-audit call per manifest dataset. */
-export function auditCallForFile(file: { dataset: string; league: string; season: number }): { tool: string; args: Record<string, unknown> } {
+export function auditCallForFile(file: { dataset: string; league: string; season: number }): { tool: string; args: Record<string, unknown> } | null {
   const mapped = DATASET_TOOL[file.dataset];
-  if (!mapped) throw new Error(`no data tool for dataset ${file.dataset}`);
+  if (!mapped) return null;
   return {
     tool: mapped.tool,
     args: {

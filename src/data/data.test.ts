@@ -295,6 +295,20 @@ describe("bayes data export", { concurrency: 1 }, () => {
     assert.equal(manifestOnly?.baseUrl, null);
     assert.equal(readDataConfig({ BAYES_DATA_BASE_URL: "  ", BAYES_DATA_MANIFEST_URL: "  " }, ""), null);
     assert.equal(isDataExportConfigured({ BAYES_DATA_BASE_URL: "https://cdn.example/data" }), true);
+    assert.equal(isDataExportConfigured({ SPORTSLEADER_DATA_BASE_URL: "https://cdn.example/data" }), true);
+    const preferredManifest = readDataConfig({
+      SPORTSLEADER_DATA_MANIFEST_URL: "https://example.com/new/manifest.json",
+      BAYES_DATA_MANIFEST_URL: "https://example.com/old/manifest.json",
+    });
+    assert.equal(preferredManifest?.manifestUrl, "https://example.com/new/manifest.json");
+    const preferredBase = readDataConfig({
+      SPORTSLEADER_DATA_BASE_URL: "https://example.com/new",
+      BAYES_DATA_BASE_URL: "https://example.com/old",
+    });
+    assert.equal(preferredBase?.baseUrl, "https://example.com/new");
+    assert.equal(preferredBase?.manifestUrl, "https://example.com/new/manifest.json");
+    const alias = readDataConfig({ BAYES_DATA_MANIFEST_URL: "https://example.com/alias/manifest.json" });
+    assert.equal(alias?.manifestUrl, "https://example.com/alias/manifest.json");
     assert.throws(() => normalizeBaseUrl("https://user:super-secret@files.example/data"), (err: unknown) => {
       assert.ok(err instanceof Error);
       assert.match(err.message, /credentials/);
@@ -313,7 +327,9 @@ describe("bayes data export", { concurrency: 1 }, () => {
     for (const tool of dataTools) {
       assert.equal(/bayesratings\.com\/data/i.test(tool.description), false, tool.name);
       assert.ok(tool.description.includes(manifest), tool.name);
+      assert.match(tool.description, /SPORTSLEADER_DATA_MANIFEST_URL/, tool.name);
       assert.match(tool.description, /BAYES_DATA_MANIFEST_URL/, tool.name);
+      assert.match(tool.description, /SPORTSLEADER_DATA_BASE_URL/, tool.name);
       assert.match(tool.description, /BAYES_DATA_BASE_URL/, tool.name);
       assert.match(tool.description, /directory mirror/, tool.name);
     }
@@ -556,6 +572,10 @@ describe("bayes data export", { concurrency: 1 }, () => {
       const before = state.calls.length;
       await queryDataset(cfg, { dataset: "games", league: "nba", seasons: [2027], limit: 1 }, deps(state, () => now));
       assert.equal(state.calls.length, before, "sha256 match skips the release download");
+      await assert.rejects(
+        () => queryDataset(cfg, { dataset: "team_ratings", league: "nba" }, deps(state, () => now)),
+        /team_ratings is not in the data export manifest/,
+      );
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
@@ -681,7 +701,6 @@ async function buildFixtures(dir: string): Promise<StoredFile[]> {
     ["probables", "mlb"],
     ["lineups", "nba"],
     ["weather", "mlb"],
-    ["team_ratings", "nba"],
   ];
   for (const [dataset, league] of single) {
     await add(dataset, league, 2026, [row(columnsFor(dataset, league), league)]);

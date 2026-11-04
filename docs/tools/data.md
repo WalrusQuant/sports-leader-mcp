@@ -1,6 +1,6 @@
 # Historical export
 
-Nightly Parquet files for MLB, NBA, NFL, and NHL: games, team box scores, team counting stats, player game logs, rosters, injuries, transactions, depth charts, probables, lineups, weather, and the published team rating (the rating and its range, not forecasts or model internals). Rows already carry ESPN ids and names.
+Nightly Parquet files for MLB, NBA, NFL, and NHL: games, team box scores, team counting stats, player game logs, rosters, injuries, transactions, depth charts, probables, lineups, and weather. Rows already carry ESPN ids and names. The manifest is the list of data sets; one that is not published returns an error naming it.
 
 Seasons start at 2021. NBA and NHL use the year the season ends (2026-27 is `2027`). Only the current season of each league is rebuilt nightly, around 7:15 AM CT.
 
@@ -14,7 +14,7 @@ No API key. The default manifest is
 
 (`DEFAULT_BAYES_DATA_MANIFEST_URL`). Every file entry includes a `url`. The release tag is `<league>_<dataset>` and the asset is `<season>.parquet`, for example `nba_games/2027.parquet`. GitHub answers `302` to a short-lived CDN URL (`cache-control: no-cache`, no ETag on that hop). The CDN can `304`, but the signed URL is different each time, so the cache trusts the manifest `sha256` and reports `updated_at`. Unchanged files are not downloaded again, which keeps unauthenticated GitHub requests low (the manifest is rechecked at most every 4 hours).
 
-`BAYES_DATA_MANIFEST_URL` replaces the manifest URL. `BAYES_DATA_BASE_URL` selects a directory mirror instead: `{base}/manifest.json`, and `{base}/<path>` only when a file has no `url`. The ESPN tools do not use either variable.
+`SPORTSLEADER_DATA_MANIFEST_URL` replaces the manifest URL. `BAYES_DATA_MANIFEST_URL` is the same setting; the `SPORTSLEADER_` name wins when both are set. `SPORTSLEADER_DATA_BASE_URL` (alias `BAYES_DATA_BASE_URL`) selects a directory mirror instead: `{base}/manifest.json`, and `{base}/<path>` only when a file has no `url`. The ESPN tools do not use these variables. The default manifest URL is unchanged.
 
 | Variable | Default |
 |----------|---------|
@@ -63,6 +63,5 @@ Date filters use `game_date` or `date` when the file has one. Rosters and depth 
 | `get_probables` | `probables` | mlb, nhl |
 | `get_lineups` | `lineups` | mlb, nba, nhl |
 | `get_weather` | `weather` | mlb, nfl |
-| `get_published_ratings` | `team_ratings` | mlb, nba, nfl, nhl |
 
 `get_team_game_stats` is wide (each counting stat has an `opponent_` copy). Pass `columns` or a low `limit` so the response stays inside the token budget.

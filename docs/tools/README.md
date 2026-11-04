@@ -1,6 +1,6 @@
 # Tools
 
-Overview of all 38 tools available in sports-leader-mcp.
+Overview of all 37 tools available in sports-leader-mcp.
 
 Compact JSON is the default. Every tool accepts optional `raw: true`; oversized output is replaced with a valid `{ "truncated": true, ... }` envelope instead of partial JSON.
 
@@ -60,7 +60,7 @@ Large sub-payloads are also available as `espn://` resource templates (see the [
 
 ## Historical export
 
-Parquet files for MLB, NBA, NFL, and NHL from GitHub Releases ([bayesratings-data](https://github.com/WalrusQuant/bayesratings-data)), no API key. The manifest is `releases/download/manifest/manifest.json`; each file is fetched from its manifest `url`. Override with `BAYES_DATA_MANIFEST_URL`. `BAYES_DATA_BASE_URL` is an optional directory mirror. See [Historical data](data.md). The live `get_injuries` and `get_transactions` tools are unchanged.
+Parquet files for MLB, NBA, NFL, and NHL from GitHub Releases ([bayesratings-data](https://github.com/WalrusQuant/bayesratings-data)), no API key. The manifest is `releases/download/manifest/manifest.json`; each file is fetched from its manifest `url`. Override with `SPORTSLEADER_DATA_MANIFEST_URL` (`BAYES_DATA_MANIFEST_URL` still works). `SPORTSLEADER_DATA_BASE_URL` is an optional directory mirror (`BAYES_DATA_BASE_URL` is the same). A data set the manifest does not publish returns a clear error; `get_data_status` lists what is there. See [Historical data](data.md). The live `get_injuries` and `get_transactions` tools are unchanged.
 
 | Tool | Description |
 |------|-------------|
@@ -75,5 +75,4 @@ Parquet files for MLB, NBA, NFL, and NHL from GitHub Releases ([bayesratings-dat
 | [`get_probables`](data.md#tools) | Probable pitchers and goalies. |
 | [`get_lineups`](data.md#tools) | Announced lineups. |
 | [`get_weather`](data.md#tools) | Game weather. |
-| [`get_published_ratings`](data.md#tools) | Published team rating and range. |
 | [`get_data_status`](data.md#get_data_status) | Manifest summary and freshness. |

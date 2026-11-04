@@ -17,7 +17,7 @@
 import { ALL_TOOLS, produce } from "../dist/server.js";
 import { apiCache } from "../dist/client.js";
 import { isDataExportConfigured } from "../dist/data/config.js";
-import { DATASET_NAMES, DATA_TOOL_NAMES, auditCallForFile } from "../dist/data/tools.js";
+import { DATA_TOOL_NAMES, auditCallForFile } from "../dist/data/tools.js";
 
 const tools = new Map(ALL_TOOLS.map((tool) => [tool.name, tool]));
 const today = new Intl.DateTimeFormat("en-CA", {
@@ -179,7 +179,7 @@ await check("espn_fetch", "nba league root", async () => {
 
 await check("endpoint", "cdn nba scoreboard xhr=1", async () => {
   const res = await fetch("https://cdn.espn.com/core/nba/scoreboard?xhr=1", {
-    headers: { "User-Agent": "sports-leader-mcp-audit/0.5.2", Accept: "application/json" },
+    headers: { "User-Agent": "sports-leader-mcp-audit/0.5.3", Accept: "application/json" },
   });
   const type = res.headers.get("content-type") ?? "";
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -449,14 +449,15 @@ if (failed.length) {
 
 /**
  * Historical Parquet export on GitHub Releases. No API key. A cleared
- * manifest default with both BAYES_DATA_MANIFEST_URL and BAYES_DATA_BASE_URL
- * unset is a skip, not a failure. One file per data set.
+ * manifest default with no SPORTSLEADER_DATA_* or BAYES_DATA_* URL is a
+ * skip, not a failure. Checks come from the live manifest: a data set with
+ * no tool is skipped, and a data set that is not published is not a failure.
  */
 async function auditDataExport() {
   console.log("");
   console.log("data export");
   if (!isDataExportConfigured()) {
-    const reason = "skipped (no manifest URL: set BAYES_DATA_MANIFEST_URL or BAYES_DATA_BASE_URL)";
+    const reason = "skipped (no manifest URL: set SPORTSLEADER_DATA_MANIFEST_URL or SPORTSLEADER_DATA_BASE_URL; BAYES_DATA_* still works)";
     for (const name of DATA_TOOL_NAMES) line("skip", name, "data export", reason);
     return;
   }
@@ -470,27 +471,20 @@ async function auditDataExport() {
     const datasets = new Set(files.map((file) => file.dataset));
     return `files=${files.length} datasets=${datasets.size} stale=${data.stale?.length ?? 0} generated=${data.generated_at}`;
   });
-  if (!manifestOk) {
-    for (const dataset of DATASET_NAMES) line("fail", "data export", dataset, "manifest check failed");
-    return;
-  }
+  if (!manifestOk) return;
 
-  for (const dataset of DATASET_NAMES) {
-    const file = files.find((item) => item.dataset === dataset);
-    if (!file) {
-      line("fail", "data export", dataset, "missing from manifest");
+  const seen = new Set();
+  for (const file of files) {
+    if (!file?.dataset || seen.has(file.dataset)) continue;
+    seen.add(file.dataset);
+    const spec = auditCallForFile(file);
+    if (!spec) {
+      line("skip", "data export", file.dataset, "skipped (manifest data set has no tool)");
       continue;
     }
-    let spec;
-    try {
-      spec = auditCallForFile(file);
-    } catch (err) {
-      line("fail", "data export", dataset, err instanceof Error ? err.message : String(err));
-      continue;
-    }
-    await check(spec.tool, `${dataset} ${file.league} ${file.season}`, async () => {
+    await check(spec.tool, `${file.dataset} ${file.league} ${file.season}`, async () => {
       const data = await call(spec.tool, spec.args);
-      if (data?.dataset !== dataset) throw new Error(`dataset ${data?.dataset ?? "?"}`);
+      if (data?.dataset !== file.dataset) throw new Error(`dataset ${data?.dataset ?? "?"}`);
       if (!data.updated_at) throw new Error("missing updated_at");
       return `rows=${data.rowCount} updated_at=${data.updated_at}`;
     });

@@ -176,10 +176,6 @@ const FIXED: Record<string, ColumnDef[]> = {
     precip_pct:float dewpoint_f:float fetch_phase:str hour_offset:int
     period_start:ts valid_from:ts valid_to:ts
   `),
-  team_ratings: columns(`
-    league:str season:int date:date team_id:int team_abbr:str team_name:str
-    rating:float rating_low:float rating_high:float rank:int
-  `),
 };
 
 export interface DatasetInfo {
@@ -207,7 +203,6 @@ export const DATASET_INFO: readonly DatasetInfo[] = [
   { dataset: "probables", leagues: ["mlb", "nhl"], about: "Probable starting pitchers and goalies." },
   { dataset: "lineups", leagues: ["mlb", "nba", "nhl"], about: "Announced lineups." },
   { dataset: "weather", leagues: ["mlb", "nfl"], about: "Game weather from ESPN and the National Weather Service." },
-  { dataset: "team_ratings", leagues: LEAGUES, about: "Published team rating and range, by day." },
 ];
 
 export const DATASET_NAMES: readonly string[] = DATASET_INFO.map((info) => info.dataset);

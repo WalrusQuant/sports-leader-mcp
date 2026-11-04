@@ -28,7 +28,7 @@ const ADDED_TOOLS = ["get_slate", "get_team_stats", "get_rankings", "get_power_i
 const DATA_TOOLS = [
   "get_games", "get_team_box_scores", "get_team_game_stats", "get_player_game_logs",
   "get_rosters", "get_injury_reports", "get_transaction_log", "get_depth_charts",
-  "get_probables", "get_lineups", "get_weather", "get_published_ratings", "get_data_status",
+  "get_probables", "get_lineups", "get_weather", "get_data_status",
 ];
 
 test.after(installFixtureFetch());

@@ -1,7 +1,7 @@
 # sports-leader-mcp
 
 
-Free MCP server for live sports data. **38 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, and futures across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, and NHL.
+Free MCP server for live sports data. **37 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, and futures across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, and NHL.
 
 No ESPN auth or API keys. Stdio mode has no server-side request quota; HTTP mode applies configurable per-IP limits.
 
@@ -44,7 +44,7 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | **News** | Real-time sports news filtered by sport, league, or team |
 | **Search** | Find any athlete, team, or article across ESPN |
 
-## Tools (38)
+## Tools (37)
 
 ### Discovery
 | Tool | Description |
@@ -93,7 +93,7 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 
 ### Historical export (MLB, NBA, NFL, NHL)
 
-Nightly Parquet files: schedule and results, team box scores and counting stats, player game logs, rosters, injuries, transactions, depth charts, probables, lineups, weather, and the published team rating. Rows are denormalized (ESPN ids and names on every row). Seasons start at 2021. NBA and NHL seasons are named by the year they end (2026-27 is 2027). These names do not replace the live ESPN tools: `get_injury_reports` and `get_transaction_log` are the export, `get_injuries` and `get_transactions` stay the live feeds.
+Nightly Parquet files: schedule and results, team box scores and counting stats, player game logs, rosters, injuries, transactions, depth charts, probables, lineups, and weather. Rows are denormalized (ESPN ids and names on every row). Seasons start at 2021. NBA and NHL seasons are named by the year they end (2026-27 is 2027). These names do not replace the live ESPN tools: `get_injury_reports` and `get_transaction_log` are the export, `get_injuries` and `get_transactions` stay the live feeds. A data set the manifest does not include returns an error naming it.
 
 | Tool | Data set |
 |------|----------|
@@ -108,7 +108,6 @@ Nightly Parquet files: schedule and results, team box scores and counting stats,
 | `get_probables` | Probable pitchers and goalies |
 | `get_lineups` | Announced lineups |
 | `get_weather` | Game weather |
-| `get_published_ratings` | Published rating and range, by day |
 | `get_data_status` | Manifest summary and freshness |
 
 Filters: `league`, `season` / `seasons`, `from` / `to` (`YYYY-MM-DD`), `team` and `opponent` (ESPN id or abbreviation), `player` (ESPN id or a name substring), `columns`, `sort`, `order`, `limit` (default 100, hard cap 250). Column names are checked against the manifest and bound as SQL parameters. Every result includes the file's `updated_at`. `get_data_status` flags a current-season file older than 36 hours.
@@ -128,8 +127,10 @@ The manifest lists every file and its download `url`. The pattern is `https://gi
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `DEFAULT_BAYES_DATA_MANIFEST_URL` | GitHub Releases manifest above | Built-in public source |
-| `BAYES_DATA_MANIFEST_URL` | the constant | Override the manifest URL. File `url`s in that manifest are still preferred |
-| `BAYES_DATA_BASE_URL` | unset | Directory mirror: manifest at `{base}/manifest.json`, and `{base}/<league>/<dataset>/<season>.parquet` when a file has no `url` |
+| `SPORTSLEADER_DATA_MANIFEST_URL` | the constant | Preferred manifest override. File `url`s in that manifest are still used |
+| `SPORTSLEADER_DATA_BASE_URL` | unset | Preferred directory mirror: `{base}/manifest.json`, and `{base}/<path>` when a file has no `url` |
+| `BAYES_DATA_MANIFEST_URL` | unset | Alias of `SPORTSLEADER_DATA_MANIFEST_URL`. The new name wins when both are set |
+| `BAYES_DATA_BASE_URL` | unset | Alias of `SPORTSLEADER_DATA_BASE_URL` |
 | `BAYES_DATA_CACHE_DIR` | `~/.cache/sports-leader-mcp/bayes-data` | On-disk file cache (`XDG_CACHE_HOME` is honored) |
 | `BAYES_DATA_REVALIDATE_MS` | `14400000` (4 hours) | How often to re-check the manifest |
 
@@ -137,7 +138,7 @@ The other 25 tools do not use this export. A `429` or a GitHub `403` with `x-rat
 
 Files are queried with [DuckDB Neo](https://duckdb.org/) (`@duckdb/node-api`). It ships prebuilt binaries for glibc and musl, on x64 and arm64, so `npm ci` does not need a compiler on a normal Linux image or on Alpine.
 
-`npm run audit` reads the GitHub Releases manifest, downloads one file per data set from its `url`, and runs the matching tool. No API key is used. Clearing the default and unsetting both `BAYES_DATA_MANIFEST_URL` and `BAYES_DATA_BASE_URL` prints those checks as skipped instead of failed.
+`npm run audit` reads the GitHub Releases manifest and runs a tool for each data set that is actually published. A data set the manifest no longer includes is not a failure. No API key is used. Clearing the default and unsetting both the `SPORTSLEADER_DATA_*` and `BAYES_DATA_*` URL variables prints those checks as skipped instead of failed.
 
 ## Prompts (5)
 
@@ -215,7 +216,7 @@ npm run test:update-golden  # regenerate test/golden after an intentional output
 npm run fixtures:capture    # re-record raw ESPN fixtures into test/fixtures
 ```
 
-`npm run audit` is not part of `npm test`. It calls the real ESPN APIs for MLB, NBA, NFL, NHL, college football, men's and women's college basketball, WNBA, and the Premier League, validates compact output against each tool's schema, and exits non-zero on a failure. Re-run it when a tool starts returning empty or upstream errors. MLB in late October and November is the offseason: the audit accepts an empty current scoreboard and checks 2026-07-04 instead. It also checks the public historical export on GitHub Releases with no API key: one file per data set, using each file's manifest `url`. Those lines are `SKIP` only when the manifest default has been cleared and both `BAYES_DATA_MANIFEST_URL` and `BAYES_DATA_BASE_URL` are unset.
+`npm run audit` is not part of `npm test`. It calls the real ESPN APIs for MLB, NBA, NFL, NHL, college football, men's and women's college basketball, WNBA, and the Premier League, validates compact output against each tool's schema, and exits non-zero on a failure. Re-run it when a tool starts returning empty or upstream errors. MLB in late October and November is the offseason: the audit accepts an empty current scoreboard and checks 2026-07-04 instead. It also checks the public historical export on GitHub Releases with no API key: one file for each data set the live manifest still publishes. A removed data set is not a failure. Those lines are `SKIP` only when the manifest default has been cleared and both the `SPORTSLEADER_DATA_*` and `BAYES_DATA_*` URL variables are unset.
 
 ## Agent-safe responses
 
