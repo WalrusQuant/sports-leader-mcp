@@ -279,7 +279,7 @@ describe("bayes data export", { concurrency: 1 }, () => {
   test("GitHub Releases is the default manifest and directory overrides still work", () => {
     assert.equal(
       DEFAULT_BAYES_DATA_MANIFEST_URL,
-      "https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json",
+      "https://github.com/WalrusQuant/sportsleader-data/releases/download/manifest/manifest.json",
     );
     const builtin = readDataConfig({});
     assert.equal(builtin?.manifestUrl, DEFAULT_BAYES_DATA_MANIFEST_URL);
@@ -323,7 +323,7 @@ describe("bayes data export", { concurrency: 1 }, () => {
   });
 
   test("data tool descriptions name the GitHub Releases manifest, not the retired directory", () => {
-    const manifest = "https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json";
+    const manifest = "https://github.com/WalrusQuant/sportsleader-data/releases/download/manifest/manifest.json";
     for (const tool of dataTools) {
       assert.equal(/bayesratings\.com\/data/i.test(tool.description), false, tool.name);
       assert.ok(tool.description.includes(manifest), tool.name);

@@ -119,10 +119,10 @@ No API key. Install and the historical data is available: seasons from 2021, pub
 ```ts
 // src/data/config.ts
 export const DEFAULT_BAYES_DATA_MANIFEST_URL =
-  "https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json";
+  "https://github.com/WalrusQuant/sportsleader-data/releases/download/manifest/manifest.json";
 ```
 
-The manifest lists every file and its download `url`. The pattern is `https://github.com/WalrusQuant/bayesratings-data/releases/download/<league>_<dataset>/<season>.parquet` (for example `nba_games/2027.parquet`). Those URLs 302 to a short-lived CDN link. The CDN can answer `304`, but the GitHub hop does not, and the signed link changes every request, so a cached file is kept while its sha256 matches the manifest. That also stays under GitHub's unauthenticated download cap: the manifest is checked at most every 4 hours, and unchanged seasons are not downloaded again. `updated_at` is what the tools report and what the 36-hour flag uses.
+The manifest lists every file and its download `url`. The pattern is `https://github.com/WalrusQuant/sportsleader-data/releases/download/<league>_<dataset>/<season>.parquet` (for example `nba_games/2027.parquet`). Those URLs 302 to a short-lived CDN link. The CDN can answer `304`, but the GitHub hop does not, and the signed link changes every request, so a cached file is kept while its sha256 matches the manifest. That also stays under GitHub's unauthenticated download cap: the manifest is checked at most every 4 hours, and unchanged seasons are not downloaded again. `updated_at` is what the tools report and what the 36-hour flag uses.
 
 | Variable | Default | Purpose |
 |----------|---------|---------|

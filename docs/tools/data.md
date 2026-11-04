@@ -10,7 +10,7 @@ Seasons start at 2021. NBA and NHL use the year the season ends (2026-27 is `202
 
 No API key. The default manifest is
 
-`https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json`
+`https://github.com/WalrusQuant/sportsleader-data/releases/download/manifest/manifest.json`
 
 (`DEFAULT_BAYES_DATA_MANIFEST_URL`). Every file entry includes a `url`. The release tag is `<league>_<dataset>` and the asset is `<season>.parquet`, for example `nba_games/2027.parquet`. GitHub answers `302` to a short-lived CDN URL (`cache-control: no-cache`, no ETag on that hop). The CDN can `304`, but the signed URL is different each time, so the cache trusts the manifest `sha256` and reports `updated_at`. Unchanged files are not downloaded again, which keeps unauthenticated GitHub requests low (the manifest is rechecked at most every 4 hours).
 

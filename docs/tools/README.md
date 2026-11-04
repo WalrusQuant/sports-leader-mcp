@@ -60,7 +60,7 @@ Large sub-payloads are also available as `espn://` resource templates (see the [
 
 ## Historical export
 
-Parquet files for MLB, NBA, NFL, and NHL from GitHub Releases ([bayesratings-data](https://github.com/WalrusQuant/bayesratings-data)), no API key. The manifest is `releases/download/manifest/manifest.json`; each file is fetched from its manifest `url`. Override with `SPORTSLEADER_DATA_MANIFEST_URL` (`BAYES_DATA_MANIFEST_URL` still works). `SPORTSLEADER_DATA_BASE_URL` is an optional directory mirror (`BAYES_DATA_BASE_URL` is the same). A data set the manifest does not publish returns a clear error; `get_data_status` lists what is there. See [Historical data](data.md). The live `get_injuries` and `get_transactions` tools are unchanged.
+Parquet files for MLB, NBA, NFL, and NHL from GitHub Releases ([sportsleader-data](https://github.com/WalrusQuant/sportsleader-data)), no API key. The manifest is `releases/download/manifest/manifest.json`; each file is fetched from its manifest `url`. Override with `SPORTSLEADER_DATA_MANIFEST_URL` (`BAYES_DATA_MANIFEST_URL` still works). `SPORTSLEADER_DATA_BASE_URL` is an optional directory mirror (`BAYES_DATA_BASE_URL` is the same). A data set the manifest does not publish returns a clear error; `get_data_status` lists what is there. See [Historical data](data.md). The live `get_injuries` and `get_transactions` tools are unchanged.
 
 | Tool | Description |
 |------|-------------|
