@@ -15,7 +15,7 @@ import { dataUrl } from "./http.js";
  * file has no url).
  */
 export const DEFAULT_BAYES_DATA_MANIFEST_URL =
-  "https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json";
+  "https://github.com/WalrusQuant/sportsleader-data/releases/download/manifest/manifest.json";
 
 /** How long to trust a cached manifest before checking the host again. */
 export const DEFAULT_REVALIDATE_MS = 4 * 60 * 60 * 1000;

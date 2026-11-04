@@ -30,7 +30,7 @@ Setting `PORT` switches the server from stdio mode (for local MCP clients) to HT
 | `SPORTS_LEADER_MAX_TOKENS` | `50000` | Estimated-token ceiling for one MCP result; oversized results become valid truncation metadata |
 | `CACHE_MAX_ENTRIES` | `250` | Maximum raw ESPN responses retained in the in-memory LRU/TTL cache |
 | `CACHE_MAX_BYTES` | `67108864` | Approximate maximum cache bytes (64 MiB by default) |
-| `SPORTSLEADER_DATA_MANIFEST_URL` | GitHub Releases manifest | Preferred manifest override. No API key. Default manifest stays `https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json`. Each file is fetched from its manifest `url` |
+| `SPORTSLEADER_DATA_MANIFEST_URL` | GitHub Releases manifest | Preferred manifest override. No API key. Default manifest stays `https://github.com/WalrusQuant/sportsleader-data/releases/download/manifest/manifest.json`. Each file is fetched from its manifest `url` |
 | `SPORTSLEADER_DATA_BASE_URL` | *(unset)* | Preferred directory mirror: `{base}/manifest.json`, and `{base}/<path>` when a file has no `url` |
 | `BAYES_DATA_MANIFEST_URL` | *(unset)* | Alias of `SPORTSLEADER_DATA_MANIFEST_URL`. The new name wins when both are set |
 | `BAYES_DATA_BASE_URL` | *(unset)* | Alias of `SPORTSLEADER_DATA_BASE_URL` |

@@ -89,7 +89,7 @@ const seasoning = { season: seasonField, seasons: seasonsField };
 
 const EXPORT_HINT =
   "Reads the public historical Parquet export (no API key). " +
-  "Default manifest: https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json. " +
+  "Default manifest: https://github.com/WalrusQuant/sportsleader-data/releases/download/manifest/manifest.json. " +
   "Each file is downloaded from its manifest url (GitHub Releases tag <league>_<dataset>, asset <season>.parquet). " +
   "Override that manifest with SPORTSLEADER_DATA_MANIFEST_URL (BAYES_DATA_MANIFEST_URL still works). " +
   "SPORTSLEADER_DATA_BASE_URL is an optional directory mirror (BAYES_DATA_BASE_URL still works): {base}/manifest.json, and {base}/<path> only when a file has no url. " +
@@ -270,7 +270,7 @@ export const getDataStatus = defineTool({
   description:
     "Manifest summary for the public historical Parquet export: datasets, files, row counts, urls, and updated_at. " +
     "Flags any current-season file older than 36 hours. Published to GitHub Releases nightly after about 7:15 AM CT. " +
-    "Default manifest: https://github.com/WalrusQuant/bayesratings-data/releases/download/manifest/manifest.json. No API key. " +
+    "Default manifest: https://github.com/WalrusQuant/sportsleader-data/releases/download/manifest/manifest.json. No API key. " +
     "Override that manifest with SPORTSLEADER_DATA_MANIFEST_URL (BAYES_DATA_MANIFEST_URL still works). " +
     "SPORTSLEADER_DATA_BASE_URL is an optional directory mirror (BAYES_DATA_BASE_URL still works): {base}/manifest.json, and {base}/<path> only when a file has no url. " +
     "Optional BAYES_DATA_CACHE_DIR and BAYES_DATA_REVALIDATE_MS (default 4 hours). " +
