@@ -2,8 +2,8 @@ name: sports-leader-mcp
 description: >-
   Free MCP server for live sports data — scores, standings, rosters, player stats,
   betting odds, play-by-play, injuries, transactions, and news across 30 verified
-  leagues in 11 sports. 38 tools, 4 resources, 7 resource templates, 5 prompts. No auth required. Historical MLB, NBA, NFL, and NHL data comes from the public bayesratings-data GitHub Releases.
-version: 0.5.2
+  leagues in 11 sports. 37 tools, 4 resources, 7 resource templates, 5 prompts. No auth required. Historical MLB, NBA, NFL, and NHL data comes from the public bayesratings-data GitHub Releases.
+version: 0.5.3
 license: MIT
 keywords:
   - sports
@@ -34,20 +34,29 @@ startCommand:
         title: Request Timeout
         description: Timeout in milliseconds for upstream ESPN API calls. Default is 30000 (30 seconds).
         default: 30000
-      bayesDataManifestUrl:
+      sportsleaderDataManifestUrl:
         type: string
         title: Historical data manifest URL
         description: >-
-          Overrides the GitHub Releases manifest
+          Preferred override for the GitHub Releases manifest
           (bayesratings-data releases/download/manifest/manifest.json).
           No API key. Leave empty to use the built-in default.
-      bayesDataBaseUrl:
+      sportsleaderDataBaseUrl:
         type: string
         title: Historical data directory URL
         description: >-
-          Directory mirror. Manifest is fetched from {base}/manifest.json.
+          Preferred directory mirror. Manifest is fetched from {base}/manifest.json.
           Files with no url in the manifest are {base}/<league>/<dataset>/<season>.parquet.
           Leave empty to use GitHub Releases.
+      bayesDataManifestUrl:
+        type: string
+        title: Historical data manifest URL (alias)
+        description: >-
+          Alias of sportsleaderDataManifestUrl. The sportsleader name wins when both are set.
+      bayesDataBaseUrl:
+        type: string
+        title: Historical data directory URL (alias)
+        description: Alias of sportsleaderDataBaseUrl.
     additionalProperties: false
   commandFunction: |-
     (config) => ({
@@ -55,6 +64,8 @@ startCommand:
       args: ["dist/index.js"],
       env: {
         SPORTS_LEADER_TIMEOUT: String(config.timeout || 30000),
+        ...(config.sportsleaderDataManifestUrl ? { SPORTSLEADER_DATA_MANIFEST_URL: String(config.sportsleaderDataManifestUrl) } : {}),
+        ...(config.sportsleaderDataBaseUrl ? { SPORTSLEADER_DATA_BASE_URL: String(config.sportsleaderDataBaseUrl) } : {}),
         ...(config.bayesDataManifestUrl ? { BAYES_DATA_MANIFEST_URL: String(config.bayesDataManifestUrl) } : {}),
         ...(config.bayesDataBaseUrl ? { BAYES_DATA_BASE_URL: String(config.bayesDataBaseUrl) } : {})
       }

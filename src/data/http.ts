@@ -31,7 +31,9 @@ const REDIRECT = new Set([301, 302, 303, 307, 308]);
 export function fileDownloadUrl(config: DataConfig, file: ManifestFile): string {
   if (file.url) return file.url;
   if (!config.baseUrl) {
-    throw new DataExportError(`manifest file ${file.path} has no url and BAYES_DATA_BASE_URL is not set`);
+    throw new DataExportError(
+      `manifest file ${file.path} has no url and SPORTSLEADER_DATA_BASE_URL is not set (BAYES_DATA_BASE_URL still works)`,
+    );
   }
   return dataUrl(config.baseUrl, file.path);
 }

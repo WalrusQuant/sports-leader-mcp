@@ -133,7 +133,7 @@ function resolveFiles(manifest: Manifest, query: DataQuery): ManifestFile[] {
     throw new DataExportError(
       leagues.length
         ? `${query.dataset} is not published for ${query.league}. Leagues in the manifest: ${leagues.join(", ")}`
-        : `${query.dataset} is not in the manifest`,
+        : `${query.dataset} is not in the data export manifest. get_data_status lists the data sets that are published.`,
     );
   }
   const requested = query.seasons?.length
