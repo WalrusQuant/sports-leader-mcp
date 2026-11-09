@@ -20,8 +20,15 @@ export const DEFAULT_BAYES_DATA_MANIFEST_URL =
 /** How long to trust a cached manifest before checking the host again. */
 export const DEFAULT_REVALIDATE_MS = 4 * 60 * 60 * 1000;
 
-/** get_data_status flags a current-season file older than this. */
+/** get_data_status flags a current-season file older than this while the league is in season. */
 export const STALE_AFTER_MS = 36 * 60 * 60 * 1000;
+
+/**
+ * A current season is in season when its games file has a game on or before
+ * today and within this many days. Older than that, the league is off-season
+ * and its files are not flagged stale.
+ */
+export const OFFSEASON_QUIET_DAYS = 7;
 
 export const NOT_CONFIGURED = "data export not configured";
 

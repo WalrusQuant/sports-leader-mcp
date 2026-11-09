@@ -110,7 +110,7 @@ Nightly Parquet files: schedule and results, team box scores and counting stats,
 | `get_weather` | Game weather |
 | `get_data_status` | Manifest summary and freshness |
 
-Filters: `league`, `season` / `seasons`, `from` / `to` (`YYYY-MM-DD`), `team` and `opponent` (ESPN id or abbreviation), `player` (ESPN id or a name substring), `columns`, `sort`, `order`, `limit` (default 100, hard cap 250). Column names are checked against the manifest and bound as SQL parameters. Every result includes the file's `updated_at`. `get_data_status` flags a current-season file older than 36 hours.
+Filters: `league`, `season` / `seasons`, `from` / `to` (`YYYY-MM-DD`), `team` and `opponent` (ESPN id or abbreviation), `player` (ESPN id or a name substring), `columns`, `sort`, `order`, `limit` (default 100, hard cap 250). Column names are checked against the manifest and bound as SQL parameters. Every result includes the file's `updated_at`. `get_data_status` flags a current-season file older than 36 hours while that league is in season. In season means the current games file has a game in the last 7 days.
 
 #### Configuration
 
