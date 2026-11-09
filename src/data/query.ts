@@ -96,6 +96,25 @@ function quoteIdent(name: string): string {
   return `"${name}"`;
 }
 
+/**
+ * Newest `game_date` on or before `onOrBefore` (YYYY-MM-DD).
+ * Null when the file has no such game. Scheduled games after that day are ignored.
+ */
+export async function latestGameOnOrBefore(parquetPath: string, onOrBefore: string): Promise<string | null> {
+  assertDate(onOrBefore, "onOrBefore");
+  return enqueue(async () => {
+    const conn = await connection();
+    const result = await conn.runAndReadAll(
+      `SELECT MAX(game_date)::VARCHAR AS game_date FROM read_parquet(?) WHERE game_date <= CAST(? AS DATE)`,
+      [parquetPath, onOrBefore],
+    );
+    const value = result.getRowObjectsJS()[0]?.game_date;
+    if (typeof value !== "string") return null;
+    const day = value.slice(0, 10);
+    return DATE_RE.test(day) ? day : null;
+  });
+}
+
 function assertDate(value: string, label: string): string {
   if (!DATE_RE.test(value)) throw new DataExportError(`${label} must be YYYY-MM-DD`);
   const [year, month, day] = value.split("-").map(Number);

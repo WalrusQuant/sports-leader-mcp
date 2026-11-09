@@ -621,6 +621,111 @@ describe("bayes data export", { concurrency: 1 }, () => {
     }
   });
 
+  test("off-season leagues are not flagged, and in-season stale files still are", async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), "bayes-quiet-"));
+    try {
+      const now = Date.parse("2026-11-09T18:00:00Z");
+      const old = "2026-11-04T00:00:00Z";
+      const fresh = "2026-11-09T16:00:00Z";
+      const gamesFile = async (league: string, season: number, dates: string[], updatedAt: string) => {
+        const columns = columnsFor("games", league);
+        const rows = dates.map((gameDate, index) =>
+          row(columns, league, { season, game_date: gameDate, game_id: season * 10 + index }, index),
+        );
+        const body = await writeParquet(path.join(dir, `${league}-games-${season}.parquet`), columns, rows);
+        return fileEntry("games", league, season, columns, body, rows.length, updatedAt);
+      };
+      const stub = (dataset: string, league: string, season: number, updatedAt: string): StoredFile => ({
+        body: Buffer.alloc(0),
+        sha256: "ab".repeat(32),
+        entry: {
+          path: `${league}/${dataset}/${season}.parquet`,
+          league,
+          dataset,
+          season,
+          rows: 1,
+          columns: [{ name: "league", type: "str" }],
+          bytes: 1,
+          sha256: "ab".repeat(32),
+          updated_at: updatedAt,
+        },
+      });
+      // 2026-11-09 minus 7 days is 2026-11-02. A game that day is still in season.
+      // 2026-11-01 is the day before that, so the league is off-season.
+      // MLB's newest date is in the future; only games on or before today count.
+      const files = [
+        stub("games", "mlb", 2025, "2020-01-01T00:00:00Z"),
+        await gamesFile("mlb", 2026, ["2026-10-28", "2026-11-20"], old),
+        stub("injuries", "mlb", 2026, old),
+        await gamesFile("nba", 2027, ["2026-10-20", "2026-11-08", "2026-11-20"], fresh),
+        stub("lineups", "nba", 2027, old),
+        await gamesFile("nfl", 2026, ["2026-11-02"], old),
+        await gamesFile("nhl", 2027, ["2026-11-01"], old),
+        stub("lineups", "nhl", 2027, old),
+      ];
+      const state = freshState(files);
+      const status = await dataStatus(config(dir), deps(state, () => now));
+      const stale = new Set(status.stale.map((file) => file.path));
+      assert.equal(stale.has("mlb/games/2025.parquet"), false);
+      assert.equal(stale.has("mlb/games/2026.parquet"), false);
+      assert.equal(stale.has("mlb/injuries/2026.parquet"), false);
+      assert.equal(stale.has("nba/games/2027.parquet"), false);
+      assert.equal(stale.has("nba/lineups/2027.parquet"), true);
+      assert.equal(stale.has("nfl/games/2026.parquet"), true);
+      assert.equal(stale.has("nhl/games/2027.parquet"), false);
+      assert.equal(stale.has("nhl/lineups/2027.parquet"), false);
+      assert.deepEqual([...stale].sort(), ["nba/lineups/2027.parquet", "nfl/games/2026.parquet"]);
+      assert.deepEqual(
+        state.calls
+          .filter((call) => call.url.endsWith(".parquet"))
+          .map((call) => new URL(call.url).pathname)
+          .sort(),
+        [
+          "/export/mlb/games/2026.parquet",
+          "/export/nba/games/2027.parquet",
+          "/export/nfl/games/2026.parquet",
+          "/export/nhl/games/2027.parquet",
+        ],
+      );
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("an unreadable current-season games file still flags an age-stale file", async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), "bayes-quiet-bad-"));
+    try {
+      const body = Buffer.alloc(0);
+      const digest = sha256(body);
+      const games: StoredFile = {
+        body,
+        sha256: digest,
+        entry: {
+          path: "nba/games/2027.parquet",
+          league: "nba",
+          dataset: "games",
+          season: 2027,
+          rows: 0,
+          columns: [
+            { name: "game_date", type: "date" },
+            { name: "league", type: "str" },
+          ],
+          bytes: body.length,
+          sha256: digest,
+          updated_at: "2026-10-29T00:00:00Z",
+        },
+      };
+      const state = freshState([games]);
+      const status = await dataStatus(config(dir), deps(state, () => Date.parse("2026-10-31T18:00:00Z")));
+      assert.deepEqual(
+        status.stale.map((file) => file.path),
+        ["nba/games/2027.parquet"],
+      );
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
   test("a checksum mismatch is not cached, then a matching download is", async () => {
     const dir = await mkdtemp(path.join(tmpdir(), "bayes-sum-"));
     try {

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { requireDataConfig } from "./config.js";
+import { OFFSEASON_QUIET_DAYS, STALE_AFTER_MS, requireDataConfig } from "./config.js";
 import { dataStatus } from "./cache.js";
 import { DATASET_NAMES, PLAYER_LOG_GROUPS } from "./datasets.js";
 import { DataExportError } from "./errors.js";
@@ -269,7 +269,9 @@ export const getDataStatus = defineTool({
   title: "Get data export status",
   description:
     "Manifest summary for the public historical Parquet export: datasets, files, row counts, urls, and updated_at. " +
-    "Flags any current-season file older than 36 hours. Published to GitHub Releases nightly after about 7:15 AM CT. " +
+    `Flags a current-season file older than ${STALE_AFTER_MS / 3_600_000} hours while the league is in season. ` +
+    `In season means the current games file has a game in the last ${OFFSEASON_QUIET_DAYS} days. ` +
+    "Published to GitHub Releases nightly after about 7:15 AM CT. " +
     "Default manifest: https://github.com/WalrusQuant/sportsleader-data/releases/download/manifest/manifest.json. No API key. " +
     "Override that manifest with SPORTSLEADER_DATA_MANIFEST_URL (BAYES_DATA_MANIFEST_URL still works). " +
     "SPORTSLEADER_DATA_BASE_URL is an optional directory mirror (BAYES_DATA_BASE_URL still works): {base}/manifest.json, and {base}/<path> only when a file has no url. " +

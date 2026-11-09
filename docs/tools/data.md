@@ -21,7 +21,7 @@ No API key. The default manifest is
 | `BAYES_DATA_CACHE_DIR` | `~/.cache/sports-leader-mcp/bayes-data` |
 | `BAYES_DATA_REVALIDATE_MS` | 4 hours |
 
-A cached parquet file is reused while its sha256 matches the manifest. `updated_at` is included on every result. `get_data_status` flags a current-season file older than 36 hours. The export is published to GitHub Releases nightly after about 7:15 AM CT.
+A cached parquet file is reused while its sha256 matches the manifest. `updated_at` is included on every result. `get_data_status` flags a current-season file older than 36 hours while that league is in season. In season means the current games file has a game in the last 7 days. The export is published to GitHub Releases nightly after about 7:15 AM CT.
 
 Queries use DuckDB (`@duckdb/node-api`). Filter values are parameters. Column names have to appear in the manifest.
 
@@ -31,7 +31,7 @@ Queries use DuckDB (`@duckdb/node-api`). Filter values are parameters. Column na
 
 No required arguments. Optional `includeColumns: true` adds each file's column names and types.
 
-The summary lists datasets, files, row counts, `updated_at`, whether the file is the current season, and `stale: true` when that current-season file is older than 36 hours.
+The summary lists datasets, files, row counts, `updated_at`, whether the file is the current season, and `stale: true` when that current-season file is older than 36 hours and the league has a game in the last 7 days.
 
 ## get_player_game_logs
 

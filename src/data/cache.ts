@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { STALE_AFTER_MS, type DataConfig } from "./config.js";
+import { OFFSEASON_QUIET_DAYS, STALE_AFTER_MS, type DataConfig } from "./config.js";
 import { datasetInfo } from "./datasets.js";
 import { ChecksumMismatchError, DataExportError } from "./errors.js";
 import { dataFetch, fileDownloadUrl, type DataDeps } from "./http.js";
@@ -12,6 +12,7 @@ import {
   type Manifest,
   type ManifestFile,
 } from "./manifest.js";
+import { latestGameOnOrBefore } from "./query.js";
 
 interface CacheMeta {
   etag: string | null;
@@ -219,16 +220,76 @@ export interface DataStatus {
   stale: { path: string; league: string; dataset: string; season: number; updated_at: string; ageHours: number | null }[];
 }
 
+function utcDay(ms: number): string {
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
+function shiftUtcDay(day: string, days: number): string {
+  const [year, month, date] = day.split("-").map(Number);
+  const shifted = new Date(Date.UTC(year, month - 1, date));
+  shifted.setUTCDate(shifted.getUTCDate() + days);
+  return shifted.toISOString().slice(0, 10);
+}
+
+function ageMsOf(updatedAt: string, now: number): number | null {
+  const parsed = Date.parse(updatedAt);
+  return Number.isNaN(parsed) ? null : now - parsed;
+}
+
+function isAgeStale(ageMs: number | null): boolean {
+  return ageMs === null || ageMs > STALE_AFTER_MS;
+}
+
+/**
+ * True when the current-season games file shows no game in the last
+ * `OFFSEASON_QUIET_DAYS` on or before today. A missing or unreadable games
+ * file stays false so the age check still flags the file.
+ */
+async function seasonIsQuiet(
+  config: DataConfig,
+  manifest: Manifest,
+  league: string,
+  season: number,
+  today: string,
+  deps: DataDeps,
+): Promise<boolean> {
+  const games = manifest.files.find(
+    (file) => file.league === league && file.dataset === "games" && file.season === season,
+  );
+  if (!games?.columns.some((column) => column.name === "game_date")) return false;
+  try {
+    const local = await ensureParquetRetry(config, games, deps);
+    const latest = await latestGameOnOrBefore(local.path, today);
+    if (latest === null) return true;
+    return latest < shiftUtcDay(today, -OFFSEASON_QUIET_DAYS);
+  } catch {
+    return false;
+  }
+}
+
 export async function dataStatus(config: DataConfig, deps: DataDeps, includeColumns = false): Promise<DataStatus> {
   const manifest = await loadManifest(config, deps);
   const current = currentSeasonByLeague(manifest);
   const now = deps.now();
+  const today = utcDay(now);
+  const quietLeagues = new Set<string>();
+  const leaguesToCheck = new Set<string>();
+  for (const file of manifest.files) {
+    if (file.season !== current.get(file.league)) continue;
+    if (isAgeStale(ageMsOf(file.updated_at, now))) leaguesToCheck.add(file.league);
+  }
+  await Promise.all(
+    [...leaguesToCheck].map(async (league) => {
+      const season = current.get(league);
+      if (season === undefined) return;
+      if (await seasonIsQuiet(config, manifest, league, season, today, deps)) quietLeagues.add(league);
+    }),
+  );
   const files: StatusFile[] = manifest.files.map((file) => {
-    const parsed = Date.parse(file.updated_at);
-    const ageMs = Number.isNaN(parsed) ? null : now - parsed;
+    const ageMs = ageMsOf(file.updated_at, now);
     const ageHours = ageMs === null ? null : Math.round((ageMs / 3_600_000) * 10) / 10;
     const currentSeason = file.season === current.get(file.league);
-    const stale = currentSeason && (ageMs === null || ageMs > STALE_AFTER_MS);
+    const stale = currentSeason && isAgeStale(ageMs) && !quietLeagues.has(file.league);
     return {
       path: file.path,
       league: file.league,
