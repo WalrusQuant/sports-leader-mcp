@@ -357,7 +357,12 @@ describe("bayes data export", { concurrency: 1 }, () => {
       "get_slate",
       "get_rankings", "get_power_index", "get_futures",
     ]);
-    assert.deepEqual(names.slice(25), [...DATA_TOOL_NAMES]);
+    assert.deepEqual(names.slice(25, 25 + DATA_TOOL_NAMES.length), [...DATA_TOOL_NAMES]);
+    assert.deepEqual(names.slice(25 + DATA_TOOL_NAMES.length), [
+      "get_kalshi_markets",
+      "get_polymarket_markets",
+      "get_market_odds",
+    ]);
     assert.equal(names.includes("get_injuries"), true);
     assert.equal(names.includes("get_injury_reports"), true);
     assert.equal(names.includes("get_transactions"), true);

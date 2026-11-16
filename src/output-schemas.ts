@@ -324,6 +324,63 @@ export const futuresOutput = withEnvelope({
   ),
 });
 
+const marketVenue = z.enum(["kalshi", "polymarket", "polymarket_us"]);
+const venueStatus = z.enum(["ok", "no market found", "error"]);
+
+const predictionVenue = obj({
+  venue: marketVenue,
+  status: venueStatus,
+  matchedBy: z.string().nullable(),
+  error: optStr,
+  slug: z.string().nullable().optional(),
+  usId: z.string().nullable().optional(),
+  priceSource: optStr,
+  events: z.array(obj({})).optional(),
+});
+
+export const kalshiMarketsOutput = withEnvelope({
+  league: str,
+  market: z.enum(["winner", "spread", "total"]),
+  fetchedAt: str,
+  averaged: z.literal(false),
+  pricesNote: optStr,
+  note: optStr,
+  events: z.array(
+    obj({
+      eventTicker: str,
+      scheduledDate: z.string().nullable(),
+      markets: z.array(obj({ ticker: str, priceSource: str })),
+    }),
+  ),
+});
+
+export const polymarketMarketsOutput = withEnvelope({
+  league: str,
+  marketType: str,
+  fetchedAt: str,
+  averaged: z.literal(false),
+  pricesNote: optStr,
+  venues: z.array(predictionVenue),
+});
+
+export const marketOddsOutput = withEnvelope({
+  sport: str,
+  league: str,
+  eventId: z.string().nullable(),
+  fetchedAt: str,
+  matchedBy: z.string().nullable(),
+  averaged: z.literal(false),
+  pricesNote: optStr,
+  game: obj({
+    name: str,
+    startUtc: str,
+    easternDate: str,
+    away: obj({ abbrev: str }),
+    home: obj({ abbrev: str }),
+  }).nullable(),
+  venues: z.array(predictionVenue),
+});
+
 export const slateOutput = withEnvelope({
   sport: optStr,
   league: optStr,
