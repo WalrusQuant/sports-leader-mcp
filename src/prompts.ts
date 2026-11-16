@@ -44,11 +44,10 @@ Follow these steps:
                     text: `You are a sports data assistant. The user wants a complete stats report for player "${args.player_name}" in ${args.sport.toUpperCase()} / ${args.league.toUpperCase()}.
 
 Follow these steps in order:
-1. Call \`search\` with query="${args.player_name}", sport="${args.sport}" to find the athlete's ID.
-2. Using the \`athleteId\` from step 1, call \`get_athlete_overview\` to retrieve the player's profile, current team, position, and season highlights.
-3. Call \`get_athlete_stats\` with the same \`athleteId\` to get detailed season statistics broken down by category.
-4. Call \`get_athlete_splits\` with the same \`athleteId\` to retrieve available situational splits.
-5. Synthesize all of the above into a comprehensive player report: bio, season stats table, career trends, and notable splits.`,
+1. Call \`get_player_report\` with sport="${args.sport}", league="${args.league}", and player="${args.player_name}". That resolves the name inside the league and returns the athlete, named season stats, the last 5 games, and splits. If \`resolved\` is false, show the \`candidates\` and ask which player. Do not guess.
+2. For MLB, NBA, NFL, or NHL, call \`get_player_trends\` with that athlete id, \`by\` set to \`home_away\`, and the \`statGroup\` that matches the position (NBA \`player\`; NHL \`skater\` or \`goalie\`; MLB \`batting\` or \`pitching\`; NFL \`passing\`, \`rushing\`, or \`receiving\`).
+3. Use \`get_athlete_overview\`, \`get_athlete_stats\`, \`get_athlete_gamelog\`, or \`get_athlete_splits\` only when the report is missing a block you still need.
+4. Synthesize a player report: bio, season stats, how the last few games looked, and the home/away or situational splits.`,
                   },
                 },
               ],

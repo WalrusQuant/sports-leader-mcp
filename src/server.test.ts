@@ -25,14 +25,16 @@ const SCHEMA_TOOLS = [
   "get_scoreboard", "get_game_summary", "get_game_odds", "get_injuries", "get_athlete_gamelog", "get_slate",
   "get_team_stats", "get_rankings", "get_power_index", "get_futures",
   "get_kalshi_markets", "get_polymarket_markets", "get_market_odds",
+  "get_player_report", "get_player_trends",
 ];
 const MARKET_TOOLS = ["get_kalshi_markets", "get_polymarket_markets", "get_market_odds"];
 const ADDED_TOOLS = ["get_slate", "get_team_stats", "get_rankings", "get_power_index", "get_futures"];
 const DATA_TOOLS = [
   "get_games", "get_team_box_scores", "get_team_game_stats", "get_player_game_logs",
   "get_rosters", "get_injury_reports", "get_transaction_log", "get_depth_charts",
-  "get_probables", "get_lineups", "get_weather", "get_data_status",
+  "get_probables", "get_lineups", "get_weather", "get_player_trends", "get_data_status",
 ];
+const PLAYER_TOOLS = ["get_player_report"];
 
 test.after(installFixtureFetch());
 
@@ -60,7 +62,8 @@ test("tools/list keeps every existing tool, adds get_slate, and publishes output
   for (const n of ADDED_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
   for (const n of DATA_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
   for (const n of MARKET_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
-  assert.equal(names.length, ORIGINAL_TOOLS.length + ADDED_TOOLS.length + DATA_TOOLS.length + MARKET_TOOLS.length);
+  for (const n of PLAYER_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
+  assert.equal(names.length, ORIGINAL_TOOLS.length + ADDED_TOOLS.length + DATA_TOOLS.length + MARKET_TOOLS.length + PLAYER_TOOLS.length);
   for (const t of tools) {
     if (SCHEMA_TOOLS.includes(t.name)) {
       assert.equal((t.outputSchema as any)?.type, "object", `${t.name} outputSchema`);
@@ -240,5 +243,111 @@ test("prediction markets: schemas, call counts, labels, and a postponed Kalshi d
     assert.equal(venues[2].status, "ok");
   } finally {
     fixtureState.failKalshi = false;
+  }
+});
+
+const JACOBS_SEARCH = {
+  results: [{
+    type: "player",
+    contents: [
+      {
+        uid: "s:20~l:28~a:4047365",
+        type: "player",
+        displayName: "Josh Jacobs",
+        sport: "football",
+        defaultLeagueSlug: "nfl",
+        subtitle: "Green Bay Packers",
+      },
+      {
+        uid: "s:40~l:41~a:8277",
+        type: "player",
+        displayName: "Josh Jacobs",
+        sport: "basketball",
+        defaultLeagueSlug: "mens-college-basketball",
+        subtitle: "Little Rock Trojans",
+      },
+    ],
+  }],
+};
+
+const TWO_NFL_JACOBS = {
+  results: [{
+    type: "player",
+    contents: [
+      {
+        uid: "s:20~l:28~a:4047365",
+        type: "player",
+        displayName: "Josh Jacobs",
+        sport: "football",
+        defaultLeagueSlug: "nfl",
+        subtitle: "Green Bay Packers",
+      },
+      {
+        uid: "s:20~l:28~a:111",
+        type: "player",
+        displayName: "Josh Jacobs",
+        sport: "football",
+        defaultLeagueSlug: "nfl",
+        subtitle: "Las Vegas Raiders",
+      },
+    ],
+  }],
+};
+
+test("get_player_report resolves Josh Jacobs in the NFL and keeps the other blocks when splits fail", async () => {
+  const { client } = await connect();
+  fixtureState.searchBody = JACOBS_SEARCH;
+  fixtureState.failSplits = true;
+  try {
+    const res = await call(client, "get_player_report", {
+      sport: "football",
+      league: "nfl",
+      player: "Josh Jacobs",
+      lastN: 5,
+    });
+    const sc = res.structuredContent;
+    assert.equal(sc.resolved, true);
+    assert.equal(sc.athlete.id, "4047365");
+    assert.equal(sc.athlete.name, "Josh Jacobs");
+    assert.equal(sc.athlete.team, "GB");
+    assert.equal(sc.athlete.position, "RB");
+    assert.equal(sc.season.year, 2026);
+    assert.equal(sc.season.categories[0].stats.CAR, "36");
+    assert.ok(sc.recent.length > 0);
+    assert.equal(sc.splits, undefined);
+    assert.match(sc.errors.splits, /splits unavailable/);
+    assert.equal(sc.errors.season, undefined);
+    assert.ok(sc.sources.some((source: { block: string }) => source.block === "gamelog"));
+
+    fixtureState.searchBody = TWO_NFL_JACOBS;
+    const ambiguous = await call(client, "get_player_report", {
+      sport: "football",
+      league: "nfl",
+      player: "Josh Jacobs",
+    });
+    assert.equal(ambiguous.structuredContent.resolved, false);
+    assert.equal(ambiguous.structuredContent.reason, "ambiguous");
+    assert.equal(ambiguous.structuredContent.athlete, undefined);
+    assert.deepEqual(
+      ambiguous.structuredContent.candidates.map((candidate: { id: string }) => candidate.id).sort(),
+      ["111", "4047365"],
+    );
+    assert.equal(fixtureState.log.some((path) => path.endsWith("/stats")), false);
+
+    fixtureState.searchBody = undefined;
+    const byId = await call(client, "get_player_report", {
+      sport: "football",
+      league: "nfl",
+      player: "4047365",
+      include: ["recent"],
+    });
+    assert.equal(byId.structuredContent.athlete.id, "4047365");
+    assert.ok(byId.structuredContent.recent.length > 0);
+    assert.equal(byId.structuredContent.season, undefined);
+    assert.equal(byId.structuredContent.splits, undefined);
+    assert.equal(fixtureState.log.some((path) => path.endsWith("/search/v2")), false);
+  } finally {
+    fixtureState.failSplits = false;
+    fixtureState.searchBody = undefined;
   }
 });

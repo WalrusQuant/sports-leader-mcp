@@ -1,10 +1,10 @@
 # Tools
 
-Overview of all 40 tools available in sports-leader-mcp.
+Overview of all 42 tools available in sports-leader-mcp.
 
 Compact JSON is the default. Every tool accepts optional `raw: true`; oversized output is replaced with a valid `{ "truncated": true, ... }` envelope instead of partial JSON.
 
-Results carry the compact JSON as a text block and as MCP `structuredContent` (top-level arrays as `{ "items": [...] }`). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_slate`, `get_team_stats`, `get_rankings`, `get_power_index`, `get_futures`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an `outputSchema`; schemas allow extra properties because fields are only ever added. With `raw: true` the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`.
+Results carry the compact JSON as a text block and as MCP `structuredContent` (top-level arrays as `{ "items": [...] }`). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_team_stats`, `get_rankings`, `get_power_index`, `get_futures`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an `outputSchema`; schemas allow extra properties because fields are only ever added. With `raw: true` the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`.
 
 Large sub-payloads are also available as `espn://` resource templates (see the [README](../../README.md#resource-templates)); `get_game_summary` and `get_slate` return `resource_link` items that point at them.
 
@@ -54,6 +54,7 @@ Keyless Kalshi and Polymarket prices. Venues are labelled and are not averaged. 
 | [`get_athlete_stats`](athletes.md#get_athlete_stats) | Season statistics converted into named fields. |
 | [`get_athlete_gamelog`](athletes.md#get_athlete_gamelog) | Game-by-game log with stats per game. |
 | [`get_athlete_splits`](athletes.md#get_athlete_splits) | Statistical splits — home/away, by opponent, by situation. |
+| [`get_player_report`](athletes.md#get_player_report) | One call: name resolution, season stats, last N games, and splits. |
 
 ## League-Wide
 
@@ -78,6 +79,7 @@ Parquet files for MLB, NBA, NFL, and NHL from GitHub Releases ([sportsleader-dat
 | [`get_team_box_scores`](data.md#tools) | Team box line. |
 | [`get_team_game_stats`](data.md#tools) | Team counting stats for and against. |
 | [`get_player_game_logs`](data.md#get_player_game_logs) | Player box lines. `statGroup` picks the league's file. |
+| [`get_player_trends`](data.md#get_player_trends) | Averages and totals by home/away, opponent, month, or rest. |
 | [`get_rosters`](data.md#tools) | Roster spans. |
 | [`get_injury_reports`](data.md#tools) | Injury history from the export. |
 | [`get_transaction_log`](data.md#tools) | Transaction history from the export. |

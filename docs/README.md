@@ -1,6 +1,6 @@
 # sports-leader-mcp
 
-A free [Model Context Protocol](https://modelcontextprotocol.io) server for live sports data across **30 verified leagues in 11 sports**: 40 tools, 4 resources, 7 resource templates, and 5 prompts.
+A free [Model Context Protocol](https://modelcontextprotocol.io) server for live sports data across **30 verified leagues in 11 sports**: 42 tools, 4 resources, 7 resource templates, and 5 prompts.
 
 Built on ESPN's public JSON APIs. No authentication required — just connect your MCP client and start querying.
 
@@ -34,7 +34,7 @@ The scoped identifier above is a Smithery registry identifier, not this reposito
 }
 ```
 
-## 40 Tools at a Glance
+## 42 Tools at a Glance
 
 | Category | Tools |
 |----------|-------|
@@ -42,11 +42,11 @@ The scoped identifier above is a Smithery registry identifier, not this reposito
 | [Scoreboard & Games](tools/scoreboard.md) | `get_scoreboard`, `get_game_summary`, `get_game_plays`, `get_game_odds`, `get_game_probabilities`, `get_slate` |
 | [Prediction markets](tools/markets.md) | `get_kalshi_markets`, `get_polymarket_markets`, `get_market_odds` |
 | [Teams](tools/teams.md) | `get_teams`, `get_team`, `get_team_injuries`, `get_team_stats` |
-| [Athletes](tools/athletes.md) | `get_athlete_overview`, `get_athlete_stats`, `get_athlete_gamelog`, `get_athlete_splits` |
+| [Athletes](tools/athletes.md) | `get_athlete_overview`, `get_athlete_stats`, `get_athlete_gamelog`, `get_athlete_splits`, `get_player_report` |
 | [League-Wide](tools/league.md) | `get_standings`, `get_league_leaders`, `get_injuries`, `get_transactions`, `get_news`, `get_rankings`, `get_power_index`, `get_futures` |
-| [Historical export](tools/data.md) | `get_games`, `get_team_box_scores`, `get_team_game_stats`, `get_player_game_logs`, `get_rosters`, `get_injury_reports`, `get_transaction_log`, `get_depth_charts`, `get_probables`, `get_lineups`, `get_weather`, `get_data_status` |
+| [Historical export](tools/data.md) | `get_games`, `get_team_box_scores`, `get_team_game_stats`, `get_player_game_logs`, `get_player_trends`, `get_rosters`, `get_injury_reports`, `get_transaction_log`, `get_depth_charts`, `get_probables`, `get_lineups`, `get_weather`, `get_data_status` |
 
-Thirteen tools (`get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_slate`, `get_team_stats`, `get_rankings`, `get_power_index`, `get_futures`, `get_kalshi_markets`, `get_polymarket_markets`, `get_market_odds`) publish an MCP `outputSchema`. Odds are normalized for comparison with prediction markets: numeric American moneylines, implied and no-vig probabilities, and `homeSpread` (negative = home team favored). See [Scoreboard & Games](tools/scoreboard.md#get_game_odds).
+Fifteen tools (`get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_team_stats`, `get_rankings`, `get_power_index`, `get_futures`, `get_kalshi_markets`, `get_polymarket_markets`, `get_market_odds`) publish an MCP `outputSchema`. Odds are normalized for comparison with prediction markets: numeric American moneylines, implied and no-vig probabilities, and `homeSpread` (negative = home team favored). See [Scoreboard & Games](tools/scoreboard.md#get_game_odds).
 
 ## Resources
 

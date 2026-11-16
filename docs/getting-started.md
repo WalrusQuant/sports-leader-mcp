@@ -65,7 +65,7 @@ The agent will call `get_standings` with `sport: "football"` and `league: "nfl"`
 
 > "Find LeBron James and show me his stats"
 
-The agent will call `search` with `query: "LeBron James"`, then use the returned `athleteId` to call `get_athlete_stats`.
+The agent will call `get_player_report` with `sport: "basketball"`, `league: "nba"`, and `player: "LeBron James"`. That one call resolves the name inside the NBA and returns season stats, the last 5 games, and splits.
 
 ### Get tonight's slate in one call
 
@@ -141,7 +141,7 @@ When filtering odds by sportsbook:
 
 ## Next Steps
 
-- Browse the [Tools](tools/) to see all 40 tools with parameters and examples
+- Browse the [Tools](tools/) to see all 42 tools with parameters and examples
 - Read the [Self-Hosting Guide](self-hosting.md) if running as an HTTP service
 - Check the [API Endpoints](../references/endpoints.md) reference for the raw ESPN API catalog
 - Read [Gotchas & Pitfalls](../references/gotchas.md) to avoid common mistakes

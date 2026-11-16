@@ -1,0 +1,23 @@
+{
+  "categories": [
+    {
+      "name": "rushing",
+      "displayName": "Rushing",
+      "labels": ["CAR", "YDS", "TD"],
+      "statistics": [
+        {
+          "season": { "year": 2026, "displayName": "2026" },
+          "team": { "id": "9", "abbreviation": "GB", "displayName": "Packers" },
+          "position": "RB",
+          "stats": ["36", "80", "1"]
+        },
+        {
+          "season": { "year": 2025, "displayName": "2025" },
+          "team": { "id": "9", "abbreviation": "GB", "displayName": "Packers" },
+          "position": "RB",
+          "stats": ["234", "929", "13"]
+        }
+      ]
+    }
+  ]
+}

@@ -41,3 +41,35 @@ Parameters: `sport`, `league`, `athleteId`, optional `season`, and `raw`.
 Returns available split categories with labels and named statistics. Split availability varies significantly by sport and player.
 
 Parameters: `sport`, `league`, `athleteId`, optional `season`, `seasonType`, and `raw`.
+
+## `get_player_report`
+
+One call for how a player has looked lately. `player` is a name or an ESPN athlete id. A name is resolved with search and kept inside `league`. One match is used. More than one match in that league returns `candidates` and does not guess. Search for "josh jacobs" returns more than one player; `league=nfl` resolves to athlete `4047365`.
+
+`include` defaults to `season`, `recent`, and `splits`. `season` is the season stat line ESPN publishes for that year (or the latest year in the document). `recent` is the last `lastN` gamelog rows, most recent first (default 5). A label ESPN repeats, such as `YDS` for rushing and receiving, is nested under its category so both values stay. `splits` is the split list ESPN publishes, with named stat fields. One of those blocks failing is reported in `errors` and the others are still returned. `sources` names the documents that were requested. Publishes an MCP `outputSchema`.
+
+Parameters: `sport`, `league`, `player`, optional `season`, `lastN`, `include`, and `raw`.
+
+```json
+{
+  "resolved": true,
+  "athlete": { "id": "4047365", "name": "Josh Jacobs", "team": "GB", "position": "RB" },
+  "season": { "year": 2026, "categories": [{ "name": "rushing", "stats": { "CAR": "36", "YDS": "80" } }] },
+  "recent": [{
+    "eventId": "401873020",
+    "date": "2026-10-25T20:25:00.000+00:00",
+    "opponent": "DET",
+    "homeAway": "A",
+    "result": "L",
+    "score": "20-17",
+    "stats": {
+      "rushing": { "CAR": "11", "YDS": "36", "TD": "0" },
+      "receiving": { "REC": "5", "TGTS": "7", "YDS": "55", "TD": "1" }
+    }
+  }],
+  "splits": { "categories": [{ "name": "Location", "splits": [{ "label": "Home", "stats": { "CAR": "20" } }] }] },
+  "sources": [{ "block": "gamelog", "path": "/apis/common/v3/sports/football/nfl/athletes/4047365/gamelog" }]
+}
+```
+
+The 2026 rushing line above is ESPN's regular-season total: 3 games, 36 carries, 80 yards. The 2025 line on the same document is 15 games, 234 carries, 929 yards. ESPN also publishes a projected pace; the report uses the regular-season row.

@@ -1,0 +1,14 @@
+{
+  "labels": ["CAR", "YDS"],
+  "names": ["rushingAttempts", "rushingYards"],
+  "splitCategories": [
+    {
+      "name": "location",
+      "displayName": "Location",
+      "splits": [
+        { "displayName": "Home", "stats": ["20", "50"] },
+        { "displayName": "Away", "stats": ["16", "30"] }
+      ]
+    }
+  ]
+}

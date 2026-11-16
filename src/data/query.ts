@@ -388,3 +388,284 @@ export async function queryDataset(config: DataConfig, query: DataQuery, deps: D
     rows,
   };
 }
+
+export type TrendBy = "home_away" | "opponent" | "month" | "rest";
+
+export interface TrendQuery {
+  dataset: string;
+  league: string;
+  seasons?: number[];
+  player: string;
+  by: TrendBy;
+  lastN?: number;
+}
+
+export interface TrendGroup {
+  key: string;
+  games: number;
+  avg: Record<string, number>;
+  total: Record<string, number>;
+}
+
+export interface TrendPlayer {
+  query: string;
+  id?: number | string;
+  name?: string;
+}
+
+export interface TrendResult {
+  resolved: boolean;
+  reason?: "ambiguous" | "not_found";
+  dataset: string;
+  league: string;
+  by: TrendBy;
+  seasons: number[];
+  updated_at: string;
+  player: TrendPlayer;
+  candidates?: { id: number | string; name?: string }[];
+  groups: TrendGroup[];
+  /** Manifest stat columns that were eligible to aggregate. avg and total keys are a subset. */
+  columns: string[];
+}
+
+const TREND_BY = new Set<TrendBy>(["home_away", "opponent", "month", "rest"]);
+const NOT_STATS = new Set([
+  "season",
+  "game_id",
+  "team_id",
+  "opponent_id",
+  "player_id",
+  "home_team_id",
+  "away_team_id",
+  "week",
+  "batting_order",
+  "pitching_order",
+  "goalie_order",
+]);
+const NUMERIC_TYPE = /int|float|double|decimal|number|real|hugeint/i;
+
+function statColumns(files: ManifestFile[]): string[] {
+  const types = new Map<string, string>();
+  for (const file of files) {
+    for (const column of file.columns) {
+      if (!types.has(column.name)) types.set(column.name, column.type);
+    }
+  }
+  const names: string[] = [];
+  for (const [name, type] of types) {
+    if (NOT_STATS.has(name) || name.endsWith("_id")) continue;
+    if (!NUMERIC_TYPE.test(type)) continue;
+    names.push(name);
+  }
+  return names;
+}
+
+function groupKeySql(by: TrendBy, available: Set<string>): string {
+  if (by === "home_away") {
+    if (!available.has("is_home")) throw new DataExportError("home_away trends need an is_home column");
+    return `CASE WHEN ${quoteIdent("is_home")} IS NULL THEN 'unknown' WHEN ${quoteIdent("is_home")} THEN 'home' ELSE 'away' END`;
+  }
+  if (by === "opponent") {
+    if (!available.has("opponent_abbr") && !available.has("opponent_id")) {
+      throw new DataExportError("opponent trends need an opponent column");
+    }
+    const parts: string[] = [];
+    if (available.has("opponent_abbr")) parts.push(`NULLIF(CAST(${quoteIdent("opponent_abbr")} AS VARCHAR), '')`);
+    if (available.has("opponent_id")) parts.push(`CAST(${quoteIdent("opponent_id")} AS VARCHAR)`);
+    return `COALESCE(${parts.join(", ")}, 'unknown')`;
+  }
+  if (!available.has("game_date")) throw new DataExportError(`${by} trends need a game_date column`);
+  if (by === "month") return `COALESCE(strftime(${quoteIdent("game_date")}, '%Y-%m'), 'unknown')`;
+  return `CASE WHEN trend_rest_days IS NULL THEN 'first' ELSE CAST(trend_rest_days AS VARCHAR) END`;
+}
+
+function asStatNumber(value: unknown): number | undefined {
+  let numeric: number | undefined;
+  if (typeof value === "bigint") {
+    const max = BigInt(Number.MAX_SAFE_INTEGER);
+    if (value > max || value < -max) return undefined;
+    numeric = Number(value);
+  } else if (typeof value === "number") {
+    numeric = value;
+  } else if (typeof value === "string" && value.trim() !== "") {
+    numeric = Number(value);
+  }
+  if (numeric === undefined || !Number.isFinite(numeric)) return undefined;
+  return Math.round(numeric * 1000) / 1000;
+}
+
+function sortGroups(by: TrendBy, groups: TrendGroup[]): TrendGroup[] {
+  const copy = [...groups];
+  if (by === "home_away") {
+    const order = new Map([["home", 0], ["away", 1], ["unknown", 2]]);
+    copy.sort((a, b) => (order.get(a.key) ?? 9) - (order.get(b.key) ?? 9));
+  } else if (by === "month") {
+    copy.sort((a, b) => a.key.localeCompare(b.key));
+  } else if (by === "rest") {
+    const rank = (key: string) => (key === "first" ? -1 : Number.isFinite(Number(key)) ? Number(key) : 10_000);
+    copy.sort((a, b) => rank(a.key) - rank(b.key) || a.key.localeCompare(b.key));
+  } else {
+    copy.sort((a, b) => b.games - a.games || a.key.localeCompare(b.key));
+  }
+  return copy;
+}
+
+/**
+ * Averages and totals over one player's game log. Stat columns come from the
+ * manifest (numeric, and not ids). Days of rest are measured before lastN is
+ * applied, so the oldest game in the window still knows the real gap.
+ */
+export async function aggregatePlayerTrends(
+  config: DataConfig,
+  query: TrendQuery,
+  deps: DataDeps = defaultDeps(),
+): Promise<TrendResult> {
+  if (!TREND_BY.has(query.by)) throw new DataExportError("by must be home_away, opponent, month, or rest");
+  if (!query.player || !query.player.trim()) throw new DataExportError("player is required");
+  if (query.lastN !== undefined && (!Number.isInteger(query.lastN) || query.lastN < 1 || query.lastN > 500)) {
+    throw new DataExportError("lastN must be an integer from 1 to 500");
+  }
+  const manifest = await loadManifest(config, deps);
+  const selectedFiles = resolveFiles(manifest, { dataset: query.dataset, league: query.league, seasons: query.seasons });
+  const available = unionColumns(selectedFiles);
+  const availableSet = new Set(available);
+  const stats = statColumns(selectedFiles);
+  const updatedAt = oldestUpdatedAt(selectedFiles);
+  const seasons = selectedFiles.map((file) => file.season);
+
+  const locals: string[] = [];
+  for (const file of selectedFiles) {
+    const got = await ensureParquetRetry(config, file, deps);
+    locals.push(got.path);
+  }
+
+  const base: TrendResult = {
+    resolved: true,
+    dataset: query.dataset,
+    league: query.league,
+    by: query.by,
+    seasons,
+    updated_at: updatedAt,
+    player: {
+      query: query.player,
+      ...(ID_RE.test(query.player) ? { id: Number(query.player) } : {}),
+    },
+    groups: [],
+    columns: stats,
+  };
+
+  const params: SqlValue[] = [];
+  const scans = locals.map((local) => {
+    params.push(local);
+    return "SELECT * FROM read_parquet(?)";
+  });
+  const where = [addPlayerFilter(query.dataset, availableSet, query.player, params)];
+  if (availableSet.has("did_not_play")) where.push(`(${quoteIdent("did_not_play")} IS NOT TRUE)`);
+  const src = `SELECT * FROM (${scans.join(" UNION ALL BY NAME ")}) AS src WHERE ${where.join(" AND ")}`;
+
+  const nameSql = availableSet.has("player_name")
+    ? `max(${quoteIdent("player_name")}) AS player_name`
+    : "NULL AS player_name";
+  const distinctSql = `
+    SELECT ${quoteIdent("player_id")} AS player_id, ${nameSql}, CAST(COUNT(*) AS BIGINT) AS games
+    FROM (${src}) AS players
+    GROUP BY ${quoteIdent("player_id")}
+  `;
+
+  const players = await enqueue(async () => {
+    const conn = await connection();
+    const result = await conn.runAndReadAll(distinctSql, params);
+    return result.getRowObjectsJS().map((row) => ({
+      id: normalizeValue(row.player_id, 0),
+      name: row.player_name == null ? undefined : String(row.player_name),
+      games: asStatNumber(row.games) ?? 0,
+    }));
+  });
+  const distinct = players.filter((player) => player.id !== null && player.id !== undefined);
+  if (distinct.length === 0) {
+    return { ...base, resolved: true, reason: "not_found", groups: [] };
+  }
+  if (distinct.length > 1) {
+    return {
+      ...base,
+      resolved: false,
+      reason: "ambiguous",
+      player: { query: query.player },
+      candidates: distinct.map((player) => ({
+        id: player.id as number | string,
+        ...(player.name ? { name: player.name } : {}),
+      })),
+      groups: [],
+    };
+  }
+  const only = distinct[0]!;
+  base.player = {
+    query: query.player,
+    id: only.id as number | string,
+    ...(only.name ? { name: only.name } : {}),
+  };
+
+  const keySql = groupKeySql(query.by, availableSet);
+  const aggParams = [...params];
+  if (query.lastN !== undefined) aggParams.push(query.lastN);
+
+  const playedOrder = availableSet.has("game_id")
+    ? `${quoteIdent("game_date")} ASC, ${quoteIdent("game_id")} ASC`
+    : `${quoteIdent("game_date")} ASC`;
+  const recentOrder = availableSet.has("game_date")
+    ? `${quoteIdent("game_date")} DESC NULLS LAST${availableSet.has("game_id") ? `, ${quoteIdent("game_id")} DESC` : ""}`
+    : availableSet.has("game_id")
+      ? `${quoteIdent("game_id")} DESC`
+      : "(SELECT 1)";
+  const restColumn =
+    query.by === "rest"
+      ? `date_diff('day', lag(${quoteIdent("game_date")}) OVER (ORDER BY ${playedOrder}), ${quoteIdent("game_date")}) AS trend_rest_days,`
+      : "";
+  const measures = stats.flatMap((name) => [
+    `avg(${quoteIdent(name)}) AS ${quoteIdent(`avg__${name}`)}`,
+    `sum(${quoteIdent(name)}) AS ${quoteIdent(`total__${name}`)}`,
+  ]);
+  const selectMeasures = measures.length ? `, ${measures.join(", ")}` : "";
+  const limitClause = query.lastN !== undefined ? "WHERE recency <= ?" : "";
+  const aggSql = `
+    WITH played AS (${src}),
+    ranked AS (
+      SELECT
+        *,
+        ${restColumn}
+        row_number() OVER (ORDER BY ${recentOrder}) AS recency
+      FROM played
+    ),
+    windowed AS (
+      SELECT * FROM ranked
+      ${limitClause}
+    )
+    SELECT (${keySql}) AS group_key, CAST(COUNT(*) AS BIGINT) AS games${selectMeasures}
+    FROM windowed
+    GROUP BY 1
+  `;
+
+  const groups = await enqueue(async () => {
+    const conn = await connection();
+    const result = await conn.runAndReadAll(aggSql, aggParams);
+    return result.getRowObjectsJS().map((row) => {
+      const avg: Record<string, number> = {};
+      const total: Record<string, number> = {};
+      for (const name of stats) {
+        const avgValue = asStatNumber(row[`avg__${name}`]);
+        const totalValue = asStatNumber(row[`total__${name}`]);
+        if (avgValue !== undefined) avg[name] = avgValue;
+        if (totalValue !== undefined) total[name] = totalValue;
+      }
+      const games = asStatNumber(row.games) ?? 0;
+      return {
+        key: row.group_key == null || row.group_key === "" ? "unknown" : String(row.group_key),
+        games,
+        avg,
+        total,
+      };
+    });
+  });
+
+  return { ...base, groups: sortGroups(query.by, groups.filter((group) => group.games > 0)) };
+}

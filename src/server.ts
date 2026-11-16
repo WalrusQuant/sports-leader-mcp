@@ -9,6 +9,7 @@ import { slateTools } from "./tools/slate.js";
 import { researchTools } from "./tools/research.js";
 import { dataTools } from "./data/tools.js";
 import { marketTools } from "./tools/markets.js";
+import { getPlayerReport } from "./tools/player-report.js";
 import type { AnyToolDef } from "./tool.js";
 import { UpstreamError, CancelledError, withRequestSignal } from "./client.js";
 import { applyBudget } from "./transforms.js";
@@ -28,6 +29,7 @@ export const ALL_TOOLS: AnyToolDef[] = [
   ...researchTools,
   ...dataTools,
   ...marketTools,
+  getPlayerReport,
 ];
 
 /**

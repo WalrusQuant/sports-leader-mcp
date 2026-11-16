@@ -9,7 +9,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="sports-leader-mcp — Live Sports Data for AI Agents">
-  <meta property="og:description" content="Free MCP server with 40 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports. No auth required.">
+  <meta property="og:description" content="Free MCP server with 42 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports. No auth required.">
   <meta property="og:image" content="https://walrusquant.github.io/sports-leader-mcp/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -19,7 +19,7 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="sports-leader-mcp — Live Sports Data for AI Agents">
-  <meta name="twitter:description" content="Free MCP server with 40 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports.">
+  <meta name="twitter:description" content="Free MCP server with 42 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports.">
   <meta name="twitter:image" content="https://walrusquant.github.io/sports-leader-mcp/assets/og-image.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -489,7 +489,7 @@
 
       <div class="stats-bar">
         <div class="stat">
-          <div class="stat-number">40</div>
+          <div class="stat-number">42</div>
           <div class="stat-label">Tools</div>
         </div>
         <div class="stat">
@@ -553,7 +553,7 @@
   <!-- TOOLS -->
   <section class="tools-section" id="tools">
     <div class="section-inner">
-      <div class="section-label fade-in">40 MCP Tools</div>
+      <div class="section-label fade-in">42 MCP Tools</div>
       <h2 class="section-title fade-in">The Full Toolkit</h2>
       <p class="section-desc fade-in">Each tool is documented with parameters, examples, and response schemas. <a href="docs.html#tools/">Read the full docs.</a></p>
 
@@ -629,6 +629,9 @@
           <div class="tool-card">
             <div><div class="tool-name">get_athlete_splits</div><div class="tool-desc">Home/away, by opponent, by month, by situation</div></div>
           </div>
+          <div class="tool-card">
+            <div><div class="tool-name">get_player_report</div><div class="tool-desc">One call: resolve a name in the league, then season stats, last 5 games, and splits</div></div>
+          </div>
         </div>
       </div>
 
@@ -678,6 +681,7 @@
           <div class="tool-card"><div><div class="tool-name">get_team_box_scores</div><div class="tool-desc">Team box line, one row per team per game</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_team_game_stats</div><div class="tool-desc">Team counting stats for and against</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_player_game_logs</div><div class="tool-desc">Player logs; statGroup picks skater, pitching, passing, and the rest</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_player_trends</div><div class="tool-desc">Averages and totals by home/away, opponent, month, or days of rest</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_rosters</div><div class="tool-desc">Roster spans, valid_to empty when still current</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_injury_reports</div><div class="tool-desc">Injury history from the export</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_transaction_log</div><div class="tool-desc">Transaction history from the export</div></div></div>

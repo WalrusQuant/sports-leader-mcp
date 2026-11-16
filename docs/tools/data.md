@@ -42,6 +42,35 @@ The summary lists datasets, files, row counts, `updated_at`, whether the file is
 | mlb | `batting` or `pitching` | `batting_game_logs`, `pitching_game_logs` |
 | nfl | `passing`, `rushing`, or `receiving` | `passing_game_logs`, `rushing_game_logs`, `receiving_game_logs` |
 
+## get_player_trends
+
+Same files as `get_player_game_logs`. Groups one player's rows and returns `games`, `avg`, and `total` for each group.
+
+| `by` | Group key |
+|------|-----------|
+| `home_away` | `home` or `away` |
+| `opponent` | Opponent abbreviation |
+| `month` | `YYYY-MM` |
+| `rest` | Days since the previous game in the query. The first game is `first`. |
+
+`lastN` keeps the most recent games after rest is measured, so the oldest game in the window still has its real gap. A name that matches two players returns `candidates` instead of a blended line. `avg` and `total` use the manifest's numeric stat columns only. NFL still has no defensive or kicking log: the choices are passing, rushing, and receiving. Did-not-play rows are left out when the file has that column.
+
+```json
+{
+  "resolved": true,
+  "player": { "id": 1966, "name": "LeBron James", "query": "1966" },
+  "by": "home_away",
+  "seasons": [2027],
+  "updated_at": "2026-11-16T10:16:45+00:00",
+  "groups": [
+    { "key": "home", "games": 6, "avg": { "points": 16, "rebounds": 7.167, "assists": 7.167 }, "total": { "points": 96, "rebounds": 43, "assists": 43 } },
+    { "key": "away", "games": 5, "avg": { "points": 14, "rebounds": 7.2, "assists": 6.6 }, "total": { "points": 70, "rebounds": 36, "assists": 33 } }
+  ]
+}
+```
+
+`avg` and `total` also include the other numeric columns on that file (minutes, field goals, turnovers, and so on). The snippet above keeps three of them.
+
 ## Tools
 
 Shared arguments: `league` (`mlb`, `nba`, `nfl`, `nhl`), `season`, `seasons`, `from`, `to` (`YYYY-MM-DD`), `team`, `opponent`, `player`, `columns`, `sort`, `order` (`asc` or `desc`), `limit`.
@@ -56,6 +85,7 @@ Date filters use `game_date` or `date` when the file has one. Rosters and depth 
 | `get_team_box_scores` | `team_box_scores` | mlb, nba, nfl, nhl |
 | `get_team_game_stats` | `team_game_stats` | mlb, nba, nfl, nhl |
 | `get_player_game_logs` | see above | nba, nhl, mlb, nfl |
+| `get_player_trends` | same player logs, aggregated | nba, nhl, mlb, nfl |
 | `get_rosters` | `rosters` | mlb, nba, nfl, nhl |
 | `get_injury_reports` | `injuries` | mlb, nba, nfl, nhl |
 | `get_transaction_log` | `transactions` | mlb, nba, nfl, nhl |

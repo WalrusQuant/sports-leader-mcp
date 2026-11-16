@@ -5,7 +5,8 @@ import { dataStatus } from "./cache.js";
 import { DATASET_NAMES, PLAYER_LOG_GROUPS } from "./datasets.js";
 import { DataExportError } from "./errors.js";
 import { defaultDeps } from "./http.js";
-import { queryDataset, type DataQuery } from "./query.js";
+import { aggregatePlayerTrends, queryDataset, type DataQuery } from "./query.js";
+import { playerTrendsOutput } from "../output-schemas.js";
 import { defineTool } from "../tool.js";
 
 const leagueField = z
@@ -264,6 +265,70 @@ export const getWeather = defineTool({
   handler: (args) => run("weather", args),
 });
 
+const trendByField = z
+  .enum(["home_away", "opponent", "month", "rest"])
+  .describe(
+    "How to group the games. home_away is home or away. opponent is the opponent abbreviation. month is YYYY-MM. rest is days since the previous game in this query (the first game is \"first\").",
+  );
+
+const trendLastNField = z
+  .number()
+  .int()
+  .min(1)
+  .max(500)
+  .optional()
+  .describe(
+    "Use only the most recent N games. Days of rest are measured on the full season first, then this window is applied. Omit it for every game in the season.",
+  );
+
+const trendPlayerField = z
+  .string()
+  .min(1)
+  .max(80)
+  .describe(
+    "ESPN athlete id, or a case-insensitive substring of player_name. Two players matching a name returns candidates instead of a combined line.",
+  );
+
+export const getPlayerTrends = defineTool({
+  name: "get_player_trends",
+  title: "Get player trends",
+  description:
+    "Averages and totals for one player from the Parquet game logs, grouped by home_away, opponent, month, or rest. " +
+    "nba reads player_game_logs (statGroup player, or omit it). nhl: skater or goalie. mlb: batting or pitching. nfl: passing, rushing, or receiving — those are the only NFL player logs. " +
+    "Did-not-play rows are left out when the file has that column. " +
+    "avg and total contain only numeric stat columns from the manifest (ids, names, and dates are not aggregated). " +
+    EXPORT_HINT,
+  inputShape: {
+    league: leagueField,
+    statGroup: statGroupField,
+    player: trendPlayerField,
+    by: trendByField,
+    ...seasoning,
+    lastN: trendLastNField,
+  },
+  outputSchema: playerTrendsOutput,
+  handler: async (args) => {
+    const dataset = datasetForPlayerLog(args.league, args.statGroup);
+    const result = await aggregatePlayerTrends(
+      requireDataConfig(),
+      {
+        dataset,
+        league: args.league,
+        seasons: mergeSeasons(args.season, args.seasons),
+        player: args.player,
+        by: args.by,
+        lastN: args.lastN,
+      },
+      defaultDeps(),
+    );
+    const names = Object.keys(PLAYER_LOG_GROUPS[args.league] ?? {});
+    return {
+      ...result,
+      statGroup: args.statGroup ?? (names.length === 1 ? names[0] : args.statGroup),
+    };
+  },
+});
+
 export const getDataStatus = defineTool({
   name: "get_data_status",
   title: "Get data export status",
@@ -299,6 +364,7 @@ export const dataTools = [
   getProbables,
   getLineups,
   getWeather,
+  getPlayerTrends,
   getDataStatus,
 ];
 
@@ -324,6 +390,16 @@ const DATASET_TOOL: Record<string, { tool: string; statGroup?: string }> = {
   lineups: { tool: "get_lineups" },
   weather: { tool: "get_weather" },
 };
+
+/** statGroup for a player-log dataset, if the manifest file is one. */
+export function statGroupForDataset(dataset: string): string | undefined {
+  for (const groups of Object.values(PLAYER_LOG_GROUPS)) {
+    for (const [statGroup, name] of Object.entries(groups)) {
+      if (name === dataset) return statGroup;
+    }
+  }
+  return undefined;
+}
 
 /** One live-audit call per manifest dataset. */
 export function auditCallForFile(file: { dataset: string; league: string; season: number }): { tool: string; args: Record<string, unknown> } | null {
