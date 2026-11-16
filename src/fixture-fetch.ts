@@ -17,6 +17,10 @@ export const fixtureState = {
   failKalshi: false,
   /** When true, ESPN fetches never resolve; they settle only by abort. */
   hang: false,
+  /** When true, athlete splits return 500 so a player report can keep the other blocks. */
+  failSplits: false,
+  /** Raw ESPN search document. Unset answers 404, which is what search did before this hook. */
+  searchBody: undefined as unknown,
   /** Number of ESPN fetches that were aborted via their signal. */
   aborted: 0,
 };
@@ -60,6 +64,9 @@ function fixtureFor(url: URL): string | undefined {
   if (/\/teams\/[^/]+\/injuries$/.test(p)) return undefined;
   if (p.endsWith("/injuries")) return fixtureState.failInjuries ? undefined : join(FIXTURES, league, "injuries.json");
   if (p.endsWith("/gamelog")) return join(FIXTURES, league, "gamelog.json");
+  if (/\/athletes\/[^/]+\/stats$/.test(p)) return join(FIXTURES, league, "stats.json");
+  if (/\/athletes\/[^/]+\/splits$/.test(p)) return join(FIXTURES, league, "splits.json");
+  if (/\/athletes\/[^/]+$/.test(p)) return join(FIXTURES, league, "athlete.json");
   return undefined;
 }
 
@@ -92,6 +99,18 @@ export function installFixtureFetch(): () => void {
     if (!url.hostname.endsWith("espn.com")) return realFetch(input, init);
     init?.signal?.throwIfAborted?.();
     fixtureState.log.push(url.pathname);
+    if (url.pathname.endsWith("/search/v2")) {
+      if (fixtureState.searchBody === undefined) {
+        return new Response(JSON.stringify({ error: "not found" }), { status: 404, statusText: "Not Found" });
+      }
+      return new Response(JSON.stringify(fixtureState.searchBody), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    }
+    if (fixtureState.failSplits && /\/athletes\/[^/]+\/splits$/.test(url.pathname)) {
+      return new Response(JSON.stringify({ error: "splits down" }), { status: 500, statusText: "Server Error" });
+    }
     if (fixtureState.hang) {
       return new Promise<Response>((_resolve, reject) => {
         const signal = init?.signal;

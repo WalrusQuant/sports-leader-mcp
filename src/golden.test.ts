@@ -26,9 +26,11 @@ import {
   gameSummaryOutput,
   gamelogOutput,
   injuriesOutput,
+  playerReportOutput,
   scoreboardOutput,
   slateOutput,
 } from "./output-schemas.js";
+import { recentGames, type GamelogGame } from "./tools/player-report.js";
 import type { NormalizedMarket } from "./odds.js";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
@@ -150,6 +152,23 @@ for (const league of leagues) {
       const out = transformGamelog(gamelog);
       validates(gamelogOutput, out, `${league} gamelog`);
       golden(league, "get_athlete_gamelog", out);
+      const recent = recentGames(out as { games?: GamelogGame[] }, 5);
+      validates(playerReportOutput, {
+        resolved: true,
+        athlete: { id: "1" },
+        recent,
+        sources: [{ block: "gamelog", path: `/apis/common/v3/sports/${sport}/${league}/athletes/1/gamelog` }],
+      }, `${league} player report`);
+      const saved = JSON.parse(readFileSync(join(GOLDEN, league, "get_athlete_gamelog.json"), "utf8"));
+      const latest = [...(saved.games ?? [])].sort((a: { date?: string; eventId: string }, b: { date?: string; eventId: string }) => {
+        const dt = Date.parse(b.date ?? "") - Date.parse(a.date ?? "");
+        if (dt !== 0 && !Number.isNaN(dt)) return dt;
+        return String(b.eventId).localeCompare(String(a.eventId));
+      }).slice(0, 5);
+      assert.deepEqual(recent.map((game) => game.eventId), latest.map((game: { eventId: string }) => game.eventId), `${league} recent games`);
+      for (let i = 1; i < recent.length; i++) {
+        assert.ok(Date.parse(recent[i - 1]?.date ?? "") >= Date.parse(recent[i]?.date ?? ""), `${league} recent order`);
+      }
     }
     if (sb) {
       const out = transformSlate(

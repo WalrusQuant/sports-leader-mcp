@@ -1,7 +1,7 @@
 # sports-leader-mcp
 
 
-Free MCP server for live sports data. **40 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, futures, and keyless Kalshi and Polymarket prices across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, and NHL.
+Free MCP server for live sports data. **42 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, futures, and keyless Kalshi and Polymarket prices across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, and NHL.
 
 No ESPN auth or API keys. Stdio mode has no server-side request quota; HTTP mode applies configurable per-IP limits.
 
@@ -44,7 +44,7 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | **News** | Real-time sports news filtered by sport, league, or team |
 | **Search** | Find any athlete, team, or article across ESPN |
 
-## Tools (40)
+## Tools (42)
 
 ### Discovery
 | Tool | Description |
@@ -90,6 +90,7 @@ Supported leagues: NFL, NBA, MLB, NHL, college football, men's college basketbal
 | `get_athlete_stats` | Season stats converted into named fields |
 | `get_athlete_gamelog` | Game-by-game log |
 | `get_athlete_splits` | Home/away, by opponent, by situation |
+| `get_player_report` | One call: resolve a name inside the league, then season stats, last N games, and splits. An ambiguous name returns candidates |
 
 ### League-Wide
 | Tool | Description |
@@ -113,6 +114,7 @@ Nightly Parquet files: schedule and results, team box scores and counting stats,
 | `get_team_box_scores` | ESPN team box line |
 | `get_team_game_stats` | Team counting stats for and against |
 | `get_player_game_logs` | NBA player, NHL skater/goalie, MLB batting/pitching, NFL passing/rushing/receiving (`statGroup`) |
+| `get_player_trends` | Averages and totals by home/away, opponent, month, or days of rest |
 | `get_rosters` | Roster spans (`valid_to` empty means still current) |
 | `get_injury_reports` | Injury history |
 | `get_transaction_log` | Transaction history |
@@ -159,7 +161,7 @@ Guided workflows that chain tools together:
 | Prompt | What It Does |
 |--------|-------------|
 | `get-live-scores` | Get current scores, then drill into game details |
-| `player-stats-report` | Search for a player, pull overview + stats + splits |
+| `player-stats-report` | One call for season stats, recent games, and splits |
 | `game-analysis` | Full game breakdown — summary, odds, plays, win probability |
 | `league-overview` | Standings, leaders, injuries, news, transactions |
 | `compare-teams` | Head-to-head comparison of two teams |
@@ -234,7 +236,7 @@ npm run fixtures:capture    # re-record raw ESPN fixtures into test/fixtures
 
 Dedicated tools return compact, curated JSON by default. Every tool accepts `raw: true`, but raw ESPN responses can be extremely large and should be used only to recover a specific omitted field. Responses over `SPORTS_LEADER_MAX_TOKENS` are replaced with valid truncation metadata; the server never cuts JSON mid-document.
 
-Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent`; a top-level array result is exposed as `structuredContent: { "items": [...] }` (same shape for every protocol era). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_slate`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
+Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent`; a top-level array result is exposed as `structuredContent: { "items": [...] }` (same shape for every protocol era). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
 
 ### Odds conventions
 

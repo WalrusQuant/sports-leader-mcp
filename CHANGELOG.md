@@ -3,6 +3,14 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.7.0 — 2026-11-16
+
+One call for how a player has looked lately, and trend aggregates from the Parquet game logs. 42 tools. The existing 40 tools are unchanged.
+
+### Added
+- `get_player_report` resolves a name or ESPN id inside the requested league, then returns the athlete, named season stats, the last N games, and the splits ESPN publishes. Search for "josh jacobs" matches more than one player; `league=nfl` resolves to 4047365. An ambiguous name returns candidates. One block failing (stats, gamelog, or splits) leaves the others in the response.
+- `get_player_trends` averages and totals a player's Parquet game log by `home_away`, `opponent`, `month`, or `rest` (days since the previous game). NFL logs are still only passing, rushing, and receiving. Aggregated columns are the manifest's numeric stat columns.
+
 ## 0.6.0 — 2026-11-16
 
 Keyless prediction-market prices next to the ESPN odds. No API key is read or sent. 40 tools.

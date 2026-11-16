@@ -18,7 +18,7 @@ import { ALL_TOOLS, produce } from "../dist/server.js";
 import { apiCache } from "../dist/client.js";
 import { VERSION } from "../dist/version.js";
 import { isDataExportConfigured } from "../dist/data/config.js";
-import { DATA_TOOL_NAMES, auditCallForFile } from "../dist/data/tools.js";
+import { DATA_TOOL_NAMES, auditCallForFile, statGroupForDataset } from "../dist/data/tools.js";
 
 const tools = new Map(ALL_TOOLS.map((tool) => [tool.name, tool]));
 const today = new Intl.DateTimeFormat("en-CA", {
@@ -189,6 +189,24 @@ await check("list_sports_and_leagues", "catalog", async () => {
   const data = await call("list_sports_and_leagues", {});
   if (data.count !== 30) throw new Error(`count ${data.count}`);
   return `leagues=${data.count}`;
+});
+
+await check("get_player_report", "nfl Josh Jacobs", async () => {
+  const data = await call("get_player_report", {
+    sport: "football",
+    league: "nfl",
+    player: "Josh Jacobs",
+    season: 2026,
+    lastN: 5,
+  });
+  if (data?.resolved !== true) {
+    const ids = (data?.candidates ?? []).map((candidate) => candidate.id).join(",");
+    throw new Error(`${data?.reason || "unresolved"} candidates=${ids}`);
+  }
+  if (String(data.athlete?.id) !== "4047365") throw new Error(`id ${data.athlete?.id}`);
+  const recent = Array.isArray(data.recent) ? data.recent.length : 0;
+  if (recent === 0) throw new Error("no recent games");
+  return `${data.athlete.name} ${data.athlete.team ?? ""} ${data.athlete.position ?? ""} recent=${recent}`;
 });
 
 await check("search", "LeBron James", async () => {
@@ -431,6 +449,21 @@ for (const league of LEAGUES) {
 
   if (league.athlete) {
     const athleteId = league.athlete;
+    leagueJobs.push(async () => {
+      await check("get_player_report", `${league.key} ${athleteId}`, async () => {
+        const data = await call("get_player_report", { ...base, player: athleteId, lastN: 5 });
+        if (data?.resolved !== true) throw new Error(data?.reason || "unresolved");
+        if (String(data.athlete?.id) !== athleteId) throw new Error(`id ${data.athlete?.id}`);
+        const recent = Array.isArray(data.recent) ? data.recent.length : 0;
+        const categories = data.season?.categories?.length ?? 0;
+        const splits = data.splits?.categories?.length ?? 0;
+        if (recent + categories + splits === 0) {
+          throw new Error(`empty report ${Object.keys(data.errors ?? {}).join(",") || "no blocks"}`);
+        }
+        const failed = data.errors ? ` errors=${Object.keys(data.errors).join(",")}` : "";
+        return `${data.athlete.name ?? athleteId} recent=${recent} categories=${categories} splits=${splits}${failed}`;
+      });
+    });
     for (const [tool, extra] of [
       ["get_athlete_overview", {}],
       ["get_athlete_stats", { season: league.season }],
@@ -597,6 +630,40 @@ async function auditDataExport() {
       if (data?.dataset !== file.dataset) throw new Error(`dataset ${data?.dataset ?? "?"}`);
       if (!data.updated_at) throw new Error("missing updated_at");
       return `rows=${data.rowCount} updated_at=${data.updated_at}`;
+    });
+    const statGroup = statGroupForDataset(file.dataset);
+    if (!statGroup) continue;
+    await check("get_player_trends", `${file.dataset} ${file.league} home_away`, async () => {
+      const logs = await call("get_player_game_logs", {
+        league: file.league,
+        season: file.season,
+        statGroup,
+        limit: 5,
+      });
+      const row = (logs.rows ?? []).find((entry) => entry?.player_id != null && entry.did_not_play !== true) ?? logs.rows?.[0];
+      if (row?.player_id == null) throw new Error("no player in the log");
+      const data = await call("get_player_trends", {
+        league: file.league,
+        season: file.season,
+        statGroup,
+        player: String(row.player_id),
+        by: "home_away",
+      });
+      if (data?.resolved === false) throw new Error(data.reason || "unresolved");
+      if (!data.updated_at) throw new Error("missing updated_at");
+      if (!Array.isArray(data.groups) || data.groups.length === 0) throw new Error("no groups");
+      const games = data.groups.reduce((sum, group) => sum + (group.games ?? 0), 0);
+      if (games < 1) throw new Error("no games");
+      const allowed = new Set(data.columns ?? []);
+      for (const group of data.groups) {
+        for (const key of Object.keys(group.avg ?? {})) {
+          if (!allowed.has(key)) throw new Error(`avg column ${key} is outside the manifest columns`);
+        }
+        for (const key of Object.keys(group.total ?? {})) {
+          if (!allowed.has(key)) throw new Error(`total column ${key} is outside the manifest columns`);
+        }
+      }
+      return `player=${row.player_id} groups=${data.groups.length} games=${games}`;
     });
   }
 }
