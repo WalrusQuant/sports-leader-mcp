@@ -6,7 +6,9 @@ All tools return compact JSON by default and accept optional `raw: true`. `get_s
 
 Entry point for games. Returns event IDs, dates, status, teams, final/current scores, period scores, records, and venue. When ESPN lists odds for an event, it also includes an `odds` block (`markets` + `consensus`) using the normalized fields described under `get_game_odds`.
 
-Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`), `dateRange` (`YYYYMMDD-YYYYMMDD`), `week`, `seasonType`, and `raw`.
+Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`), `dateRange` (`YYYYMMDD-YYYYMMDD`), `week`, `seasonType`, `groups`, and `raw`.
+
+Men's and women's college basketball default `groups` to `50` (every Division I game) and request `limit=400`. The bare scoreboard is a short featured list: on 2026-11-15 it returned 6 of 44 Division I men's games and omitted Wisconsin (team id 275), and 12 of 72 women's games. A grouped scoreboard also stops at 100 events unless `limit` is set (155 men's games on 2026-02-07). Pass `groups` to request one conference. A `week` query stays on ESPN's own page, because an opening week is about 470 games and the compact scoreboard for that many games exceeds the token budget. College football already returns every FBS game with no group. Other leagues are unchanged.
 
 Individual sports (golf, tennis, racing) put the player on `competitor.athlete` rather than `competitor.team`. Compact output adds `athlete` (`id`, `name`) and `order` when that name is present. Team sports are unchanged.
 
@@ -97,7 +99,7 @@ Hockey and soccer are not published on this Core endpoint, and a game that has n
 
 One call per game day. Returns every game with `eventId`, `startUtc`, `name`, `status`, `neutralSite`, `home`/`away` (`id`, `abbrev`, `name`, `record`, `score` — `null` before start — `keyInjuries`, `otherInjuryCount`), and `odds` (consensus `homeNoVigProb`/`awayNoVigProb`/`drawNoVigProb`, first provider's moneylines, `homeSpread`, `total`, `reason` when there are no odds).
 
-Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`, ESPN's US-Eastern game day; omit for the current slate), optional `includeInjuries` (default `true`), and `raw`.
+Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`, ESPN's US-Eastern game day; omit for the current slate), optional `groups` (same Division I default as `get_scoreboard`), optional `includeInjuries` (default `true`), and `raw`.
 
 `keyInjuries` lists players marked `Out` or `Doubtful` (up to 12 per team). It is `null` when the injury report is unavailable, and `injuriesNote` explains why. ESPN returns empty injury reports for some leagues (for example EPL and NCAAF); `injuriesNote` flags that too. Upstream cost is two cached calls: the scoreboard and the league injury report.
 

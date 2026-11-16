@@ -13,6 +13,7 @@ import {
   dateRangeSchema,
   dateSchema,
   eventIdSchema,
+  groupsSchema,
   leagueSchema,
   limitSchema,
   providerIdSchema,
@@ -23,11 +24,41 @@ import {
 import { summaryLinks } from "../links.js";
 import { gameOddsOutput, gameSummaryOutput, scoreboardOutput } from "../output-schemas.js";
 
+/**
+ * ESPN's college-basketball scoreboard with no `groups` is a short featured
+ * list, not Division I. Group 50 is every Division I game for both the men's
+ * and women's leagues. A grouped scoreboard returns 100 events unless `limit`
+ * is set, and a Saturday is often past that (155 men's games on 2026-02-07).
+ * 400 covers any single date.
+ *
+ * A `week` query is left on ESPN's own page. Opening week is about 470 games,
+ * and the compact scoreboard for that many games exceeds the token budget.
+ */
+const DIVISION_I_BASKETBALL = new Set(["mens-college-basketball", "womens-college-basketball"]);
+const DIVISION_I_GROUP = "50";
+const DIVISION_I_SCOREBOARD_LIMIT = 400;
+
+export function scoreboardQuery(
+  sport: string,
+  league: string,
+  input: { dates?: string; week?: number; seasontype?: number; groups?: string },
+): Record<string, string | number | undefined> {
+  const divisionOne = sport === "basketball" && DIVISION_I_BASKETBALL.has(league);
+  const weekly = input.week != null;
+  return {
+    dates: input.dates,
+    week: input.week,
+    seasontype: input.seasontype,
+    groups: input.groups ?? (divisionOne && !weekly ? DIVISION_I_GROUP : undefined),
+    limit: divisionOne && !weekly ? DIVISION_I_SCOREBOARD_LIMIT : undefined,
+  };
+}
+
 export const getScoreboard = defineTool({
   name: "get_scoreboard",
   title: "Get scoreboard",
   description:
-    "Entry point for live, completed, and scheduled games. Returns eventId, start time, state/detail, competitors with team IDs, current/final and period scores, records, and venue, plus normalized odds (numeric moneylines, implied and no-vig probabilities, signed homeSpread) when ESPN lists them. Individual sports (golf, tennis, racing) include competitor.athlete (name, id) and order. Pass eventId to the other game tools; use get_slate for a one-call daily view with injuries.",
+    "Entry point for live, completed, and scheduled games. Returns eventId, start time, state/detail, competitors with team IDs, current/final and period scores, records, and venue, plus normalized odds (numeric moneylines, implied and no-vig probabilities, signed homeSpread) when ESPN lists them. Individual sports (golf, tennis, racing) include competitor.athlete (name, id) and order. Men's and women's college basketball default to every Division I game (group 50, limit 400); pass groups to request one conference. Other leagues, including college football, are unchanged. Pass eventId to the other game tools; use get_slate for a one-call daily view with injuries.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -35,14 +66,16 @@ export const getScoreboard = defineTool({
     dateRange: dateRangeSchema,
     week: weekSchema,
     seasonType: seasonTypeSchema,
+    groups: groupsSchema,
   },
-  handler: async ({ sport, league, date, dateRange, week, seasonType }) => {
+  handler: async ({ sport, league, date, dateRange, week, seasonType, groups }) => {
     return fetchJson(`${BASE.site}/${sport}/${league}/scoreboard`, {
-      params: {
+      params: scoreboardQuery(sport, league, {
         dates: dateRange ?? date,
         week,
         seasontype: seasonType,
-      },
+        groups,
+      }),
     });
   },
   outputSchema: scoreboardOutput,

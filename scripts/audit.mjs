@@ -142,6 +142,37 @@ await pool(
   4,
 );
 
+// 2026-11-15 is a busy Division I Sunday: the bare scoreboard returned 6 men's
+// games and left out Wisconsin (team 275). Group 50 returned 44. The default
+// past date (2026-03-15) only has a handful of games, so it cannot catch this.
+await check("get_scoreboard", "cbb d1 20261115", async () => {
+  const data = await call("get_scoreboard", {
+    sport: "basketball",
+    league: "mens-college-basketball",
+    date: "20261115",
+  });
+  const events = eventsOf(data);
+  const teamIds = new Set(
+    events.flatMap((event) => (event.competitors ?? []).map((competitor) => String(competitor?.team?.id ?? ""))),
+  );
+  if (events.length < 30) throw new Error(`only ${events.length} games (expected the Division I slate)`);
+  if (!teamIds.has("275")) throw new Error("Wisconsin (team 275) missing from the Division I slate");
+  return `events=${events.length} includes team 275`;
+});
+
+await check("get_slate", "cbb d1 20261115", async () => {
+  const data = await call("get_slate", {
+    sport: "basketball",
+    league: "mens-college-basketball",
+    date: "20261115",
+  });
+  const games = Array.isArray(data?.games) ? data.games : [];
+  const teamIds = new Set(games.flatMap((game) => [String(game?.home?.id ?? ""), String(game?.away?.id ?? "")]));
+  if (games.length < 30) throw new Error(`only ${games.length} games (expected the Division I slate)`);
+  if (!teamIds.has("275")) throw new Error("Wisconsin (team 275) missing from the Division I slate");
+  return `games=${games.length} includes team 275`;
+});
+
 await check("get_scoreboard", "pga athlete", async () => {
   const data = await call("get_scoreboard", { sport: "golf", league: "pga" });
   const competitors = eventsOf(data).flatMap((event) => event.competitors ?? []);
@@ -179,7 +210,7 @@ await check("espn_fetch", "nba league root", async () => {
 
 await check("endpoint", "cdn nba scoreboard xhr=1", async () => {
   const res = await fetch("https://cdn.espn.com/core/nba/scoreboard?xhr=1", {
-    headers: { "User-Agent": "sports-leader-mcp-audit/0.5.3", Accept: "application/json" },
+    headers: { "User-Agent": "sports-leader-mcp-audit/0.5.4", Accept: "application/json" },
   });
   const type = res.headers.get("content-type") ?? "";
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
