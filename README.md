@@ -56,12 +56,12 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 ### Scoreboard & Games
 | Tool | Description |
 |------|-------------|
-| `get_scoreboard` | Live and scheduled games — entry point for finding eventIds |
+| `get_scoreboard` | Live and scheduled games — entry point for finding eventIds. College basketball defaults to every Division I game |
 | `get_game_summary` | Scores, team/player boxscore, leaders, key plays, sampled win probability |
 | `get_game_plays` | Full play-by-play data |
 | `get_game_odds` | Per-sportsbook lines with numeric moneylines, implied/no-vig probabilities, signed `homeSpread`, and consensus |
 | `get_game_probabilities` | Win probability timeline |
-| `get_slate` | One call per game day: games, team IDs, status/score, consensus no-vig probabilities, key Out/Doubtful injuries |
+| `get_slate` | One call per game day: games, team IDs, status/score, consensus no-vig probabilities, key Out/Doubtful injuries. College basketball is the full Division I slate |
 
 ### Prediction markets
 

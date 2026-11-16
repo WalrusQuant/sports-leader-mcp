@@ -143,6 +143,37 @@ await pool(
   4,
 );
 
+// 2026-11-15 is a busy Division I Sunday: the bare scoreboard returned 6 men's
+// games and left out Wisconsin (team 275). Group 50 returned 44. The default
+// past date (2026-03-15) only has a handful of games, so it cannot catch this.
+await check("get_scoreboard", "cbb d1 20261115", async () => {
+  const data = await call("get_scoreboard", {
+    sport: "basketball",
+    league: "mens-college-basketball",
+    date: "20261115",
+  });
+  const events = eventsOf(data);
+  const teamIds = new Set(
+    events.flatMap((event) => (event.competitors ?? []).map((competitor) => String(competitor?.team?.id ?? ""))),
+  );
+  if (events.length < 30) throw new Error(`only ${events.length} games (expected the Division I slate)`);
+  if (!teamIds.has("275")) throw new Error("Wisconsin (team 275) missing from the Division I slate");
+  return `events=${events.length} includes team 275`;
+});
+
+await check("get_slate", "cbb d1 20261115", async () => {
+  const data = await call("get_slate", {
+    sport: "basketball",
+    league: "mens-college-basketball",
+    date: "20261115",
+  });
+  const games = Array.isArray(data?.games) ? data.games : [];
+  const teamIds = new Set(games.flatMap((game) => [String(game?.home?.id ?? ""), String(game?.away?.id ?? "")]));
+  if (games.length < 30) throw new Error(`only ${games.length} games (expected the Division I slate)`);
+  if (!teamIds.has("275")) throw new Error("Wisconsin (team 275) missing from the Division I slate");
+  return `games=${games.length} includes team 275`;
+});
+
 await check("get_scoreboard", "pga athlete", async () => {
   const data = await call("get_scoreboard", { sport: "golf", league: "pga" });
   const competitors = eventsOf(data).flatMap((event) => event.competitors ?? []);
@@ -435,6 +466,16 @@ apiCache.clear();
 
 await pool([...gameJobs, ...leagueJobs], 4);
 
+const PREDICTION_LEAGUES = [
+  { key: "nfl", sport: "football", league: "nfl" },
+  { key: "nba", sport: "basketball", league: "nba" },
+  { key: "nhl", sport: "hockey", league: "nhl" },
+  { key: "mlb", sport: "baseball", league: "mlb" },
+  { key: "cfb", sport: "football", league: "college-football" },
+  { key: "cbb", sport: "basketball", league: "mens-college-basketball" },
+  { key: "wcbb", sport: "basketball", league: "womens-college-basketball" },
+];
+
 await auditPredictionMarkets();
 
 await auditDataExport();
@@ -450,62 +491,68 @@ if (failed.length) {
   process.exit(1);
 }
 
-const PREDICTION_LEAGUES = [
-  { key: "nfl", sport: "football", league: "nfl" },
-  { key: "nba", sport: "basketball", league: "nba" },
-  { key: "nhl", sport: "hockey", league: "nhl" },
-  { key: "mlb", sport: "baseball", league: "mlb" },
-  { key: "cfb", sport: "football", league: "college-football" },
-  { key: "cbb", sport: "basketball", league: "mens-college-basketball" },
-  { key: "wcbb", sport: "basketball", league: "womens-college-basketball" },
-];
-
 /**
  * Keyless Kalshi / Polymarket check. One venue error must not be hidden: a 4xx,
  * Gamma 406, or schema failure is FAIL. A league with nothing listed (MLB in
  * the offseason) is SKIP. Venues stay labelled and are not averaged.
+ *
+ * The Division I scoreboard's first game can be a contest Kalshi does not list.
+ * Walk today's games and accept the first one that matches a venue. If Kalshi
+ * has markets dated today and none of the ESPN games match, that is a FAIL.
  */
 async function auditPredictionMarkets() {
   console.log("");
   console.log("prediction markets");
+  const todayIso = `${today.slice(0, 4)}-${today.slice(4, 6)}-${today.slice(6, 8)}`;
   for (const league of PREDICTION_LEAGUES) {
     const events = eventsOf(boards.get(`${league.key}:today`));
     if (!events.length) {
       line("skip", "get_market_odds", `${league.key} today`, "no ESPN game today");
       continue;
     }
-    const eventId = String(events[0].id);
+    let label = `${league.key} today`;
     try {
-      const data = await call("get_market_odds", { sport: league.sport, league: league.league, eventId });
-      const venues = Array.isArray(data?.venues) ? data.venues : [];
-      const byName = new Map(venues.map((venue) => [venue.venue, venue]));
-      for (const name of ["polymarket", "polymarket_us"]) {
-        if (!byName.has(name)) throw new Error(`missing labelled ${name} entry`);
+      let matchedGame = null;
+      for (const event of events) {
+        const eventId = String(event.id);
+        label = `${league.key} ${eventId}`;
+        const data = await call("get_market_odds", { sport: league.sport, league: league.league, eventId });
+        const venues = Array.isArray(data?.venues) ? data.venues : [];
+        const byName = new Map(venues.map((venue) => [venue.venue, venue]));
+        for (const name of ["polymarket", "polymarket_us"]) {
+          if (!byName.has(name)) throw new Error(`missing labelled ${name} entry`);
+        }
+        if (data?.averaged !== false) throw new Error("venues must not be averaged");
+        const broken = venues.find((venue) => venue.status === "error" || /406|\b4\d\d\b/.test(String(venue.error ?? "")));
+        if (broken) throw new Error(`${broken.venue} ${broken.error || broken.status}`);
+        const matched = venues.filter((venue) => venue.status === "ok");
+        if (!matched.length) continue;
+        const us = byName.get("polymarket_us");
+        if (us?.status === "ok" && (!us.usId || us.slug !== `aec-${us.usId}`)) {
+          throw new Error(`US slug ${us.slug} != aec-${us.usId}`);
+        }
+        matchedGame = { eventId, venues };
+        break;
       }
-      if (data?.averaged !== false) throw new Error("venues must not be averaged");
-      const broken = venues.find((venue) => venue.status === "error" || /406|\b4\d\d\b/.test(String(venue.error ?? "")));
-      if (broken) throw new Error(`${broken.venue} ${broken.error || broken.status}`);
-      const matched = venues.filter((venue) => venue.status === "ok");
-      if (!matched.length) {
+      if (!matchedGame) {
         const open = await call("get_kalshi_markets", { league: league.league, market: "winner" });
-        const listed = open?.events?.length ?? 0;
-        if (listed > 0) throw new Error(`Kalshi has ${listed} open markets but none matched event ${eventId}`);
-        line("skip", "get_market_odds", `${league.key} today`, "no markets (offseason or unlisted)");
+        const listed = Array.isArray(open?.events) ? open.events : [];
+        const datedToday = listed.filter((event) => event.scheduledDate === todayIso).length;
+        if (datedToday > 0) {
+          throw new Error(`Kalshi lists ${datedToday} markets for ${todayIso} but none of ${events.length} ESPN games matched`);
+        }
+        line("skip", "get_market_odds", `${league.key} today`, listed.length ? "no market for today's games" : "no markets (offseason or unlisted)");
         continue;
-      }
-      const us = byName.get("polymarket_us");
-      if (us?.status === "ok") {
-        if (!us.usId || us.slug !== `aec-${us.usId}`) throw new Error(`US slug ${us.slug} != aec-${us.usId}`);
       }
       line(
         "pass",
         "get_market_odds",
-        `${league.key} ${eventId}`,
-        venues.map((venue) => `${venue.venue}:${venue.status}`).join(" "),
+        `${league.key} ${matchedGame.eventId}`,
+        matchedGame.venues.map((venue) => `${venue.venue}:${venue.status}`).join(" "),
       );
     } catch (err) {
       const message = err instanceof Error ? err.message.split("\n")[0] : String(err);
-      line("fail", "get_market_odds", `${league.key} ${eventId}`, message.slice(0, 240));
+      line("fail", "get_market_odds", label, message.slice(0, 240));
     }
   }
 }

@@ -268,6 +268,16 @@ Working replacements: record and the current season live on the team detail docu
 
 ---
 
-## 21. Core API v3 Host Is Dead
+## 21. College Basketball Scoreboards Omit Most Division I Games
+
+The site scoreboard for `mens-college-basketball` and `womens-college-basketball` with only `dates` is a short featured list. On 2026-11-15 that was 6 of 44 Division I men's games (Wisconsin, team id 275, was missing) and 12 of 72 women's games. Group `50` is every Division I game.
+
+A grouped scoreboard returns 100 events unless `limit` is set. On 2026-02-07, group 50 with no limit returned 100 of 155 men's games. `limit=400` covers any single date.
+
+`get_scoreboard` and `get_slate` default both leagues to group `50` and `limit=400`. Pass `groups` to request one conference. A `week` query is left on ESPN's own page, because opening week is about 470 games and the compact scoreboard for that many games exceeds the token budget. College football already returns every FBS game with no group. Other leagues are unchanged.
+
+---
+
+## 22. Core API v3 Host Is Dead
 
 `https://sports.core.api.espn.com/v3/sports/...` returned 404 on 2026-10-31 for the athlete resources this catalog used to attribute to it. Use Web API v3 (`site.web.api.espn.com/apis/common/v3`) for athlete stats. The CDN base (`cdn.espn.com/core/{league}?xhr=1`) still returns JSON and is only an `espn_fetch` escape hatch; team schedules in the tools use the Site API.

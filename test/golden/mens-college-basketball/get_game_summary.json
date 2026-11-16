@@ -1,0 +1,2548 @@
+{
+ "game": {
+  "id": "401906866",
+  "date": "2026-11-15T20:00Z",
+  "status": {
+   "state": "post",
+   "detail": "Final"
+  },
+  "competitors": [
+   {
+    "homeAway": "home",
+    "winner": true,
+    "team": {
+     "id": "251",
+     "abbrev": "TEX",
+     "name": "Longhorns",
+     "displayName": "Texas Longhorns"
+    },
+    "score": "75",
+    "linescores": [
+     "39",
+     "36"
+    ]
+   },
+   {
+    "homeAway": "away",
+    "winner": false,
+    "team": {
+     "id": "239",
+     "abbrev": "BAY",
+     "name": "Bears",
+     "displayName": "Baylor Bears"
+    },
+    "score": "72",
+    "linescores": [
+     "36",
+     "36"
+    ]
+   }
+  ]
+ },
+ "boxscore": {
+  "teams": [
+   {
+    "team": {
+     "id": "239",
+     "abbrev": "BAY",
+     "name": "Bears",
+     "displayName": "Baylor Bears"
+    },
+    "stats": [
+     {
+      "label": "FG",
+      "displayValue": "24-66"
+     },
+     {
+      "label": "Field Goal %",
+      "displayValue": "36"
+     },
+     {
+      "label": "3PT",
+      "displayValue": "11-25"
+     },
+     {
+      "label": "Three Point %",
+      "displayValue": "44"
+     },
+     {
+      "label": "FT",
+      "displayValue": "13-18"
+     },
+     {
+      "label": "Free Throw %",
+      "displayValue": "72"
+     },
+     {
+      "label": "Rebounds",
+      "displayValue": "39"
+     },
+     {
+      "label": "Offensive Rebounds",
+      "displayValue": "17"
+     },
+     {
+      "label": "Defensive Rebounds",
+      "displayValue": "22"
+     },
+     {
+      "label": "Assists",
+      "displayValue": "14"
+     },
+     {
+      "label": "Steals",
+      "displayValue": "8"
+     },
+     {
+      "label": "Blocks",
+      "displayValue": "5"
+     },
+     {
+      "label": "Turnovers",
+      "displayValue": "9"
+     },
+     {
+      "label": "Team Turnovers",
+      "displayValue": "2"
+     },
+     {
+      "label": "Total Turnovers",
+      "displayValue": "9"
+     },
+     {
+      "label": "Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Total Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Flagrant Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Points Off Turnovers",
+      "displayValue": "10"
+     },
+     {
+      "label": "Fast Break Points",
+      "displayValue": "13"
+     },
+     {
+      "label": "Points in Paint",
+      "displayValue": "26"
+     },
+     {
+      "label": "Fouls",
+      "displayValue": "24"
+     },
+     {
+      "label": "Largest Lead",
+      "displayValue": "7"
+     },
+     {
+      "label": "Lead Changes",
+      "displayValue": "14"
+     },
+     {
+      "label": "Percent Led",
+      "displayValue": "39"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "251",
+     "abbrev": "TEX",
+     "name": "Longhorns",
+     "displayName": "Texas Longhorns"
+    },
+    "stats": [
+     {
+      "label": "FG",
+      "displayValue": "27-55"
+     },
+     {
+      "label": "Field Goal %",
+      "displayValue": "49"
+     },
+     {
+      "label": "3PT",
+      "displayValue": "6-15"
+     },
+     {
+      "label": "Three Point %",
+      "displayValue": "40"
+     },
+     {
+      "label": "FT",
+      "displayValue": "15-23"
+     },
+     {
+      "label": "Free Throw %",
+      "displayValue": "65"
+     },
+     {
+      "label": "Rebounds",
+      "displayValue": "41"
+     },
+     {
+      "label": "Offensive Rebounds",
+      "displayValue": "12"
+     },
+     {
+      "label": "Defensive Rebounds",
+      "displayValue": "29"
+     },
+     {
+      "label": "Assists",
+      "displayValue": "18"
+     },
+     {
+      "label": "Steals",
+      "displayValue": "6"
+     },
+     {
+      "label": "Blocks",
+      "displayValue": "4"
+     },
+     {
+      "label": "Turnovers",
+      "displayValue": "12"
+     },
+     {
+      "label": "Team Turnovers",
+      "displayValue": "0"
+     },
+     {
+      "label": "Total Turnovers",
+      "displayValue": "12"
+     },
+     {
+      "label": "Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Total Technical Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Flagrant Fouls",
+      "displayValue": "0"
+     },
+     {
+      "label": "Points Off Turnovers",
+      "displayValue": "10"
+     },
+     {
+      "label": "Fast Break Points",
+      "displayValue": "15"
+     },
+     {
+      "label": "Points in Paint",
+      "displayValue": "42"
+     },
+     {
+      "label": "Fouls",
+      "displayValue": "20"
+     },
+     {
+      "label": "Largest Lead",
+      "displayValue": "7"
+     },
+     {
+      "label": "Lead Changes",
+      "displayValue": "14"
+     },
+     {
+      "label": "Percent Led",
+      "displayValue": "54"
+     }
+    ]
+   }
+  ],
+  "players": [
+   {
+    "team": {
+     "id": "239",
+     "abbrev": "BAY",
+     "name": "Bears",
+     "displayName": "Baylor Bears"
+    },
+    "categories": [
+     {
+      "name": "",
+      "athletes": [
+       {
+        "id": "5142735",
+        "name": "Elijah Williams",
+        "jersey": "0",
+        "stats": {
+         "MIN": "16",
+         "PTS": "6",
+         "FG": "2-5",
+         "3PT": "2-3",
+         "FT": "0-0",
+         "REB": "1",
+         "AST": "0",
+         "TO": "0",
+         "STL": "1",
+         "BLK": "2",
+         "OREB": "1",
+         "DREB": "0",
+         "PF": "1"
+        }
+       },
+       {
+        "id": "5175662",
+        "name": "Juslin Bodo Bodo",
+        "jersey": "21",
+        "stats": {
+         "MIN": "14",
+         "PTS": "2",
+         "FG": "1-2",
+         "3PT": "0-0",
+         "FT": "0-0",
+         "REB": "4",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "1",
+         "OREB": "2",
+         "DREB": "2",
+         "PF": "2"
+        }
+       },
+       {
+        "id": "5242130",
+        "name": "Brett Decker Jr.",
+        "jersey": "2",
+        "stats": {
+         "MIN": "19",
+         "PTS": "9",
+         "FG": "3-7",
+         "3PT": "3-5",
+         "FT": "0-2",
+         "REB": "1",
+         "AST": "2",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "1"
+        }
+       },
+       {
+        "id": "5144473",
+        "name": "Dylan Mingo",
+        "jersey": "5",
+        "stats": {
+         "MIN": "23",
+         "PTS": "6",
+         "FG": "1-8",
+         "3PT": "0-1",
+         "FT": "4-4",
+         "REB": "6",
+         "AST": "1",
+         "TO": "1",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "3",
+         "DREB": "3",
+         "PF": "4"
+        }
+       },
+       {
+        "id": "5144108",
+        "name": "Kayden Mingo",
+        "jersey": "4",
+        "stats": {
+         "MIN": "36",
+         "PTS": "23",
+         "FG": "8-20",
+         "3PT": "4-11",
+         "FT": "3-4",
+         "REB": "7",
+         "AST": "6",
+         "TO": "2",
+         "STL": "3",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "6",
+         "PF": "3"
+        }
+       },
+       {
+        "id": "5312079",
+        "name": "Evan Chatman",
+        "jersey": "15",
+        "stats": {
+         "MIN": "13",
+         "PTS": "6",
+         "FG": "3-4",
+         "3PT": "0-1",
+         "FT": "0-0",
+         "REB": "3",
+         "AST": "1",
+         "TO": "1",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "2",
+         "PF": "4"
+        }
+       },
+       {
+        "id": "5241754",
+        "name": "Isaac Celiscar",
+        "jersey": "8",
+        "stats": {
+         "MIN": "28",
+         "PTS": "10",
+         "FG": "3-7",
+         "3PT": "2-3",
+         "FT": "2-2",
+         "REB": "4",
+         "AST": "0",
+         "TO": "0",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "3",
+         "PF": "2"
+        }
+       },
+       {
+        "id": "5311906",
+        "name": "Mayo Soyoye",
+        "jersey": "46",
+        "stats": {
+         "MIN": "2",
+         "PTS": "2",
+         "FG": "0-1",
+         "3PT": "0-0",
+         "FT": "2-2",
+         "REB": "1",
+         "AST": "0",
+         "TO": "1",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "0",
+         "PF": "1"
+        }
+       },
+       {
+        "id": "5107866",
+        "name": "Caden Powell",
+        "jersey": "44",
+        "stats": {
+         "MIN": "23",
+         "PTS": "2",
+         "FG": "1-3",
+         "3PT": "0-0",
+         "FT": "0-2",
+         "REB": "5",
+         "AST": "2",
+         "TO": "0",
+         "STL": "2",
+         "BLK": "2",
+         "OREB": "3",
+         "DREB": "2",
+         "PF": "3"
+        }
+       },
+       {
+        "id": "5243130",
+        "name": "Isaac Williams IV",
+        "jersey": "10",
+        "stats": {
+         "MIN": "26",
+         "PTS": "6",
+         "FG": "2-9",
+         "3PT": "0-1",
+         "FT": "2-2",
+         "REB": "1",
+         "AST": "2",
+         "TO": "2",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "1",
+         "PF": "3"
+        }
+       },
+       {
+        "id": "5311907",
+        "name": "Maikcol Perez",
+        "jersey": "20",
+        "stats": {}
+       },
+       {
+        "id": "5369489",
+        "name": "Tegra Makabu",
+        "jersey": "22",
+        "stats": {}
+       },
+       {
+        "id": "5311905",
+        "name": "Drew Perry",
+        "jersey": "3",
+        "stats": {}
+       },
+       {
+        "id": "5196940",
+        "name": "Andre Iguodala II",
+        "jersey": "7",
+        "stats": {}
+       },
+       {
+        "id": "5174781",
+        "name": "James Goodis",
+        "jersey": "13",
+        "stats": {}
+       }
+      ],
+      "totals": {
+       "MIN": "",
+       "PTS": "72",
+       "FG": "24-66",
+       "3PT": "11-25",
+       "FT": "13-18",
+       "REB": "39",
+       "AST": "14",
+       "TO": "9",
+       "STL": "8",
+       "BLK": "5",
+       "OREB": "17",
+       "DREB": "22",
+       "PF": "24"
+      }
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": "251",
+     "abbrev": "TEX",
+     "name": "Longhorns",
+     "displayName": "Texas Longhorns"
+    },
+    "categories": [
+     {
+      "name": "",
+      "athletes": [
+       {
+        "id": "5164368",
+        "name": "David Punch",
+        "jersey": "13",
+        "stats": {
+         "MIN": "29",
+         "PTS": "6",
+         "FG": "2-6",
+         "3PT": "0-0",
+         "FT": "2-4",
+         "REB": "7",
+         "AST": "2",
+         "TO": "2",
+         "STL": "2",
+         "BLK": "2",
+         "OREB": "3",
+         "DREB": "4",
+         "PF": "1"
+        }
+       },
+       {
+        "id": "5239838",
+        "name": "Matas Vokietaitis",
+        "jersey": "8",
+        "stats": {
+         "MIN": "33",
+         "PTS": "14",
+         "FG": "6-8",
+         "3PT": "0-0",
+         "FT": "2-4",
+         "REB": "10",
+         "AST": "2",
+         "TO": "4",
+         "STL": "1",
+         "BLK": "1",
+         "OREB": "5",
+         "DREB": "5",
+         "PF": "2"
+        }
+       },
+       {
+        "id": "5311502",
+        "name": "Elyjah Freeman",
+        "jersey": "6",
+        "stats": {
+         "MIN": "24",
+         "PTS": "10",
+         "FG": "3-6",
+         "3PT": "1-2",
+         "FT": "3-3",
+         "REB": "3",
+         "AST": "3",
+         "TO": "0",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "3",
+         "PF": "4"
+        }
+       },
+       {
+        "id": "5254159",
+        "name": "Isaiah Johnson",
+        "jersey": "2",
+        "stats": {
+         "MIN": "35",
+         "PTS": "26",
+         "FG": "8-14",
+         "3PT": "4-4",
+         "FT": "6-8",
+         "REB": "3",
+         "AST": "2",
+         "TO": "2",
+         "STL": "1",
+         "BLK": "0",
+         "OREB": "1",
+         "DREB": "2",
+         "PF": "1"
+        }
+       },
+       {
+        "id": "5210802",
+        "name": "Austin Goosby",
+        "jersey": "10",
+        "stats": {
+         "MIN": "30",
+         "PTS": "4",
+         "FG": "2-7",
+         "3PT": "0-2",
+         "FT": "0-1",
+         "REB": "6",
+         "AST": "7",
+         "TO": "2",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "6",
+         "PF": "5"
+        }
+       },
+       {
+        "id": "5210957",
+        "name": "Marcus Spears Jr.",
+        "jersey": "31",
+        "stats": {
+         "MIN": "18",
+         "PTS": "8",
+         "FG": "3-3",
+         "3PT": "0-0",
+         "FT": "2-3",
+         "REB": "4",
+         "AST": "1",
+         "TO": "2",
+         "STL": "1",
+         "BLK": "1",
+         "OREB": "0",
+         "DREB": "4",
+         "PF": "3"
+        }
+       },
+       {
+        "id": "5210817",
+        "name": "Joe Sterling",
+        "jersey": "3",
+        "stats": {
+         "MIN": "6",
+         "PTS": "3",
+         "FG": "1-2",
+         "3PT": "1-2",
+         "FT": "0-0",
+         "REB": "0",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "1"
+        }
+       },
+       {
+        "id": "5210408",
+        "name": "Bo Ogden",
+        "jersey": "5",
+        "stats": {
+         "MIN": "5",
+         "PTS": "0",
+         "FG": "0-2",
+         "3PT": "0-2",
+         "FT": "0-0",
+         "REB": "0",
+         "AST": "1",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "0",
+         "PF": "0"
+        }
+       },
+       {
+        "id": "5196914",
+        "name": "Amari Evans",
+        "jersey": "1",
+        "stats": {
+         "MIN": "20",
+         "PTS": "4",
+         "FG": "2-7",
+         "3PT": "0-3",
+         "FT": "0-0",
+         "REB": "2",
+         "AST": "0",
+         "TO": "0",
+         "STL": "0",
+         "BLK": "0",
+         "OREB": "0",
+         "DREB": "2",
+         "PF": "3"
+        }
+       },
+       {
+        "id": "5326456",
+        "name": "Coleman Elkins",
+        "jersey": "4",
+        "stats": {}
+       },
+       {
+        "id": "5149079",
+        "name": "John Clark",
+        "jersey": "9",
+        "stats": {}
+       },
+       {
+        "id": "5311529",
+        "name": "Lewis Obiorah",
+        "jersey": "14",
+        "stats": {}
+       },
+       {
+        "id": "5351498",
+        "name": "Mantas Laurencikas",
+        "jersey": "25",
+        "stats": {}
+       },
+       {
+        "id": "5240980",
+        "name": "Mikey Lewis",
+        "jersey": "0",
+        "stats": {}
+       },
+       {
+        "id": "5191718",
+        "name": "Anthon McDermott",
+        "jersey": "33",
+        "stats": {}
+       }
+      ],
+      "totals": {
+       "MIN": "",
+       "PTS": "75",
+       "FG": "27-55",
+       "3PT": "6-15",
+       "FT": "15-23",
+       "REB": "41",
+       "AST": "18",
+       "TO": "12",
+       "STL": "6",
+       "BLK": "4",
+       "OREB": "12",
+       "DREB": "29",
+       "PF": "20"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "leaders": [
+  {
+   "team": {
+    "id": "251",
+    "abbrev": "TEX",
+    "name": "Texas Longhorns",
+    "displayName": "Texas Longhorns"
+   },
+   "categories": [
+    {
+     "name": "points",
+     "displayName": "Points",
+     "leaders": [
+      {
+       "athleteId": "5254159",
+       "athlete": "Isaiah Johnson",
+       "value": "26"
+      }
+     ]
+    },
+    {
+     "name": "assists",
+     "displayName": "Assists",
+     "leaders": [
+      {
+       "athleteId": "5210802",
+       "athlete": "Austin Goosby",
+       "value": "7"
+      }
+     ]
+    },
+    {
+     "name": "rebounds",
+     "displayName": "Rebounds",
+     "leaders": [
+      {
+       "athleteId": "5239838",
+       "athlete": "Matas Vokietaitis",
+       "value": "10"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "team": {
+    "id": "239",
+    "abbrev": "BAY",
+    "name": "Baylor Bears",
+    "displayName": "Baylor Bears"
+   },
+   "categories": [
+    {
+     "name": "points",
+     "displayName": "Points",
+     "leaders": [
+      {
+       "athleteId": "5144108",
+       "athlete": "Kayden Mingo",
+       "value": "23"
+      }
+     ]
+    },
+    {
+     "name": "assists",
+     "displayName": "Assists",
+     "leaders": [
+      {
+       "athleteId": "5144108",
+       "athlete": "Kayden Mingo",
+       "value": "6"
+      }
+     ]
+    },
+    {
+     "name": "rebounds",
+     "displayName": "Rebounds",
+     "leaders": [
+      {
+       "athleteId": "5144108",
+       "athlete": "Kayden Mingo",
+       "value": "7"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "plays": {
+  "count": 80,
+  "scoring": [
+   {
+    "id": "401906866121397390",
+    "period": 1,
+    "clock": "19:47",
+    "text": "Isaiah Johnson makes layup (David Punch assists)",
+    "scoringPlay": true,
+    "homeScore": "2",
+    "awayScore": "0",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121397450",
+    "period": 1,
+    "clock": "19:24",
+    "text": "Kayden Mingo makes 24-foot three point jumper (Brett Decker Jr. assists)",
+    "scoringPlay": true,
+    "homeScore": "2",
+    "awayScore": "3",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121397611",
+    "period": 1,
+    "clock": "18:58",
+    "text": "Matas Vokietaitis makes layup",
+    "scoringPlay": true,
+    "homeScore": "4",
+    "awayScore": "3",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121397741",
+    "period": 1,
+    "clock": "18:39",
+    "text": "Brett Decker Jr. makes 25-foot three pointer (Kayden Mingo assists)",
+    "scoringPlay": true,
+    "homeScore": "4",
+    "awayScore": "6",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121398742",
+    "period": 1,
+    "clock": "16:50",
+    "text": "Elijah Williams makes 23-foot three point jumper (Dylan Mingo assists)",
+    "scoringPlay": true,
+    "homeScore": "4",
+    "awayScore": "9",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121398770",
+    "period": 1,
+    "clock": "16:35",
+    "text": "Isaiah Johnson makes 27-foot three point jumper (Elyjah Freeman assists)",
+    "scoringPlay": true,
+    "homeScore": "7",
+    "awayScore": "9",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121399132",
+    "period": 1,
+    "clock": "15:51",
+    "text": "Matas Vokietaitis makes 1-foot dunk (Isaiah Johnson assists)",
+    "scoringPlay": true,
+    "homeScore": "9",
+    "awayScore": "9",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121399156",
+    "period": 1,
+    "clock": "15:34",
+    "text": "Elijah Williams makes 22-foot three point jumper (Brett Decker Jr. assists)",
+    "scoringPlay": true,
+    "homeScore": "9",
+    "awayScore": "12",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121400690",
+    "period": 1,
+    "clock": "14:36",
+    "text": "Kayden Mingo makes 9-foot floating jump shot",
+    "scoringPlay": true,
+    "homeScore": "9",
+    "awayScore": "14",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121400736",
+    "period": 1,
+    "clock": "14:18",
+    "text": "Matas Vokietaitis makes 0-foot tip in layup",
+    "scoringPlay": true,
+    "homeScore": "11",
+    "awayScore": "14",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121401318",
+    "period": 1,
+    "clock": "14:00",
+    "text": "Isaac Williams IV makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "11",
+    "awayScore": "15",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121401337",
+    "period": 1,
+    "clock": "14:00",
+    "text": "Isaac Williams IV makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "11",
+    "awayScore": "16",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121401531",
+    "period": 1,
+    "clock": "13:34",
+    "text": "Isaac Celiscar makes driving layup (Kayden Mingo assists)",
+    "scoringPlay": true,
+    "homeScore": "11",
+    "awayScore": "18",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121401754",
+    "period": 1,
+    "clock": "13:18",
+    "text": "Marcus Spears Jr. makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "12",
+    "awayScore": "18",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121401841",
+    "period": 1,
+    "clock": "13:18",
+    "text": "Marcus Spears Jr. makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "13",
+    "awayScore": "18",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121402331",
+    "period": 1,
+    "clock": "12:16",
+    "text": "David Punch makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "14",
+    "awayScore": "18",
+    "teamId": "251"
+   }
+  ],
+  "recent": [
+   {
+    "id": "401906866121401246",
+    "period": 1,
+    "clock": "14:00",
+    "text": "Joe Sterling subbing in for Texas",
+    "scoringPlay": false,
+    "homeScore": "11",
+    "awayScore": "14",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121401318",
+    "period": 1,
+    "clock": "14:00",
+    "text": "Isaac Williams IV makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "11",
+    "awayScore": "15",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121401337",
+    "period": 1,
+    "clock": "14:00",
+    "text": "Isaac Williams IV makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "11",
+    "awayScore": "16",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121401484",
+    "period": 1,
+    "clock": "13:40",
+    "text": "Isaiah Johnson bad pass\nturnover",
+    "scoringPlay": false,
+    "homeScore": "11",
+    "awayScore": "16",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121401530",
+    "period": 1,
+    "clock": "13:40",
+    "text": "Caden Powell Steal.",
+    "scoringPlay": false,
+    "homeScore": "11",
+    "awayScore": "16",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121401531",
+    "period": 1,
+    "clock": "13:34",
+    "text": "Isaac Celiscar makes driving layup (Kayden Mingo assists)",
+    "scoringPlay": true,
+    "homeScore": "11",
+    "awayScore": "18",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121401670",
+    "period": 1,
+    "clock": "13:18",
+    "text": "Foul on Caden Powell.",
+    "scoringPlay": false,
+    "homeScore": "11",
+    "awayScore": "18",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121401754",
+    "period": 1,
+    "clock": "13:18",
+    "text": "Marcus Spears Jr. makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "12",
+    "awayScore": "18",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121401755",
+    "period": 1,
+    "clock": "13:18",
+    "text": "Isaiah Johnson subbing out for Texas",
+    "scoringPlay": false,
+    "homeScore": "12",
+    "awayScore": "18",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121401756",
+    "period": 1,
+    "clock": "13:18",
+    "text": "Matas Vokietaitis subbing out for Texas",
+    "scoringPlay": false,
+    "homeScore": "12",
+    "awayScore": "18",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121401757",
+    "period": 1,
+    "clock": "13:18",
+    "text": "Austin Goosby subbing in for Texas",
+    "scoringPlay": false,
+    "homeScore": "12",
+    "awayScore": "18",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121401758",
+    "period": 1,
+    "clock": "13:18",
+    "text": "David Punch subbing in for Texas",
+    "scoringPlay": false,
+    "homeScore": "12",
+    "awayScore": "18",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121401841",
+    "period": 1,
+    "clock": "13:18",
+    "text": "Marcus Spears Jr. makes free throw 2 of 2",
+    "scoringPlay": true,
+    "homeScore": "13",
+    "awayScore": "18",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121401970",
+    "period": 1,
+    "clock": "12:47",
+    "text": "Isaac Celiscar misses 7-foot floating jump shot",
+    "scoringPlay": false,
+    "homeScore": "13",
+    "awayScore": "18",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121401971",
+    "period": 1,
+    "clock": "12:47",
+    "text": "Baylor Offensive Rebound.",
+    "scoringPlay": false,
+    "homeScore": "13",
+    "awayScore": "18",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121401983",
+    "period": 1,
+    "clock": "12:47",
+    "text": "team  shot clock turnover ",
+    "scoringPlay": false,
+    "homeScore": "13",
+    "awayScore": "18",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121402214",
+    "period": 1,
+    "clock": "12:16",
+    "text": "Foul on Evan Chatman.",
+    "scoringPlay": false,
+    "homeScore": "13",
+    "awayScore": "18",
+    "teamId": "239"
+   },
+   {
+    "id": "401906866121402331",
+    "period": 1,
+    "clock": "12:16",
+    "text": "David Punch makes free throw 1 of 2",
+    "scoringPlay": true,
+    "homeScore": "14",
+    "awayScore": "18",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121402388",
+    "period": 1,
+    "clock": "12:15",
+    "text": "David Punch misses free throw 2 of 2",
+    "scoringPlay": false,
+    "homeScore": "14",
+    "awayScore": "18",
+    "teamId": "251"
+   },
+   {
+    "id": "401906866121402389",
+    "period": 1,
+    "clock": "12:14",
+    "text": "Isaac Williams IV Defensive Rebound.",
+    "scoringPlay": false,
+    "homeScore": "14",
+    "awayScore": "18",
+    "teamId": "239"
+   }
+  ]
+ },
+ "winProbability": {
+  "count": 80,
+  "samples": [
+   {
+    "playId": "401906866121397215",
+    "homeWinPercentage": 0.696
+   },
+   {
+    "playId": "401906866121397450",
+    "homeWinPercentage": 0.684
+   },
+   {
+    "playId": "401906866121397741",
+    "homeWinPercentage": 0.658
+   },
+   {
+    "playId": "401906866121398237",
+    "homeWinPercentage": 0.65
+   },
+   {
+    "playId": "401906866121398377",
+    "homeWinPercentage": 0.649
+   },
+   {
+    "playId": "401906866121398596",
+    "homeWinPercentage": 0.636
+   },
+   {
+    "playId": "401906866121398725",
+    "homeWinPercentage": 0.647
+   },
+   {
+    "playId": "401906866121398765",
+    "homeWinPercentage": 0.545
+   },
+   {
+    "playId": "401906866121399056",
+    "homeWinPercentage": 0.653
+   },
+   {
+    "playId": "401906866121399232",
+    "homeWinPercentage": 0.603
+   },
+   {
+    "playId": "401906866121400471",
+    "homeWinPercentage": 0.622
+   },
+   {
+    "playId": "401906866121400477",
+    "homeWinPercentage": 0.597
+   },
+   {
+    "playId": "401906866121400688",
+    "homeWinPercentage": 0.594
+   },
+   {
+    "playId": "401906866121400736",
+    "homeWinPercentage": 0.593
+   },
+   {
+    "playId": "401906866121400922",
+    "homeWinPercentage": 0.59
+   },
+   {
+    "playId": "401906866121401246",
+    "homeWinPercentage": 0.613
+   },
+   {
+    "playId": "401906866121401530",
+    "homeWinPercentage": 0.523
+   },
+   {
+    "playId": "401906866121401755",
+    "homeWinPercentage": 0.521
+   },
+   {
+    "playId": "401906866121401841",
+    "homeWinPercentage": 0.554
+   },
+   {
+    "playId": "401906866121402214",
+    "homeWinPercentage": 0.551
+   },
+   {
+    "playId": "401906866121402389",
+    "homeWinPercentage": 0.55
+   }
+  ]
+ },
+ "gameInfo": {
+  "venue": {
+   "id": "780",
+   "fullName": "Frost Bank Center",
+   "address": {
+    "city": "San Antonio",
+    "state": "TX"
+   },
+   "grass": false
+  },
+  "attendance": 6164,
+  "officials": [
+   {
+    "fullName": "Byron Jarrett",
+    "displayName": "Byron Jarrett",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "40"
+    },
+    "order": 1
+   },
+   {
+    "fullName": "K.B. Burdett",
+    "displayName": "K.B. Burdett",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "40"
+    },
+    "order": 2
+   },
+   {
+    "fullName": "Doug Sirmons",
+    "displayName": "Doug Sirmons",
+    "position": {
+     "name": "Referee",
+     "displayName": "Referee",
+     "id": "40"
+    },
+    "order": 3
+   }
+  ]
+ },
+ "standings": {
+  "fullViewLink": {
+   "text": "Full Standings"
+  },
+  "header": "2026-27 Standings",
+  "groups": [
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "Arizona State",
+       "id": "9",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "BYU",
+       "id": "252",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "TCU",
+       "id": "2628",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Texas Tech",
+       "id": "2641",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "UCF",
+       "id": "2116",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Houston",
+       "id": "248",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-0",
+         "displayValue": "3-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Kansas",
+       "id": "2305",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-0",
+         "displayValue": "3-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Utah",
+       "id": "254",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-0",
+         "displayValue": "3-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "West Virginia",
+       "id": "277",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-0",
+         "displayValue": "3-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Arizona",
+       "id": "12",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Baylor",
+       "id": "239",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Cincinnati",
+       "id": "2132",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Iowa State",
+       "id": "66",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Kansas State",
+       "id": "2306",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-1",
+         "displayValue": "2-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Oklahoma State",
+       "id": "197",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-1",
+         "displayValue": "2-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Colorado",
+       "id": "38",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-2",
+         "displayValue": "2-2"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2026-27 Big 12 Conference Standings",
+    "conferenceHeader": "NCAA Division I",
+    "divisionHeader": "Big 12 Conference",
+    "shortDivisionHeader": "Big 12"
+   },
+   {
+    "standings": {
+     "entries": [
+      {
+       "team": "Alabama",
+       "id": "333",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Florida",
+       "id": "57",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Georgia",
+       "id": "61",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "LSU",
+       "id": "99",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "South Carolina",
+       "id": "2579",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Texas",
+       "id": "251",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Texas A&M",
+       "id": "245",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Vanderbilt",
+       "id": "238",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "4-0",
+         "displayValue": "4-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Ole Miss",
+       "id": "145",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-0",
+         "displayValue": "3-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Tennessee",
+       "id": "2633",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-0",
+         "displayValue": "3-0"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Arkansas",
+       "id": "8",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Kentucky",
+       "id": "96",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Mississippi State",
+       "id": "344",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Missouri",
+       "id": "142",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Oklahoma",
+       "id": "201",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "3-1",
+         "displayValue": "3-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      },
+      {
+       "team": "Auburn",
+       "id": "2",
+       "stats": [
+        {
+         "id": "0",
+         "name": "overall",
+         "abbreviation": "Season",
+         "displayName": "Team Season Record",
+         "description": "Overall Record",
+         "type": "total",
+         "summary": "2-1",
+         "displayValue": "2-1"
+        },
+        {
+         "name": "gamesBehind",
+         "displayName": "Games Back",
+         "description": "Games Back",
+         "abbreviation": "GB",
+         "type": "vsconf_gamesbehind",
+         "value": 0,
+         "displayValue": "-"
+        },
+        {
+         "id": "9",
+         "name": "vs. Conf.",
+         "abbreviation": "VS CONF",
+         "displayName": "CONF",
+         "description": "Conference Record",
+         "type": "vsconf",
+         "summary": "0-0",
+         "displayValue": "0-0"
+        }
+       ]
+      }
+     ]
+    },
+    "header": "2026-27 Southeastern Conference Standings",
+    "conferenceHeader": "NCAA Division I",
+    "divisionHeader": "Southeastern Conference",
+    "shortDivisionHeader": "SEC"
+   }
+  ],
+  "isSameConference": true
+ },
+ "odds": {
+  "markets": [
+   {
+    "provider": "Draft Kings",
+    "providerId": "100",
+    "threeWay": false,
+    "homeMoneyLine": -166,
+    "awayMoneyLine": 140,
+    "drawMoneyLine": null,
+    "homeImpliedProb": 0.6241,
+    "awayImpliedProb": 0.4167,
+    "drawImpliedProb": null,
+    "homeNoVigProb": 0.5996,
+    "awayNoVigProb": 0.4004,
+    "drawNoVigProb": null,
+    "overround": 0.0407,
+    "noVigReason": null,
+    "homeSpread": -3.5,
+    "total": 159.5
+   }
+  ],
+  "consensus": {
+   "providerCount": 1,
+   "providers": [
+    "Draft Kings"
+   ],
+   "homeNoVigProb": 0.5996,
+   "awayNoVigProb": 0.4004,
+   "drawNoVigProb": null,
+   "homeSpread": -3.5,
+   "total": 159.5,
+   "method": "Mean of per-provider no-vig probabilities, re-normalized; median homeSpread and total.",
+   "reason": null
+  },
+  "spreadConvention": "homeSpread is the home team's spread: negative means the home team is favored (e.g. -3.5 = home gives 3.5).",
+  "noVigMethod": "Proportional: each outcome's implied probability divided by the sum across all outcomes (draw included for three-way markets)."
+ }
+}

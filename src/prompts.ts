@@ -5,6 +5,11 @@ import type { McpServer } from "@modelcontextprotocol/server";
  * Register the guided workflow prompts on a server. Extracted from the entry
  * point so prompts, resources, tools, and transport stay independently readable.
  */
+function collegeBasketballNote(league: string): string {
+  if (league !== "mens-college-basketball" && league !== "womens-college-basketball") return "";
+  return " For this league the scoreboard is every Division I game (group 50). Pass groups only to narrow to one conference.";
+}
+
 export function registerPrompts(server: McpServer): void {
   server.registerPrompt("get-live-scores", { description: "What games are happening right now?", argsSchema: z.object({
               sport: z.string().describe("The sport slug (e.g. football, basketball, baseball)"),
@@ -18,7 +23,7 @@ export function registerPrompts(server: McpServer): void {
                     text: `You are a sports data assistant. The user wants to see live scores for ${args.sport.toUpperCase()} / ${args.league.toUpperCase()}.
 
 Follow these steps:
-1. Call \`get_scoreboard\` with sport="${args.sport}" and league="${args.league}" to retrieve all current and recent games.
+1. Call \`get_scoreboard\` with sport="${args.sport}" and league="${args.league}" to retrieve all current and recent games.${collegeBasketballNote(args.league)}
 2. Present a clean summary of each game: teams, current score, game status (quarter/period/inning, time remaining), and venue.
 3. If the user wants more detail on a specific game, call \`get_game_summary\` with the \`eventId\` from the scoreboard results to get the box score, leaders, scoring/recent plays, and sampled win probability.`,
                   },
@@ -62,7 +67,7 @@ Follow these steps in order:
                     text: `You are a sports data assistant. The user wants an in-depth analysis of event_id="${args.event_id}" in ${args.sport.toUpperCase()} / ${args.league.toUpperCase()}.
 
 Gather data in this order (use sport="${args.sport}" and league="${args.league}" throughout):
-1. \`get_slate\` with the game's date (YYYYMMDD) — one call that gives this game's start time (UTC), team IDs/abbreviations, status and score, consensus no-vig win probabilities, moneylines, signed homeSpread (negative = home favored), total, and key Out/Doubtful injuries for both teams. Find eventId="${args.event_id}" in \`games\`. If you don't know the date, skip to step 2.
+1. \`get_slate\` with the game's date (YYYYMMDD) — one call that gives this game's start time (UTC), team IDs/abbreviations, status and score, consensus no-vig win probabilities, moneylines, signed homeSpread (negative = home favored), total, and key Out/Doubtful injuries for both teams. Find eventId="${args.event_id}" in \`games\`. If you don't know the date, skip to step 2.${collegeBasketballNote(args.league)}
 2. \`get_game_summary\` with eventId="${args.event_id}" — box score, leaders, scoring plays, sampled win probability, and pick-center odds.
 3. \`get_game_odds\` with eventId="${args.event_id}" — only if you need every sportsbook's line, open vs. current movement, or overround.
 4. \`get_game_plays\` / \`get_game_probabilities\` — only for turning-point analysis of an in-progress or completed game.

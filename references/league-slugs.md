@@ -257,6 +257,16 @@ Use these with the `groups` query parameter:
 
 ---
 
+## College Basketball Group IDs
+
+`get_scoreboard` and `get_slate` send group `50` for `mens-college-basketball` and `womens-college-basketball` unless `groups` is set. That id is every NCAA Division I game. The bare scoreboard is a short featured list, not the full Division I schedule. Pass another group id to request one conference. The tools also send `limit=400`, because a grouped scoreboard returns 100 events otherwise.
+
+| Group | ID |
+|-------|----|
+| NCAA Division I (men's and women's) | 50 |
+
+---
+
 ## CDN Sport Slugs
 
 CDN endpoints use league abbreviations, not sport categories:

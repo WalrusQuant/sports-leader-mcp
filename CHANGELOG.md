@@ -13,6 +13,15 @@ Keyless prediction-market prices next to the ESPN odds. No API key is read or se
 - `get_market_odds` matches one ESPN game to Kalshi, Polymarket, and Polymarket US. Venues are side by side and are not averaged. A missing venue is `{ venue, status: "no market found" }`. One venue failing leaves the others in the response. `fetchedAt` and `matchedBy` say when the response was built and how the game was matched.
 - Team-code aliases for the abbreviations that differ across ESPN, Kalshi, and Gamma (Wisconsin is `WIS` on Kalshi and `wisc` on Gamma). Postponed Kalshi games keep the original ticker date.
 
+## 0.5.4 — 2026-11-16
+
+Men's and women's college basketball schedules and scores now include every Division I game. The bare scoreboard is a short featured list.
+
+### Fixed
+- `get_scoreboard` and `get_slate` request group `50` and `limit=400` for `mens-college-basketball` and `womens-college-basketball`. On 2026-11-15 the bare men's scoreboard returned 6 of 44 Division I games and omitted Wisconsin (team 275). Group 50 returned all 44. Women's basketball had the same gap that day (12 of 72). A grouped scoreboard also stops at 100 events, so a busy Saturday needs the higher limit (155 men's games on 2026-02-07; group 50 alone returned 100).
+- Optional `groups` overrides the Division I default. A date query still sends `limit=400` for those two leagues. A `week` query is unchanged, because opening week is about 470 games and the compact scoreboard for that many games exceeds the token budget. Other leagues are unchanged. College football already returns every FBS game.
+- 37 tools.
+
 ## 0.5.3 — 2026-11-04
 
 The public export no longer publishes `team_ratings`. This server drops that tool and treats a missing data set as a normal answer, not an audit failure.
