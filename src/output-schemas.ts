@@ -232,6 +232,89 @@ export const gamelogOutput = withEnvelope({
   ),
 });
 
+const reportGame = obj({
+  eventId: str,
+  date: optStr,
+  opponent: str,
+  homeAway: z.enum(["H", "A"]),
+  result: optStr,
+  score: optStr,
+  stats: z.record(z.string(), z.union([str, z.record(z.string(), str)])),
+});
+
+export const playerReportOutput = withEnvelope({
+  resolved: z.boolean(),
+  reason: z.enum(["ambiguous", "not_found"]).optional(),
+  query: optStr,
+  sport: optStr,
+  league: optStr,
+  candidates: z
+    .array(
+      obj({
+        id: str,
+        name: str,
+        team: optStr,
+        league: optStr,
+        sport: optStr,
+        position: optStr,
+      }),
+    )
+    .optional(),
+  athlete: obj({
+    id: str,
+    name: optStr,
+    team: optStr,
+    position: optStr,
+  }).optional(),
+  season: obj({
+    year: z.number().optional(),
+    categories: z.array(
+      obj({
+        name: str,
+        position: optStr,
+        team: obj({ id: optStr, abbrev: optStr, name: optStr, displayName: optStr }).optional(),
+        stats: z.record(z.string(), str),
+      }),
+    ),
+  }).optional(),
+  recent: z.array(reportGame).optional(),
+  // Named splits when ESPN publishes splitCategories. Some athletes get the
+  // ref-stripped document instead, so this stays an open object.
+  splits: z.record(z.string(), z.unknown()).optional(),
+  errors: z.record(z.string(), str).optional(),
+  sources: z.array(obj({ block: str, path: str })).optional(),
+});
+
+const trendNumber = z.number();
+
+export const playerTrendsOutput = withEnvelope({
+  resolved: z.boolean(),
+  reason: z.enum(["ambiguous", "not_found"]).optional(),
+  dataset: str,
+  league: str,
+  statGroup: optStr,
+  by: z.enum(["home_away", "opponent", "month", "rest"]),
+  seasons: z.array(z.number()).optional(),
+  updated_at: str,
+  player: obj({
+    query: optStr,
+    id: z.union([z.string(), z.number()]).optional(),
+    name: optStr,
+  }),
+  candidates: z
+    .array(obj({ id: z.union([z.string(), z.number()]), name: optStr }))
+    .optional(),
+  groups: z.array(
+    obj({
+      key: str,
+      games: trendNumber,
+      avg: z.record(z.string(), trendNumber),
+      total: z.record(z.string(), trendNumber),
+    }),
+  ),
+  columns: z.array(str).optional(),
+});
+
 // ─── get_slate ────────────────────────────────────────────────────────────────
 
 const keyInjurySchema = obj({

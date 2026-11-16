@@ -1,0 +1,8 @@
+{
+  "athlete": {
+    "id": "4047365",
+    "displayName": "Josh Jacobs",
+    "position": { "abbreviation": "RB", "displayName": "Running Back" },
+    "team": { "id": "9", "abbreviation": "GB", "displayName": "Green Bay Packers" }
+  }
+}

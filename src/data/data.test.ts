@@ -21,8 +21,8 @@ import { dataStatus, sha256 } from "./cache.js";
 import { columnsFor, DATASET_INFO, type ColumnDef, type ColType } from "./datasets.js";
 import { dataUrl, type DataDeps } from "./http.js";
 import type { ManifestFile } from "./manifest.js";
-import { queryDataset } from "./query.js";
-import { DATA_TOOL_NAMES, dataTools, getGames, getPlayerGameLogs } from "./tools.js";
+import { aggregatePlayerTrends, queryDataset } from "./query.js";
+import { DATA_TOOL_NAMES, dataTools, getGames, getPlayerGameLogs, getPlayerTrends } from "./tools.js";
 
 const SQL_TYPE: Record<ColType, string> = {
   str: "VARCHAR",
@@ -362,6 +362,7 @@ describe("bayes data export", { concurrency: 1 }, () => {
       "get_kalshi_markets",
       "get_polymarket_markets",
       "get_market_odds",
+      "get_player_report",
     ]);
     assert.equal(names.includes("get_injuries"), true);
     assert.equal(names.includes("get_injury_reports"), true);
@@ -742,6 +743,101 @@ describe("bayes data export", { concurrency: 1 }, () => {
       const result = await queryDataset(config(dir), { dataset: "games", league: "nba" }, deps(state, () => Date.parse("2026-10-31T18:00:00Z")));
       assert.equal(result.rows[0]?.game_id, 3);
       assert.equal(state.parquetServes, 2);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("player trends aggregate fixture logs and stay inside the manifest columns", async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), "bayes-trends-"));
+    try {
+      const columns = columnsFor("player_game_logs", "nba");
+      const allowed = new Set(columns.map((column) => column.name));
+      const line = (overrides: Record<string, unknown>, index: number) =>
+        row(columns, "nba", { did_not_play: false, player_id: 1966, player_name: "LeBron James", ...overrides }, index);
+      const games = [
+        line({ game_id: 1, game_date: "2026-01-01", is_home: true, opponent_abbr: "BOS", opponent_id: 2, points: 10, assists: 2 }, 0),
+        line({ game_id: 2, game_date: "2026-01-03", is_home: false, opponent_abbr: "NYK", opponent_id: 18, points: 20, assists: 4 }, 1),
+        line({ game_id: 3, game_date: "2026-01-10", is_home: true, opponent_abbr: "MIA", opponent_id: 14, points: 30, assists: 6 }, 2),
+        line({ game_id: 4, game_date: "2026-01-12", is_home: false, opponent_abbr: "BOS", opponent_id: 2, points: 40, assists: 8 }, 3),
+        line({ game_id: 5, game_date: "2026-01-14", is_home: true, opponent_abbr: "DEN", opponent_id: 7, points: 99, assists: 99, did_not_play: true }, 4),
+        line({ game_id: 6, game_date: "2026-01-01", is_home: true, opponent_abbr: "BOS", points: 1, player_id: 8277, player_name: "Josh Jacobs" }, 5),
+        line({ game_id: 7, game_date: "2026-01-05", is_home: false, opponent_abbr: "LAL", points: 3, player_id: 4047365, player_name: "Josh Jacobs" }, 6),
+      ];
+      const body = await writeParquet(path.join(dir, "logs.parquet"), columns, games);
+      const file = fileEntry("player_game_logs", "nba", 2026, columns, body, games.length, "2026-10-30T12:00:00Z");
+      const state = freshState([file]);
+      const cfg = config(dir);
+      const now = () => Date.parse("2026-10-31T18:00:00Z");
+      const run = (query: Parameters<typeof aggregatePlayerTrends>[1]) => aggregatePlayerTrends(cfg, query, deps(state, now));
+
+      const homeAway = await run({ dataset: "player_game_logs", league: "nba", player: "1966", by: "home_away" });
+      assert.equal(homeAway.resolved, true);
+      assert.equal(homeAway.player.id, 1966);
+      assert.equal(homeAway.player.name, "LeBron James");
+      assert.equal(homeAway.updated_at, "2026-10-30T12:00:00Z");
+      const home = homeAway.groups.find((group) => group.key === "home");
+      const away = homeAway.groups.find((group) => group.key === "away");
+      assert.equal(home?.games, 2, JSON.stringify(homeAway.groups));
+      assert.equal(home?.avg.points, 20);
+      assert.equal(home?.total.points, 40);
+      assert.equal(away?.games, 2);
+      assert.equal(away?.avg.points, 30);
+      assert.equal(away?.total.points, 60);
+      for (const group of homeAway.groups) {
+        for (const key of [...Object.keys(group.avg), ...Object.keys(group.total)]) {
+          assert.equal(allowed.has(key), true, key);
+          assert.equal(["player_id", "game_id", "team_id", "season", "opponent_id"].includes(key), false, key);
+        }
+      }
+      assert.ok(homeAway.columns.includes("points"));
+      assert.equal(homeAway.columns.includes("player_id"), false);
+      assert.equal(homeAway.columns.every((name) => allowed.has(name)), true);
+
+      const opponents = await run({ dataset: "player_game_logs", league: "nba", player: "LeBron", by: "opponent" });
+      const boston = opponents.groups.find((group) => group.key === "BOS");
+      assert.equal(boston?.games, 2);
+      assert.equal(boston?.avg.points, 25);
+      assert.equal(boston?.total.points, 50);
+
+      const months = await run({ dataset: "player_game_logs", league: "nba", player: "1966", by: "month" });
+      assert.equal(months.groups.length, 1);
+      assert.equal(months.groups[0]?.key, "2026-01");
+      assert.equal(months.groups[0]?.games, 4);
+      assert.equal(months.groups[0]?.total.points, 100);
+
+      const rest = await run({ dataset: "player_game_logs", league: "nba", player: "1966", by: "rest" });
+      const byKey = Object.fromEntries(rest.groups.map((group) => [group.key, group]));
+      assert.equal(byKey.first?.games, 1);
+      assert.equal(byKey.first?.total.points, 10);
+      assert.equal(byKey["2"]?.games, 2);
+      assert.equal(byKey["2"]?.avg.points, 30);
+      assert.equal(byKey["7"]?.games, 1);
+      assert.equal(byKey["7"]?.total.points, 30);
+
+      const lastTwo = await run({ dataset: "player_game_logs", league: "nba", player: "1966", by: "home_away", lastN: 2 });
+      assert.equal(lastTwo.groups.find((group) => group.key === "home")?.total.points, 30);
+      assert.equal(lastTwo.groups.find((group) => group.key === "away")?.total.points, 40);
+
+      const ambiguous = await run({ dataset: "player_game_logs", league: "nba", player: "Josh Jacobs", by: "home_away" });
+      assert.equal(ambiguous.resolved, false);
+      assert.equal(ambiguous.reason, "ambiguous");
+      assert.deepEqual(ambiguous.groups, []);
+      assert.equal(ambiguous.candidates?.length, 2);
+
+      const none = await run({ dataset: "player_game_logs", league: "nba", player: "James' OR '1'='1", by: "month" });
+      assert.equal(none.resolved, true);
+      assert.equal(none.reason, "not_found");
+      assert.deepEqual(none.groups, []);
+
+      await assert.rejects(
+        () => getPlayerTrends.handler({ league: "nfl", player: "1", by: "home_away" }),
+        /statGroup is required/,
+      );
+      await assert.rejects(
+        () => getPlayerTrends.handler({ league: "nba", player: "1", by: "home_away", statGroup: "goalie" }),
+        /not valid for nba/,
+      );
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
