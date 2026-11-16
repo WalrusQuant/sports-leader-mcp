@@ -13,11 +13,39 @@ export const fixtureState = {
   log: [] as string[],
   failInjuries: false,
   failEvents: false,
+  /** When true, Kalshi requests return 500 so a venue failure can be isolated. */
+  failKalshi: false,
   /** When true, ESPN fetches never resolve; they settle only by abort. */
   hang: false,
   /** Number of ESPN fetches that were aborted via their signal. */
   aborted: 0,
 };
+
+const MARKET_FIXTURES = join(FIXTURES, "markets");
+
+function marketFixture(url: URL): { status: number; file?: string } | undefined {
+  const host = url.hostname;
+  if (host === "api.elections.kalshi.com") {
+    if (fixtureState.failKalshi) return { status: 500 };
+    if (url.pathname.endsWith("/orderbook")) return { status: 200, file: join(MARKET_FIXTURES, "kalshi-nfl-orderbook.json") };
+    if (url.pathname.endsWith("/markets")) return { status: 200, file: join(MARKET_FIXTURES, "kalshi-nfl-markets.json") };
+    return { status: 404 };
+  }
+  if (host === "gamma-api.polymarket.com") {
+    if (url.pathname.includes("/events/slug/")) return { status: 404 };
+    if (url.pathname.endsWith("/markets")) return { status: 200, file: join(MARKET_FIXTURES, "gamma-nfl-market.json") };
+    if (url.pathname.endsWith("/events")) return { status: 200, file: join(MARKET_FIXTURES, "gamma-nfl-events.json") };
+    return { status: 404 };
+  }
+  if (host === "clob.polymarket.com") {
+    return { status: 200, file: join(MARKET_FIXTURES, "clob-books.json") };
+  }
+  if (host === "gateway.polymarket.us") {
+    if (url.pathname.endsWith("/bbo")) return { status: 200, file: join(MARKET_FIXTURES, "polymarket-us-bbo.json") };
+    return { status: 404 };
+  }
+  return undefined;
+}
 
 function fixtureFor(url: URL): string | undefined {
   const p = url.pathname;
@@ -48,6 +76,18 @@ export function installFixtureFetch(): () => void {
   const realFetch = globalThis.fetch;
   globalThis.fetch = (async (input: any, init?: RequestInit) => {
     const url = new URL(typeof input === "string" ? input : input instanceof URL ? input.href : input.url);
+    const market = marketFixture(url);
+    if (market) {
+      init?.signal?.throwIfAborted?.();
+      fixtureState.log.push(url.pathname);
+      if (!market.file || market.status !== 200) {
+        return new Response(JSON.stringify({ error: "fixture" }), { status: market.status, statusText: "Fixture" });
+      }
+      return new Response(readFileSync(market.file, "utf8"), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    }
     // Non-ESPN traffic (test MCP clients talking to a local HTTP server) is real.
     if (!url.hostname.endsWith("espn.com")) return realFetch(input, init);
     init?.signal?.throwIfAborted?.();

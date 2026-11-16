@@ -1,7 +1,7 @@
 # sports-leader-mcp
 
 
-Free MCP server for live sports data. **37 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, and futures across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, and NHL.
+Free MCP server for live sports data. **40 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, futures, and keyless Kalshi and Polymarket prices across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, and NHL.
 
 No ESPN auth or API keys. Stdio mode has no server-side request quota; HTTP mode applies configurable per-IP limits.
 
@@ -38,13 +38,13 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | **Live Scores** | Real-time scoreboards for every game in every league |
 | **Player Stats** | Season stats, game logs, home/away splits, career data |
 | **Standings, Rankings & Power Index** | Standings, statistical leaders, college polls, and BPI/FPI |
-| **Betting Odds** | Spreads, moneylines, totals by sportsbook, normalized to implied and no-vig probabilities for comparison with prediction markets |
+| **Betting Odds** | Spreads, moneylines, totals by sportsbook, normalized to implied and no-vig probabilities, plus keyless Kalshi and Polymarket prices for the same game |
 | **Game Deep-Dives** | Boxscores, full play-by-play, win probability timelines |
 | **Injuries & Transactions** | League-wide injury reports, signings, trades, waivers |
 | **News** | Real-time sports news filtered by sport, league, or team |
 | **Search** | Find any athlete, team, or article across ESPN |
 
-## Tools (37)
+## Tools (40)
 
 ### Discovery
 | Tool | Description |
@@ -62,6 +62,18 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | `get_game_odds` | Per-sportsbook lines with numeric moneylines, implied/no-vig probabilities, signed `homeSpread`, and consensus |
 | `get_game_probabilities` | Win probability timeline |
 | `get_slate` | One call per game day: games, team IDs, status/score, consensus no-vig probabilities, key Out/Doubtful injuries. College basketball is the full Division I slate |
+
+### Prediction markets
+
+Keyless. No API key is read or sent. Kalshi, Polymarket, and Polymarket US are returned side by side and are never averaged. A venue with no listing is `{ "venue", "status": "no market found" }`. One venue failing leaves the others in the response.
+
+| Tool | Description |
+|------|-------------|
+| `get_kalshi_markets` | Open Kalshi markets for a league (`winner`, `spread`, or `total`). Prices are the dollar fields. `includeBook` adds the top of book. |
+| `get_polymarket_markets` | Polymarket global and Polymarket US, each labelled. Default market is the moneyline. |
+| `get_market_odds` | Match one ESPN game to all three venues. Includes `fetchedAt` and `matchedBy`. |
+
+Supported leagues: NFL, NBA, MLB, NHL, college football, men's college basketball, women's college basketball. Team codes differ (Wisconsin is `WIS` on Kalshi and `wisc` on Polymarket). Kalshi tickers keep the original scheduled date when a game is postponed. Polymarket global slugs use the UTC date; the US slug is `aec-` plus Gamma's `usId` (local date).
 
 ### Teams
 | Tool | Description |
@@ -134,7 +146,7 @@ The manifest lists every file and its download `url`. The pattern is `https://gi
 | `BAYES_DATA_CACHE_DIR` | `~/.cache/sports-leader-mcp/bayes-data` | On-disk file cache (`XDG_CACHE_HOME` is honored) |
 | `BAYES_DATA_REVALIDATE_MS` | `14400000` (4 hours) | How often to re-check the manifest |
 
-The other 25 tools do not use this export. A `429` or a GitHub `403` with `x-ratelimit-remaining: 0` is returned as a rate-limit error.
+The live ESPN tools and the prediction-market tools do not use this export. A `429` or a GitHub `403` with `x-ratelimit-remaining: 0` is returned as a rate-limit error.
 
 Files are queried with [DuckDB Neo](https://duckdb.org/) (`@duckdb/node-api`). It ships prebuilt binaries for glibc and musl, on x64 and arm64, so `npm ci` does not need a compiler on a normal Linux image or on Alpine.
 
@@ -216,13 +228,13 @@ npm run test:update-golden  # regenerate test/golden after an intentional output
 npm run fixtures:capture    # re-record raw ESPN fixtures into test/fixtures
 ```
 
-`npm run audit` is not part of `npm test`. It calls the real ESPN APIs for MLB, NBA, NFL, NHL, college football, men's and women's college basketball, WNBA, and the Premier League, validates compact output against each tool's schema, and exits non-zero on a failure. Re-run it when a tool starts returning empty or upstream errors. MLB in late October and November is the offseason: the audit accepts an empty current scoreboard and checks 2026-07-04 instead. It also checks the public historical export on GitHub Releases with no API key: one file for each data set the live manifest still publishes. A removed data set is not a failure. Those lines are `SKIP` only when the manifest default has been cleared and both the `SPORTSLEADER_DATA_*` and `BAYES_DATA_*` URL variables are unset.
+`npm run audit` is not part of `npm test`. It calls the real ESPN APIs for MLB, NBA, NFL, NHL, college football, men's and women's college basketball, WNBA, and the Premier League, validates compact output against each tool's schema, and exits non-zero on a failure. For the leagues with prediction markets it also calls `get_market_odds` on today's first game. A league with no listing (MLB in the offseason) is skipped. A 4xx, a Gamma 406, or a schema failure fails the audit. Re-run it when a tool starts returning empty or upstream errors. MLB in late October and November is the offseason: the audit accepts an empty current scoreboard and checks 2026-07-04 instead. It also checks the public historical export on GitHub Releases with no API key: one file for each data set the live manifest still publishes. A removed data set is not a failure. Those lines are `SKIP` only when the manifest default has been cleared and both the `SPORTSLEADER_DATA_*` and `BAYES_DATA_*` URL variables are unset.
 
 ## Agent-safe responses
 
 Dedicated tools return compact, curated JSON by default. Every tool accepts `raw: true`, but raw ESPN responses can be extremely large and should be used only to recover a specific omitted field. Responses over `SPORTS_LEADER_MAX_TOKENS` are replaced with valid truncation metadata; the server never cuts JSON mid-document.
 
-Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent`; a top-level array result is exposed as `structuredContent: { "items": [...] }` (same shape for every protocol era). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, and `get_slate` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
+Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent`; a top-level array result is exposed as `structuredContent: { "items": [...] }` (same shape for every protocol era). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_slate`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
 
 ### Odds conventions
 

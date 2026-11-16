@@ -16,6 +16,7 @@
 
 import { ALL_TOOLS, produce } from "../dist/server.js";
 import { apiCache } from "../dist/client.js";
+import { VERSION } from "../dist/version.js";
 import { isDataExportConfigured } from "../dist/data/config.js";
 import { DATA_TOOL_NAMES, auditCallForFile } from "../dist/data/tools.js";
 
@@ -210,7 +211,7 @@ await check("espn_fetch", "nba league root", async () => {
 
 await check("endpoint", "cdn nba scoreboard xhr=1", async () => {
   const res = await fetch("https://cdn.espn.com/core/nba/scoreboard?xhr=1", {
-    headers: { "User-Agent": "sports-leader-mcp-audit/0.5.4", Accept: "application/json" },
+    headers: { "User-Agent": `sports-leader-mcp-audit/${VERSION}`, Accept: "application/json" },
   });
   const type = res.headers.get("content-type") ?? "";
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -465,6 +466,18 @@ apiCache.clear();
 
 await pool([...gameJobs, ...leagueJobs], 4);
 
+const PREDICTION_LEAGUES = [
+  { key: "nfl", sport: "football", league: "nfl" },
+  { key: "nba", sport: "basketball", league: "nba" },
+  { key: "nhl", sport: "hockey", league: "nhl" },
+  { key: "mlb", sport: "baseball", league: "mlb" },
+  { key: "cfb", sport: "football", league: "college-football" },
+  { key: "cbb", sport: "basketball", league: "mens-college-basketball" },
+  { key: "wcbb", sport: "basketball", league: "womens-college-basketball" },
+];
+
+await auditPredictionMarkets();
+
 await auditDataExport();
 
 const failed = rows.filter((row) => row.status === "fail");
@@ -476,6 +489,72 @@ if (failed.length) {
   console.log("Failures:");
   for (const row of failed) console.log(`  ${row.tool}  ${row.label}  ${row.detail}`);
   process.exit(1);
+}
+
+/**
+ * Keyless Kalshi / Polymarket check. One venue error must not be hidden: a 4xx,
+ * Gamma 406, or schema failure is FAIL. A league with nothing listed (MLB in
+ * the offseason) is SKIP. Venues stay labelled and are not averaged.
+ *
+ * The Division I scoreboard's first game can be a contest Kalshi does not list.
+ * Walk today's games and accept the first one that matches a venue. If Kalshi
+ * has markets dated today and none of the ESPN games match, that is a FAIL.
+ */
+async function auditPredictionMarkets() {
+  console.log("");
+  console.log("prediction markets");
+  const todayIso = `${today.slice(0, 4)}-${today.slice(4, 6)}-${today.slice(6, 8)}`;
+  for (const league of PREDICTION_LEAGUES) {
+    const events = eventsOf(boards.get(`${league.key}:today`));
+    if (!events.length) {
+      line("skip", "get_market_odds", `${league.key} today`, "no ESPN game today");
+      continue;
+    }
+    let label = `${league.key} today`;
+    try {
+      let matchedGame = null;
+      for (const event of events) {
+        const eventId = String(event.id);
+        label = `${league.key} ${eventId}`;
+        const data = await call("get_market_odds", { sport: league.sport, league: league.league, eventId });
+        const venues = Array.isArray(data?.venues) ? data.venues : [];
+        const byName = new Map(venues.map((venue) => [venue.venue, venue]));
+        for (const name of ["polymarket", "polymarket_us"]) {
+          if (!byName.has(name)) throw new Error(`missing labelled ${name} entry`);
+        }
+        if (data?.averaged !== false) throw new Error("venues must not be averaged");
+        const broken = venues.find((venue) => venue.status === "error" || /406|\b4\d\d\b/.test(String(venue.error ?? "")));
+        if (broken) throw new Error(`${broken.venue} ${broken.error || broken.status}`);
+        const matched = venues.filter((venue) => venue.status === "ok");
+        if (!matched.length) continue;
+        const us = byName.get("polymarket_us");
+        if (us?.status === "ok" && (!us.usId || us.slug !== `aec-${us.usId}`)) {
+          throw new Error(`US slug ${us.slug} != aec-${us.usId}`);
+        }
+        matchedGame = { eventId, venues };
+        break;
+      }
+      if (!matchedGame) {
+        const open = await call("get_kalshi_markets", { league: league.league, market: "winner" });
+        const listed = Array.isArray(open?.events) ? open.events : [];
+        const datedToday = listed.filter((event) => event.scheduledDate === todayIso).length;
+        if (datedToday > 0) {
+          throw new Error(`Kalshi lists ${datedToday} markets for ${todayIso} but none of ${events.length} ESPN games matched`);
+        }
+        line("skip", "get_market_odds", `${league.key} today`, listed.length ? "no market for today's games" : "no markets (offseason or unlisted)");
+        continue;
+      }
+      line(
+        "pass",
+        "get_market_odds",
+        `${league.key} ${matchedGame.eventId}`,
+        matchedGame.venues.map((venue) => `${venue.venue}:${venue.status}`).join(" "),
+      );
+    } catch (err) {
+      const message = err instanceof Error ? err.message.split("\n")[0] : String(err);
+      line("fail", "get_market_odds", label, message.slice(0, 240));
+    }
+  }
 }
 
 /**

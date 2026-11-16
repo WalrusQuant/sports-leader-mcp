@@ -9,7 +9,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="sports-leader-mcp — Live Sports Data for AI Agents">
-  <meta property="og:description" content="Free MCP server with 37 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports. No auth required.">
+  <meta property="og:description" content="Free MCP server with 40 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports. No auth required.">
   <meta property="og:image" content="https://walrusquant.github.io/sports-leader-mcp/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -19,7 +19,7 @@
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="sports-leader-mcp — Live Sports Data for AI Agents">
-  <meta name="twitter:description" content="Free MCP server with 37 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports.">
+  <meta name="twitter:description" content="Free MCP server with 40 tools for live scores, standings, player stats, betting odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports.">
   <meta name="twitter:image" content="https://walrusquant.github.io/sports-leader-mcp/assets/og-image.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -489,7 +489,7 @@
 
       <div class="stats-bar">
         <div class="stat">
-          <div class="stat-number">37</div>
+          <div class="stat-number">40</div>
           <div class="stat-label">Tools</div>
         </div>
         <div class="stat">
@@ -553,7 +553,7 @@
   <!-- TOOLS -->
   <section class="tools-section" id="tools">
     <div class="section-inner">
-      <div class="section-label fade-in">37 MCP Tools</div>
+      <div class="section-label fade-in">40 MCP Tools</div>
       <h2 class="section-title fade-in">The Full Toolkit</h2>
       <p class="section-desc fade-in">Each tool is documented with parameters, examples, and response schemas. <a href="docs.html#tools/">Read the full docs.</a></p>
 
@@ -659,6 +659,15 @@
           <div class="tool-card">
             <div><div class="tool-name">get_futures</div><div class="tool-desc">Season futures odds with team or athlete ids</div></div>
           </div>
+        </div>
+      </div>
+
+      <div class="tool-group fade-in">
+        <div class="tool-group-label">Prediction markets</div>
+        <div class="tool-list">
+          <div class="tool-card"><div><div class="tool-name">get_kalshi_markets</div><div class="tool-desc">Keyless Kalshi prices for a league. Dollar fields, optional top of book.</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_polymarket_markets</div><div class="tool-desc">Polymarket global and Polymarket US, labelled and not averaged.</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_market_odds</div><div class="tool-desc">Match one ESPN game to Kalshi, Polymarket, and Polymarket US.</div></div></div>
         </div>
       </div>
 
