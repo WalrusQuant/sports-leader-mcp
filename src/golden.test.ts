@@ -44,6 +44,7 @@ export const SPORT_BY_LEAGUE: Record<string, string> = {
   wnba: "basketball",
   nhl: "hockey",
   "eng.1": "soccer",
+  "mens-college-basketball": "basketball",
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -82,10 +83,23 @@ function collectMarkets(v: unknown, out: NormalizedMarket[] = []): NormalizedMar
 const leagues = readdirSync(FIXTURES).filter((l) => SPORT_BY_LEAGUE[l]).sort();
 
 test("fixtures exist for the required leagues", () => {
-  for (const l of ["nfl", "mlb", "nba", "nhl", "eng.1", "college-football"]) {
+  for (const l of ["nfl", "mlb", "nba", "nhl", "eng.1", "college-football", "mens-college-basketball"]) {
     assert.ok(leagues.includes(l), `missing fixtures for ${l}`);
     assert.ok(load(l, "scoreboard"), `missing ${l}/scoreboard.json`);
   }
+});
+
+test("mens college basketball scoreboard fixture is the Division I slate", () => {
+  const sb = load("mens-college-basketball", "scoreboard");
+  const events = sb?.events ?? [];
+  const ids = new Set();
+  for (const event of events) {
+    for (const competitor of event.competitions?.[0]?.competitors ?? []) {
+      if (competitor?.team?.id) ids.add(String(competitor.team.id));
+    }
+  }
+  assert.ok(events.length >= 30, `only ${events.length} games`);
+  assert.ok(ids.has("275"), "Wisconsin (team 275) missing");
 });
 
 for (const league of leagues) {
