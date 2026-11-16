@@ -14,6 +14,7 @@ Complete reference of every ESPN API endpoint organized by domain and resource t
 | `scoreboard?dates={YYYYMMDD}` | Scores for a specific date |
 | `scoreboard?dates={YYYYMMDD}-{YYYYMMDD}` | Scores for a date range |
 | `scoreboard?week={n}&seasontype={t}` | Scores by week (football) |
+| `scoreboard?dates={YYYYMMDD}&groups=50&limit=400` | Every Division I men's or women's college basketball game. The bare scoreboard is a short featured list, and a grouped scoreboard stops at 100 events without `limit`. |
 | `summary?event={id}` | Full game summary: boxscore, plays, leaders, broadcasts |
 | `calendar` | Full season calendar |
 | `calendar/offseason` | Offseason date range |

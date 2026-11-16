@@ -66,6 +66,14 @@ export const weekSchema = z
   .optional()
   .describe("Week number (football).");
 
+export const groupsSchema = z
+  .string()
+  .regex(/^\d+$/, "groups must be an ESPN group id")
+  .optional()
+  .describe(
+    "ESPN scoreboard group id. Men's and women's college basketball default to '50' (every Division I game). Pass another id to request one conference. Omit it for every other league.",
+  );
+
 export const limitSchema = z
   .number()
   .int()

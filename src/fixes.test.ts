@@ -8,7 +8,8 @@ import assert from "node:assert/strict";
 import { apiCache } from "./client.js";
 import { seasonLeadersPaths } from "./season.js";
 import { getLeagueLeaders } from "./tools/league.js";
-import { getGameProbabilities } from "./tools/scoreboard.js";
+import { getGameProbabilities, getScoreboard } from "./tools/scoreboard.js";
+import { getSlate } from "./tools/slate.js";
 import { getTeam, getTeams } from "./tools/teams.js";
 
 function jsonResponse(status: number, body: unknown): Response {
@@ -78,6 +79,62 @@ test("get_league_leaders falls through type 2 to type 1", async () => {
     assert.equal(data.categories[0].name, "goals");
     assert.ok(stub.calls.some((url) => url.includes("/types/2/leaders")));
     assert.ok(stub.calls.some((url) => url.includes("/types/1/leaders")));
+  } finally {
+    stub.restore();
+  }
+});
+
+test("college basketball scoreboard and slate request every Division I game", async () => {
+  const stub = stubFetch(() => jsonResponse(200, { events: [] }));
+  try {
+    await getScoreboard.handler({ sport: "basketball", league: "mens-college-basketball", date: "20261115" });
+    await getScoreboard.handler({ sport: "basketball", league: "womens-college-basketball", date: "20261115" });
+    await getScoreboard.handler({
+      sport: "basketball",
+      league: "mens-college-basketball",
+      date: "20261115",
+      groups: "8",
+    });
+    await getScoreboard.handler({ sport: "basketball", league: "nba", date: "20261115" });
+    await getScoreboard.handler({ sport: "football", league: "college-football", date: "20261114" });
+    await getScoreboard.handler({
+      sport: "basketball",
+      league: "mens-college-basketball",
+      week: 1,
+      seasonType: 2,
+    });
+    apiCache.clear();
+    await getSlate.handler({
+      sport: "basketball",
+      league: "mens-college-basketball",
+      includeInjuries: false,
+    });
+
+    const params = (index: number) => new URL(stub.calls[index]).searchParams;
+    assert.equal(stub.calls.length, 7);
+    assert.match(stub.calls[0], /\/basketball\/mens-college-basketball\/scoreboard\?/);
+    assert.equal(params(0).get("dates"), "20261115");
+    assert.equal(params(0).get("groups"), "50");
+    assert.equal(params(0).get("limit"), "400");
+    assert.match(stub.calls[1], /\/basketball\/womens-college-basketball\/scoreboard\?/);
+    assert.equal(params(1).get("groups"), "50");
+    assert.equal(params(1).get("limit"), "400");
+    assert.equal(params(2).get("groups"), "8");
+    assert.equal(params(2).get("limit"), "400");
+    assert.match(stub.calls[3], /\/basketball\/nba\/scoreboard\?/);
+    assert.equal(params(3).get("groups"), null);
+    assert.equal(params(3).get("limit"), null);
+    assert.match(stub.calls[4], /\/football\/college-football\/scoreboard\?/);
+    assert.equal(params(4).get("groups"), null);
+    assert.equal(params(4).get("limit"), null);
+    assert.equal(params(5).get("week"), "1");
+    assert.equal(params(5).get("seasontype"), "2");
+    assert.equal(params(5).get("groups"), null);
+    assert.equal(params(5).get("limit"), null);
+    assert.match(stub.calls[6], /\/basketball\/mens-college-basketball\/scoreboard\?/);
+    assert.equal(params(6).get("dates"), null);
+    assert.equal(params(6).get("groups"), "50");
+    assert.equal(params(6).get("limit"), "400");
   } finally {
     stub.restore();
   }

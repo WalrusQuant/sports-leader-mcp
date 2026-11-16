@@ -30,7 +30,20 @@ const LEAGUES = [
   ["soccer", "eng.1", "20261010", null],
   ["football", "college-football", "20261008", "20261003"],
   ["basketball", "wnba", "20261007", "20261004"],
+  // 2026-11-15 is a full Division I Sunday (44 games, including Wisconsin).
+  // The bare scoreboard is a short featured list, so the URL below asks for group 50.
+  ["basketball", "mens-college-basketball", "20261115", "20261115"],
 ];
+
+// Grouped college-basketball scoreboards page at 100. Group 50 is every Division I game.
+function scoreboardUrl(sport, league, day) {
+  const params = new URLSearchParams({ dates: day });
+  if (league === "mens-college-basketball" || league === "womens-college-basketball") {
+    params.set("groups", "50");
+    params.set("limit", "400");
+  }
+  return `${SITE}/${sport}/${league}/scoreboard?${params}`;
+}
 
 const DROP_KEYS = new Set([
   "links", "link", "tracking", "headshot", "headshots", "logo", "logos", "images",
@@ -102,8 +115,9 @@ async function save(league, name, data) {
 }
 
 for (const [sport, league, oddsDay, finalDay] of LEAGUES) {
+  if (process.env.LEAGUE && league !== process.env.LEAGUE) continue;
   console.log(`${sport}/${league}`);
-  const sb = await get(`${SITE}/${sport}/${league}/scoreboard?dates=${oddsDay}`);
+  const sb = await get(scoreboardUrl(sport, league, oddsDay));
   await save(league, "scoreboard", scrub(sb));
 
   const withOdds = (sb.events ?? []).find((e) => e.competitions?.[0]?.odds);
@@ -115,7 +129,7 @@ for (const [sport, league, oddsDay, finalDay] of LEAGUES) {
 
   let summaryId = withOdds?.id;
   if (finalDay) {
-    const fin = await get(`${SITE}/${sport}/${league}/scoreboard?dates=${finalDay}`);
+    const fin = await get(scoreboardUrl(sport, league, finalDay));
     summaryId = (fin.events ?? []).find((e) => e.status?.type?.state === "post")?.id ?? summaryId;
   }
   let athleteId;

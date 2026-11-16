@@ -1,0 +1,2056 @@
+{
+ "events": [
+  {
+   "id": "401906866",
+   "date": "2026-11-15T20:00Z",
+   "name": "BAY VS TEX",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Frost Bank Center",
+    "city": "San Antonio"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "251",
+      "abbrev": "TEX",
+      "name": "Longhorns",
+      "displayName": "Texas Longhorns"
+     },
+     "score": "75",
+     "linescores": [
+      "39",
+      "36"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "239",
+      "abbrev": "BAY",
+      "name": "Bears",
+      "displayName": "Baylor Bears"
+     },
+     "score": "72",
+     "linescores": [
+      "36",
+      "36"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401918949",
+   "date": "2026-11-15T18:00Z",
+   "name": "LOU @ MEM",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "FedExForum",
+    "city": "Memphis"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "235",
+      "abbrev": "MEM",
+      "name": "Tigers",
+      "displayName": "Memphis Tigers"
+     },
+     "score": "98",
+     "linescores": [
+      "41",
+      "57"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "97",
+      "abbrev": "LOU",
+      "name": "Cardinals",
+      "displayName": "Louisville Cardinals"
+     },
+     "score": "78",
+     "linescores": [
+      "52",
+      "26"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401920681",
+   "date": "2026-11-16T00:00Z",
+   "name": "SYR @ SJU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Madison Square Garden",
+    "city": "New York"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2599",
+      "abbrev": "SJU",
+      "name": "Red Storm",
+      "displayName": "St. John's Red Storm"
+     },
+     "score": "79",
+     "linescores": [
+      "30",
+      "49"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "183",
+      "abbrev": "SYR",
+      "name": "Orange",
+      "displayName": "Syracuse Orange"
+     },
+     "score": "62",
+     "linescores": [
+      "33",
+      "29"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401918453",
+   "date": "2026-11-15T19:00Z",
+   "name": "W&M @ MICH",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Crisler Center",
+    "city": "Ann Arbor"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "130",
+      "abbrev": "MICH",
+      "name": "Wolverines",
+      "displayName": "Michigan Wolverines"
+     },
+     "score": "123",
+     "linescores": [
+      "48",
+      "75"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2729",
+      "abbrev": "W&M",
+      "name": "Tribe",
+      "displayName": "William & Mary Tribe"
+     },
+     "score": "79",
+     "linescores": [
+      "43",
+      "36"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401926772",
+   "date": "2026-11-16T00:00Z",
+   "name": "UAPB @ USC",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Galen Center",
+    "city": "Los Angeles"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "30",
+      "abbrev": "USC",
+      "name": "Trojans",
+      "displayName": "USC Trojans"
+     },
+     "score": "122",
+     "linescores": [
+      "62",
+      "60"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2029",
+      "abbrev": "UAPB",
+      "name": "Golden Lions",
+      "displayName": "Arkansas-Pine Bluff Golden Lions"
+     },
+     "score": "46",
+     "linescores": [
+      "19",
+      "27"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401926063",
+   "date": "2026-11-15T18:00Z",
+   "name": "BOIS VS NEB",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Sanford Pentagon",
+    "city": "Sioux Falls"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "158",
+      "abbrev": "NEB",
+      "name": "Cornhuskers",
+      "displayName": "Nebraska Cornhuskers"
+     },
+     "score": "102",
+     "linescores": [
+      "52",
+      "50"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "68",
+      "abbrev": "BOIS",
+      "name": "Broncos",
+      "displayName": "Boise State Broncos"
+     },
+     "score": "75",
+     "linescores": [
+      "34",
+      "41"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401929458",
+   "date": "2026-11-15T17:00Z",
+   "name": "ABAC @ FGCU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Alico Arena",
+    "city": "Fort Myers"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "526",
+      "abbrev": "FGCU",
+      "name": "Eagles",
+      "displayName": "Florida Gulf Coast Eagles"
+     },
+     "score": "99",
+     "linescores": [
+      "48",
+      "51"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "134875",
+      "abbrev": "ABAC",
+      "name": "Stallions",
+      "displayName": "Abraham Baldwin Agricultural Stallions"
+     },
+     "score": "31",
+     "linescores": [
+      "17",
+      "14"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401924858",
+   "date": "2026-11-15T17:00Z",
+   "name": "QUIN @ CCSU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Detrick Gymnasium",
+    "city": "New Britain"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2115",
+      "abbrev": "CCSU",
+      "name": "Blue Devils",
+      "displayName": "Central Connecticut Blue Devils"
+     },
+     "score": "72",
+     "linescores": [
+      "33",
+      "39"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2514",
+      "abbrev": "QUIN",
+      "name": "Bobcats",
+      "displayName": "Quinnipiac Bobcats"
+     },
+     "score": "67",
+     "linescores": [
+      "39",
+      "28"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401925896",
+   "date": "2026-11-15T18:00Z",
+   "name": "NORF @ GAST",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "GSU Convocation Center",
+    "city": "Atlanta"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2247",
+      "abbrev": "GAST",
+      "name": "Panthers",
+      "displayName": "Georgia State Panthers"
+     },
+     "score": "78",
+     "linescores": [
+      "39",
+      "39"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2450",
+      "abbrev": "NORF",
+      "name": "Spartans",
+      "displayName": "Norfolk State Spartans"
+     },
+     "score": "53",
+     "linescores": [
+      "26",
+      "27"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401920771",
+   "date": "2026-11-15T18:00Z",
+   "name": "COLG @ DEL",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Bob Carpenter Center",
+    "city": "Newark"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "48",
+      "abbrev": "DEL",
+      "name": "Blue Hens",
+      "displayName": "Delaware Blue Hens"
+     },
+     "score": "64",
+     "linescores": [
+      "32",
+      "32"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2142",
+      "abbrev": "COLG",
+      "name": "Raiders",
+      "displayName": "Colgate Raiders"
+     },
+     "score": "58",
+     "linescores": [
+      "29",
+      "29"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401920235",
+   "date": "2026-11-15T18:00Z",
+   "name": "DART @ BU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Case Gym",
+    "city": "Boston"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "104",
+      "abbrev": "BU",
+      "name": "Terriers",
+      "displayName": "Boston University Terriers"
+     },
+     "score": "90",
+     "linescores": [
+      "48",
+      "42"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "159",
+      "abbrev": "DART",
+      "name": "Big Green",
+      "displayName": "Dartmouth Big Green"
+     },
+     "score": "75",
+     "linescores": [
+      "25",
+      "50"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401912210",
+   "date": "2026-11-15T18:00Z",
+   "name": "HARV @ AMER",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Bender Arena",
+    "city": "Washington"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "44",
+      "abbrev": "AMER",
+      "name": "Eagles",
+      "displayName": "American University Eagles"
+     },
+     "score": "70",
+     "linescores": [
+      "35",
+      "35"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "108",
+      "abbrev": "HARV",
+      "name": "Crimson",
+      "displayName": "Harvard Crimson"
+     },
+     "score": "64",
+     "linescores": [
+      "40",
+      "24"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401909774",
+   "date": "2026-11-15T18:00Z",
+   "name": "NIA @ ISU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Hilton Coliseum",
+    "city": "Ames"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "66",
+      "abbrev": "ISU",
+      "name": "Cyclones",
+      "displayName": "Iowa State Cyclones"
+     },
+     "score": "66",
+     "linescores": [
+      "32",
+      "34"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "315",
+      "abbrev": "NIA",
+      "name": "Purple Eagles",
+      "displayName": "Niagara Purple Eagles"
+     },
+     "score": "45",
+     "linescores": [
+      "25",
+      "20"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401909554",
+   "date": "2026-11-15T18:30Z",
+   "name": "UNH @ BC",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Conte Forum",
+    "city": "Chestnut Hill"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "103",
+      "abbrev": "BC",
+      "name": "Eagles",
+      "displayName": "Boston College Eagles"
+     },
+     "score": "67",
+     "linescores": [
+      "31",
+      "36"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "160",
+      "abbrev": "UNH",
+      "name": "Wildcats",
+      "displayName": "New Hampshire Wildcats"
+     },
+     "score": "55",
+     "linescores": [
+      "28",
+      "27"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401928825",
+   "date": "2026-11-15T19:00Z",
+   "name": "CAPU @ RMU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "UPMC Events Center",
+    "city": "Moon Township"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2523",
+      "abbrev": "RMU",
+      "name": "Colonials",
+      "displayName": "Robert Morris Colonials"
+     },
+     "score": "94",
+     "linescores": [
+      "39",
+      "55"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "424",
+      "abbrev": "CAPU",
+      "name": "Crusaders",
+      "displayName": "Capital Crusaders"
+     },
+     "score": "45",
+     "linescores": [
+      "26",
+      "19"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401925926",
+   "date": "2026-11-15T19:00Z",
+   "name": "SCST @ COFC",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "TD Arena",
+    "city": "Charleston"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "232",
+      "abbrev": "COFC",
+      "name": "Cougars",
+      "displayName": "Charleston Cougars"
+     },
+     "score": "90",
+     "linescores": [
+      "34",
+      "56"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2569",
+      "abbrev": "SCST",
+      "name": "Bulldogs",
+      "displayName": "South Carolina State Bulldogs"
+     },
+     "score": "66",
+     "linescores": [
+      "27",
+      "39"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401925812",
+   "date": "2026-11-15T19:00Z",
+   "name": "TEM @ LAS",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "John Glaser Arena",
+    "city": "Philadelphia"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "2325",
+      "abbrev": "LAS",
+      "name": "Explorers",
+      "displayName": "La Salle Explorers"
+     },
+     "score": "71",
+     "linescores": [
+      "37",
+      "34"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": true,
+     "team": {
+      "id": "218",
+      "abbrev": "TEM",
+      "name": "Owls",
+      "displayName": "Temple Owls"
+     },
+     "score": "84",
+     "linescores": [
+      "46",
+      "38"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401924744",
+   "date": "2026-11-15T19:00Z",
+   "name": "ECMA @ YALE",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "John J. Lee Amphitheater",
+    "city": "New Haven"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "43",
+      "abbrev": "YALE",
+      "name": "Bulldogs",
+      "displayName": "Yale Bulldogs"
+     },
+     "score": "103",
+     "linescores": [
+      "51",
+      "52"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2211",
+      "abbrev": "ECMA",
+      "name": "Lions",
+      "displayName": "Emmanuel (MA) Lions"
+     },
+     "score": "58",
+     "linescores": [
+      "32",
+      "26"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401921287",
+   "date": "2026-11-15T19:00Z",
+   "name": "UALB @ HC",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Hart Center Arena",
+    "city": "Worcester"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "107",
+      "abbrev": "HC",
+      "name": "Crusaders",
+      "displayName": "Holy Cross Crusaders"
+     },
+     "score": "60",
+     "linescores": [
+      "31",
+      "29"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": true,
+     "team": {
+      "id": "399",
+      "abbrev": "UALB",
+      "name": "Great Danes",
+      "displayName": "UAlbany Great Danes"
+     },
+     "score": "62",
+     "linescores": [
+      "35",
+      "27"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401920136",
+   "date": "2026-11-15T19:00Z",
+   "name": "CSUB @ NDSU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Scheels Center",
+    "city": "Fargo"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "2449",
+      "abbrev": "NDSU",
+      "name": "Bison",
+      "displayName": "North Dakota State Bison"
+     },
+     "score": "69",
+     "linescores": [
+      "38",
+      "31"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": true,
+     "team": {
+      "id": "2934",
+      "abbrev": "CSUB",
+      "name": "Roadrunners",
+      "displayName": "Cal State Bakersfield Roadrunners"
+     },
+     "score": "73",
+     "linescores": [
+      "37",
+      "36"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401920065",
+   "date": "2026-11-15T19:00Z",
+   "name": "PRIN @ URI",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Thomas M. Ryan Center",
+    "city": "Kingston"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "227",
+      "abbrev": "URI",
+      "name": "Rams",
+      "displayName": "Rhode Island Rams"
+     },
+     "score": "79",
+     "linescores": [
+      "27",
+      "52"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "163",
+      "abbrev": "PRIN",
+      "name": "Tigers",
+      "displayName": "Princeton Tigers"
+     },
+     "score": "72",
+     "linescores": [
+      "24",
+      "48"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401909525",
+   "date": "2026-11-15T19:30Z",
+   "name": "MARQ VS MIZ",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "United Center",
+    "city": "Chicago"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "142",
+      "abbrev": "MIZ",
+      "name": "Tigers",
+      "displayName": "Missouri Tigers"
+     },
+     "score": "69",
+     "linescores": [
+      "30",
+      "39"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "269",
+      "abbrev": "MARQ",
+      "name": "Golden Eagles",
+      "displayName": "Marquette Golden Eagles"
+     },
+     "score": "64",
+     "linescores": [
+      "38",
+      "26"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401926216",
+   "date": "2026-11-15T20:00Z",
+   "name": "WSUL @ TNTC",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Hooper Eblen Center",
+    "city": "Cookeville"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2635",
+      "abbrev": "TNTC",
+      "name": "Golden Eagles",
+      "displayName": "Tennessee Tech Golden Eagles"
+     },
+     "score": "101",
+     "linescores": [
+      "61",
+      "40"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "134850",
+      "abbrev": "WSUL",
+      "name": "Lakers",
+      "displayName": "Wright State-Lake Lakers"
+     },
+     "score": "34",
+     "linescores": [
+      "16",
+      "18"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401926068",
+   "date": "2026-11-15T20:00Z",
+   "name": "PFW @ EIU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Groniger Arena",
+    "city": "Charleston"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "2197",
+      "abbrev": "EIU",
+      "name": "Panthers",
+      "displayName": "Eastern Illinois Panthers"
+     },
+     "score": "74",
+     "linescores": [
+      "35",
+      "39"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": true,
+     "team": {
+      "id": "2870",
+      "abbrev": "PFW",
+      "name": "Mastodons",
+      "displayName": "Purdue Fort Wayne Mastodons"
+     },
+     "score": "86",
+     "linescores": [
+      "47",
+      "39"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401921168",
+   "date": "2026-11-15T20:00Z",
+   "name": "CLE @ AAMU",
+   "status": {
+    "state": "post",
+    "detail": "Final/OT"
+   },
+   "venue": {
+    "name": "Event Center",
+    "city": "Huntsville"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "2010",
+      "abbrev": "AAMU",
+      "name": "Bulldogs",
+      "displayName": "Alabama A&M Bulldogs"
+     },
+     "score": "73",
+     "linescores": [
+      "32",
+      "34",
+      "7"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": true,
+     "team": {
+      "id": "325",
+      "abbrev": "CLE",
+      "name": "Vikings",
+      "displayName": "Cleveland State Vikings"
+     },
+     "score": "74",
+     "linescores": [
+      "39",
+      "27",
+      "8"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401911251",
+   "date": "2026-11-15T20:00Z",
+   "name": "HPU @ SLU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Chaifetz Arena",
+    "city": "St. Louis"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "139",
+      "abbrev": "SLU",
+      "name": "Billikens",
+      "displayName": "Saint Louis Billikens"
+     },
+     "score": "58",
+     "linescores": [
+      "26",
+      "32"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": true,
+     "team": {
+      "id": "2272",
+      "abbrev": "HPU",
+      "name": "Panthers",
+      "displayName": "High Point Panthers"
+     },
+     "score": "68",
+     "linescores": [
+      "48",
+      "20"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401909493",
+   "date": "2026-11-15T20:00Z",
+   "name": "CREI VS IOWA",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Casey's Center",
+    "city": "Des Moines"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "2294",
+      "abbrev": "IOWA",
+      "name": "Hawkeyes",
+      "displayName": "Iowa Hawkeyes"
+     },
+     "score": "69",
+     "linescores": [
+      "30",
+      "39"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": true,
+     "team": {
+      "id": "156",
+      "abbrev": "CREI",
+      "name": "Bluejays",
+      "displayName": "Creighton Bluejays"
+     },
+     "score": "70",
+     "linescores": [
+      "42",
+      "28"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401934396",
+   "date": "2026-11-15T21:00Z",
+   "name": "AF @ PAC",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Alex G. Spanos Center",
+    "city": "Stockton"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "279",
+      "abbrev": "PAC",
+      "name": "Tigers",
+      "displayName": "Pacific Tigers"
+     },
+     "score": "93",
+     "linescores": [
+      "50",
+      "43"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2005",
+      "abbrev": "AF",
+      "name": "Falcons",
+      "displayName": "Air Force Falcons"
+     },
+     "score": "69",
+     "linescores": [
+      "30",
+      "39"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401928789",
+   "date": "2026-11-15T21:00Z",
+   "name": "NMSU VS SDSU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Frontwave Arena",
+    "city": "Oceanside"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "21",
+      "abbrev": "SDSU",
+      "name": "Aztecs",
+      "displayName": "San Diego State Aztecs"
+     },
+     "score": "73",
+     "linescores": [
+      "35",
+      "38"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "166",
+      "abbrev": "NMSU",
+      "name": "Aggies",
+      "displayName": "New Mexico State Aggies"
+     },
+     "score": "61",
+     "linescores": [
+      "29",
+      "32"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401928353",
+   "date": "2026-11-15T21:00Z",
+   "name": "UCME @ UCSB",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "The Thunderdome",
+    "city": "Santa Barbara"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2540",
+      "abbrev": "UCSB",
+      "name": "Gauchos",
+      "displayName": "UC Santa Barbara Gauchos"
+     },
+     "score": "97",
+     "linescores": [
+      "51",
+      "46"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "3185",
+      "abbrev": "UCME",
+      "name": "Bobcats",
+      "displayName": "UC Merced Bobcats"
+     },
+     "score": "47",
+     "linescores": [
+      "18",
+      "29"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401919825",
+   "date": "2026-11-15T21:00Z",
+   "name": "MERC @ JMU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Atlantic Union Bank Center",
+    "city": "Harrisonburg"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "256",
+      "abbrev": "JMU",
+      "name": "Dukes",
+      "displayName": "James Madison Dukes"
+     },
+     "score": "80",
+     "linescores": [
+      "36",
+      "44"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2385",
+      "abbrev": "MERC",
+      "name": "Lakers",
+      "displayName": "Mercyhurst Lakers"
+     },
+     "score": "71",
+     "linescores": [
+      "34",
+      "37"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401917531",
+   "date": "2026-11-15T21:00Z",
+   "name": "CHST @ LMU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Gersten Pavilion",
+    "city": "Los Angeles"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2351",
+      "abbrev": "LMU",
+      "name": "Lions",
+      "displayName": "Loyola Marymount Lions"
+     },
+     "score": "86",
+     "linescores": [
+      "47",
+      "39"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2130",
+      "abbrev": "CHST",
+      "name": "Cougars",
+      "displayName": "Chicago State Cougars"
+     },
+     "score": "49",
+     "linescores": [
+      "22",
+      "27"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401917528",
+   "date": "2026-11-15T21:00Z",
+   "name": "IDST @ SEA",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Redhawk Center",
+    "city": "Seattle"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2547",
+      "abbrev": "SEA",
+      "name": "Redhawks",
+      "displayName": "Seattle U Redhawks"
+     },
+     "score": "77",
+     "linescores": [
+      "44",
+      "33"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "304",
+      "abbrev": "IDST",
+      "name": "Bengals",
+      "displayName": "Idaho State Bengals"
+     },
+     "score": "70",
+     "linescores": [
+      "43",
+      "27"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401929405",
+   "date": "2026-11-15T21:30Z",
+   "name": "DOAN @ SDAK",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Sanford Coyote Sports Center",
+    "city": "Vermillion"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "233",
+      "abbrev": "SDAK",
+      "name": "Coyotes",
+      "displayName": "South Dakota Coyotes"
+     },
+     "score": "81",
+     "linescores": [
+      "37",
+      "44"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2178",
+      "abbrev": "DOAN",
+      "name": "Tigers",
+      "displayName": "Doane Tigers"
+     },
+     "score": "57",
+     "linescores": [
+      "23",
+      "34"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401923393",
+   "date": "2026-11-15T21:30Z",
+   "name": "WMU @ USI",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Liberty Arena (IN)",
+    "city": "Evansville"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "88",
+      "abbrev": "USI",
+      "name": "Screaming Eagles",
+      "displayName": "Southern Indiana Screaming Eagles"
+     },
+     "score": "59",
+     "linescores": [
+      "38",
+      "21"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": true,
+     "team": {
+      "id": "2711",
+      "abbrev": "WMU",
+      "name": "Broncos",
+      "displayName": "Western Michigan Broncos"
+     },
+     "score": "80",
+     "linescores": [
+      "44",
+      "36"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401917175",
+   "date": "2026-11-15T21:30Z",
+   "name": "NHVN @ PSU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Bryce Jordan Center",
+    "city": "University Park"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "213",
+      "abbrev": "PSU",
+      "name": "Nittany Lions",
+      "displayName": "Penn State Nittany Lions"
+     },
+     "score": "86",
+     "linescores": [
+      "41",
+      "45"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2441",
+      "abbrev": "NHVN",
+      "name": "Chargers",
+      "displayName": "New Haven Chargers"
+     },
+     "score": "52",
+     "linescores": [
+      "28",
+      "24"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401911017",
+   "date": "2026-11-15T22:30Z",
+   "name": "CAN @ BUF",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Broadview Arena",
+    "city": "Buffalo"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2084",
+      "abbrev": "BUF",
+      "name": "Bulls",
+      "displayName": "Buffalo Bulls"
+     },
+     "score": "79",
+     "linescores": [
+      "44",
+      "35"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2099",
+      "abbrev": "CAN",
+      "name": "Golden Griffins",
+      "displayName": "Canisius Golden Griffins"
+     },
+     "score": "55",
+     "linescores": [
+      "31",
+      "24"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401926733",
+   "date": "2026-11-15T23:00Z",
+   "name": "ECCL @ UTM",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Kathleen and Tom Elam Center",
+    "city": "Martin"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2630",
+      "abbrev": "UTM",
+      "name": "Skyhawks",
+      "displayName": "UT Martin Skyhawks"
+     },
+     "score": "128",
+     "linescores": [
+      "67",
+      "61"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "3120",
+      "abbrev": "ECCL",
+      "name": "Royals",
+      "displayName": "Ecclesia Royals"
+     },
+     "score": "44",
+     "linescores": [
+      "16",
+      "28"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401920124",
+   "date": "2026-11-15T23:00Z",
+   "name": "CP @ MTST",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Worthington Arena",
+    "city": "Bozeman"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "147",
+      "abbrev": "MTST",
+      "name": "Bobcats",
+      "displayName": "Montana State Bobcats"
+     },
+     "score": "77",
+     "linescores": [
+      "36",
+      "41"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "13",
+      "abbrev": "CP",
+      "name": "Mustangs",
+      "displayName": "Cal Poly Mustangs"
+     },
+     "score": "52",
+     "linescores": [
+      "22",
+      "30"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401929200",
+   "date": "2026-11-16T01:00Z",
+   "name": "TXST @ UTSA",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "UTSA Convocation Center",
+    "city": "San Antonio"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": false,
+     "team": {
+      "id": "2636",
+      "abbrev": "UTSA",
+      "name": "Roadrunners",
+      "displayName": "UTSA Roadrunners"
+     },
+     "score": "67",
+     "linescores": [
+      "39",
+      "28"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": true,
+     "team": {
+      "id": "326",
+      "abbrev": "TXST",
+      "name": "Bobcats",
+      "displayName": "Texas State Bobcats"
+     },
+     "score": "87",
+     "linescores": [
+      "44",
+      "43"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401925718",
+   "date": "2026-11-16T01:00Z",
+   "name": "STLM @ BCU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Moore Gymnasium (FL)",
+    "city": "Daytona Beach"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "2065",
+      "abbrev": "BCU",
+      "name": "Wildcats",
+      "displayName": "Bethune-Cookman Wildcats"
+     },
+     "score": "88",
+     "linescores": [
+      "42",
+      "46"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2948",
+      "abbrev": "STLM",
+      "name": "Tigers",
+      "displayName": "Stillman Tigers"
+     },
+     "score": "64",
+     "linescores": [
+      "27",
+      "37"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "401920896",
+   "date": "2026-11-16T01:00Z",
+   "name": "CCU @ WIS",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Kohl Center",
+    "city": "Madison"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "275",
+      "abbrev": "WIS",
+      "name": "Badgers",
+      "displayName": "Wisconsin Badgers"
+     },
+     "score": "89",
+     "linescores": [
+      "38",
+      "51"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "324",
+      "abbrev": "CCU",
+      "name": "Chanticleers",
+      "displayName": "Coastal Carolina Chanticleers"
+     },
+     "score": "81",
+     "linescores": [
+      "43",
+      "38"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401911472",
+   "date": "2026-11-16T02:00Z",
+   "name": "ALST @ SJSU",
+   "status": {
+    "state": "post",
+    "detail": "Final"
+   },
+   "venue": {
+    "name": "Provident Credit Union Event Center",
+    "city": "San Jose"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "winner": true,
+     "team": {
+      "id": "23",
+      "abbrev": "SJSU",
+      "name": "Spartans",
+      "displayName": "San José State Spartans"
+     },
+     "score": "80",
+     "linescores": [
+      "35",
+      "45"
+     ],
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "winner": false,
+     "team": {
+      "id": "2011",
+      "abbrev": "ALST",
+      "name": "Hornets",
+      "displayName": "Alabama State Hornets"
+     },
+     "score": "68",
+     "linescores": [
+      "29",
+      "39"
+     ],
+     "record": ""
+    }
+   ]
+  },
+  {
+   "id": "401926073",
+   "date": "2026-11-15T22:00Z",
+   "name": "PEPP @ ORE",
+   "status": {
+    "state": "post",
+    "detail": "Postponed"
+   },
+   "venue": {
+    "name": "Matthew Knight Arena",
+    "city": "Eugene"
+   },
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "id": "2483",
+      "abbrev": "ORE",
+      "name": "Ducks",
+      "displayName": "Oregon Ducks"
+     },
+     "score": "0",
+     "record": ""
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "id": "2492",
+      "abbrev": "PEPP",
+      "name": "Waves",
+      "displayName": "Pepperdine Waves"
+     },
+     "score": "0",
+     "record": ""
+    }
+   ]
+  }
+ ]
+}
