@@ -239,7 +239,7 @@ const reportGame = obj({
   homeAway: z.enum(["H", "A"]),
   result: optStr,
   score: optStr,
-  stats: z.record(z.string(), str),
+  stats: z.record(z.string(), z.union([str, z.record(z.string(), str)])),
 });
 
 export const playerReportOutput = withEnvelope({

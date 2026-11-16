@@ -56,6 +56,19 @@ export interface GamelogGame {
   stats: Record<string, string>;
 }
 
+/** Flat when every label is unique. Nested by category when ESPN repeats a label such as YDS. */
+export type ReportStatValue = string | Record<string, string>;
+
+export interface ReportGame {
+  eventId: string;
+  date?: string;
+  opponent: string;
+  homeAway: "H" | "A";
+  result?: string;
+  score?: string;
+  stats: Record<string, ReportStatValue>;
+}
+
 export interface SeasonCategory {
   name: string;
   team?: { id?: string; abbrev?: string; name?: string; displayName?: string };
@@ -247,9 +260,12 @@ export function namedSeasonStats(data: unknown, season?: number): SeasonBlock {
   return { ...(year !== undefined ? { year } : {}), categories };
 }
 
-export function recentGames(gamelog: { games?: GamelogGame[] } | null | undefined, lastN: number): GamelogGame[] {
+export function recentGames<T extends { eventId: string; date?: string }>(
+  gamelog: { games?: T[] } | null | undefined,
+  lastN: number,
+): T[] {
   const games = Array.isArray(gamelog?.games) ? [...gamelog.games] : [];
-  const stamp = (game: GamelogGame) => {
+  const stamp = (game: T) => {
     const parsed = game.date ? Date.parse(game.date) : Number.NaN;
     return Number.isNaN(parsed) ? Number.NEGATIVE_INFINITY : parsed;
   };
@@ -260,6 +276,83 @@ export function recentGames(gamelog: { games?: GamelogGame[] } | null | undefine
   });
   const n = Number.isInteger(lastN) && lastN > 0 ? lastN : 5;
   return games.slice(0, n);
+}
+
+function unusedKey(used: Record<string, unknown>, label: string): string {
+  if (!(label in used)) return label;
+  let n = 2;
+  while (`${label}_${n}` in used) n += 1;
+  return `${label}_${n}`;
+}
+
+/**
+ * Slice one game's parallel stat array on the gamelog's category counts.
+ * Rushing and receiving both publish YDS; nesting keeps both. A repeated
+ * label inside one category gets a _2 suffix instead of being dropped.
+ * Without usable counts, repeated labels fall back to the unique `names` entry.
+ */
+function statsForEvent(root: Record<string, unknown>, values: unknown[]): Record<string, ReportStatValue> {
+  const categories = asArray(root.categories).map((item) => record(item)).filter((item): item is Record<string, unknown> => Boolean(item));
+  const labels = asArray(root.labels).map((label) => String(label ?? ""));
+  const names = asArray(root.names).map((name) => String(name ?? ""));
+  const counts = categories.map((category) => (typeof category.count === "number" ? category.count : Number.NaN));
+  const counted = counts.every((count) => Number.isInteger(count) && count >= 0);
+  const sum = counts.reduce((total, count) => total + count, 0);
+  if (categories.length > 0 && counted && sum === values.length && (labels.length === 0 || labels.length === values.length)) {
+    const nested: Record<string, Record<string, string>> = {};
+    let offset = 0;
+    categories.forEach((category, index) => {
+      const count = counts[index] ?? 0;
+      const key = text(category.name) ?? text(category.displayName) ?? `category${index + 1}`;
+      const bucket: Record<string, string> = {};
+      for (let i = 0; i < count; i += 1) {
+        const label = labels[offset + i] || names[offset + i] || `col${i + 1}`;
+        bucket[unusedKey(bucket, label)] = String(values[offset + i] ?? "");
+      }
+      nested[key] = bucket;
+      offset += count;
+    });
+    return nested;
+  }
+  const flat: Record<string, string> = {};
+  for (let i = 0; i < values.length; i += 1) {
+    const label = labels[i];
+    const name = names[i];
+    let key = label || name || `col${i + 1}`;
+    if (key in flat) key = name && !(name in flat) ? name : unusedKey(flat, key);
+    flat[key] = String(values[i] ?? "");
+  }
+  return flat;
+}
+
+function statBlocksByEvent(raw: unknown): Map<string, Record<string, ReportStatValue>> {
+  const root = record(raw) ?? {};
+  const byEvent = new Map<string, unknown[]>();
+  for (const seasonType of asArray(root.seasonTypes)) {
+    for (const category of asArray(record(seasonType)?.categories)) {
+      for (const event of asArray(record(category)?.events)) {
+        const row = record(event);
+        const eventId = text(row?.eventId);
+        const stats = asArray(row?.stats);
+        if (!eventId || stats.length === 0) continue;
+        const previous = byEvent.get(eventId);
+        if (!previous || stats.length > previous.length) byEvent.set(eventId, stats);
+      }
+    }
+  }
+  const out = new Map<string, Record<string, ReportStatValue>>();
+  for (const [eventId, stats] of byEvent) out.set(eventId, statsForEvent(root, stats));
+  return out;
+}
+
+/** Last N games from a raw ESPN gamelog, with every stat kept. */
+export function recentGamesFromGamelog(raw: unknown, lastN: number): ReportGame[] {
+  const transformed = transformGamelog(raw) as { games?: ReportGame[] };
+  const blocks = statBlocksByEvent(raw);
+  return recentGames(transformed, lastN).map((game) => {
+    const stats = blocks.get(String(game.eventId));
+    return stats ? { ...game, stats } : game;
+  });
 }
 
 export function athleteIdentity(
@@ -309,7 +402,7 @@ export const getPlayerReport = defineTool({
   description:
     "One call for how a player has looked lately in MLB, NBA, NFL, NHL, and any other league with an ESPN athlete page. " +
     "player is a name or an ESPN athlete id. A name is resolved with search and kept inside league: one match is used, and more than one match returns candidates instead of a guess (search for 'josh jacobs' hits more than one player; league=nfl resolves to the NFL player). " +
-    "season is named stats for that year (omit it for the latest year in the document). recent is the last lastN gamelog rows, most recent first (default 5). splits is the split list ESPN publishes, with named stat fields. " +
+    "season is named stats for that year (omit it for the latest year in the document). recent is the last lastN gamelog rows, most recent first (default 5). When a label repeats across categories, stats are nested by category so rushing.YDS and receiving.YDS both stay. splits is the split list ESPN publishes, with named stat fields. " +
     "include limits the blocks. One block failing leaves the others in the response and names the failure in errors. sources lists the ESPN documents that were requested.",
   inputShape: {
     sport: sportSchema,
@@ -400,7 +493,7 @@ export const getPlayerReport = defineTool({
     }
     if (gamelog?.ok) {
       sources.push(gamelog.source);
-      out.recent = recentGames(transformGamelog(gamelog.value) as { games?: GamelogGame[] }, gamesWanted);
+      out.recent = recentGamesFromGamelog(gamelog.value, gamesWanted);
     } else if (gamelog) {
       sources.push(gamelog.source);
       errors[gamelog.errorKey] = gamelog.error;

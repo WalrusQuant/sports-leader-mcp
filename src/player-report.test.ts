@@ -6,6 +6,7 @@ import {
   namedSeasonStats,
   normalizePlayerName,
   recentGames,
+  recentGamesFromGamelog,
   resolvePlayer,
   type AthleteCandidate,
   type GamelogGame,
@@ -128,6 +129,58 @@ test("named season stats keep one year and a 2026-27 label matches both years", 
   }, 2027);
   assert.equal(spanned.year, 2027);
   assert.equal(spanned.categories[0]?.stats.PTS, "28");
+});
+
+test("Jacobs Detroit row keeps rushing and receiving yards", () => {
+  // ESPN gamelog for 2026-10-25 at DET. labels repeat YDS, AVG, TD, and LNG.
+  const raw = {
+    categories: [
+      { name: "rushing", displayName: "Rushing", count: 5 },
+      { name: "receiving", displayName: "Receiving", count: 6 },
+      { name: "fumbles", displayName: "Fumbles", count: 4 },
+    ],
+    labels: ["CAR", "YDS", "AVG", "TD", "LNG", "REC", "TGTS", "YDS", "AVG", "TD", "LNG", "FUM", "LST", "FF", "KB"],
+    names: [
+      "rushingAttempts", "rushingYards", "yardsPerRushAttempt", "rushingTouchdowns", "longRushing",
+      "receptions", "receivingTargets", "receivingYards", "yardsPerReception", "receivingTouchdowns", "longReception",
+      "fumbles", "fumblesLost", "fumblesForced", "kicksBlocked",
+    ],
+    events: {
+      "401873020": {
+        id: "401873020",
+        gameDate: "2026-10-25T20:25:00.000+00:00",
+        score: "20-17",
+        homeTeamId: "8",
+        gameResult: "L",
+        opponent: { abbreviation: "DET", displayName: "Detroit Lions" },
+        team: { id: "9", abbreviation: "GB" },
+      },
+    },
+    seasonTypes: [{
+      displayName: "2026 Regular Season",
+      categories: [{
+        displayName: "Regular Season Stats",
+        events: [{
+          eventId: "401873020",
+          stats: ["11", "36", "3.3", "0", "10", "5", "7", "55", "11.0", "1", "25", "0", "0", "-", "-"],
+        }],
+      }],
+    }],
+  };
+  const [game] = recentGamesFromGamelog(raw, 5);
+  assert.equal(game?.eventId, "401873020");
+  assert.equal(game?.opponent, "DET");
+  assert.equal(game?.homeAway, "A");
+  const rushing = game?.stats.rushing as Record<string, string>;
+  const receiving = game?.stats.receiving as Record<string, string>;
+  assert.equal(rushing.CAR, "11");
+  assert.equal(rushing.YDS, "36");
+  assert.equal(rushing.TD, "0");
+  assert.equal(receiving.REC, "5");
+  assert.equal(receiving.TGTS, "7");
+  assert.equal(receiving.YDS, "55");
+  assert.equal(receiving.TD, "1");
+  assert.equal(receiving.LNG, "25");
 });
 
 test("recent games are the latest rows, most recent first", () => {
