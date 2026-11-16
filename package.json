@@ -1,7 +1,7 @@
 {
   "name": "sports-leader-mcp",
-  "version": "0.5.3",
-  "description": "MCP server for live sports data: scores, standings, rosters, stats, odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports, plus historical MLB, NBA, NFL, and NHL Parquet from GitHub Releases (no API key).",
+  "version": "0.6.0",
+  "description": "MCP server for live sports data: scores, standings, rosters, stats, odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports, keyless Kalshi and Polymarket prices, plus historical MLB, NBA, NFL, and NHL Parquet from GitHub Releases (no API key).",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "npm run build && node --test dist/transforms.test.js dist/odds.test.js dist/golden.test.js dist/server.test.js dist/resources.test.js dist/protocol.test.js dist/legacy-client.test.js dist/docs.test.js dist/fixes.test.js dist/data/data.test.js",
+    "test": "npm run build && node --test dist/transforms.test.js dist/odds.test.js dist/golden.test.js dist/server.test.js dist/resources.test.js dist/protocol.test.js dist/legacy-client.test.js dist/docs.test.js dist/fixes.test.js dist/data/data.test.js dist/markets/markets.test.js",
     "audit": "npm run build && node scripts/audit.mjs",
     "test:update-golden": "npm run build && UPDATE_GOLDEN=1 node --test dist/golden.test.js",
     "fixtures:capture": "node scripts/capture-fixtures.mjs",

@@ -11,6 +11,7 @@ import { Client, InMemoryTransport } from "@modelcontextprotocol/client";
 import { createServer } from "./server.js";
 import { apiCache } from "./client.js";
 import { fixtureState, hasFixture, installFixtureFetch, readFixture } from "./fixture-fetch.js";
+import { resetMarketClient } from "./markets/http.js";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const ORIGINAL_TOOLS = [
@@ -23,7 +24,9 @@ const ORIGINAL_TOOLS = [
 const SCHEMA_TOOLS = [
   "get_scoreboard", "get_game_summary", "get_game_odds", "get_injuries", "get_athlete_gamelog", "get_slate",
   "get_team_stats", "get_rankings", "get_power_index", "get_futures",
+  "get_kalshi_markets", "get_polymarket_markets", "get_market_odds",
 ];
+const MARKET_TOOLS = ["get_kalshi_markets", "get_polymarket_markets", "get_market_odds"];
 const ADDED_TOOLS = ["get_slate", "get_team_stats", "get_rankings", "get_power_index", "get_futures"];
 const DATA_TOOLS = [
   "get_games", "get_team_box_scores", "get_team_game_stats", "get_player_game_logs",
@@ -56,7 +59,8 @@ test("tools/list keeps every existing tool, adds get_slate, and publishes output
   for (const n of ORIGINAL_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
   for (const n of ADDED_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
   for (const n of DATA_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
-  assert.equal(names.length, ORIGINAL_TOOLS.length + ADDED_TOOLS.length + DATA_TOOLS.length);
+  for (const n of MARKET_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
+  assert.equal(names.length, ORIGINAL_TOOLS.length + ADDED_TOOLS.length + DATA_TOOLS.length + MARKET_TOOLS.length);
   for (const t of tools) {
     if (SCHEMA_TOOLS.includes(t.name)) {
       assert.equal((t.outputSchema as any)?.type, "object", `${t.name} outputSchema`);
@@ -154,5 +158,87 @@ test("schema tools validate end to end for every fixture league", async () => {
     if (hasFixture(league, "gamelog")) {
       await call(client, "get_athlete_gamelog", { sport, league, athleteId: "1" });
     }
+  }
+});
+
+test("prediction markets: schemas, call counts, labels, and a postponed Kalshi date", async () => {
+  const { client } = await connect();
+  resetMarketClient();
+  const kalshi = await call(client, "get_kalshi_markets", { league: "nfl", date: "20261011" });
+  assert.equal(kalshi.structuredContent.averaged, false);
+  assert.equal(kalshi.structuredContent.events.length, 1);
+  assert.equal(kalshi.structuredContent.events[0].eventTicker, "KXNFLGAME-26OCT11PHIJAC");
+  assert.equal(fixtureState.log.filter((path) => path.endsWith("/markets") && path.includes("trade-api")).length, 1);
+  assert.equal(fixtureState.log.some((path) => path.endsWith("/orderbook")), false);
+
+  resetMarketClient();
+  fixtureState.log = [];
+  const booked = await call(client, "get_kalshi_markets", { league: "nfl", date: "20261011", includeBook: true });
+  const yes = booked.structuredContent.events[0].markets[0];
+  assert.equal(yes.priceSource, "dollars");
+  assert.equal(yes.book.priceSource, "orderbook");
+  assert.equal(yes.book.yesAsk, 0.29);
+  assert.equal(yes.yesAsk, 0.43);
+  assert.equal(fixtureState.log.filter((path) => path.endsWith("/orderbook")).length, 2);
+
+  resetMarketClient();
+  fixtureState.log = [];
+  const poly = await call(client, "get_polymarket_markets", { league: "nfl", date: "20261011", venue: "both" });
+  const names = poly.structuredContent.venues.map((venue: { venue: string }) => venue.venue);
+  assert.deepEqual(names, ["polymarket", "polymarket_us"]);
+  assert.equal(poly.structuredContent.venues[0].status, "ok");
+  assert.equal(poly.structuredContent.venues[1].status, "ok");
+  assert.equal(poly.structuredContent.venues[1].slug, "aec-nfl-phi-jax-2026-10-11");
+  assert.equal(poly.structuredContent.venues[1].usId, "nfl-phi-jax-2026-10-11");
+  assert.equal(poly.structuredContent.venues[0].events[0].markets[0].outcomes[0].priceSource, "gamma_outcome_prices");
+  assert.deepEqual(poly.structuredContent.venues[0].events[0].markets[0].outcomes.map((o: { name: string }) => o.name), ["Eagles", "Jaguars"]);
+  const paths = fixtureState.log;
+  assert.equal(paths.filter((path) => path === "/events").length, 1);
+  assert.equal(paths.filter((path) => path === "/markets").length, 1);
+  assert.equal(paths.filter((path) => path.endsWith("/bbo")).length, 1);
+  assert.equal(paths.some((path) => path === "/books"), false);
+
+  resetMarketClient();
+  fixtureState.log = [];
+  const usOnly = await call(client, "get_polymarket_markets", { league: "nfl", date: "20261011", venue: "polymarket_us" });
+  assert.deepEqual(usOnly.structuredContent.venues.map((venue: { venue: string }) => venue.venue), ["polymarket_us"]);
+
+  resetMarketClient();
+  fixtureState.log = [];
+  const odds = await call(client, "get_market_odds", { sport: "football", league: "nfl", eventId: "401872981" });
+  assert.equal(odds.structuredContent.averaged, false);
+  assert.equal(odds.structuredContent.eventId, "401872981");
+  assert.equal(odds.structuredContent.game.away.abbrev, "PHI");
+  assert.equal(odds.structuredContent.game.home.abbrev, "JAX");
+  assert.deepEqual(
+    odds.structuredContent.venues.map((venue: { venue: string }) => venue.venue),
+    ["kalshi", "polymarket", "polymarket_us"],
+  );
+  const kalshiVenue = odds.structuredContent.venues[0];
+  assert.equal(kalshiVenue.status, "ok");
+  assert.equal(kalshiVenue.matchedBy, "teams+scheduledDate");
+  assert.match(odds.structuredContent.venues[1].matchedBy, /eventDate/);
+  assert.equal(odds.structuredContent.venues[2].slug, `aec-${odds.structuredContent.venues[2].usId}`);
+  assert.equal(fixtureState.log.length, 5, fixtureState.log.join(", "));
+
+  resetMarketClient();
+  const postponed = await call(client, "get_market_odds", { sport: "football", league: "nfl", eventId: "401872990" });
+  const postponedKalshi = postponed.structuredContent.venues.find((venue: { venue: string }) => venue.venue === "kalshi");
+  assert.equal(postponedKalshi.status, "ok");
+  assert.match(postponedKalshi.matchedBy, /2026-10-10/);
+  assert.match(postponedKalshi.matchedBy, /postponed/);
+  assert.equal(postponed.structuredContent.venues.find((venue: { venue: string }) => venue.venue === "polymarket").status, "no market found");
+
+  resetMarketClient();
+  fixtureState.failKalshi = true;
+  try {
+    const isolated = await call(client, "get_market_odds", { sport: "football", league: "nfl", eventId: "401872981" });
+    const venues = isolated.structuredContent.venues;
+    assert.equal(venues[0].status, "error");
+    assert.match(venues[0].error, /500/);
+    assert.equal(venues[1].status, "ok");
+    assert.equal(venues[2].status, "ok");
+  } finally {
+    fixtureState.failKalshi = false;
   }
 });

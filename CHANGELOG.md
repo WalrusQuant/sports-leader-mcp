@@ -3,6 +3,16 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.6.0 — 2026-11-16
+
+Keyless prediction-market prices next to the ESPN odds. No API key is read or sent. 40 tools.
+
+### Added
+- `get_kalshi_markets` for the fixed game series (NFL, NBA, MLB, NHL, college football, men's and women's college basketball), including NFL and NBA spreads and totals. Prices are the dollar fields. `includeBook` adds the top of book, where the yes ask is 1 minus the best no bid.
+- `get_polymarket_markets` returns Polymarket global and Polymarket US, each labelled. The default market is the moneyline. Global prices are Gamma outcome prices unless `includeBook` requests the CLOB book. The US slug is `aec-` plus Gamma's `usId`.
+- `get_market_odds` matches one ESPN game to Kalshi, Polymarket, and Polymarket US. Venues are side by side and are not averaged. A missing venue is `{ venue, status: "no market found" }`. One venue failing leaves the others in the response. `fetchedAt` and `matchedBy` say when the response was built and how the game was matched.
+- Team-code aliases for the abbreviations that differ across ESPN, Kalshi, and Gamma (Wisconsin is `WIS` on Kalshi and `wisc` on Gamma). Postponed Kalshi games keep the original ticker date.
+
 ## 0.5.3 — 2026-11-04
 
 The public export no longer publishes `team_ratings`. This server drops that tool and treats a missing data set as a normal answer, not an audit failure.
