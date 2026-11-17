@@ -3,6 +3,14 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.7.1 — 2026-11-16
+
+`get_athlete_gamelog` keeps every stat when ESPN repeats a label. 42 tools.
+
+### Fixed
+- Game logs zipped ESPN's flat label list onto each row, so a repeated abbreviation kept only the last value. NFL rushing and receiving (and passing and rushing) both publish `YDS`, `AVG`, `TD`, and `LNG`. Josh Jacobs (4047365) at Detroit on 2026-10-25 had 36 rushing yards and 55 receiving yards; the log showed receiving yards as `YDS` and dropped the 36. Stats are now nested by ESPN category (`rushing.YDS`, `receiving.YDS`), and `categories` lists each group. `get_player_report` recent games use that same shape.
+- College football has the same passing/rushing repeats. Checked the same day: MLB batting and pitching are separate documents, each with unique labels; NBA lines and NHL skater and goalie lines are unique too, so those logs stay a flat stat map. A label repeated inside one category gets a `_2` suffix.
+
 ## 0.7.0 — 2026-11-16
 
 One call for how a player has looked lately, and trend aggregates from the Parquet game logs. 42 tools. The existing 40 tools are unchanged.

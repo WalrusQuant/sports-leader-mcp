@@ -129,7 +129,7 @@ Basic liveness check. Always responds, even when the kill switch is active.
 ```json
 {
   "status": "ok",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "uptime": 3621.5,
   "tools": 42,
   "stateless": true,

@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
+import { transformGamelog } from "./transforms.js";
 import {
   candidatesFromSearch,
   namedSeasonStats,
@@ -175,12 +176,28 @@ test("Jacobs Detroit row keeps rushing and receiving yards", () => {
   const receiving = game?.stats.receiving as Record<string, string>;
   assert.equal(rushing.CAR, "11");
   assert.equal(rushing.YDS, "36");
+  assert.equal(rushing.AVG, "3.3");
   assert.equal(rushing.TD, "0");
+  assert.equal(rushing.LNG, "10");
   assert.equal(receiving.REC, "5");
   assert.equal(receiving.TGTS, "7");
   assert.equal(receiving.YDS, "55");
+  assert.equal(receiving.AVG, "11.0");
   assert.equal(receiving.TD, "1");
   assert.equal(receiving.LNG, "25");
+
+  // get_athlete_gamelog uses the same row. A flat zip would keep receiving YDS (55) and drop the 36.
+  const log = transformGamelog(raw) as {
+    categories: { name: string; displayName?: string; labels: string[] }[];
+    games: { eventId: string; stats: Record<string, unknown> }[];
+  };
+  const row = log.games.find((item) => item.eventId === "401873020");
+  assert.deepEqual(row?.stats, game?.stats);
+  assert.deepEqual(log.categories, [
+    { name: "rushing", displayName: "Rushing", labels: ["CAR", "YDS", "AVG", "TD", "LNG"] },
+    { name: "receiving", displayName: "Receiving", labels: ["REC", "TGTS", "YDS", "AVG", "TD", "LNG"] },
+    { name: "fumbles", displayName: "Fumbles", labels: ["FUM", "LST", "FF", "KB"] },
+  ]);
 });
 
 test("recent games are the latest rows, most recent first", () => {

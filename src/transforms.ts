@@ -852,21 +852,122 @@ export function transformAthleteStats(data: unknown): unknown {
   };
 }
 
+function statText(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  return trimmed ? trimmed : undefined;
+}
+
+/** A second YDS inside one category becomes YDS_2 instead of overwriting the first. */
+function unusedStatKey(used: Record<string, unknown>, label: string): string {
+  if (!(label in used)) return label;
+  let n = 2;
+  while (`${label}_${n}` in used) n += 1;
+  return `${label}_${n}`;
+}
+
+interface GamelogCategoryPlan {
+  key: string;
+  displayName?: string;
+  labels: string[];
+  start: number;
+  count: number;
+}
+
+/**
+ * ESPN's top-level `categories` partition the flat label list (rushing, then
+ * receiving). Month splits under seasonTypes are not stat categories.
+ * Returns undefined when the counts do not partition `labels`.
+ */
+function gamelogCategoryPlan(root: AnyObj, labels: string[], names: string[]): GamelogCategoryPlan[] | undefined {
+  const categories = arr<AnyObj>(root.categories);
+  const counts = categories.map((category) => (typeof category.count === "number" ? category.count : Number.NaN));
+  const counted = counts.every((count) => Number.isInteger(count) && count >= 0);
+  const sum = counts.reduce((total, count) => total + count, 0);
+  if (!(categories.length > 0 && counted && (labels.length === 0 || sum === labels.length))) return undefined;
+  const used: Record<string, true> = {};
+  let offset = 0;
+  return categories.map((category, index) => {
+    const count = counts[index] ?? 0;
+    const name = statText(category.name) ?? statText(category.displayName) ?? `category${index + 1}`;
+    const key = unusedStatKey(used, name);
+    used[key] = true;
+    const slice: string[] = [];
+    const bucket: Record<string, true> = {};
+    for (let i = 0; i < count; i += 1) {
+      const label = labels[offset + i] || names[offset + i] || `col${i + 1}`;
+      const statKey = unusedStatKey(bucket, label);
+      bucket[statKey] = true;
+      slice.push(statKey);
+    }
+    const plan: GamelogCategoryPlan = {
+      key,
+      displayName: statText(category.displayName),
+      labels: slice,
+      start: offset,
+      count,
+    };
+    offset += count;
+    return plan;
+  });
+}
+
+/**
+ * One game's parallel stat array.
+ * Nested by category when ESPN's counts partition the row, so rushing.YDS and
+ * receiving.YDS both stay. Otherwise a repeated label keeps the unique `names`
+ * entry (or a _2 suffix) instead of being dropped.
+ */
+function gamelogStats(
+  plan: GamelogCategoryPlan[] | undefined,
+  labels: string[],
+  names: string[],
+  values: unknown[],
+): Record<string, string | Record<string, string>> {
+  const sum = plan?.reduce((total, category) => total + category.count, 0) ?? -1;
+  if (plan && plan.length > 0 && sum === values.length && (labels.length === 0 || labels.length === values.length)) {
+    const nested: Record<string, Record<string, string>> = {};
+    for (const category of plan) {
+      const bucket: Record<string, string> = {};
+      for (let i = 0; i < category.count; i += 1) {
+        bucket[category.labels[i] ?? `col${i + 1}`] = String(values[category.start + i] ?? "");
+      }
+      nested[category.key] = bucket;
+    }
+    return nested;
+  }
+  const flat: Record<string, string> = {};
+  for (let i = 0; i < values.length; i += 1) {
+    const label = labels[i];
+    const name = names[i];
+    let key = label || name || `col${i + 1}`;
+    if (key in flat) key = name && !(name in flat) ? name : unusedStatKey(flat, key);
+    flat[key] = String(values[i] ?? "");
+  }
+  return flat;
+}
+
 /**
  * Athlete gamelog (the 392k-token monster).
  * Joins events[gameId] metadata with seasonTypes stats on eventId.
+ * Stat rows are grouped by ESPN category when the flat label list repeats.
  */
 export function transformGamelog(data: unknown): unknown {
   const root = d(data);
   const labels = arr<any>(root.labels);
-  // Build eventId → stats lookup from seasonTypes
+  const labelStrings = labels.map((label) => String(label ?? ""));
+  const nameStrings = arr<any>(root.names).map((name) => String(name ?? ""));
+  const plan = gamelogCategoryPlan(root, labelStrings, nameStrings);
+  // Longest row wins when one event is listed under more than one split.
   const statsByEventId = new Map<string, any[]>();
-  const seasonTypes = arr<AnyObj>(root.seasonTypes);
-  for (const st of seasonTypes) {
+  for (const st of arr<AnyObj>(root.seasonTypes)) {
     for (const cat of arr<AnyObj>(st.categories)) {
       for (const ev of arr<AnyObj>(cat.events)) {
         const eid = String(ev.eventId ?? "");
-        if (eid) statsByEventId.set(eid, arr<any>(ev.stats));
+        const stats = arr<any>(ev.stats);
+        if (!eid || stats.length === 0) continue;
+        const previous = statsByEventId.get(eid);
+        if (!previous || stats.length > previous.length) statsByEventId.set(eid, stats);
       }
     }
   }
@@ -885,12 +986,24 @@ export function transformGamelog(data: unknown): unknown {
         homeAway: team.id && ev.homeTeamId && String(team.id) === String(ev.homeTeamId) ? "H" : "A",
         result: ev.gameResult ? String(ev.gameResult) : undefined,
         score: ev.score ? String(ev.score) : undefined,
-        stats: zipStats(labels, stats),
+        stats: gamelogStats(plan, labelStrings, nameStrings, stats),
       };
     })
     .filter((g) => g.date !== undefined);
 
-  return { labels, games };
+  return {
+    labels,
+    ...(plan
+      ? {
+          categories: plan.map((category) => ({
+            name: category.key,
+            ...(category.displayName ? { displayName: category.displayName } : {}),
+            labels: category.labels,
+          })),
+        }
+      : {}),
+    games,
+  };
 }
 
 /**

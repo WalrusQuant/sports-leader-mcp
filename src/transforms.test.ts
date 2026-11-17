@@ -7,6 +7,7 @@ import {
   transformFutures,
   transformGameProbabilities,
   transformGameSummary,
+  transformGamelog,
   transformPowerIndex,
   transformRankings,
   transformScoreboard,
@@ -17,6 +18,69 @@ import {
   transformTeamStats,
 } from "./transforms.js";
 import { TtlCache } from "./cache.js";
+
+test("gamelog stays a flat map when ESPN publishes no stat categories", () => {
+  const output = transformGamelog({
+    labels: ["PTS", "REB"],
+    names: ["points", "rebounds"],
+    events: {
+      "1": {
+        id: "1",
+        gameDate: "2026-11-01T00:00:00.000Z",
+        score: "110-100",
+        homeTeamId: "2",
+        gameResult: "W",
+        opponent: { abbreviation: "BOS" },
+        team: { id: "2" },
+      },
+    },
+    seasonTypes: [{ categories: [{ events: [{ eventId: "1", stats: ["30", "10"] }] }] }],
+  }) as { categories?: unknown; games: { stats: Record<string, string> }[] };
+
+  assert.equal(output.categories, undefined);
+  assert.deepEqual(output.games[0].stats, { PTS: "30", REB: "10" });
+});
+
+test("gamelog keeps a repeated label when category counts are missing", () => {
+  const output = transformGamelog({
+    labels: ["YDS", "YDS"],
+    names: ["rushingYards", "receivingYards"],
+    events: {
+      "1": {
+        id: "1",
+        gameDate: "2026-10-25T20:25:00.000Z",
+        score: "20-17",
+        homeTeamId: "8",
+        gameResult: "L",
+        opponent: { abbreviation: "DET" },
+        team: { id: "9" },
+      },
+    },
+    seasonTypes: [{ categories: [{ events: [{ eventId: "1", stats: ["36", "55"] }] }] }],
+  }) as { games: { stats: Record<string, string> }[] };
+
+  assert.deepEqual(output.games[0].stats, { YDS: "36", receivingYards: "55" });
+});
+
+test("gamelog suffixes a label repeated inside one category", () => {
+  const output = transformGamelog({
+    categories: [{ name: "rushing", displayName: "Rushing", count: 2 }],
+    labels: ["YDS", "YDS"],
+    names: ["rushingYards", "longRushing"],
+    events: {
+      "1": {
+        id: "1",
+        gameDate: "2026-10-25T20:25:00.000Z",
+        homeTeamId: "8",
+        opponent: { abbreviation: "DET" },
+        team: { id: "9" },
+      },
+    },
+    seasonTypes: [{ categories: [{ events: [{ eventId: "1", stats: ["36", "10"] }] }] }],
+  }) as { games: { stats: { rushing: Record<string, string> } }[] };
+
+  assert.deepEqual(output.games[0].stats.rushing, { YDS: "36", YDS_2: "10" });
+});
 
 test("scoreboard linescores remain flat period values", () => {
   const output = transformScoreboard({

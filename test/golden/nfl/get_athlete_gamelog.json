@@ -17,6 +17,36 @@
   "TD",
   "LNG"
  ],
+ "categories": [
+  {
+   "name": "passing",
+   "displayName": "Passing",
+   "labels": [
+    "CMP",
+    "ATT",
+    "YDS",
+    "CMP%",
+    "AVG",
+    "TD",
+    "INT",
+    "LNG",
+    "SACK",
+    "RTG",
+    "QBR"
+   ]
+  },
+  {
+   "name": "rushing",
+   "displayName": "Rushing",
+   "labels": [
+    "CAR",
+    "YDS",
+    "AVG",
+    "TD",
+    "LNG"
+   ]
+  }
+ ],
  "games": [
   {
    "eventId": "401872965",
@@ -26,18 +56,26 @@
    "result": "L",
    "score": "30-13",
    "stats": {
-    "CMP": "15",
-    "ATT": "33",
-    "YDS": "16",
-    "CMP%": "45.5",
-    "AVG": "5.3",
-    "TD": "0",
-    "INT": "1",
-    "LNG": "9",
-    "SACK": "1",
-    "RTG": "60.9",
-    "QBR": "20.7",
-    "CAR": "3"
+    "passing": {
+     "CMP": "15",
+     "ATT": "33",
+     "YDS": "186",
+     "CMP%": "45.5",
+     "AVG": "5.6",
+     "TD": "1",
+     "INT": "1",
+     "LNG": "48",
+     "SACK": "1",
+     "RTG": "60.9",
+     "QBR": "20.7"
+    },
+    "rushing": {
+     "CAR": "3",
+     "YDS": "16",
+     "AVG": "5.3",
+     "TD": "0",
+     "LNG": "9"
+    }
    }
   }
  ]
