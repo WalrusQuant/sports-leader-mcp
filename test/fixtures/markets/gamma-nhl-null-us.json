@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "nhl-mon-nyr-2026-11-16",
+    "title": "Canadiens vs. Rangers",
+    "eventDate": "2026-11-16",
+    "startTime": "2026-11-17T00:30:00Z",
+    "teams": [
+      { "abbreviation": "mon", "alias": "Canadiens", "name": "Canadiens", "ordering": "away" },
+      { "abbreviation": "nyr", "alias": "Rangers", "name": "Rangers", "ordering": "home" }
+    ]
+  },
+  {
+    "slug": "nhl-van-utah-2026-11-16",
+    "title": "Canucks vs. Mammoth",
+    "eventDate": "2026-11-16",
+    "startTime": "2026-11-17T02:30:00Z",
+    "teams": [
+      { "abbreviation": "van", "alias": "Canucks", "name": "Canucks", "ordering": "away" },
+      { "abbreviation": "utah", "alias": "Mammoth", "name": "Mammoth", "ordering": "home" }
+    ]
+  }
+]

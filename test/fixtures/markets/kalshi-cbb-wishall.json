@@ -1,0 +1,27 @@
+{
+  "cursor": "",
+  "markets": [
+    {
+      "ticker": "KXNCAAMBGAME-26NOV19WISHALL-WIS",
+      "event_ticker": "KXNCAAMBGAME-26NOV19WISHALL",
+      "title": "Wisconsin wins",
+      "yes_sub_title": "Wisconsin",
+      "yes_bid_dollars": "0.6100",
+      "yes_ask_dollars": "0.6300",
+      "no_bid_dollars": "0.3700",
+      "no_ask_dollars": "0.3900",
+      "last_price_dollars": "0.6200"
+    },
+    {
+      "ticker": "KXNCAAMBGAME-26NOV19WISHALL-HALL",
+      "event_ticker": "KXNCAAMBGAME-26NOV19WISHALL",
+      "title": "Seton Hall wins",
+      "yes_sub_title": "Seton Hall",
+      "yes_bid_dollars": "0.3700",
+      "yes_ask_dollars": "0.3900",
+      "no_bid_dollars": "0.6100",
+      "no_ask_dollars": "0.6300",
+      "last_price_dollars": "0.3800"
+    }
+  ]
+}

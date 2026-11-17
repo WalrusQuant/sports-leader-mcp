@@ -1,0 +1,37 @@
+{
+  "events": [
+    {
+      "id": "401920888",
+      "name": "Seton Hall Pirates at Wisconsin Badgers",
+      "date": "2026-11-20T01:30:00Z",
+      "competitions": [
+        {
+          "date": "2026-11-20T01:30:00Z",
+          "neutralSite": true,
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "275",
+                "abbreviation": "WIS",
+                "location": "Wisconsin",
+                "name": "Badgers",
+                "displayName": "Wisconsin Badgers"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2550",
+                "abbreviation": "HALL",
+                "location": "Seton Hall",
+                "name": "Pirates",
+                "displayName": "Seton Hall Pirates"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

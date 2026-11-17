@@ -35,10 +35,27 @@ export interface EspnSide {
   displayName: string;
 }
 
-/** YYYYMMDD or YYYY-MM-DD to YYYY-MM-DD. */
+/** True for a real YYYY-MM-DD calendar day. 2026-13-99 and 2026-02-31 are not. */
+export function isCalendarDate(ymd: string): boolean {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(ymd);
+  if (!match) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+}
+
+/**
+ * YYYYMMDD or YYYY-MM-DD to YYYY-MM-DD.
+ * Throws when the day is not on the calendar (month 13, February 31).
+ */
 export function isoDate(input: string): string {
-  if (/^\d{8}$/.test(input)) return `${input.slice(0, 4)}-${input.slice(4, 6)}-${input.slice(6, 8)}`;
-  return input;
+  const ymd = /^\d{8}$/.test(input) ? `${input.slice(0, 4)}-${input.slice(4, 6)}-${input.slice(6, 8)}` : input;
+  if (!isCalendarDate(ymd)) {
+    throw new Error(`Invalid date "${input}". Use a real calendar day as YYYYMMDD, for example 20261117.`);
+  }
+  return ymd;
 }
 
 /** US Eastern calendar date for an ISO timestamp. Kalshi tickers use this date, not UTC. */
@@ -94,7 +111,7 @@ export function parseKalshiEventTicker(eventTicker: string, codes: readonly stri
   const year = match[2] ?? "";
   const month = MONTHS[match[3] ?? ""];
   const day = match[4] ?? "";
-  const blob = match[5] ?? "";
+  const blob = (match[5] ?? "").replace(/\d+$/, "");
   if (!month) return null;
   const teams = splitTeamBlob(blob, codes);
   if (!teams) return null;
@@ -264,15 +281,51 @@ export function sideMatches(
 
 /**
  * Drop Gamma events `active=true` still returns after they have started.
- * A requested date matches eventDate, the US Eastern date, or the UTC date.
+ * When Gamma sends eventDate, that local date is the only match. A late
+ * tip the same UTC day (POR@MIN at 01:00Z) stays on the previous eventDate.
+ * Eastern and UTC dates are the fallback for an event with no eventDate.
  */
 export function gammaEventOnDate(
   event: { eventDate?: string | null; startTime?: string | null },
   ymd: string,
 ): boolean {
-  if (event.eventDate === ymd) return true;
+  if (event.eventDate) return event.eventDate === ymd;
   if (!event.startTime) return false;
   return easternDate(event.startTime) === ymd || utcDate(event.startTime) === ymd;
+}
+
+/**
+ * One team on a scoreboard or market. Codes go through the alias table.
+ * A name match is exact, or a phrase that starts on a word boundary, so
+ * "Kansas" matches Kansas and Kansas State and does not match Arkansas.
+ */
+export function teamHits(
+  league: string,
+  side: { abbr?: string; abbrev?: string; location?: string; name?: string; displayName?: string; shortDisplayName?: string },
+  query: string,
+): boolean {
+  const needle = query.trim().toLowerCase();
+  if (!needle) return false;
+  const abbr = side.abbr || side.abbrev || "";
+  if (abbr && codesEqual(league, abbr, query)) return true;
+  const fields = [side.location, side.name, side.displayName, side.shortDisplayName]
+    .map((value) => (value ?? "").trim().toLowerCase())
+    .filter(Boolean);
+  if (fields.some((value) => value === needle)) return true;
+  if (needle.length < 4) return false;
+  return fields.some((value) => phraseAtWordStart(value, needle));
+}
+
+function phraseAtWordStart(field: string, needle: string): boolean {
+  let from = 0;
+  while (from <= field.length - needle.length) {
+    const idx = field.indexOf(needle, from);
+    if (idx < 0) return false;
+    const beforeOk = idx === 0 || !/[a-z0-9]/i.test(field[idx - 1] ?? "");
+    if (beforeOk) return true;
+    from = idx + 1;
+  }
+  return false;
 }
 
 /** Keep live and upcoming events. Past events stay in the Gamma `active=true` feed. */

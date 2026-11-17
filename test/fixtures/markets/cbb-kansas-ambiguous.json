@@ -1,0 +1,68 @@
+{
+  "events": [
+    {
+      "id": "401909787",
+      "name": "UNLV Runnin' Rebels at Kansas Jayhawks",
+      "date": "2026-11-18T01:00:00Z",
+      "competitions": [
+        {
+          "date": "2026-11-18T01:00:00Z",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2305",
+                "abbreviation": "KU",
+                "location": "Kansas",
+                "name": "Jayhawks",
+                "displayName": "Kansas Jayhawks"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2439",
+                "abbreviation": "UNLV",
+                "location": "UNLV",
+                "name": "Runnin' Rebels",
+                "displayName": "UNLV Runnin' Rebels"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401900001",
+      "name": "Kansas State Wildcats at Texas Longhorns",
+      "date": "2026-11-18T01:30:00Z",
+      "competitions": [
+        {
+          "date": "2026-11-18T01:30:00Z",
+          "competitors": [
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2306",
+                "abbreviation": "KSU",
+                "location": "Kansas State",
+                "name": "Wildcats",
+                "displayName": "Kansas State Wildcats"
+              }
+            },
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "251",
+                "abbreviation": "TEX",
+                "location": "Texas",
+                "name": "Longhorns",
+                "displayName": "Texas Longhorns"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

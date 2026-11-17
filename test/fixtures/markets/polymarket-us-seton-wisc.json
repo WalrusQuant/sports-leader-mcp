@@ -1,0 +1,12 @@
+{
+  "marketData": {
+    "marketSlug": "aec-cbb-seton-wisc-2026-11-19",
+    "currentPx": { "value": "0.3100", "currency": "USD" },
+    "lastTradePx": { "value": "0.3100", "currency": "USD" },
+    "bestBid": { "value": "0.3000", "currency": "USD" },
+    "bestAsk": { "value": "0.3200", "currency": "USD" },
+    "longQuote": { "value": "0.3200", "currency": "USD" },
+    "shortQuote": { "value": "0.7000", "currency": "USD" },
+    "state": "MARKET_STATE_OPEN"
+  }
+}

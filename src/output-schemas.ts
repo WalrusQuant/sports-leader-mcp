@@ -542,6 +542,7 @@ const polymarketWinner = obj({
   slug: str,
   team: str,
   mid: nullableNum,
+  label: z.literal("mid").optional(),
 });
 
 const previewWeather = z.union([

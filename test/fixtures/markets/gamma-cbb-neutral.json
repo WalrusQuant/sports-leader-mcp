@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "cbb-wisc-seton-2026-11-19",
+    "title": "Wisconsin Badgers vs. Seton Hall Pirates",
+    "eventDate": "2026-11-19",
+    "startTime": "2099-01-02T01:30:00Z",
+    "teams": [
+      { "abbreviation": "wisc", "alias": "Badgers", "name": "Wisconsin Badgers", "ordering": "away" },
+      { "abbreviation": "seton", "alias": "Pirates", "name": "Seton Hall Pirates", "ordering": "home" }
+    ]
+  },
+  {
+    "slug": "cbb-uws-ndkst-2026-11-23",
+    "title": "Wisconsin-Stout vs. Dakota State",
+    "eventDate": "2026-11-23",
+    "startTime": "2099-01-02T00:00:00Z",
+    "teams": [
+      { "abbreviation": "uws", "alias": "Blue Devils", "name": "Wisconsin-Stout Blue Devils", "ordering": "away" },
+      { "abbreviation": "ndkst", "alias": "Trojans", "name": "Dakota State", "ordering": "home" }
+    ]
+  }
+]

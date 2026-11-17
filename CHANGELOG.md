@@ -3,6 +3,18 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.8.1 — 2026-11-16
+
+Market matching for neutral sites, Kalshi spreads and totals, and Polymarket dates. 43 tools.
+
+### Fixed
+- `get_market_odds` and `get_game_preview` accept either home/away order. Seton Hall at Wisconsin (401920888, Nov 19) is a neutral site: ESPN lists Wisconsin at home, while Kalshi `KXNCAAMBGAME-26NOV19WISHALL` and Polymarket `cbb-wisc-seton-2026-11-19` list Wisconsin first. Prices stay on the team. The Polymarket US slug is tried in both orders.
+- Kalshi spread and total events keep their ticker date. A spread suffix such as `NOP9` is a team code plus a line, and the other team is read from the winner series and the pro abbreviation list. `get_kalshi_markets` for NBA spreads on 20261116 had been returning the one event whose codes were already in the alias table. Team names and nicknames are returned with the codes, so Warriors, Pelicans, Wizards, Nets, and Suns match.
+- A team lookup uses the same word-boundary match as `get_game_preview` and returns an error when more than one game matches. "Kansas" no longer selects Arkansas at Indiana by substring. Men's and women's college basketball scoreboards in the market tools request every Division I game (group 50, limit 400).
+- Polymarket US is requested from `aec-{sport}-{away}-{home}-{eventDate}` when Gamma's `usId` is null, trying Gamma and ESPN codes and the swapped order. That covers `aec-nhl-mon-nyr-2026-11-16`, `aec-nhl-van-uta-2026-11-16`, and `aec-cfb-wisc-pur-2026-11-21`. Each team's mid is the bid/ask midpoint (the other team is one minus that midpoint) and is labelled `mid`.
+- `get_polymarket_markets` uses Gamma `eventDate` alone when it is present, so a previous night's late tip is not included with the next day's games. Duplicate slugs are dropped. Team filters are exact codes, aliases, and names: `WIS` matches Wisconsin and not Wisconsin-Stout.
+- A date that is not a calendar day, such as `20261399`, is rejected. `get_game_preview` returns an error when `eventId` and `team` are both passed and name different games.
+
 ## 0.8.0 — 2026-11-16
 
 One call for a game's injuries, probables or lineups, weather, and winner prices. 43 tools.

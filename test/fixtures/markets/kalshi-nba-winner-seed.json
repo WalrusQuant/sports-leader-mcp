@@ -1,0 +1,41 @@
+{
+  "cursor": "",
+  "markets": [
+    {
+      "ticker": "KXNBAGAME-26NOV16GSWNOP-GSW",
+      "event_ticker": "KXNBAGAME-26NOV16GSWNOP",
+      "title": "Golden State wins",
+      "yes_sub_title": "Golden State",
+      "yes_bid_dollars": "0.6000",
+      "yes_ask_dollars": "0.6200",
+      "last_price_dollars": "0.6100"
+    },
+    {
+      "ticker": "KXNBAGAME-26NOV16GSWNOP-NOP",
+      "event_ticker": "KXNBAGAME-26NOV16GSWNOP",
+      "title": "New Orleans wins",
+      "yes_sub_title": "New Orleans",
+      "yes_bid_dollars": "0.3800",
+      "yes_ask_dollars": "0.4000",
+      "last_price_dollars": "0.3900"
+    },
+    {
+      "ticker": "KXNBAGAME-26NOV16ZZZYYY-ZZZ",
+      "event_ticker": "KXNBAGAME-26NOV16ZZZYYY",
+      "title": "Zeta wins",
+      "yes_sub_title": "Zeta",
+      "yes_bid_dollars": "0.5000",
+      "yes_ask_dollars": "0.5200",
+      "last_price_dollars": "0.5100"
+    },
+    {
+      "ticker": "KXNBAGAME-26NOV16ZZZYYY-YYY",
+      "event_ticker": "KXNBAGAME-26NOV16ZZZYYY",
+      "title": "Yarrow wins",
+      "yes_sub_title": "Yarrow",
+      "yes_bid_dollars": "0.4800",
+      "yes_ask_dollars": "0.5000",
+      "last_price_dollars": "0.4900"
+    }
+  ]
+}
