@@ -468,6 +468,7 @@
     <div class="nav-brand">SPORTS<span>LEADER</span></div>
     <div class="nav-links">
       <a href="#features">Features</a>
+      <a href="#historical-data">Data</a>
       <a href="#tools">Tools</a>
       <a href="docs.html">Docs</a>
       <a href="https://github.com/WalrusQuant/sports-leader-mcp" target="_blank">GitHub</a>
@@ -480,7 +481,7 @@
     <div class="hero-content">
       <div class="hero-badge">Free &amp; Open Source MCP Server</div>
       <h1>SPORTS<span>LEADER</span></h1>
-      <p class="hero-sub">Live sports data for AI agents. Scores, stats, odds, play-by-play, and more — across every major league.</p>
+      <p class="hero-sub">Live sports data for AI agents, plus a games export for six leagues from the 2021 season through today.</p>
       <div class="hero-actions">
         <a href="docs.html#getting-started" class="btn btn-primary">Get Started</a>
         <a href="docs.html#tools/" class="btn btn-ghost">View All Tools</a>
@@ -513,18 +514,18 @@
     <div class="section-inner">
       <div class="section-label fade-in">What You Get</div>
       <h2 class="section-title fade-in">Everything your agent needs</h2>
-      <p class="section-desc fade-in">Connect once, query any sport. No API keys, no rate limits, no setup friction.</p>
+      <p class="section-desc fade-in">Connect once, query any sport. No API keys. Stdio has no request quota.</p>
 
       <div class="feature-grid">
         <div class="feature-card fade-in">
           <div class="feature-icon">&#9917;</div>
           <h3>Live Scores &amp; Schedules</h3>
-          <p>Real-time scoreboards for every game in every league. Filter by date, week, or season type. Get event IDs for deeper data.</p>
+          <p>Scoreboards for every game in every league. Today and the prior 2 Eastern days stay on ESPN. Older days for MLB, NBA, NFL, NHL, college football, and men's college basketball come from the games export. A date range is split into single ESPN days (at most 14) because ESPN rejects ranges.</p>
         </div>
         <div class="feature-card fade-in">
           <div class="feature-icon">&#128202;</div>
           <h3>Player Stats &amp; Game Logs</h3>
-          <p>Full season stats, game-by-game logs, home/away splits, and opponent breakdowns. Works for NFL, NBA, NHL, MLB, and more.</p>
+          <p>Season stats, game logs tagged with season type, and a one-call player report. Recent games leave preseason out unless you ask for it. Trend totals recompute rates and keep longest as a max.</p>
         </div>
         <div class="feature-card fade-in">
           <div class="feature-icon">&#127942;</div>
@@ -534,17 +535,44 @@
         <div class="feature-card fade-in">
           <div class="feature-icon">&#128176;</div>
           <h3>Betting Odds</h3>
-          <p>Spreads, moneylines, and over/unders from DraftKings, FanDuel, Caesars, BetMGM, ESPN BET, and Bet365, normalized to implied and no-vig probabilities for comparison with prediction markets.</p>
+          <p>Spreads, moneylines, and totals from the major sportsbooks, normalized to implied and no-vig probabilities, plus keyless Kalshi and Polymarket prices for the same game.</p>
         </div>
         <div class="feature-card fade-in">
           <div class="feature-icon">&#127941;</div>
           <h3>Full Game Data</h3>
-          <p>Boxscores, play-by-play, win probability timelines, and game summaries. The richest view of any game in one call.</p>
+          <p>Box scores, play-by-play, win probability, and a one-call preview. Preview weather keeps sustained wind and gusts separate, and names conditions from the AccuWeather icon table.</p>
         </div>
         <div class="feature-card fade-in">
           <div class="feature-icon">&#128240;</div>
           <h3>News, Injuries &amp; Transactions</h3>
           <p>Real-time news feeds, league-wide injury reports, and transaction logs — signings, trades, waivers, all in one place.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORICAL DATA -->
+  <section id="historical-data">
+    <div class="section-inner">
+      <div class="section-label fade-in">Historical data</div>
+      <h2 class="section-title fade-in">Six leagues from 2021</h2>
+      <p class="section-desc fade-in">Public Parquet on <a href="https://github.com/WalrusQuant/sportsleader-data">WalrusQuant/sportsleader-data</a>. No API key. The current season is rebuilt nightly, around 4:15 AM CT.</p>
+
+      <div class="feature-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon">&#128197;</div>
+          <h3>Every league starts at 2021</h3>
+          <p>MLB, NBA, NFL, NHL, college football (FBS), and men's college basketball (Division I) are published from the 2021 season through today. NBA, NHL, and men's college basketball are named by the year the season ends. NFL, MLB, and college football are named by the year it starts.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">&#128336;</div>
+          <h3>Older scoreboards</h3>
+          <p><code>get_scoreboard</code> and <code>get_slate</code> read the games file for days older than the file and older than today and the previous 2 Eastern days. <code>source</code> is <code>data</code>, <code>espn</code>, or <code>mixed</code>. A long result returns a page; pass <code>offset</code> for the next slice.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">&#127954;</div>
+          <h3>NHL lineups</h3>
+          <p>NHL lineups come from the official NHL API. Starting goalies are ESPN probables before the game and the NHL box score after it. Lines and pairs come from the official shift charts.</p>
         </div>
       </div>
     </div>
@@ -576,7 +604,7 @@
         <div class="tool-group-label">Scoreboard &amp; Games</div>
         <div class="tool-list">
           <div class="tool-card">
-            <div><div class="tool-name">get_scoreboard</div><div class="tool-desc">Live and scheduled games with scores and event IDs</div></div>
+            <div><div class="tool-name">get_scoreboard</div><div class="tool-desc">Games and event IDs. Older days come from the games export; today and the prior 2 Eastern days stay on ESPN</div></div>
           </div>
           <div class="tool-card">
             <div><div class="tool-name">get_game_summary</div><div class="tool-desc">Score, team/player boxscore, leaders, key plays, sampled win probability</div></div>
@@ -591,10 +619,10 @@
             <div><div class="tool-name">get_game_probabilities</div><div class="tool-desc">Win probability timeline throughout the game</div></div>
           </div>
           <div class="tool-card">
-            <div><div class="tool-name">get_slate</div><div class="tool-desc">A whole game day in one call: games, team IDs, scores, consensus no-vig odds, key injuries</div></div>
+            <div><div class="tool-name">get_slate</div><div class="tool-desc">A whole game day in one call. Same export split as the scoreboard, with source, page, and offset</div></div>
           </div>
           <div class="tool-card">
-            <div><div class="tool-name">get_game_preview</div><div class="tool-desc">One game: injuries, probables or lineups, weather, and Kalshi and Polymarket US winner prices</div></div>
+            <div><div class="tool-name">get_game_preview</div><div class="tool-desc">One game: injuries, lineups, weather with wind and gust split, and Kalshi and Polymarket US prices</div></div>
           </div>
         </div>
       </div>
@@ -680,7 +708,7 @@
       <div class="tool-group fade-in">
         <div class="tool-group-label">Historical export (GitHub Releases)</div>
         <div class="tool-list">
-          <div class="tool-card"><div><div class="tool-name">get_games</div><div class="tool-desc">Schedule and results from the GitHub Releases Parquet export</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_games</div><div class="tool-desc">Schedule and results for six leagues, 2021 through today</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_team_box_scores</div><div class="tool-desc">Team box line, one row per team per game</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_team_game_stats</div><div class="tool-desc">Team counting stats for and against</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_player_game_logs</div><div class="tool-desc">Player logs; statGroup picks skater, pitching, passing, and the rest</div></div></div>
@@ -690,7 +718,7 @@
           <div class="tool-card"><div><div class="tool-name">get_transaction_log</div><div class="tool-desc">Transaction history from the export</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_depth_charts</div><div class="tool-desc">NFL depth-chart slots</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_probables</div><div class="tool-desc">Probable pitchers and goalies</div></div></div>
-          <div class="tool-card"><div><div class="tool-name">get_lineups</div><div class="tool-desc">Announced lineups</div></div></div>
+          <div class="tool-card"><div><div class="tool-name">get_lineups</div><div class="tool-desc">MLB orders, NBA fives, NHL lines from the official NHL API</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_weather</div><div class="tool-desc">Game weather for MLB and NFL</div></div></div>
           <div class="tool-card"><div><div class="tool-name">get_data_status</div><div class="tool-desc">GitHub Releases manifest summary; current-season files older than 36 hours are flagged</div></div></div>
         </div>
