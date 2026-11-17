@@ -154,11 +154,89 @@ function idFromRef(value: unknown, segment: string): string | undefined {
 
 // ─── Token budget backstop ────────────────────────────────────────────────────
 
-const MAX_TOKENS = readPositiveInt(process.env.SPORTS_LEADER_MAX_TOKENS, 50_000);
-
 function readPositiveInt(value: string | undefined, fallback: number): number {
   const n = parseInt(value ?? "", 10);
   return Number.isFinite(n) && n > 0 ? n : fallback;
+}
+
+/** Read on each call so a test can lower the budget without reloading the module. */
+export function tokenBudget(): number {
+  return readPositiveInt(process.env.SPORTS_LEADER_MAX_TOKENS, 50_000);
+}
+
+export function jsonTokens(value: unknown): number {
+  const json = JSON.stringify(value);
+  if (!json) return 0;
+  return Math.ceil(json.length / 4);
+}
+
+export interface PageInfo {
+  offset: number;
+  returned: number;
+  total: number;
+  note: string;
+}
+
+function pageNote(offset: number, returned: number, total: number): string {
+  const omitted = Math.max(0, total - offset - returned);
+  if (returned === 0) {
+    return offset >= total
+      ? `offset ${offset} is past the last of ${total} games.`
+      : `No games fit in the token budget (offset ${offset} of ${total}).`;
+  }
+  const start = offset + 1;
+  const end = offset + returned;
+  if (omitted === 0) return `Showing games ${start}–${end} of ${total}.`;
+  return `Showing games ${start}–${end} of ${total}. ${omitted} more ${omitted === 1 ? "game was" : "games were"} left out to stay within the token budget. Pass offset=${end} for the next page.`;
+}
+
+/**
+ * Keep a prefix of `items` whose projected JSON fits the token budget.
+ * `project` is called with the candidate slice and the page note that slice
+ * would carry, so the note itself is inside the budget.
+ */
+export function fitSlice<T>(
+  items: T[],
+  offset: number,
+  project: (slice: T[], page: PageInfo | undefined) => unknown,
+): { slice: T[]; page?: PageInfo } {
+  const total = items.length;
+  const start = Number.isInteger(offset) && offset > 0 ? offset : 0;
+  const rest = items.slice(start);
+  const measure = (count: number) => {
+    const omitted = rest.length - count;
+    const page = omitted > 0 || start > 0
+      ? { offset: start, returned: count, total, note: pageNote(start, count, total) }
+      : undefined;
+    return { page, tokens: jsonTokens(project(rest.slice(0, count), page)) };
+  };
+  if (rest.length === 0) {
+    if (start === 0) return { slice: [] };
+    const page = { offset: start, returned: 0, total, note: pageNote(start, 0, total) };
+    return { slice: [], page };
+  }
+  if (measure(rest.length).tokens <= tokenBudget()) {
+    return { slice: rest, page: start > 0 ? { offset: start, returned: rest.length, total, note: pageNote(start, rest.length, total) } : undefined };
+  }
+  let lo = 0;
+  let hi = rest.length - 1;
+  let best = 0;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (measure(mid).tokens <= tokenBudget()) {
+      best = mid;
+      lo = mid + 1;
+    } else {
+      hi = mid - 1;
+    }
+  }
+  const page = { offset: start, returned: best, total, note: pageNote(start, best, total) };
+  return { slice: rest.slice(0, best), page };
+}
+
+function offsetFrom(ctx: Ctx | undefined): number {
+  const value = ctx?.args?.offset;
+  return typeof value === "number" && Number.isInteger(value) && value > 0 ? value : 0;
 }
 
 /**
@@ -173,14 +251,14 @@ export function applyBudget(data: unknown): unknown {
   const json = JSON.stringify(data);
   if (json === undefined) return data;
   const estTokens = Math.ceil(json.length / 4);
-  if (estTokens <= MAX_TOKENS) return data;
+  if (estTokens <= tokenBudget()) return data;
 
   // Never cut serialized JSON mid-token. An over-budget response is replaced
   // by a small, valid JSON envelope that an MCP client can always parse.
   return {
     truncated: true,
     estimatedTokens: estTokens,
-    budgetTokens: MAX_TOKENS,
+    budgetTokens: tokenBudget(),
     message:
       "Response exceeded the configured token budget. Use a narrower query or " +
       "the dedicated compact tool output (raw=false).",
@@ -202,56 +280,70 @@ function summarizeShape(data: unknown): AnyObj {
  * Scoreboard: events[] → dense game list.
  * Strips links (5/event), logos, boilerplate. Keeps scores, status, venue.
  */
-export function transformScoreboard(data: unknown, ctx?: Ctx): unknown {
-  const root = d(data);
-  const events = arr<AnyObj>(root.events);
-  let anyOdds = false;
+function scoreboardEvent(ev: AnyObj, ctx: Ctx | undefined, oddsSeen: { any: boolean }): AnyObj {
+  const comp = d(arr<AnyObj>(ev.competitions)[0]);
+  const venue = d(comp.venue);
+  const competitors = arr<AnyObj>(comp.competitors).map((c) => {
+    const team = compactTeam(d(c.team)) ?? {};
+    const linescores = arr<AnyObj>(c.linescores).map((ls) =>
+      String(ls.displayValue ?? ls.value ?? ""),
+    );
+    const records = arr<AnyObj>(c.records);
+    const athlete = d(c.athlete);
+    const athleteName = athlete.displayName ?? athlete.fullName;
+    return {
+      homeAway: String(c.homeAway ?? ""),
+      winner: c.winner ?? undefined,
+      team,
+      // Individual sports (golf, tennis, racing) carry the player in c.athlete, not c.team.
+      ...(athleteName ? { athlete: { id: String(athlete.id ?? c.id ?? ""), name: String(athleteName) } } : {}),
+      ...(c.order != null && athleteName ? { order: Number(c.order) } : {}),
+      score: String(c.score ?? ""),
+      ...(linescores.length ? { linescores } : {}),
+      ...(records.length ? { record: String(records[0]?.displayValue ?? "") } : {}),
+    };
+  });
+  const odds = compactOddsBlock(comp.odds, ctx);
+  if (odds) oddsSeen.any = true;
+  return {
+    id: String(ev.id ?? ""),
+    date: String(ev.date ?? ""),
+    name: String(ev.shortName ?? ev.name ?? ""),
+    ...(ev.coverage === "data" || ev.coverage === "espn" ? { source: ev.coverage } : {}),
+    status: compactStatus(d(ev.status)),
+    venue: venue.fullName ? { name: String(venue.fullName), city: d(venue.address).city } : undefined,
+    competitors,
+    ...(odds ? { odds } : {}),
+  };
+}
+
+function scoreboardBody(root: AnyObj, events: AnyObj[], ctx: Ctx | undefined, page: PageInfo | undefined): AnyObj {
+  const oddsSeen = { any: false };
   const out: AnyObj = {
     date: root.day,
-    events: events.map((ev) => {
-      const comp = d(arr<AnyObj>(ev.competitions)[0]);
-      const venue = d(comp.venue);
-      const competitors = arr<AnyObj>(comp.competitors).map((c) => {
-        const team = compactTeam(d(c.team)) ?? {};
-        const linescores = arr<AnyObj>(c.linescores).map((ls) =>
-          String(ls.displayValue ?? ls.value ?? ""),
-        );
-        const records = arr<AnyObj>(c.records);
-        const athlete = d(c.athlete);
-        const athleteName = athlete.displayName ?? athlete.fullName;
-        return {
-          homeAway: String(c.homeAway ?? ""),
-          winner: c.winner ?? undefined,
-          team,
-          // Individual sports (golf, tennis, racing) carry the player in c.athlete, not c.team.
-          ...(athleteName ? { athlete: { id: String(athlete.id ?? c.id ?? ""), name: String(athleteName) } } : {}),
-          ...(c.order != null && athleteName ? { order: Number(c.order) } : {}),
-          score: String(c.score ?? ""),
-          ...(linescores.length ? { linescores } : {}),
-          ...(records.length ? { record: String(records[0]?.displayValue ?? "") } : {}),
-        };
-      });
-      return {
-        id: String(ev.id ?? ""),
-        date: String(ev.date ?? ""),
-        name: String(ev.shortName ?? ev.name ?? ""),
-        status: compactStatus(d(ev.status)),
-        venue: venue.fullName ? { name: String(venue.fullName), city: d(venue.address).city } : undefined,
-        competitors,
-        ...(() => {
-          const odds = compactOddsBlock(comp.odds, ctx);
-          if (!odds) return {};
-          anyOdds = true;
-          return { odds };
-        })(),
-      };
-    }),
+    ...(typeof root.source === "string" ? { source: root.source } : {}),
+    ...(typeof root.sourceNote === "string" ? { sourceNote: root.sourceNote } : {}),
+    ...(Array.isArray(root.days) ? { days: root.days } : {}),
+    events: events.map((ev) => scoreboardEvent(ev, ctx, oddsSeen)),
+    ...(page ? { page } : {}),
   };
-  if (anyOdds) {
+  if (oddsSeen.any) {
     out.spreadConvention = SPREAD_CONVENTION;
     out.noVigMethod = NO_VIG_METHOD;
   }
   return out;
+}
+
+export function transformScoreboard(data: unknown, ctx?: Ctx): unknown {
+  const root = d(data);
+  const events = arr<AnyObj>(root.events);
+  const offset = offsetFrom(ctx);
+  if (offset === 0) {
+    const full = scoreboardBody(root, events, ctx, undefined);
+    if (jsonTokens(full) <= tokenBudget()) return full;
+  }
+  const fitted = fitSlice(events, offset, (slice, page) => scoreboardBody(root, slice, ctx, page));
+  return scoreboardBody(root, fitted.slice, ctx, fitted.page);
 }
 
 /**
@@ -1163,12 +1255,13 @@ export function transformSlate(data: unknown, ctx?: Ctx): unknown {
   const injuriesAvailable = raw.injuries !== undefined && !raw.injuriesError;
   const injuries = injuriesAvailable ? keyInjuriesByTeam(raw.injuries) : new Map();
 
-  const side = (c: AnyObj | undefined, state: string) => {
+  const side = (c: AnyObj | undefined, state: string, fromData: boolean) => {
     const comp = d(c);
     const team = d(comp.team);
     const id = String(team.id ?? comp.id ?? "");
     const inj = injuries.get(id);
     const key = inj?.key ?? [];
+    const showInjuries = injuriesAvailable && !fromData;
     return {
       ...prune({
         id,
@@ -1179,12 +1272,12 @@ export function transformSlate(data: unknown, ctx?: Ctx): unknown {
       }),
       // ESPN reports "0" before kickoff; null makes "not started" unambiguous.
       score: state !== "pre" && comp.score !== undefined && comp.score !== "" ? String(comp.score) : null,
-      // null = injury report unavailable; [] = no Out/Doubtful players listed.
-      keyInjuries: injuriesAvailable ? key.slice(0, SLATE_MAX_KEY_INJURIES_PER_TEAM) : null,
-      ...(injuriesAvailable && key.length > SLATE_MAX_KEY_INJURIES_PER_TEAM
+      // null = injury report unavailable, or the game came from the historical export.
+      keyInjuries: showInjuries ? key.slice(0, SLATE_MAX_KEY_INJURIES_PER_TEAM) : null,
+      ...(showInjuries && key.length > SLATE_MAX_KEY_INJURIES_PER_TEAM
         ? { keyInjuriesOmitted: key.length - SLATE_MAX_KEY_INJURIES_PER_TEAM }
         : {}),
-      ...(injuriesAvailable ? { otherInjuryCount: inj?.otherCount ?? 0 } : {}),
+      ...(showInjuries ? { otherInjuryCount: inj?.otherCount ?? 0 } : {}),
     };
   };
 
@@ -1194,14 +1287,16 @@ export function transformSlate(data: unknown, ctx?: Ctx): unknown {
     const odds = compactOddsBlock(comp.odds, ctx);
     const c = odds?.consensus;
     const status = compactStatus(d(ev.status));
+    const fromData = ev.coverage === "data";
     return {
       eventId: String(ev.id ?? ""),
+      ...(ev.coverage === "data" || ev.coverage === "espn" ? { source: ev.coverage } : {}),
       startUtc: ev.date ? String(ev.date) : comp.date ? String(comp.date) : null,
       name: String(ev.shortName ?? ev.name ?? ""),
       status,
       neutralSite: comp.neutralSite === true,
-      home: side(competitors.find((x) => x.homeAway === "home"), status.state),
-      away: side(competitors.find((x) => x.homeAway === "away"), status.state),
+      home: side(competitors.find((x) => x.homeAway === "home"), status.state, fromData),
+      away: side(competitors.find((x) => x.homeAway === "away"), status.state, fromData),
       odds: {
         providers: c?.providers ?? [],
         homeNoVigProb: c?.homeNoVigProb ?? null,
@@ -1212,28 +1307,42 @@ export function transformSlate(data: unknown, ctx?: Ctx): unknown {
         drawMoneyLine: odds?.markets[0]?.drawMoneyLine ?? null,
         homeSpread: c?.homeSpread ?? null,
         total: c?.total ?? null,
-        reason: c ? c.reason : "no odds on the scoreboard for this game (common for completed or far-future games)",
+        reason: fromData
+          ? "odds are not in the historical games export"
+          : c ? c.reason : "no odds on the scoreboard for this game (common for completed or far-future games)",
       },
     };
   });
 
   const args = ctx?.args ?? {};
-  return prune({
+  const injuriesNote = raw.injuriesError
+    ? `Injury report unavailable: ${raw.injuriesError}`
+    : injuriesAvailable && injuries.size === 0
+      ? "ESPN returned an empty injury report for this league; an empty keyInjuries list does not confirm a healthy roster."
+      : undefined;
+  const body = (slice: AnyObj[], page: PageInfo | undefined) => prune({
     sport: args.sport !== undefined ? String(args.sport) : undefined,
     league: args.league !== undefined ? String(args.league) : (arr<AnyObj>(sb.leagues)[0]?.slug ?? undefined),
-    date: args.date !== undefined ? String(args.date) : d(sb.day).date ?? undefined,
-    gameCount: games.length,
+    date: args.date !== undefined ? String(args.date) : d(sb.day).date ?? (typeof sb.day === "string" ? sb.day : undefined),
+    gameCount: slice.length,
     spreadConvention: SPREAD_CONVENTION,
     noVigMethod: NO_VIG_METHOD,
     keyInjuryStatuses: KEY_INJURY_STATUSES,
     injuriesAvailable,
-    ...(raw.injuriesError
-      ? { injuriesNote: `Injury report unavailable: ${raw.injuriesError}` }
-      : injuriesAvailable && injuries.size === 0
-        ? { injuriesNote: "ESPN returned an empty injury report for this league; an empty keyInjuries list does not confirm a healthy roster." }
-        : {}),
-    games,
+    injuriesNote,
+    source: typeof sb.source === "string" ? sb.source : undefined,
+    sourceNote: typeof sb.sourceNote === "string" ? sb.sourceNote : undefined,
+    days: Array.isArray(sb.days) ? sb.days : undefined,
+    ...(page ? { page } : {}),
+    games: slice,
   });
+  const offset = offsetFrom(ctx);
+  if (offset === 0) {
+    const full = body(games, undefined);
+    if (jsonTokens(full) <= tokenBudget()) return full;
+  }
+  const fitted = fitSlice(games, offset, body);
+  return body(fitted.slice, fitted.page);
 }
 
 function yearOf(value: unknown): number | undefined {

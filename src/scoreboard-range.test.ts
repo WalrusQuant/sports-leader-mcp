@@ -4,14 +4,19 @@
  */
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { apiCache } from "./client.js";
-import { getScoreboard } from "./tools/scoreboard.js";
+import { getScoreboard, setScoreboardNowForTests } from "./tools/scoreboard.js";
 import { getSlate } from "./tools/slate.js";
 import { transformScoreboard, transformSlate } from "./transforms.js";
+
+/** Nov 17, 2026, 1:00pm US Eastern. The live window is Nov 15–17. */
+const PINNED_NOW = new Date("2026-11-17T18:00:00Z");
+const CACHE_DIR = mkdtempSync(join(tmpdir(), "scoreboard-range-"));
 
 const FIXTURES = join(fileURLToPath(new URL("..", import.meta.url)), "test", "fixtures", "mens-college-basketball");
 
@@ -51,8 +56,21 @@ function stubFetch(handler: (url: string) => Promise<Response> | Response) {
   };
 }
 
+function scoreboardCalls(calls: string[]): string[] {
+  return calls.filter((url) => url.includes("/scoreboard"));
+}
+
 describe("college basketball date ranges", { concurrency: 1 }, () => {
-test.beforeEach(() => apiCache.clear());
+test.beforeEach(() => {
+  apiCache.clear();
+  setScoreboardNowForTests(() => PINNED_NOW);
+  process.env.BAYES_DATA_CACHE_DIR = CACHE_DIR;
+  process.env.BAYES_DATA_REVALIDATE_MS = "0";
+});
+
+test.afterEach(() => {
+  setScoreboardNowForTests(null);
+});
 
 test("college basketball dateRange fetches each day, dedupes, and sorts by start", async () => {
   const stub = stubFetch(async (url) => {
@@ -67,7 +85,8 @@ test("college basketball dateRange fetches each day, dedupes, and sorts by start
       dateRange: "20261115-20261117",
     }) as { events: Array<{ id: string; status?: { type?: { shortDetail?: string } } }> };
 
-    assert.equal(stub.calls.length, 3);
+    assert.equal(scoreboardCalls(stub.calls).length, 3);
+    assert.equal(stub.calls.some((url) => url.includes("manifest.json")), false);
     assert.equal(stub.maxInFlight(), 3);
     const dates = stub.calls.map((url) => new URL(url).searchParams.get("dates"));
     assert.deepEqual(dates, ["20261115", "20261116", "20261117"]);
@@ -126,7 +145,8 @@ test("a college basketball range longer than 14 days errors before any fetch", a
       league: "mens-college-basketball",
       dateRange: "20261101-20261114",
     });
-    assert.equal(stub.calls.length, 14);
+    assert.equal(scoreboardCalls(stub.calls).length, 14);
+    assert.equal(stub.calls.filter((url) => url.includes("manifest.json")).length, 1);
     await assert.rejects(
       () => getScoreboard.handler({
         sport: "basketball",
@@ -144,7 +164,7 @@ test("a college basketball range longer than 14 days errors before any fetch", a
       }),
       /ends before it starts/,
     );
-    assert.equal(stub.calls.length, 14);
+    assert.equal(scoreboardCalls(stub.calls).length, 14);
   } finally {
     stub.restore();
   }
@@ -210,7 +230,7 @@ test("every league splits a dateRange, and NFL and college football weeks stay o
       }),
       /ends before it starts/,
     );
-    assert.equal(stub.calls.length, weekStart + 2);
+    assert.equal(scoreboardCalls(stub.calls).length, weekStart + 2);
   } finally {
     stub.restore();
   }
