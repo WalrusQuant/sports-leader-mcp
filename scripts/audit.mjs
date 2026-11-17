@@ -12,6 +12,10 @@
  * MLB in late October / November is the offseason: today's scoreboard may be
  * empty or stuck on the last postseason game. The audit always rechecks MLB
  * on 2026-07-04.
+ *
+ * The contract section calls the raw ESPN, Kalshi, and Polymarket URLs the
+ * tools depend on. A date range ESPN accepts again is INFO, not a failure.
+ * Offseason leagues with no games are SKIP. INFO does not fail the process.
  */
 
 import { ALL_TOOLS, produce } from "../dist/server.js";
@@ -19,6 +23,7 @@ import { apiCache } from "../dist/client.js";
 import { VERSION } from "../dist/version.js";
 import { isDataExportConfigured } from "../dist/data/config.js";
 import { DATA_TOOL_NAMES, auditCallForFile, statGroupForDataset } from "../dist/data/tools.js";
+import { auditContracts } from "./contract.mjs";
 
 const tools = new Map(ALL_TOOLS.map((tool) => [tool.name, tool]));
 const today = new Intl.DateTimeFormat("en-CA", {
@@ -46,7 +51,7 @@ const rows = [];
 
 function line(status, tool, label, detail) {
   rows.push({ status, tool, label, detail });
-  const tag = status === "pass" ? "PASS" : status === "skip" ? "SKIP" : "FAIL";
+  const tag = status === "pass" ? "PASS" : status === "skip" ? "SKIP" : status === "info" ? "INFO" : "FAIL";
   console.log(`${tag}  ${tool.padEnd(26)} ${label.padEnd(32)} ${detail}`);
 }
 
@@ -515,11 +520,18 @@ await auditGamePreviews();
 
 await auditDataExport();
 
+await auditContracts({ line, leagues: LEAGUES, today, version: VERSION });
+
 const failed = rows.filter((row) => row.status === "fail");
 const skipped = rows.filter((row) => row.status === "skip");
+const infos = rows.filter((row) => row.status === "info");
 const passed = rows.filter((row) => row.status === "pass");
 console.log("");
-console.log(`${passed.length} passed, ${failed.length} failed, ${skipped.length} skipped, ${rows.length} total`);
+console.log(`${passed.length} passed, ${failed.length} failed, ${skipped.length} skipped, ${infos.length} info, ${rows.length} total`);
+if (infos.length) {
+  console.log("Info:");
+  for (const row of infos) console.log(`  ${row.tool}  ${row.label}  ${row.detail}`);
+}
 if (failed.length) {
   console.log("Failures:");
   for (const row of failed) console.log(`  ${row.tool}  ${row.label}  ${row.detail}`);

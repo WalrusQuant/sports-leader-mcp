@@ -196,8 +196,12 @@ test("SDK 1.29 client over stdio (spawned dist/index.js): 2025 handshake still s
   assert.equal(client.getServerVersion()?.name, "sports-leader-mcp");
   const { tools } = await client.listTools();
   assert.equal(tools.length, ALL_TOOLS.length);
-  const r: any = await client.callTool({ name: "list_sports_and_leagues", arguments: {} });
-  assert.ok(!r.isError && JSON.parse(r.content[0].text).count > 0);
+  // The spawned server is a separate process, so this call hits the ESPN ontology.
+  // CI does not set SPORTSLEADER_LIVE and stays on the handshake above.
+  if (process.env.SPORTSLEADER_LIVE === "1") {
+    const r: any = await client.callTool({ name: "list_sports_and_leagues", arguments: {} });
+    assert.ok(!r.isError && JSON.parse(r.content[0].text).count > 0);
+  }
   await client.close();
 });
 

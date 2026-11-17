@@ -3,6 +3,15 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.8.4 — 2026-11-17
+
+CI runs the offline test suite, and the live audit checks the upstream contracts the scoreboard and market tools depend on. 43 tools.
+
+### Added
+- `.github/workflows/ci.yml` runs on pull requests and on pushes to `main`. It uses Node 22 (the LTS line this repo typechecks against; `engines` is `>=20`), then `npm ci`, `npm run build`, `npm run typecheck`, and `npm test`. There is no lint script. The suite stays on fixtures. The stdio compatibility test's live `list_sports_and_leagues` call is behind `SPORTSLEADER_LIVE=1`, so CI does not call ESPN, Kalshi, or Polymarket.
+- `npm run audit` prints a `contract` section after the tool checks. Each line is pass, fail, skip, or info, and names the endpoint. Single-date scoreboards must return events for every league. `dates=YYYYMMDD-YYYYMMDD` must stay HTTP 400, including men's college basketball with `groups=50&limit=400`. If ESPN accepts a range again, that line is INFO and the audit still passes. Men's college basketball on 2026-11-15 must return more games for `groups=50&limit=400` than the default scoreboard. An NFL summary must still include `injuries` and `gameInfo.venue`. A sampled NFL or college football summary must still include `gameInfo.weather`. NHL and MLB scoreboards must still put probable goalies and pitchers on `competitors[].probables` with `athlete.displayName`. Josh Jacobs' NFL gamelog must still partition `labels` with `categories` and repeat `YDS` across categories, and `seasonTypes[].categories[].events[]` must still carry `eventId` and `stats`. Kalshi `trade-api/v2/markets` must still send `yes_bid_dollars` and `yes_ask_dollars`. Polymarket Gamma events must still have `slug`, `teams[].abbreviation`, and `eventDate` or `startTime`, and the moneyline must still have `outcomes`, `outcomePrices`, and `clobTokenIds`. The Polymarket US gateway `bbo` must still be `marketData.bestBid` and `marketData.bestAsk`. An offseason league with no games is SKIP with a note. MLB and the WNBA are offseason in November.
+- `.github/workflows/contract.yml` runs `npm run audit` from `workflow_dispatch` only. It has no schedule.
+
 ## 0.8.3 — 2026-11-17
 
 Game preview weather reports sustained wind and gusts separately, condition labels match the AccuWeather icon table, and every league's date range is fetched one day at a time. 43 tools.
