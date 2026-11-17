@@ -35,7 +35,12 @@ const lastNSchema = z
   .min(1)
   .max(30)
   .optional()
-  .describe("How many recent games to return, most recent first. Default 5.");
+  .describe("How many recent games to return, most recent first. Default 5. Preseason games are left out unless includePreseason is true.");
+
+const includePreseasonSchema = z
+  .boolean()
+  .optional()
+  .describe("Include preseason games in recent. Default false. Regular season and postseason stay either way.");
 
 export interface AthleteCandidate {
   id: string;
@@ -49,6 +54,7 @@ export interface AthleteCandidate {
 export interface GamelogGame {
   eventId: string;
   date?: string;
+  seasonType?: string;
   opponent: string;
   homeAway: "H" | "A";
   result?: string;
@@ -62,11 +68,23 @@ export type ReportStatValue = string | Record<string, string>;
 export interface ReportGame {
   eventId: string;
   date?: string;
+  seasonType?: string;
   opponent: string;
   homeAway: "H" | "A";
   result?: string;
   score?: string;
   stats: Record<string, ReportStatValue>;
+}
+
+export interface ReportInjury {
+  status: string;
+  summary?: string;
+  type?: string;
+  detail?: string;
+  side?: string;
+  location?: string;
+  returnDate?: string;
+  date?: string;
 }
 
 export interface SeasonCategory {
@@ -260,11 +278,14 @@ export function namedSeasonStats(data: unknown, season?: number): SeasonBlock {
   return { ...(year !== undefined ? { year } : {}), categories };
 }
 
-export function recentGames<T extends { eventId: string; date?: string }>(
+export function recentGames<T extends { eventId: string; date?: string; seasonType?: string }>(
   gamelog: { games?: T[] } | null | undefined,
   lastN: number,
+  options?: { includePreseason?: boolean },
 ): T[] {
-  const games = Array.isArray(gamelog?.games) ? [...gamelog.games] : [];
+  const games = (Array.isArray(gamelog?.games) ? [...gamelog.games] : []).filter(
+    (game) => options?.includePreseason === true || game.seasonType !== "preseason",
+  );
   const stamp = (game: T) => {
     const parsed = game.date ? Date.parse(game.date) : Number.NaN;
     return Number.isNaN(parsed) ? Number.NEGATIVE_INFINITY : parsed;
@@ -278,10 +299,51 @@ export function recentGames<T extends { eventId: string; date?: string }>(
   return games.slice(0, n);
 }
 
-/** Last N games from a raw ESPN gamelog. Stats are the get_athlete_gamelog shape. */
-export function recentGamesFromGamelog(raw: unknown, lastN: number): ReportGame[] {
+/** Last N games from a raw ESPN gamelog. Stats are the get_athlete_gamelog shape. Preseason is omitted unless includePreseason is set. */
+export function recentGamesFromGamelog(
+  raw: unknown,
+  lastN: number,
+  options?: { includePreseason?: boolean },
+): ReportGame[] {
   const transformed = transformGamelog(raw) as { games?: ReportGame[] };
-  return recentGames(transformed, lastN);
+  return recentGames(transformed, lastN, options);
+}
+
+const NON_INJURY_STATUS = new Set(["active", "normal service"]);
+
+/**
+ * Current injury on an ESPN athlete document. The athlete page lists it at
+ * athlete.injuries. Active and news-only rows are skipped. The summary is
+ * side, type, and detail, so "Right" + "Finger" + "Surgery" stays together.
+ */
+export function currentInjury(data: unknown): ReportInjury | undefined {
+  const root = record(data) ?? {};
+  const athlete = record(root.athlete) ?? root;
+  for (const raw of asArray(athlete.injuries)) {
+    const injury = record(raw);
+    if (!injury) continue;
+    const status = text(injury.status);
+    if (!status || NON_INJURY_STATUS.has(status.toLowerCase())) continue;
+    const details = record(injury.details) ?? {};
+    const side = text(details.side);
+    const type = text(details.type);
+    const detail = text(details.detail);
+    const location = text(details.location);
+    const summary = [side, type ?? location, detail].filter((part): part is string => Boolean(part)).join(" ");
+    const returnDate = text(details.returnDate);
+    const date = text(injury.date);
+    return {
+      status,
+      ...(summary ? { summary } : {}),
+      ...(type ? { type } : {}),
+      ...(detail ? { detail } : {}),
+      ...(side ? { side } : {}),
+      ...(location ? { location } : {}),
+      ...(returnDate ? { returnDate } : {}),
+      ...(date ? { date } : {}),
+    };
+  }
+  return undefined;
 }
 
 export function athleteIdentity(
@@ -331,7 +393,8 @@ export const getPlayerReport = defineTool({
   description:
     "One call for how a player has looked lately in MLB, NBA, NFL, NHL, and any other league with an ESPN athlete page. " +
     "player is a name or an ESPN athlete id. A name is resolved with search and kept inside league: one match is used, and more than one match returns candidates instead of a guess (search for 'josh jacobs' hits more than one player; league=nfl resolves to the NFL player). " +
-    "season is named stats for that year (omit it for the latest year in the document). recent is the last lastN gamelog rows, most recent first (default 5), with the same stat shape as get_athlete_gamelog. When a label repeats across categories, stats are nested by category so rushing.YDS and receiving.YDS both stay. splits is the split list ESPN publishes, with named stat fields. " +
+    "season is named stats for that year (omit it for the latest year in the document). recent is the last lastN gamelog rows, most recent first (default 5), with the same stat shape as get_athlete_gamelog. Preseason games are left out unless includePreseason is true. When a label repeats across categories, stats are nested by category so rushing.YDS and receiving.YDS both stay. splits is the split list ESPN publishes, with named stat fields. " +
+    "The athlete includes injury when the ESPN athlete page lists a current injury (status, and side/type/detail such as Right Finger Surgery). " +
     "include limits the blocks. One block failing leaves the others in the response and names the failure in errors. sources lists the ESPN documents that were requested.",
   inputShape: {
     sport: sportSchema,
@@ -339,10 +402,11 @@ export const getPlayerReport = defineTool({
     player: playerSchema,
     season: seasonSchema,
     lastN: lastNSchema,
+    includePreseason: includePreseasonSchema,
     include: includeSchema,
   },
   outputSchema: playerReportOutput,
-  handler: async ({ sport, league, player, season, lastN, include }) => {
+  handler: async ({ sport, league, player, season, lastN, includePreseason, include }) => {
     const blocks = new Set(include ?? ["season", "recent", "splits"]);
     const gamesWanted = lastN ?? 5;
     const query = player.trim();
@@ -406,7 +470,8 @@ export const getPlayerReport = defineTool({
     let athlete = athleteIdentity(undefined, athleteId, fallback);
     if (profile?.ok) {
       sources.push(profile.source);
-      athlete = athleteIdentity(profile.value, athleteId, fallback);
+      const injury = currentInjury(profile.value);
+      athlete = { ...athleteIdentity(profile.value, athleteId, fallback), ...(injury ? { injury } : {}) };
     } else if (profile) {
       sources.push(profile.source);
       errors[profile.errorKey] = profile.error;
@@ -422,7 +487,7 @@ export const getPlayerReport = defineTool({
     }
     if (gamelog?.ok) {
       sources.push(gamelog.source);
-      out.recent = recentGamesFromGamelog(gamelog.value, gamesWanted);
+      out.recent = recentGamesFromGamelog(gamelog.value, gamesWanted, { includePreseason: includePreseason === true });
     } else if (gamelog) {
       sources.push(gamelog.source);
       errors[gamelog.errorKey] = gamelog.error;

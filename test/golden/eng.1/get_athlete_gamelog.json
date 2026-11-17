@@ -12,27 +12,9 @@
  ],
  "games": [
   {
-   "eventId": "401878779",
-   "date": "2026-09-12T19:00:00.000+00:00",
-   "opponent": "SUN",
-   "homeAway": "A",
-   "result": "W",
-   "score": "2-0",
-   "stats": {
-    "G": "1",
-    "A": "0",
-    "SHOT": "4",
-    "SOG": "3",
-    "FC": "1",
-    "FA": "4",
-    "OF": "0",
-    "YC": "0",
-    "RC": "0"
-   }
-  },
-  {
    "eventId": "401879274",
    "date": "2026-09-19T14:00:00.000+00:00",
+   "seasonType": "english-premier-league",
    "opponent": "BHA",
    "homeAway": "A",
    "result": "L",
@@ -50,8 +32,29 @@
    }
   },
   {
+   "eventId": "401878779",
+   "date": "2026-09-12T19:00:00.000+00:00",
+   "seasonType": "english-premier-league",
+   "opponent": "SUN",
+   "homeAway": "A",
+   "result": "W",
+   "score": "2-0",
+   "stats": {
+    "G": "1",
+    "A": "0",
+    "SHOT": "4",
+    "SOG": "3",
+    "FC": "1",
+    "FA": "4",
+    "OF": "0",
+    "YC": "0",
+    "RC": "0"
+   }
+  },
+  {
    "eventId": "401879292",
    "date": "2026-09-06T15:30:00.000+00:00",
+   "seasonType": "english-premier-league",
    "opponent": "CHE",
    "homeAway": "H",
    "result": "W",
@@ -71,6 +74,7 @@
   {
    "eventId": "401879295",
    "date": "2026-08-31T19:00:00.000+00:00",
+   "seasonType": "english-premier-league",
    "opponent": "AVL",
    "homeAway": "A",
    "result": "W",
@@ -90,6 +94,7 @@
   {
    "eventId": "401879301",
    "date": "2026-08-21T19:00:00.000+00:00",
+   "seasonType": "english-premier-league",
    "opponent": "COV",
    "homeAway": "H",
    "result": "W",

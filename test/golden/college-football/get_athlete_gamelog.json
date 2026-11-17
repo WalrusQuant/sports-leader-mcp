@@ -47,95 +47,39 @@
  ],
  "games": [
   {
-   "eventId": "401856658",
-   "date": "2026-09-05T19:00:00.000+00:00",
-   "opponent": "TNST",
+   "eventId": "401856705",
+   "date": "2026-10-03T16:45:00.000+00:00",
+   "seasonType": "regular",
+   "opponent": "VAN",
    "homeAway": "H",
    "result": "W",
-   "score": "63-3",
+   "score": "38-14",
    "stats": {
     "passing": {
-     "CMP": "15",
-     "ATT": "16",
-     "YDS": "202",
-     "CMP%": "93.8",
+     "CMP": "25",
+     "ATT": "32",
+     "YDS": "295",
+     "CMP%": "78.1",
      "TD": "3",
      "INT": "0",
-     "LNG": "25",
-     "SACK": "0",
-     "RTG": "261.7",
-     "QBR": "87.0"
-    },
-    "rushing": {
-     "CAR": "0",
-     "YDS": "0",
-     "AVG": "0.0",
-     "TD": "0",
-     "LNG": "0"
-    }
-   }
-  },
-  {
-   "eventId": "401856673",
-   "date": "2026-09-12T16:45:00.000+00:00",
-   "opponent": "WKU",
-   "homeAway": "H",
-   "result": "W",
-   "score": "70-20",
-   "stats": {
-    "passing": {
-     "CMP": "13",
-     "ATT": "16",
-     "YDS": "234",
-     "CMP%": "81.3",
-     "TD": "5",
-     "INT": "0",
-     "LNG": "70",
-     "SACK": "0",
-     "RTG": "307.2",
-     "QBR": "95.9"
-    },
-    "rushing": {
-     "CAR": "1",
-     "YDS": "3",
-     "AVG": "3.0",
-     "TD": "0",
-     "LNG": "3"
-    }
-   }
-  },
-  {
-   "eventId": "401856686",
-   "date": "2026-09-19T16:00:00.000+00:00",
-   "opponent": "ARK",
-   "homeAway": "A",
-   "result": "W",
-   "score": "45-17",
-   "stats": {
-    "passing": {
-     "CMP": "10",
-     "ATT": "13",
-     "YDS": "147",
-     "CMP%": "76.9",
-     "TD": "1",
-     "INT": "0",
-     "LNG": "61",
-     "SACK": "3",
-     "RTG": "197.3",
-     "QBR": "96.9"
+     "LNG": "55",
+     "SACK": "1",
+     "RTG": "186.5",
+     "QBR": "86.7"
     },
     "rushing": {
      "CAR": "7",
-     "YDS": "97",
-     "AVG": "13.9",
+     "YDS": "22",
+     "AVG": "3.1",
      "TD": "0",
-     "LNG": "62"
+     "LNG": "9"
     }
    }
   },
   {
    "eventId": "401856700",
    "date": "2026-09-26T19:30:00.000+00:00",
+   "seasonType": "regular",
    "opponent": "OU",
    "homeAway": "H",
    "result": "W",
@@ -163,31 +107,92 @@
    }
   },
   {
-   "eventId": "401856705",
-   "date": "2026-10-03T16:45:00.000+00:00",
-   "opponent": "VAN",
-   "homeAway": "H",
+   "eventId": "401856686",
+   "date": "2026-09-19T16:00:00.000+00:00",
+   "seasonType": "regular",
+   "opponent": "ARK",
+   "homeAway": "A",
    "result": "W",
-   "score": "38-14",
+   "score": "45-17",
    "stats": {
     "passing": {
-     "CMP": "25",
-     "ATT": "32",
-     "YDS": "295",
-     "CMP%": "78.1",
-     "TD": "3",
+     "CMP": "10",
+     "ATT": "13",
+     "YDS": "147",
+     "CMP%": "76.9",
+     "TD": "1",
      "INT": "0",
-     "LNG": "55",
-     "SACK": "1",
-     "RTG": "186.5",
-     "QBR": "86.7"
+     "LNG": "61",
+     "SACK": "3",
+     "RTG": "197.3",
+     "QBR": "96.9"
     },
     "rushing": {
      "CAR": "7",
-     "YDS": "22",
-     "AVG": "3.1",
+     "YDS": "97",
+     "AVG": "13.9",
      "TD": "0",
-     "LNG": "9"
+     "LNG": "62"
+    }
+   }
+  },
+  {
+   "eventId": "401856673",
+   "date": "2026-09-12T16:45:00.000+00:00",
+   "seasonType": "regular",
+   "opponent": "WKU",
+   "homeAway": "H",
+   "result": "W",
+   "score": "70-20",
+   "stats": {
+    "passing": {
+     "CMP": "13",
+     "ATT": "16",
+     "YDS": "234",
+     "CMP%": "81.3",
+     "TD": "5",
+     "INT": "0",
+     "LNG": "70",
+     "SACK": "0",
+     "RTG": "307.2",
+     "QBR": "95.9"
+    },
+    "rushing": {
+     "CAR": "1",
+     "YDS": "3",
+     "AVG": "3.0",
+     "TD": "0",
+     "LNG": "3"
+    }
+   }
+  },
+  {
+   "eventId": "401856658",
+   "date": "2026-09-05T19:00:00.000+00:00",
+   "seasonType": "regular",
+   "opponent": "TNST",
+   "homeAway": "H",
+   "result": "W",
+   "score": "63-3",
+   "stats": {
+    "passing": {
+     "CMP": "15",
+     "ATT": "16",
+     "YDS": "202",
+     "CMP%": "93.8",
+     "TD": "3",
+     "INT": "0",
+     "LNG": "25",
+     "SACK": "0",
+     "RTG": "261.7",
+     "QBR": "87.0"
+    },
+    "rushing": {
+     "CAR": "0",
+     "YDS": "0",
+     "AVG": "0.0",
+     "TD": "0",
+     "LNG": "0"
     }
    }
   }

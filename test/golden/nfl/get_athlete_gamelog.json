@@ -51,6 +51,7 @@
   {
    "eventId": "401872965",
    "date": "2026-10-04T13:30:00.000+00:00",
+   "seasonType": "regular",
    "opponent": "IND",
    "homeAway": "H",
    "result": "L",

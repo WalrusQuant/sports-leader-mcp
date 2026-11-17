@@ -62,6 +62,45 @@ test("gamelog keeps a repeated label when category counts are missing", () => {
   assert.deepEqual(output.games[0].stats, { YDS: "36", receivingYards: "55" });
 });
 
+test("gamelog tags season type and sorts by date, not event id", () => {
+  const output = transformGamelog({
+    labels: ["PTS"],
+    names: ["points"],
+    events: {
+      "300": {
+        id: "300",
+        gameDate: "2026-10-03T23:00:00.000Z",
+        opponent: { abbreviation: "TOR" },
+        team: { id: "1" },
+        homeTeamId: "2",
+      },
+      "100": {
+        id: "100",
+        gameDate: "2026-11-01T00:00:00.000Z",
+        opponent: { abbreviation: "BOS" },
+        team: { id: "1" },
+        homeTeamId: "1",
+      },
+      "200": {
+        id: "200",
+        gameDate: "2026-10-14T23:30:00.000Z",
+        opponent: { abbreviation: "BKN" },
+        team: { id: "1" },
+        homeTeamId: "2",
+      },
+    },
+    seasonTypes: [
+      { displayName: "2026-27 Preseason", categories: [{ events: [{ eventId: "300", stats: ["10"] }, { eventId: "200", stats: ["12"] }] }] },
+      { displayName: "2026-27 Regular Season", categories: [{ events: [{ eventId: "100", stats: ["30"] }] }] },
+    ],
+  }) as { games: { eventId: string; seasonType?: string }[] };
+
+  assert.deepEqual(
+    output.games.map((game) => `${game.eventId}:${game.seasonType}`),
+    ["100:regular", "200:preseason", "300:preseason"],
+  );
+});
+
 test("gamelog suffixes a label repeated inside one category", () => {
   const output = transformGamelog({
     categories: [{ name: "rushing", displayName: "Rushing", count: 2 }],

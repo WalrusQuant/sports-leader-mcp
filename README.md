@@ -115,7 +115,7 @@ Nightly Parquet files: schedule and results, team box scores and counting stats,
 | `get_team_box_scores` | ESPN team box line |
 | `get_team_game_stats` | Team counting stats for and against |
 | `get_player_game_logs` | NBA player, NHL skater/goalie, MLB batting/pitching, NFL passing/rushing/receiving (`statGroup`) |
-| `get_player_trends` | Averages and totals by home/away, opponent, month, or days of rest |
+| `get_player_trends` | Averages and totals by home/away, opponent, month, or days of rest. Rates are recomputed; longest is a max |
 | `get_rosters` | Roster spans (`valid_to` empty means still current) |
 | `get_injury_reports` | Injury history |
 | `get_transaction_log` | Transaction history |
@@ -239,7 +239,7 @@ Dedicated tools return compact, curated JSON by default. Every tool accepts `raw
 
 Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent`; a top-level array result is exposed as `structuredContent: { "items": [...] }` (same shape for every protocol era). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_game_preview`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
 
-`get_athlete_gamelog` nests each stat under its ESPN category when the flat label list repeats one (`stats.rushing.YDS` and `stats.receiving.YDS`). `categories` lists those groups. A single-category log, which is what MLB, NBA, and NHL publish, keeps `stats` as a flat map of abbreviation to value. `get_player_report` recent games use the same stat shape.
+`get_athlete_gamelog` nests each stat under its ESPN category when the flat label list repeats one (`stats.rushing.YDS` and `stats.receiving.YDS`). `categories` lists those groups. A single-category log, which is what MLB, NBA, and NHL publish, keeps `stats` as a flat map of abbreviation to value. Games are newest first and each one has `seasonType` when ESPN labels the split. `get_player_report` recent games use the same stat shape and leave preseason out unless `includePreseason` is true. The report adds `athlete.injury` when ESPN lists a current injury.
 
 ### Odds conventions
 

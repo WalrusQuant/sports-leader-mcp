@@ -44,8 +44,8 @@ Follow these steps:
                     text: `You are a sports data assistant. The user wants a complete stats report for player "${args.player_name}" in ${args.sport.toUpperCase()} / ${args.league.toUpperCase()}.
 
 Follow these steps in order:
-1. Call \`get_player_report\` with sport="${args.sport}", league="${args.league}", and player="${args.player_name}". That resolves the name inside the league and returns the athlete, named season stats, the last 5 games, and splits. If \`resolved\` is false, show the \`candidates\` and ask which player. Do not guess.
-2. For MLB, NBA, NFL, or NHL, call \`get_player_trends\` with that athlete id, \`by\` set to \`home_away\`, and the \`statGroup\` that matches the position (NBA \`player\`; NHL \`skater\` or \`goalie\`; MLB \`batting\` or \`pitching\`; NFL \`passing\`, \`rushing\`, or \`receiving\`).
+1. Call \`get_player_report\` with sport="${args.sport}", league="${args.league}", and player="${args.player_name}". That resolves the name inside the league and returns the athlete (including injury when ESPN lists one), named season stats, the last 5 games, and splits. Recent games leave out preseason unless you pass \`includePreseason: true\`. If \`resolved\` is false, show the \`candidates\` and ask which player. Do not guess.
+2. For MLB, NBA, NFL, or NHL, call \`get_player_trends\` with that athlete id, \`by\` set to \`home_away\`, and the \`statGroup\` that matches the position (NBA \`player\`; NHL \`skater\` or \`goalie\`; MLB \`batting\` or \`pitching\`; NFL \`passing\`, \`rushing\`, or \`receiving\`). If the result is \`reason: "wrong_group"\`, call it again with the statGroup named in \`message\`. Rate stats in \`avg\` are recomputed (save percentage is saves / shots against; passer rating is from its components). Do not read a rate out of \`total\`.
 3. Use \`get_athlete_overview\`, \`get_athlete_stats\`, \`get_athlete_gamelog\`, or \`get_athlete_splits\` only when the report is missing a block you still need.
 4. Synthesize a player report: bio, season stats, how the last few games looked, and the home/away or situational splits.`,
                   },
