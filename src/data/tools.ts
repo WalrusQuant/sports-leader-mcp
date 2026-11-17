@@ -296,6 +296,8 @@ export const getPlayerTrends = defineTool({
     "Averages and totals for one player from the Parquet game logs, grouped by home_away, opponent, month, or rest. " +
     "nba reads player_game_logs (statGroup player, or omit it). nhl: skater or goalie. mlb: batting or pitching. nfl: passing, rushing, or receiving — those are the only NFL player logs. " +
     "Did-not-play rows are left out when the file has that column. " +
+    "Counting stats are averaged and summed. Rate stats (save percentage, passer rating, QBR, and any pct, rating, avg, or per-game column) are not summed: save percentage is saves / shots against, passer rating is recomputed from completions, attempts, yards, touchdowns, and interceptions, and QBR is the mean weighted by attempts (omitted when attempts are missing). longest and long use the maximum. " +
+    "A player id that is only in a different stat group (a goalie queried as skater) returns resolved false, reason wrong_group, and the statGroup to pass. A player in no log returns resolved false and reason not_found. " +
     "avg and total contain only numeric stat columns from the manifest (ids, names, and dates are not aggregated). " +
     EXPORT_HINT,
   inputShape: {

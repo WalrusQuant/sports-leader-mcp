@@ -160,11 +160,19 @@ for (const league of leagues) {
         sources: [{ block: "gamelog", path: `/apis/common/v3/sports/${sport}/${league}/athletes/1/gamelog` }],
       }, `${league} player report`);
       const saved = JSON.parse(readFileSync(join(GOLDEN, league, "get_athlete_gamelog.json"), "utf8"));
-      const latest = [...(saved.games ?? [])].sort((a: { date?: string; eventId: string }, b: { date?: string; eventId: string }) => {
-        const dt = Date.parse(b.date ?? "") - Date.parse(a.date ?? "");
-        if (dt !== 0 && !Number.isNaN(dt)) return dt;
-        return String(b.eventId).localeCompare(String(a.eventId));
-      }).slice(0, 5);
+      const games = (out as { games?: { date?: string; eventId: string }[] }).games ?? [];
+      for (let i = 1; i < games.length; i++) {
+        const newer = Date.parse(games[i - 1]?.date ?? "");
+        const older = Date.parse(games[i]?.date ?? "");
+        assert.ok(newer >= older, `${league} gamelog is newest first`);
+      }
+      const latest = [...(saved.games ?? [])]
+        .filter((game: { seasonType?: string }) => game.seasonType !== "preseason")
+        .sort((a: { date?: string; eventId: string }, b: { date?: string; eventId: string }) => {
+          const dt = Date.parse(b.date ?? "") - Date.parse(a.date ?? "");
+          if (dt !== 0 && !Number.isNaN(dt)) return dt;
+          return String(b.eventId).localeCompare(String(a.eventId));
+        }).slice(0, 5);
       assert.deepEqual(recent.map((game) => game.eventId), latest.map((game: { eventId: string }) => game.eventId), `${league} recent games`);
       for (let i = 1; i < recent.length; i++) {
         assert.ok(Date.parse(recent[i - 1]?.date ?? "") >= Date.parse(recent[i]?.date ?? ""), `${league} recent order`);

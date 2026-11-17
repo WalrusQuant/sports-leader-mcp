@@ -1,5 +1,6 @@
 import type { DataConfig } from "./config.js";
 import { ensureParquetRetry } from "./cache.js";
+import { PLAYER_LOG_GROUPS } from "./datasets.js";
 import { DataExportError } from "./errors.js";
 import { defaultDeps, type DataDeps } from "./http.js";
 import { loadManifest } from "./cache.js";
@@ -425,7 +426,9 @@ export interface TrendPlayer {
 
 export interface TrendResult {
   resolved: boolean;
-  reason?: "ambiguous" | "not_found";
+  reason?: "ambiguous" | "not_found" | "wrong_group";
+  /** Set when the player is missing, or is in a different stat group than the one requested. */
+  message?: string;
   dataset: string;
   league: string;
   by: TrendBy;
@@ -520,10 +523,284 @@ function sortGroups(by: TrendBy, groups: TrendGroup[]): TrendGroup[] {
   return copy;
 }
 
+export type StatAggregation = "sum" | "max" | "rate";
+
+/** Counting stats are summed. longest/long is a maximum. Rates are not summed. */
+export function statAggregation(name: string): StatAggregation {
+  const normalized = name.toLowerCase();
+  if (
+    normalized === "long" ||
+    normalized === "longest" ||
+    normalized.endsWith("_long") ||
+    normalized.endsWith("_longest") ||
+    normalized.startsWith("long_") ||
+    normalized.includes("longest")
+  ) {
+    return "max";
+  }
+  if (
+    normalized === "qbr" ||
+    normalized.endsWith("_qbr") ||
+    normalized.includes("rating") ||
+    normalized.endsWith("_pct") ||
+    normalized.endsWith("pct") ||
+    normalized === "avg" ||
+    normalized.endsWith("_avg") ||
+    normalized.startsWith("avg_") ||
+    normalized.includes("_avg_") ||
+    normalized.includes("_per_") ||
+    normalized.startsWith("per_") ||
+    normalized.endsWith("_per") ||
+    normalized.includes("per_game") ||
+    normalized.includes("pergame")
+  ) {
+    return "rate";
+  }
+  return "sum";
+}
+
+const RATE_RATIOS: readonly { rate: string; numerator: string; denominator: string }[] = [
+  { rate: "save_pct", numerator: "saves", denominator: "shots_against" },
+  { rate: "shootout_save_pct", numerator: "shootout_saves", denominator: "shootout_shots_against" },
+  { rate: "fg_pct", numerator: "fg_made", denominator: "fg_att" },
+  { rate: "fg3_pct", numerator: "fg3_made", denominator: "fg3_att" },
+  { rate: "ft_pct", numerator: "ft_made", denominator: "ft_att" },
+];
+
+function clampPasserComponent(value: number): number {
+  return Math.max(0, Math.min(2.375, value));
+}
+
+/**
+ * NFL passer rating from counting stats. Returns undefined when there are no attempts.
+ * Each component is clamped to [0, 2.375], then scaled: ((a+b+c+d) / 6) * 100.
+ */
+export function nflPasserRating(
+  completions: number,
+  attempts: number,
+  yards: number,
+  touchdowns: number,
+  interceptions: number,
+): number | undefined {
+  if (!(attempts > 0) || !Number.isFinite(attempts)) return undefined;
+  const a = clampPasserComponent((completions / attempts - 0.3) * 5);
+  const b = clampPasserComponent((yards / attempts - 3) * 0.25);
+  const c = clampPasserComponent((touchdowns / attempts) * 20);
+  const d = clampPasserComponent(2.375 - (interceptions / attempts) * 25);
+  const rating = ((a + b + c + d) / 6) * 100;
+  return Number.isFinite(rating) ? rating : undefined;
+}
+
+function rateIsDerived(name: string, available: Set<string>): boolean {
+  if (name === "passer_rating") {
+    return ["completions", "attempts", "yards", "touchdowns", "interceptions"].every((column) => available.has(column));
+  }
+  if (name === "qbr") return available.has("attempts");
+  if (name === "faceoff_pct") return available.has("faceoffs_won") && available.has("faceoffs_lost");
+  const ratio = RATE_RATIOS.find((item) => item.rate === name);
+  return ratio !== undefined && available.has(ratio.numerator) && available.has(ratio.denominator);
+}
+
+function aggregateMeasures(stats: string[], available: Set<string>): string[] {
+  const measures: string[] = [];
+  for (const name of stats) {
+    const kind = statAggregation(name);
+    const column = quoteIdent(name);
+    const avgAlias = quoteIdent(`avg__${name}`);
+    const totalAlias = quoteIdent(`total__${name}`);
+    if (kind === "max") {
+      measures.push(`avg(${column}) AS ${avgAlias}`, `max(${column}) AS ${totalAlias}`);
+      continue;
+    }
+    if (kind === "rate") {
+      if (name === "qbr" && available.has("attempts")) {
+        const attempts = quoteIdent("attempts");
+        measures.push(
+          `sum(CASE WHEN ${column} IS NOT NULL AND ${attempts} IS NOT NULL THEN ${column} * ${attempts} END) / NULLIF(sum(CASE WHEN ${column} IS NOT NULL AND ${attempts} IS NOT NULL THEN ${attempts} END), 0) AS ${avgAlias}`,
+        );
+        continue;
+      }
+      if (name === "qbr" || rateIsDerived(name, available)) continue;
+      measures.push(`avg(${column}) AS ${avgAlias}`);
+      continue;
+    }
+    measures.push(`avg(${column}) AS ${avgAlias}`, `sum(${column}) AS ${totalAlias}`);
+  }
+  return measures;
+}
+
+function applyDerivedRates(
+  stats: string[],
+  available: Set<string>,
+  avg: Record<string, number>,
+  total: Record<string, number>,
+): void {
+  const present = new Set(stats);
+  for (const ratio of RATE_RATIOS) {
+    if (!present.has(ratio.rate) || !rateIsDerived(ratio.rate, available)) continue;
+    const numerator = total[ratio.numerator];
+    const denominator = total[ratio.denominator];
+    if (numerator === undefined || denominator === undefined || denominator === 0) {
+      delete avg[ratio.rate];
+      continue;
+    }
+    const value = asStatNumber(numerator / denominator);
+    if (value === undefined) delete avg[ratio.rate];
+    else avg[ratio.rate] = value;
+  }
+  if (present.has("faceoff_pct") && rateIsDerived("faceoff_pct", available)) {
+    const won = total.faceoffs_won;
+    const lost = total.faceoffs_lost;
+    const taken = won !== undefined && lost !== undefined ? won + lost : undefined;
+    if (won === undefined || taken === undefined || taken === 0) delete avg.faceoff_pct;
+    else {
+      const value = asStatNumber(won / taken);
+      if (value === undefined) delete avg.faceoff_pct;
+      else avg.faceoff_pct = value;
+    }
+  }
+  if (present.has("passer_rating")) {
+    const parts = [total.completions, total.attempts, total.yards, total.touchdowns, total.interceptions];
+    if (!rateIsDerived("passer_rating", available) || parts.some((part) => part === undefined)) {
+      delete avg.passer_rating;
+    } else {
+      const value = asStatNumber(nflPasserRating(parts[0]!, parts[1]!, parts[2]!, parts[3]!, parts[4]!));
+      if (value === undefined) delete avg.passer_rating;
+      else avg.passer_rating = value;
+    }
+  }
+  if (present.has("qbr") && !available.has("attempts")) delete avg.qbr;
+  for (const name of stats) {
+    if (statAggregation(name) === "rate") delete total[name];
+  }
+}
+
+interface DistinctPlayer {
+  id: number | string;
+  name?: string;
+  games: number;
+}
+
+function playerLogGroup(league: string, dataset: string): string | undefined {
+  const groups = PLAYER_LOG_GROUPS[league];
+  if (!groups) return undefined;
+  for (const [statGroup, name] of Object.entries(groups)) {
+    if (name === dataset) return statGroup;
+  }
+  return undefined;
+}
+
+function otherPlayerLogs(league: string, dataset: string): { statGroup: string; dataset: string }[] {
+  const groups = PLAYER_LOG_GROUPS[league] ?? {};
+  return Object.entries(groups)
+    .filter(([, name]) => name !== dataset)
+    .map(([statGroup, name]) => ({ statGroup, dataset: name }));
+}
+
+async function distinctPlayers(
+  locals: string[],
+  dataset: string,
+  available: Set<string>,
+  player: string,
+): Promise<DistinctPlayer[]> {
+  const params: SqlValue[] = [];
+  const scans = locals.map((local) => {
+    params.push(local);
+    return "SELECT * FROM read_parquet(?)";
+  });
+  const where = [addPlayerFilter(dataset, available, player, params)];
+  if (available.has("did_not_play")) where.push(`(${quoteIdent("did_not_play")} IS NOT TRUE)`);
+  const src = `SELECT * FROM (${scans.join(" UNION ALL BY NAME ")}) AS src WHERE ${where.join(" AND ")}`;
+  const nameSql = available.has("player_name")
+    ? `max(${quoteIdent("player_name")}) AS player_name`
+    : "NULL AS player_name";
+  const sql = `
+    SELECT ${quoteIdent("player_id")} AS player_id, ${nameSql}, CAST(COUNT(*) AS BIGINT) AS games
+    FROM (${src}) AS players
+    GROUP BY ${quoteIdent("player_id")}
+  `;
+  const rows = await enqueue(async () => {
+    const conn = await connection();
+    const result = await conn.runAndReadAll(sql, params);
+    return result.getRowObjectsJS();
+  });
+  const players: DistinctPlayer[] = [];
+  for (const row of rows) {
+    const id = normalizeValue(row.player_id, 0);
+    if (typeof id !== "number" && typeof id !== "string") continue;
+    const name = row.player_name == null ? undefined : String(row.player_name);
+    players.push({
+      id,
+      ...(name ? { name } : {}),
+      games: asStatNumber(row.games) ?? 0,
+    });
+  }
+  return players;
+}
+
+function missedPlayerMessage(
+  group: string,
+  player: string,
+  hits: { statGroup: string; id: number | string; name?: string }[],
+): { reason: "not_found" | "wrong_group"; message: string } {
+  if (hits.length === 0) {
+    return { reason: "not_found", message: `No ${group} rows for ${player}.` };
+  }
+  const choices = [...new Set(hits.map((hit) => hit.statGroup))].map((name) => `"${name}"`).join(" or ");
+  const who = hits.length === 1
+    ? (hits[0]?.name ? `${hits[0].name} (${hits[0].id})` : String(hits[0]?.id))
+    : `${hits.length} players`;
+  const verb = hits.length === 1 ? "is" : "are";
+  return {
+    reason: "wrong_group",
+    message: `No ${group} rows for ${player}. ${who} ${verb} in the ${choices} log. Pass statGroup ${choices}.`,
+  };
+}
+
+async function playersInOtherGroups(
+  config: DataConfig,
+  deps: DataDeps,
+  manifest: Manifest,
+  query: TrendQuery,
+  seasons: number[],
+): Promise<{ statGroup: string; id: number | string; name?: string }[]> {
+  const hits: { statGroup: string; id: number | string; name?: string }[] = [];
+  for (const other of otherPlayerLogs(query.league, query.dataset)) {
+    let files: ManifestFile[];
+    try {
+      files = resolveFiles(manifest, { dataset: other.dataset, league: query.league, seasons });
+    } catch {
+      continue;
+    }
+    try {
+      const locals: string[] = [];
+      for (const file of files) {
+        const got = await ensureParquetRetry(config, file, deps);
+        locals.push(got.path);
+      }
+      const available = new Set(unionColumns(files));
+      if (!available.has("player_id")) continue;
+      const players = await distinctPlayers(locals, other.dataset, available, query.player);
+      for (const player of players) {
+        hits.push({ statGroup: other.statGroup, id: player.id, ...(player.name ? { name: player.name } : {}) });
+      }
+    } catch {
+      continue;
+    }
+  }
+  return hits;
+}
+
 /**
  * Averages and totals over one player's game log. Stat columns come from the
  * manifest (numeric, and not ids). Days of rest are measured before lastN is
  * applied, so the oldest game in the window still knows the real gap.
+ *
+ * Counting stats are summed. Rate stats (pct, rating, qbr, avg, per-game) are
+ * not summed: save percentage is saves / shots against, passer rating is
+ * recomputed from its components, and QBR is the mean weighted by attempts
+ * (or omitted). longest and long use MAX. A player who exists only in another
+ * stat group returns resolved false and reason wrong_group.
  */
 export async function aggregatePlayerTrends(
   config: DataConfig,
@@ -573,27 +850,28 @@ export async function aggregatePlayerTrends(
   if (availableSet.has("did_not_play")) where.push(`(${quoteIdent("did_not_play")} IS NOT TRUE)`);
   const src = `SELECT * FROM (${scans.join(" UNION ALL BY NAME ")}) AS src WHERE ${where.join(" AND ")}`;
 
-  const nameSql = availableSet.has("player_name")
-    ? `max(${quoteIdent("player_name")}) AS player_name`
-    : "NULL AS player_name";
-  const distinctSql = `
-    SELECT ${quoteIdent("player_id")} AS player_id, ${nameSql}, CAST(COUNT(*) AS BIGINT) AS games
-    FROM (${src}) AS players
-    GROUP BY ${quoteIdent("player_id")}
-  `;
-
-  const players = await enqueue(async () => {
-    const conn = await connection();
-    const result = await conn.runAndReadAll(distinctSql, params);
-    return result.getRowObjectsJS().map((row) => ({
-      id: normalizeValue(row.player_id, 0),
-      name: row.player_name == null ? undefined : String(row.player_name),
-      games: asStatNumber(row.games) ?? 0,
-    }));
-  });
-  const distinct = players.filter((player) => player.id !== null && player.id !== undefined);
+  const distinct = await distinctPlayers(locals, query.dataset, availableSet, query.player);
   if (distinct.length === 0) {
-    return { ...base, resolved: true, reason: "not_found", groups: [] };
+    const hits = await playersInOtherGroups(config, deps, manifest, query, seasons);
+    const group = playerLogGroup(query.league, query.dataset) ?? query.dataset;
+    const missed = missedPlayerMessage(group, query.player.trim(), hits);
+    const named = hits.length === 1 ? hits[0] : undefined;
+    return {
+      ...base,
+      resolved: false,
+      reason: missed.reason,
+      message: missed.message,
+      ...(named
+        ? {
+            player: {
+              query: query.player,
+              id: named.id,
+              ...(named.name ? { name: named.name } : {}),
+            },
+          }
+        : {}),
+      groups: [],
+    };
   }
   if (distinct.length > 1) {
     return {
@@ -631,10 +909,7 @@ export async function aggregatePlayerTrends(
     query.by === "rest"
       ? `date_diff('day', lag(${quoteIdent("game_date")}) OVER (ORDER BY ${playedOrder}), ${quoteIdent("game_date")}) AS trend_rest_days,`
       : "";
-  const measures = stats.flatMap((name) => [
-    `avg(${quoteIdent(name)}) AS ${quoteIdent(`avg__${name}`)}`,
-    `sum(${quoteIdent(name)}) AS ${quoteIdent(`total__${name}`)}`,
-  ]);
+  const measures = aggregateMeasures(stats, availableSet);
   const selectMeasures = measures.length ? `, ${measures.join(", ")}` : "";
   const limitClause = query.lastN !== undefined ? "WHERE recency <= ?" : "";
   const aggSql = `
@@ -667,6 +942,7 @@ export async function aggregatePlayerTrends(
         if (avgValue !== undefined) avg[name] = avgValue;
         if (totalValue !== undefined) total[name] = totalValue;
       }
+      applyDerivedRates(stats, availableSet, avg, total);
       const games = asStatNumber(row.games) ?? 0;
       return {
         key: row.group_key == null || row.group_key === "" ? "unknown" : String(row.group_key),

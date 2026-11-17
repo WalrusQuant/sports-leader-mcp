@@ -948,9 +948,35 @@ function gamelogStats(
 }
 
 /**
+ * ESPN gamelog seasonTypes are labeled "2026-27 Preseason", "2026 Regular Season",
+ * "2025-26 Postseason". recentGames drops "preseason" unless asked to keep it.
+ */
+export function gamelogSeasonType(displayName: unknown): string | undefined {
+  if (typeof displayName !== "string") return undefined;
+  const raw = displayName.trim().toLowerCase();
+  if (!raw) return undefined;
+  if (raw.includes("preseason") || raw.includes("pre-season")) return "preseason";
+  if (raw.includes("postseason") || raw.includes("playoff")) return "postseason";
+  if (raw.includes("regular")) return "regular";
+  if (raw.includes("all-star") || raw.includes("all star") || raw.includes("allstar")) return "allstar";
+  const slug = raw
+    .replace(/^\d{4}(?:\s*[-/]\s*(?:\d{2}|\d{4}))?\s*/, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, "-");
+  return slug || undefined;
+}
+
+function gamelogStamp(date: string | undefined): number {
+  const parsed = date ? Date.parse(date) : Number.NaN;
+  return Number.isNaN(parsed) ? Number.NEGATIVE_INFINITY : parsed;
+}
+
+/**
  * Athlete gamelog (the 392k-token monster).
  * Joins events[gameId] metadata with seasonTypes stats on eventId.
  * Stat rows are grouped by ESPN category when the flat label list repeats.
+ * Each game is tagged with seasonType and the list is newest first.
  */
 export function transformGamelog(data: unknown): unknown {
   const root = d(data);
@@ -959,15 +985,18 @@ export function transformGamelog(data: unknown): unknown {
   const nameStrings = arr<any>(root.names).map((name) => String(name ?? ""));
   const plan = gamelogCategoryPlan(root, labelStrings, nameStrings);
   // Longest row wins when one event is listed under more than one split.
-  const statsByEventId = new Map<string, any[]>();
+  const statsByEventId = new Map<string, { stats: any[]; seasonType?: string }>();
   for (const st of arr<AnyObj>(root.seasonTypes)) {
+    const seasonType = gamelogSeasonType(st.displayName);
     for (const cat of arr<AnyObj>(st.categories)) {
       for (const ev of arr<AnyObj>(cat.events)) {
         const eid = String(ev.eventId ?? "");
         const stats = arr<any>(ev.stats);
         if (!eid || stats.length === 0) continue;
         const previous = statsByEventId.get(eid);
-        if (!previous || stats.length > previous.length) statsByEventId.set(eid, stats);
+        if (!previous || stats.length > previous.stats.length) {
+          statsByEventId.set(eid, { stats, ...(seasonType ? { seasonType } : {}) });
+        }
       }
     }
   }
@@ -978,10 +1007,13 @@ export function transformGamelog(data: unknown): unknown {
       const ev = d(evRaw);
       const opponent = d(ev.opponent);
       const team = d(ev.team);
-      const stats = statsByEventId.get(String(ev.id ?? gameId)) ?? [];
+      const eventId = String(ev.id ?? gameId);
+      const joined = statsByEventId.get(eventId);
+      const stats = joined?.stats ?? [];
       return {
-        eventId: String(ev.id ?? gameId),
+        eventId,
         date: ev.gameDate ? String(ev.gameDate) : undefined,
+        ...(joined?.seasonType ? { seasonType: joined.seasonType } : {}),
         opponent: opponent.abbreviation ? String(opponent.abbreviation) : String(opponent.displayName ?? ""),
         homeAway: team.id && ev.homeTeamId && String(team.id) === String(ev.homeTeamId) ? "H" : "A",
         result: ev.gameResult ? String(ev.gameResult) : undefined,
@@ -989,7 +1021,12 @@ export function transformGamelog(data: unknown): unknown {
         stats: gamelogStats(plan, labelStrings, nameStrings, stats),
       };
     })
-    .filter((g) => g.date !== undefined);
+    .filter((g) => g.date !== undefined)
+    .sort((a, b) => {
+      const byDate = gamelogStamp(b.date) - gamelogStamp(a.date);
+      if (byDate !== 0) return byDate;
+      return String(b.eventId).localeCompare(String(a.eventId));
+    });
 
   return {
     labels,
