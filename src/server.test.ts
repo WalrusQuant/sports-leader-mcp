@@ -393,7 +393,9 @@ test("get_game_preview: one game, schema, call count, and both winner books", as
   assert.equal(kalshi.find((row: { team: string }) => row.team === "JAX").ticker, "KXNFLGAME-26OCT11PHIJAC-JAC");
   const us = sc.markets.polymarketUS;
   assert.equal(us.find((row: { team: string }) => row.team === "PHI").mid, 0.42);
-  assert.equal(us.find((row: { team: string }) => row.team === "JAX").mid, 0.59);
+  assert.equal(us.find((row: { team: string }) => row.team === "PHI").label, "mid");
+  assert.equal(us.find((row: { team: string }) => row.team === "JAX").mid, 0.58);
+  assert.equal(us.find((row: { team: string }) => row.team === "JAX").label, "mid");
   assert.equal(us[0].slug, "aec-nfl-phi-jax-2026-10-11");
   assert.equal(sc.errors, undefined);
   assert.ok(sc.sources.includes("espn summary"));
@@ -505,6 +507,15 @@ test("get_game_preview resolves one team and keeps a postponed Kalshi date", asy
     arguments: { sport: "football", league: "nfl" },
   });
   assert.equal(neither.isError, true);
+
+  const disagree = await client.callTool({
+    name: "get_game_preview",
+    arguments: { sport: "football", league: "nfl", eventId: "401872981", team: "Dallas" },
+  });
+  assert.equal(disagree.isError, true);
+  const disagreeText = JSON.stringify(disagree.content ?? []);
+  assert.match(disagreeText, /Dallas/);
+  assert.match(disagreeText, /401872981/);
 });
 
 test("get_game_preview reads MLB probables from the scoreboard", async () => {

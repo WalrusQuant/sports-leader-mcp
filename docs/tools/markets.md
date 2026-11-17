@@ -14,7 +14,7 @@ Parameters: `league`, optional `date` (`YYYYMMDD`), optional `team`, optional `m
 
 Prices are the `*_dollars` fields and are labelled `priceSource: "dollars"`. `includeBook` adds the top of book. Kalshi's book is bids only, so the yes ask is `1 - best no bid`, labelled `priceSource: "orderbook"`.
 
-Event tickers look like `KXNFLGAME-26NOV15MINGB`: the original scheduled date, then the away code, then the home code. A postponed game keeps that original date, so a date filter uses the ticker date.
+Event tickers look like `KXNFLGAME-26NOV15MINGB`: the original scheduled date, then the away code, then the home code. A spread or total suffix can end in the line (`NOP9`). The date still comes from the ticker. A postponed game keeps that original date, so a date filter uses the ticker date. Each side includes the team name, not only the code.
 
 ## `get_polymarket_markets`
 
@@ -24,7 +24,7 @@ Parameters: `league`, optional `date`, optional `team`, optional `marketType` (d
 
 `venue=both` returns two labelled entries. Gamma `outcomes` and `clobTokenIds` are JSON strings and are decoded. Default prices are `gamma_outcome_prices`. `includeBook` uses the CLOB book and labels those prices `clob_book`. The buy-side `/price` endpoint is not used as an ask.
 
-Global slugs use the UTC date (`nfl-pit-cin-2026-11-17`). Gamma `eventDate` and `usId` use the local date. The US slug is `aec-` plus `usId`. Past events can still arrive with `active=true`; they are dropped using `eventDate` and `startTime`.
+Global slugs use the UTC date (`nfl-pit-cin-2026-11-17`). Gamma `eventDate` and `usId` use the local date. When `eventDate` is present, a date filter uses only that date, so a previous night's game whose UTC date has already rolled over stays on its own day. The US slug is `aec-` plus `usId` when Gamma sends one. When `usId` is missing, it is `aec-{sport}-{away}-{home}-{eventDate}`, trying Gamma and ESPN codes and the swapped order. Past events can still arrive with `active=true`; they are dropped using `eventDate` and `startTime`. A team filter is an exact code, alias, or name.
 
 ## `get_market_odds`
 
@@ -32,7 +32,7 @@ Match one ESPN game to every venue.
 
 Parameters: `sport`, `league`, optional `eventId`, optional `team`, optional `date`, optional `venue` (`all` default, or one of `kalshi`, `polymarket`, `polymarket_us`), and `raw`.
 
-With no `eventId` and no `team`, the first game on the scoreboard is used. Matching uses team codes through the alias table and team names. Kalshi can match when the ticker date is the original date and ESPN has moved the game. Polymarket can match on `eventDate` even when the slug date is the UTC date.
+With no `eventId` and no `team`, the first game on the scoreboard is used. A team that matches more than one game returns an error asking for `eventId`. Matching uses team codes through the alias table and team names, and accepts either home/away order. Prices stay attached to the team. Men's and women's college basketball use the Division I scoreboard. Kalshi can match when the ticker date is the original date and ESPN has moved the game. Polymarket can match on `eventDate` even when the slug date is the UTC date.
 
 The winner/moneyline is the market compared here.
 

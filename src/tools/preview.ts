@@ -11,7 +11,7 @@ import { dateSchema, eventIdSchema, leagueSchema, sportSchema } from "../schemas
 import { previewOutput } from "../output-schemas.js";
 import { codesEqual, resolveLeague } from "../markets/aliases.js";
 import { getMarketOdds } from "../markets/service.js";
-import { easternDate } from "../markets/parse.js";
+import { easternDate, teamHits } from "../markets/parse.js";
 import { scoreboardQuery } from "./scoreboard.js";
 
 /**
@@ -131,6 +131,7 @@ interface PolyPrice {
   slug: string;
   team: string;
   mid: number | null;
+  label?: "mid";
 }
 
 /** Today as YYYYMMDD in America/Chicago. ESPN game days for a team lookup use this when date is omitted. */
@@ -262,17 +263,6 @@ function gameFromSummary(raw: unknown): ParsedGame | null {
     away,
     probables: null,
   };
-}
-
-function teamHits(league: string, side: Side, query: string): boolean {
-  const needle = query.trim().toLowerCase();
-  if (!needle) return false;
-  if (codesEqual(league, side.abbr, query)) return true;
-  const fields = [side.location, side.name, side.displayName]
-    .map((value) => value.toLowerCase())
-    .filter(Boolean);
-  if (fields.some((value) => value === needle)) return true;
-  return needle.length >= 4 && fields.some((value) => value.includes(needle));
 }
 
 function injuryDetail(row: Record<string, unknown>): string | null {
@@ -461,25 +451,32 @@ function polyPrices(venue: Record<string, unknown>, league: string, home: Side, 
   const long = record(event.long);
   const short = record(event.short);
   const prices: PolyPrice[] = [];
+  const longBid = num(long?.bid);
+  const longAsk = num(long?.ask);
+  const longMid =
+    longBid != null && longAsk != null ? round4((longBid + longAsk) / 2) : num(long?.mid);
   if (long) {
-    const bid = num(long.bid);
-    const ask = num(long.ask);
-    const mid = bid != null && ask != null ? round4((bid + ask) / 2) : num(long.current) ?? num(long.last);
     prices.push({
       slug,
       team: teamLabel(league, text(long.code), [text(long.name)], home, away),
-      mid,
+      mid: longMid,
+      label: "mid" as const,
     });
   }
   if (short) {
-    const bid = num(short.bid);
-    const ask = num(short.ask);
+    const shortBid = num(short.bid);
+    const shortAsk = num(short.ask);
     const mid =
-      bid != null && ask != null ? round4((bid + ask) / 2) : num(short.quote) ?? num(short.current) ?? num(short.last);
+      shortBid != null && shortAsk != null
+        ? round4((shortBid + shortAsk) / 2)
+        : longMid != null
+          ? round4(1 - longMid)
+          : num(short.mid);
     prices.push({
       slug,
       team: teamLabel(league, text(short.code), [text(short.name)], home, away),
       mid,
+      label: "mid" as const,
     });
   }
   return prices.filter((price) => price.team);
@@ -560,7 +557,9 @@ export const getGamePreview = defineTool({
     "Injuries, weather, and venue come from the ESPN summary (gameInfo.weather and gameInfo.venue). An indoor venue is { indoor: true }; the scoreboard venue flag is used when the summary omits indoor. " +
     "Probables are scoreboard competitors[].probables. Lineups are the latest Parquet rows for that game, the same path as get_lineups. " +
     "Markets reuse get_market_odds (Kalshi trade-api v2 and the Polymarket US gateway, keyless). Prices are not averaged. " +
+    "Polymarket US mid is the bid/ask midpoint for the slug's first team and one minus that midpoint for the other team, labelled mid. " +
     "A game with neither venue listed is \"no market found\". Postponed games keep the original date in the Kalshi ticker. " +
+    "If eventId and team are both passed, they must name the same game. " +
     "One block failing leaves the others in the response and puts its message on errors.",
   inputShape: {
     sport: sportSchema,
@@ -721,6 +720,9 @@ export const getGamePreview = defineTool({
     const venue = mergedVenue(summaryGame?.venue, boardGame?.venue);
     const home = summaryGame?.home ?? base.home;
     const away = summaryGame?.away ?? base.away;
+    if (eventId && team && !teamHits(league, home, team) && !teamHits(league, away, team)) {
+      throw new Error(`Team ${team} is not on event ${eventId} (${away.abbr} at ${home.abbr}).`);
+    }
 
     const result: Record<string, unknown> = {
       event: {

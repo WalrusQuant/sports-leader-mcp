@@ -33,6 +33,7 @@ export const getKalshiMarketsTool = defineTool({
   description:
     "Keyless Kalshi prices for one league. No API key. market is winner (default), spread, or total. " +
     "Prices are the *_dollars fields. Event tickers encode the original scheduled date plus away and home codes; postponed games keep that date. " +
+    "Spread suffixes may end in the line (NOP9). Team names and nicknames are returned with the codes. " +
     "Pass includeBook for the top of book, where the yes ask is 1 minus the best no bid.",
   inputShape: {
     league: leagueParam,
@@ -52,7 +53,8 @@ export const getPolymarketMarketsTool = defineTool({
     "Keyless Polymarket prices for one league. No API key. venue=both (default) returns polymarket and polymarket_us, each labelled and never averaged. " +
     "marketType defaults to moneyline (winner). outcomes and clobTokenIds are decoded from Gamma's JSON strings. " +
     "Global prices are gamma_outcome_prices unless includeBook requests the CLOB book (clob_book). " +
-    "The US slug is aec- plus Gamma usId, which uses the local date rather than the UTC slug date.",
+    "The US slug is aec- plus Gamma usId when Gamma sends one. When usId is missing it is aec-{sport}-{away}-{home}-{eventDate}, trying Gamma and ESPN codes and the swapped order. " +
+    "A date filter uses eventDate alone when Gamma sends it, so the previous night's late tip is not included.",
   inputShape: {
     league: leagueParam,
     date: dateSchema,
@@ -79,7 +81,9 @@ export const getMarketOddsTool = defineTool({
     "Match one ESPN game to Kalshi, Polymarket, and Polymarket US. No API key. Venues sit side by side and are never averaged. " +
     "venue defaults to all. A venue with no listing is { venue, status: \"no market found\" }. One venue failing does not drop the others. " +
     "fetchedAt is when the response was built. matchedBy says how the ESPN game and each venue were matched. " +
-    "Pass eventId from get_scoreboard, or team and date. The US slug is aec- plus Gamma usId.",
+    "Pass eventId from get_scoreboard, or team and date. A team must match one game; more than one match asks for eventId. " +
+    "Home and away may be listed in either order (neutral sites). Prices stay on the team, not the side. " +
+    "The US slug is aec- plus Gamma usId, or a constructed aec-{sport}-{away}-{home}-{eventDate} when usId is missing.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,

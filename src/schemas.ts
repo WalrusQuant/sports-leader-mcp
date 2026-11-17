@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isCalendarDate } from "./markets/parse.js";
 
 const slug = (description: string) =>
   z
@@ -30,15 +31,23 @@ export const teamIdSchema = z
   .min(1)
   .describe("ESPN team ID, e.g. '13'. Find via get_teams.");
 
+const calendarDay = (value: string) =>
+  isCalendarDate(`${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6, 8)}`);
+
 export const dateSchema = z
   .string()
   .regex(/^\d{8}$/, "date must be YYYYMMDD")
+  .refine(calendarDay, "Invalid date. Use a real calendar day as YYYYMMDD, for example 20261117.")
   .optional()
-  .describe("Single date in YYYYMMDD format, e.g. '20250315'.");
+  .describe("Single date in YYYYMMDD format, a real calendar day, e.g. '20250315'.");
 
 export const dateRangeSchema = z
   .string()
   .regex(/^\d{8}-\d{8}$/, "dateRange must be YYYYMMDD-YYYYMMDD")
+  .refine(
+    (value) => calendarDay(value.slice(0, 8)) && calendarDay(value.slice(9)),
+    "Invalid dateRange. Both ends must be real YYYYMMDD calendar days.",
+  )
   .optional()
   .describe("Date range in YYYYMMDD-YYYYMMDD format, e.g. '20250301-20250331'.");
 
