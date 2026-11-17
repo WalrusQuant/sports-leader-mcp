@@ -3,6 +3,15 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.8.3 — 2026-11-17
+
+Game preview weather reports sustained wind and gusts separately, condition labels match the AccuWeather icon table, and college basketball date ranges are fetched one day at a time. 43 tools.
+
+### Fixed
+- `get_game_preview` copied `gameInfo.weather.gust` into `windMph` whenever sustained wind was missing. Wisconsin at Purdue (401858533, Nov 21, Ross-Ade) is 61°F and Mostly Cloudy with a 17 mph gust and no sustained wind; the preview reported `windMph: 17`. `windMph` is sustained wind only (`windSpeed`, a `NW 12 mph` string, or a nested wind speed) and is null when ESPN does not send one. Gusts are `gustMph`, including 0. A gust is never copied into `windMph`.
+- AccuWeather icon codes 1–44 (ESPN `conditionId`) were checked against the published weather-icons table. Code 37 was "Hazy" and is "Hazy Moonlight". Code 8 was "Overcast" and is "Dreary (Overcast)". Night codes 36 and 38 were already "Intermittent Clouds" and "Mostly Cloudy". The other codes already named the same conditions. Labels stay title case, with "with" and "Thunderstorms" spelled out. Codes 9, 10, 27, and 28 are unused and stay unlabeled.
+- `get_scoreboard` and `get_slate` sent `dates=YYYYMMDD-YYYYMMDD` for every league. Men's and women's college basketball return HTTP 400 for that form, with or without `groups=50` and `limit=400`. Those two leagues now request each day with the Division I query (or the `groups` you passed), four days at a time, then dedupe events by id and sort them by start time. A range longer than 14 days is an error, and a range that ends before it starts is an error, before any request. Other leagues still send ESPN one range. The slate injury report stays the one current league report. Nov 15–22, 2026 is 409 men's games, including Coastal Carolina at Wisconsin and Seton Hall vs Wisconsin. That compact scoreboard is about 55,000 tokens, so the default 50,000 token budget replaces it with the truncation envelope.
+
 ## 0.8.2 — 2026-11-17
 
 Player trends no longer sum rate and max stats, and recent games no longer mix in preseason. 43 tools.

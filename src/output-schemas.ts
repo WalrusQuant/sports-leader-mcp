@@ -565,7 +565,8 @@ const previewWeather = z.union([
   obj({
     tempF: nullableNum,
     condition: z.string().nullable(),
-    windMph: nullableNum,
+    windMph: nullableNum.describe("Sustained wind in mph. Null when ESPN omits it. Never a gust."),
+    gustMph: nullableNum.describe("Wind gust in mph. Null when ESPN omits it."),
     precipPct: nullableNum,
   }),
 ]);

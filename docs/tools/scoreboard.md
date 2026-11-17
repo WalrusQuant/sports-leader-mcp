@@ -10,6 +10,8 @@ Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`), `dateRange` (`YYYYM
 
 Men's and women's college basketball default `groups` to `50` (every Division I game) and request `limit=400`. The bare scoreboard is a short featured list: on 2026-11-15 it returned 6 of 44 Division I men's games and omitted Wisconsin (team id 275), and 12 of 72 women's games. A grouped scoreboard also stops at 100 events unless `limit` is set (155 men's games on 2026-02-07). Pass `groups` to request one conference. A `week` query stays on ESPN's own page, because an opening week is about 470 games and the compact scoreboard for that many games exceeds the token budget. College football already returns every FBS game with no group. Other leagues are unchanged.
 
+`dateRange` for those two basketball leagues is not sent as `dates=YYYYMMDD-YYYYMMDD`. ESPN returns HTTP 400 for that form, with or without `groups` and `limit`. The tool requests each day with the same Division I query (`groups=50`, `limit=400`, or the `groups` you passed), at most four days at a time, then dedupes events by id and sorts them by start time. A range longer than 14 days is an error. Other leagues still send ESPN one range.
+
 Individual sports (golf, tennis, racing) put the player on `competitor.athlete` rather than `competitor.team`. Compact output adds `athlete` (`id`, `name`) and `order` when that name is present. Team sports are unchanged.
 
 Compact shape:
@@ -99,7 +101,9 @@ Hockey and soccer are not published on this Core endpoint, and a game that has n
 
 One call per game day. Returns every game with `eventId`, `startUtc`, `name`, `status`, `neutralSite`, `home`/`away` (`id`, `abbrev`, `name`, `record`, `score` — `null` before start — `keyInjuries`, `otherInjuryCount`), and `odds` (consensus `homeNoVigProb`/`awayNoVigProb`/`drawNoVigProb`, first provider's moneylines, `homeSpread`, `total`, `reason` when there are no odds).
 
-Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`, ESPN's US-Eastern game day; omit for the current slate), optional `groups` (same Division I default as `get_scoreboard`), optional `includeInjuries` (default `true`), and `raw`.
+Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`, ESPN's US-Eastern game day; omit for the current slate), optional `dateRange` (`YYYYMMDD-YYYYMMDD`), optional `groups` (same Division I default as `get_scoreboard`), optional `includeInjuries` (default `true`), and `raw`.
+
+A men's or women's college basketball `dateRange` uses the same per-day scoreboard fetch as `get_scoreboard` (at most 14 days). Other leagues send the range in one scoreboard request. The injury report is still one current league report, not one report per day.
 
 `keyInjuries` lists players marked `Out` or `Doubtful` (up to 12 per team). It is `null` when the injury report is unavailable, and `injuriesNote` explains why. ESPN returns empty injury reports for some leagues (for example EPL and NCAAF); `injuriesNote` flags that too. Upstream cost is two cached calls: the scoreboard and the league injury report.
 
@@ -111,7 +115,7 @@ One game in one call. Returns the event (`id`, `startUtc`, `venue`, `indoor`, `h
 
 Parameters: `sport`, `league`, and either `eventId` or `team`. `date` is `YYYYMMDD`. With `team` and no date, the day is today in America/Chicago. The team has to match one game. `include` is any of `injuries`, `probables`, `lineups`, `weather`, and `markets` (default all). `raw` is accepted.
 
-Injuries, weather, and the venue name come from the ESPN summary (`injuries`, `gameInfo.weather`, `gameInfo.venue`). An indoor venue is `{ "indoor": true }`. The summary venue often omits `indoor`; the scoreboard venue flag is used then. Current summaries publish `temperature`, `conditionId`, `gust`, and `precipitation`. `condition` is the AccuWeather label for that id. `windMph` uses `windSpeed` when ESPN sends it, otherwise `gust`.
+Injuries, weather, and the venue name come from the ESPN summary (`injuries`, `gameInfo.weather`, `gameInfo.venue`). An indoor venue is `{ "indoor": true }`. The summary venue often omits `indoor`; the scoreboard venue flag is used then. Current summaries publish `temperature`, `conditionId`, `gust`, and `precipitation`. `condition` is the AccuWeather label for that id (icon codes 1–44). `windMph` is sustained wind (`windSpeed`, or a wind string such as `NW 12 mph`) and is null when ESPN does not send one. `gustMph` is the gust. A gust is never copied into `windMph`.
 
 Probable pitchers (MLB) and goalies (NHL) are `competitors[].probables` on the scoreboard. Other leagues return `probables: null`. NBA, MLB, and NHL lineups are the latest Parquet rows for that game, the same query path as `get_lineups`. Other leagues return `lineups: null`.
 
