@@ -21,7 +21,7 @@ import { dataStatus, sha256 } from "./cache.js";
 import { columnsFor, DATASET_INFO, type ColumnDef, type ColType } from "./datasets.js";
 import { dataUrl, type DataDeps } from "./http.js";
 import type { ManifestFile } from "./manifest.js";
-import { aggregatePlayerTrends, queryDataset } from "./query.js";
+import { aggregatePlayerTrends, nflPasserRating, queryDataset, statAggregation } from "./query.js";
 import { DATA_TOOL_NAMES, dataTools, getGames, getPlayerGameLogs, getPlayerTrends } from "./tools.js";
 
 const SQL_TYPE: Record<ColType, string> = {
@@ -832,8 +832,9 @@ describe("bayes data export", { concurrency: 1 }, () => {
       assert.equal(ambiguous.candidates?.length, 2);
 
       const none = await run({ dataset: "player_game_logs", league: "nba", player: "James' OR '1'='1", by: "month" });
-      assert.equal(none.resolved, true);
+      assert.equal(none.resolved, false);
       assert.equal(none.reason, "not_found");
+      assert.match(none.message ?? "", /No player rows/);
       assert.deepEqual(none.groups, []);
 
       await assert.rejects(
@@ -844,6 +845,106 @@ describe("bayes data export", { concurrency: 1 }, () => {
         () => getPlayerTrends.handler({ league: "nba", player: "1", by: "home_away", statGroup: "goalie" }),
         /not valid for nba/,
       );
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("rate stats are recomputed, longest is a max, and a goalie in the skater log says wrong_group", async () => {
+    assert.equal(statAggregation("save_pct"), "rate");
+    assert.equal(statAggregation("passer_rating"), "rate");
+    assert.equal(statAggregation("qbr"), "rate");
+    assert.equal(statAggregation("longest"), "max");
+    assert.equal(statAggregation("points"), "sum");
+    assert.equal(statAggregation("yards_per_play"), "rate");
+
+    const dir = await mkdtemp(path.join(tmpdir(), "bayes-rates-"));
+    try {
+      const goalieColumns = columnsFor("goalie_game_logs", "nhl");
+      const goalieLine = (overrides: Record<string, unknown>, index: number) =>
+        row(goalieColumns, "nhl", { player_id: 3151297, player_name: "Igor Shesterkin", did_not_play: false, ...overrides }, index);
+      // Live October 2026 was 81 saves on 87 shots. Summing the per-game save_pct
+      // produced 3.715 and the unweighted mean was 0.929. 2/2 and 79/85 is the
+      // same 81/87, and the mean of 1 and 0.929 is not 0.931.
+      const goalieRows = [
+        goalieLine({ game_id: 1, game_date: "2026-10-09", is_home: true, saves: 2, shots_against: 2, goals_against: 0, save_pct: 1 }, 0),
+        goalieLine({ game_id: 2, game_date: "2026-10-16", is_home: false, saves: 79, shots_against: 85, goals_against: 6, save_pct: 0.929 }, 1),
+      ];
+      const goalieBody = await writeParquet(path.join(dir, "goalie.parquet"), goalieColumns, goalieRows);
+      const goalieFile = fileEntry("goalie_game_logs", "nhl", 2027, goalieColumns, goalieBody, goalieRows.length, "2026-11-16T12:00:00Z");
+
+      const skaterColumns = columnsFor("skater_game_logs", "nhl");
+      const skaterBody = await writeParquet(path.join(dir, "skater.parquet"), skaterColumns, [
+        row(skaterColumns, "nhl", { player_id: 1, player_name: "Skater Only", game_date: "2026-10-09" }),
+      ]);
+      const skaterFile = fileEntry("skater_game_logs", "nhl", 2027, skaterColumns, skaterBody, 1, "2026-11-16T12:00:00Z");
+
+      const passingColumns = columnsFor("passing_game_logs", "nfl");
+      const passingRows = [
+        row(passingColumns, "nfl", {
+          player_id: 4036378, player_name: "Jordan Love", game_id: 1, game_date: "2026-09-13", is_home: true,
+          completions: 10, attempts: 10, yards: 80, touchdowns: 1, interceptions: 0, qbr: 80, passer_rating: 158.3,
+        }, 0),
+        row(passingColumns, "nfl", {
+          player_id: 4036378, player_name: "Jordan Love", game_id: 2, game_date: "2026-09-20", is_home: true,
+          completions: 10, attempts: 30, yards: 220, touchdowns: 0, interceptions: 1, qbr: 40, passer_rating: 80,
+        }, 1),
+      ];
+      const passingBody = await writeParquet(path.join(dir, "passing.parquet"), passingColumns, passingRows);
+      const passingFile = fileEntry("passing_game_logs", "nfl", 2026, passingColumns, passingBody, passingRows.length, "2026-11-16T12:00:00Z");
+
+      const receivingColumns = columnsFor("receiving_game_logs", "nfl");
+      const receivingRows = [
+        row(receivingColumns, "nfl", {
+          player_id: 4047365, player_name: "Josh Jacobs", game_id: 1, game_date: "2026-10-11", receptions: 4, yards: 30, longest: 12,
+        }, 0),
+        row(receivingColumns, "nfl", {
+          player_id: 4047365, player_name: "Josh Jacobs", game_id: 2, game_date: "2026-10-18", receptions: 6, yards: 70, longest: 40,
+        }, 1),
+      ];
+      const receivingBody = await writeParquet(path.join(dir, "receiving.parquet"), receivingColumns, receivingRows);
+      const receivingFile = fileEntry("receiving_game_logs", "nfl", 2026, receivingColumns, receivingBody, receivingRows.length, "2026-11-16T12:00:00Z");
+
+      const state = freshState([goalieFile, skaterFile, passingFile, receivingFile]);
+      const cfg = config(dir);
+      const now = () => Date.parse("2026-11-16T18:00:00Z");
+      const run = (query: Parameters<typeof aggregatePlayerTrends>[1]) => aggregatePlayerTrends(cfg, query, deps(state, now));
+
+      const october = await run({ dataset: "goalie_game_logs", league: "nhl", player: "3151297", by: "month", seasons: [2027] });
+      assert.equal(october.resolved, true);
+      const month = october.groups.find((group) => group.key === "2026-10");
+      assert.equal(month?.games, 2);
+      assert.equal(month?.total.saves, 81);
+      assert.equal(month?.total.shots_against, 87);
+      assert.equal(month?.avg.save_pct, Math.round((81 / 87) * 1000) / 1000);
+      assert.equal(month?.total.save_pct, undefined);
+      assert.notEqual(month?.avg.save_pct, Math.round(((1 + 0.929) / 2) * 1000) / 1000);
+
+      const home = await run({ dataset: "passing_game_logs", league: "nfl", player: "4036378", by: "home_away", seasons: [2026] });
+      const homeGroup = home.groups.find((group) => group.key === "home");
+      const rating = nflPasserRating(20, 40, 300, 1, 1);
+      assert.ok(rating !== undefined);
+      assert.equal(homeGroup?.avg.passer_rating, Math.round(rating * 1000) / 1000);
+      assert.equal(homeGroup?.total.passer_rating, undefined);
+      assert.notEqual(homeGroup?.avg.passer_rating, 119.15);
+      assert.equal(homeGroup?.avg.qbr, 50);
+      assert.equal(homeGroup?.total.qbr, undefined);
+      assert.equal(homeGroup?.total.attempts, 40);
+      assert.equal(homeGroup?.total.yards, 300);
+
+      const receiving = await run({ dataset: "receiving_game_logs", league: "nfl", player: "4047365", by: "month", seasons: [2026] });
+      const receivingMonth = receiving.groups[0];
+      assert.equal(receivingMonth?.total.longest, 40);
+      assert.equal(receivingMonth?.avg.longest, 26);
+      assert.notEqual(receivingMonth?.total.longest, 52);
+
+      const wrong = await run({ dataset: "skater_game_logs", league: "nhl", player: "3151297", by: "month", seasons: [2027] });
+      assert.equal(wrong.resolved, false);
+      assert.equal(wrong.reason, "wrong_group");
+      assert.equal(wrong.player.name, "Igor Shesterkin");
+      assert.match(wrong.message ?? "", /statGroup "goalie"/);
+      assert.match(wrong.message ?? "", /No skater rows/);
+      assert.deepEqual(wrong.groups, []);
     } finally {
       await rm(dir, { recursive: true, force: true });
     }

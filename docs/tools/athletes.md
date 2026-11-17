@@ -32,7 +32,7 @@ Compact shape:
 
 ## `get_athlete_gamelog`
 
-Returns compact game records containing date, opponent, home/away, result, score, and named statistics. Each record carries `eventId` for joining with game tools. It removes the large duplicate event/reference structures from ESPN's response. Publishes an MCP `outputSchema`.
+Returns compact game records containing date, `seasonType`, opponent, home/away, result, score, and named statistics, newest first. `seasonType` is `preseason`, `regular`, or `postseason` when ESPN's gamelog split says so. Each record carries `eventId` for joining with game tools. It removes the large duplicate event/reference structures from ESPN's response. Publishes an MCP `outputSchema`.
 
 ESPN's gamelog is one flat label list. Football publishes the same abbreviation under more than one category (`YDS`, `AVG`, `TD`, and `LNG` for rushing and receiving, and the same four for passing and rushing). Those stats are nested by category so both values stay. `categories` names each group and the keys inside it. `labels` is still ESPN's flat header, duplicates included.
 
@@ -53,6 +53,7 @@ Josh Jacobs (NFL id `4047365`) at Detroit on 2026-10-25:
   "games": [{
     "eventId": "401873020",
     "date": "2026-10-25T20:25:00.000+00:00",
+    "seasonType": "regular",
     "opponent": "DET",
     "homeAway": "A",
     "result": "L",
@@ -76,18 +77,25 @@ Parameters: `sport`, `league`, `athleteId`, optional `season`, `seasonType`, and
 
 One call for how a player has looked lately. `player` is a name or an ESPN athlete id. A name is resolved with search and kept inside `league`. One match is used. More than one match in that league returns `candidates` and does not guess. Search for "josh jacobs" returns more than one player; `league=nfl` resolves to athlete `4047365`.
 
-`include` defaults to `season`, `recent`, and `splits`. `season` is the season stat line ESPN publishes for that year (or the latest year in the document). `recent` is the last `lastN` gamelog rows, most recent first (default 5), with the same stat shape as [`get_athlete_gamelog`](#get_athlete_gamelog). A label ESPN repeats, such as `YDS` for rushing and receiving, is nested under its category so both values stay. `splits` is the split list ESPN publishes, with named stat fields. One of those blocks failing is reported in `errors` and the others are still returned. `sources` names the documents that were requested. Publishes an MCP `outputSchema`.
+`include` defaults to `season`, `recent`, and `splits`. `season` is the season stat line ESPN publishes for that year (or the latest year in the document). `recent` is the last `lastN` gamelog rows, most recent first (default 5), with the same stat shape as [`get_athlete_gamelog`](#get_athlete_gamelog). Preseason games are left out unless `includePreseason` is true. A label ESPN repeats, such as `YDS` for rushing and receiving, is nested under its category so both values stay. `splits` is the split list ESPN publishes, with named stat fields. When the ESPN athlete page lists a current injury, `athlete.injury` carries the status and a summary (Josh Jacobs: Out, Right Finger Surgery). One of those blocks failing is reported in `errors` and the others are still returned. `sources` names the documents that were requested. Publishes an MCP `outputSchema`.
 
 Parameters: `sport`, `league`, `player`, optional `season`, `lastN`, `include`, and `raw`.
 
 ```json
 {
   "resolved": true,
-  "athlete": { "id": "4047365", "name": "Josh Jacobs", "team": "GB", "position": "RB" },
+  "athlete": {
+    "id": "4047365",
+    "name": "Josh Jacobs",
+    "team": "GB",
+    "position": "RB",
+    "injury": { "status": "Out", "summary": "Right Finger Surgery", "side": "Right", "type": "Finger", "detail": "Surgery" }
+  },
   "season": { "year": 2026, "categories": [{ "name": "rushing", "stats": { "CAR": "36", "YDS": "80" } }] },
   "recent": [{
     "eventId": "401873020",
     "date": "2026-10-25T20:25:00.000+00:00",
+    "seasonType": "regular",
     "opponent": "DET",
     "homeAway": "A",
     "result": "L",

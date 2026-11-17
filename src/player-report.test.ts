@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { transformGamelog } from "./transforms.js";
 import {
   candidatesFromSearch,
+  currentInjury,
   namedSeasonStats,
   normalizePlayerName,
   recentGames,
@@ -185,6 +186,7 @@ test("Jacobs Detroit row keeps rushing and receiving yards", () => {
   assert.equal(receiving.AVG, "11.0");
   assert.equal(receiving.TD, "1");
   assert.equal(receiving.LNG, "25");
+  assert.equal(game?.seasonType, "regular");
 
   // get_athlete_gamelog uses the same row. A flat zip would keep receiving YDS (55) and drop the 36.
   const log = transformGamelog(raw) as {
@@ -207,4 +209,103 @@ test("recent games are the latest rows, most recent first", () => {
     { eventId: "3", date: "2026-10-10T00:00:00Z", opponent: "C", homeAway: "H", stats: { YDS: "3" } },
   ];
   assert.deepEqual(recentGames({ games }, 2).map((game) => game.eventId), ["2", "3"]);
+});
+
+test("recent games drop preseason unless includePreseason is set, and stay newest first", () => {
+  const raw = {
+    labels: ["PTS"],
+    names: ["points"],
+    events: {
+      "401902644": {
+        id: "401902644",
+        gameDate: "2026-10-03T23:00:00.000+00:00",
+        opponent: { abbreviation: "TOR" },
+        team: { id: "15" },
+        homeTeamId: "28",
+        gameResult: "W",
+        score: "104-98",
+      },
+      "401898393": {
+        id: "401898393",
+        gameDate: "2026-10-08T23:30:00.000+00:00",
+        opponent: { abbreviation: "NO" },
+        team: { id: "15" },
+        homeTeamId: "15",
+        gameResult: "W",
+      },
+      "401898404": {
+        id: "401898404",
+        gameDate: "2026-10-14T23:30:00.000+00:00",
+        opponent: { abbreviation: "BKN" },
+        team: { id: "15" },
+        homeTeamId: "17",
+        gameResult: "W",
+      },
+      "401909091": {
+        id: "401909091",
+        gameDate: "2026-10-21T23:30:00.000+00:00",
+        opponent: { abbreviation: "MIN" },
+        team: { id: "15" },
+        homeTeamId: "15",
+        gameResult: "L",
+      },
+    },
+    seasonTypes: [
+      {
+        displayName: "2026-27 Regular Season",
+        categories: [{ events: [{ eventId: "401909091", stats: ["28"] }] }],
+      },
+      {
+        displayName: "2026-27 Preseason",
+        categories: [{
+          events: [
+            { eventId: "401902644", stats: ["20"] },
+            { eventId: "401898393", stats: ["18"] },
+            { eventId: "401898404", stats: ["22"] },
+          ],
+        }],
+      },
+    ],
+  };
+  const log = transformGamelog(raw) as { games: { eventId: string; seasonType?: string; opponent: string }[] };
+  assert.deepEqual(log.games.map((game) => `${game.seasonType}:${game.opponent}`), [
+    "regular:MIN",
+    "preseason:BKN",
+    "preseason:NO",
+    "preseason:TOR",
+  ]);
+  const recent = recentGamesFromGamelog(raw, 30);
+  assert.deepEqual(recent.map((game) => game.opponent), ["MIN"]);
+  assert.equal(recent[0]?.seasonType, "regular");
+  const withPreseason = recentGamesFromGamelog(raw, 30, { includePreseason: true });
+  assert.deepEqual(withPreseason.map((game) => game.opponent), ["MIN", "BKN", "NO", "TOR"]);
+});
+
+test("current injury keeps Out and the right-finger surgery detail", () => {
+  const injury = currentInjury({
+    athlete: {
+      id: "4047365",
+      displayName: "Josh Jacobs",
+      injuries: [{
+        status: "Out",
+        date: "2026-11-16T19:15:00.000+00:00",
+        details: {
+          fantasyStatus: { description: "DOUBTFUL" },
+          type: "Finger",
+          location: "Arm",
+          detail: "Surgery",
+          side: "Right",
+          returnDate: "2026-11-25T00:00:00.000+00:00",
+        },
+      }],
+    },
+  });
+  assert.equal(injury?.status, "Out");
+  assert.equal(injury?.summary, "Right Finger Surgery");
+  assert.equal(injury?.side, "Right");
+  assert.equal(injury?.type, "Finger");
+  assert.equal(injury?.detail, "Surgery");
+  assert.equal(injury?.returnDate, "2026-11-25T00:00:00.000+00:00");
+  assert.equal(currentInjury({ athlete: { injuries: [{ status: "Active", details: { detail: "news" } }] } }), undefined);
+  assert.equal(currentInjury({ athlete: {} }), undefined);
 });

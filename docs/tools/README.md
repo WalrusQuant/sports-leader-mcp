@@ -80,7 +80,7 @@ Parquet files for MLB, NBA, NFL, and NHL from GitHub Releases ([sportsleader-dat
 | [`get_team_box_scores`](data.md#tools) | Team box line. |
 | [`get_team_game_stats`](data.md#tools) | Team counting stats for and against. |
 | [`get_player_game_logs`](data.md#get_player_game_logs) | Player box lines. `statGroup` picks the league's file. |
-| [`get_player_trends`](data.md#get_player_trends) | Averages and totals by home/away, opponent, month, or rest. |
+| [`get_player_trends`](data.md#get_player_trends) | Averages and totals by home/away, opponent, month, or rest. Rates are recomputed; longest is a max. |
 | [`get_rosters`](data.md#tools) | Roster spans. |
 | [`get_injury_reports`](data.md#tools) | Injury history from the export. |
 | [`get_transaction_log`](data.md#tools) | Transaction history from the export. |

@@ -3,6 +3,16 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.8.2 — 2026-11-17
+
+Player trends no longer sum rate and max stats, and recent games no longer mix in preseason. 43 tools.
+
+### Fixed
+- `get_player_trends` summed every numeric column. Igor Shesterkin's October save percentage was `total.save_pct: 3.715` (four games of about 0.929). Jordan Love's home line summed to `total.qbr: 317.6` and `total.passer_rating: 479.7`. Receiving `longest` was added up. Rate stats stay out of `total`. Save percentage is saves / shots against (81 / 87 = 0.931, not the mean of the per-game rates). Passer rating is recomputed from completions, attempts, yards, touchdowns, and interceptions. QBR is the mean weighted by attempts, or omitted when attempts are missing. `longest` and `long` use the maximum.
+- A goalie queried as a skater came back `resolved: true` with `reason: not_found`. A player who is in a different stat group now returns `resolved: false`, `reason: wrong_group`, and the `statGroup` to pass. A player in none of the logs returns `resolved: false` and `reason: not_found`.
+- `get_player_report` for Giannis (3032977) with `lastN: 30` returned 16 games, three of them preseason (Oct 3 TOR, Oct 8 NO, Oct 14 BKN), while the regular-season total was 13. `get_athlete_gamelog` now tags each game with `seasonType` and sorts by date, newest first. `recent` leaves preseason out unless `includePreseason` is true.
+- `get_player_report` includes the current injury from the ESPN athlete page when one is listed. Josh Jacobs is Out, Right Finger Surgery.
+
 ## 0.8.1 — 2026-11-16
 
 Market matching for neutral sites, Kalshi spreads and totals, and Polymarket dates. 43 tools.

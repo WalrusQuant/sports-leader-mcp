@@ -235,6 +235,7 @@ export const gamelogOutput = withEnvelope({
     obj({
       eventId: str,
       date: optStr,
+      seasonType: optStr,
       opponent: str,
       homeAway: z.enum(["H", "A"]),
       result: optStr,
@@ -244,9 +245,21 @@ export const gamelogOutput = withEnvelope({
   ),
 });
 
+const reportInjury = obj({
+  status: str,
+  summary: optStr,
+  type: optStr,
+  detail: optStr,
+  side: optStr,
+  location: optStr,
+  returnDate: optStr,
+  date: optStr,
+});
+
 const reportGame = obj({
   eventId: str,
   date: optStr,
+  seasonType: optStr,
   opponent: str,
   homeAway: z.enum(["H", "A"]),
   result: optStr,
@@ -277,6 +290,7 @@ export const playerReportOutput = withEnvelope({
     name: optStr,
     team: optStr,
     position: optStr,
+    injury: reportInjury.optional(),
   }).optional(),
   season: obj({
     year: z.number().optional(),
@@ -301,7 +315,7 @@ const trendNumber = z.number();
 
 export const playerTrendsOutput = withEnvelope({
   resolved: z.boolean(),
-  reason: z.enum(["ambiguous", "not_found"]).optional(),
+  reason: z.enum(["ambiguous", "not_found", "wrong_group"]).optional(),
   dataset: str,
   league: str,
   statGroup: optStr,
