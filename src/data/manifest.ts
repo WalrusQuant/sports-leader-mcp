@@ -1,3 +1,4 @@
+import { DATA_LEAGUE_PATH } from "./datasets.js";
 import { DataExportError } from "./errors.js";
 
 export interface ManifestColumn {
@@ -32,7 +33,6 @@ export interface Manifest {
   files: ManifestFile[];
 }
 
-const PATH_RE = /^(mlb|nba|nfl|nhl)\/[a-z0-9_]+\/\d{4}\.parquet$/;
 const SHA_RE = /^[a-f0-9]{64}$/i;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -86,7 +86,7 @@ export function parseManifest(raw: unknown): Manifest {
     const dataset = reqString(entry, "dataset", label);
     const season = reqNumber(entry, "season", label);
     const filePath = reqString(entry, "path", label);
-    if (!PATH_RE.test(filePath) || filePath !== `${league}/${dataset}/${season}.parquet`) {
+    if (!DATA_LEAGUE_PATH.test(filePath) || filePath !== `${league}/${dataset}/${season}.parquet`) {
       throw new DataExportError(`manifest path does not match league/dataset/season: ${filePath}`);
     }
     const sha256 = reqString(entry, "sha256", label);

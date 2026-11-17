@@ -518,6 +518,8 @@ await auditPredictionMarkets();
 
 await auditGamePreviews();
 
+await auditHistoricalScoreboards();
+
 await auditDataExport();
 
 await auditContracts({ line, leagues: LEAGUES, today, version: VERSION });
@@ -655,6 +657,136 @@ async function auditGamePreviews() {
 }
 
 /**
+ * Older scoreboard days should come from games, not from one ESPN request per
+ * day. College seasons that the backfill has not published yet are a skip.
+ */
+async function auditHistoricalScoreboards() {
+  console.log("");
+  console.log("historical scoreboards");
+  let files = [];
+  try {
+    const status = await call("get_data_status", {});
+    files = Array.isArray(status.files) ? status.files : [];
+  } catch (err) {
+    const message = err instanceof Error ? err.message.split("\n")[0] : String(err);
+    line("fail", "get_scoreboard", "historical export", message.slice(0, 240));
+    return;
+  }
+  const hasGames = (league, season) => files.some((file) =>
+    file?.dataset === "games" && file.league === league && Number(file.season) === season,
+  );
+
+  await check("get_scoreboard", "nba week 2023", async () => {
+    const data = await call("get_scoreboard", {
+      sport: "basketball",
+      league: "nba",
+      dateRange: "20230115-20230121",
+    });
+    if (data.source !== "data") throw new Error(`source ${data.source ?? "missing"}`);
+    const events = eventsOf(data);
+    if (events.length < 40) throw new Error(`only ${events.length} games`);
+    if (data.page) throw new Error("a 2023 NBA week should fit in one page");
+    const game = events.find((event) => String(event.id) === "401468803");
+    if (!game) throw new Error("missing 401468803");
+    const home = (game.competitors ?? []).find((side) => side.homeAway === "home");
+    const away = (game.competitors ?? []).find((side) => side.homeAway === "away");
+    if (away?.team?.abbrev !== "NY" || String(away?.score) !== "117") {
+      throw new Error(`away ${away?.team?.abbrev} ${away?.score}`);
+    }
+    if (home?.team?.abbrev !== "DET" || String(home?.score) !== "104") {
+      throw new Error(`home ${home?.team?.abbrev} ${home?.score}`);
+    }
+    if (game.odds) throw new Error("odds are not in the games export");
+    if (home?.linescores || away?.linescores) throw new Error("linescores are not in the games export");
+    if (home?.record || away?.record) throw new Error("records are not in the games export");
+    return `events=${events.length} source=data 401468803 NY 117 at DET 104`;
+  });
+
+  await check("get_slate", "nba week 2023", async () => {
+    const data = await call("get_slate", {
+      sport: "basketball",
+      league: "nba",
+      dateRange: "20230115-20230121",
+      includeInjuries: true,
+    });
+    if (data.source !== "data") throw new Error(`source ${data.source ?? "missing"}`);
+    const game = (data.games ?? []).find((row) => String(row.eventId) === "401468803");
+    if (!game) throw new Error("missing 401468803");
+    if (game.home?.abbrev !== "DET") throw new Error(`home ${game.home?.abbrev}`);
+    if (String(game.away?.score) !== "117") throw new Error(`away score ${game.away?.score}`);
+    if (game.odds?.homeMoneyLine != null) throw new Error("moneyline present");
+    if (game.home?.keyInjuries != null) throw new Error("injury report was applied to an export game");
+    return `games=${data.gameCount} source=data`;
+  });
+
+  await check("get_scoreboard", "nfl week 1 2022", async () => {
+    const data = await call("get_scoreboard", {
+      sport: "football",
+      league: "nfl",
+      dateRange: "20220908-20220912",
+    });
+    if (data.source !== "data") throw new Error(`source ${data.source ?? "missing"}`);
+    const events = eventsOf(data);
+    if (events.length < 16) throw new Error(`only ${events.length} games`);
+    const game = events.find((event) => String(event.id) === "401437654");
+    if (!game) throw new Error("missing 401437654");
+    const home = (game.competitors ?? []).find((side) => side.homeAway === "home");
+    const away = (game.competitors ?? []).find((side) => side.homeAway === "away");
+    if (away?.team?.abbrev !== "BUF" || String(away?.score) !== "31") {
+      throw new Error(`away ${away?.team?.abbrev} ${away?.score}`);
+    }
+    if (home?.team?.abbrev !== "LAR" || String(home?.score) !== "10") {
+      throw new Error(`home ${home?.team?.abbrev} ${home?.score}`);
+    }
+    return `events=${events.length} source=data 401437654 BUF 31 at LAR 10`;
+  });
+
+  if (!hasGames("cfb", 2024)) {
+    line("skip", "get_scoreboard", "cfb sat 20240914", "cfb games season 2024 is not in the manifest yet");
+  } else {
+    await check("get_scoreboard", "cfb sat 20240914", async () => {
+      const data = await call("get_scoreboard", {
+        sport: "football",
+        league: "college-football",
+        date: "20240914",
+      });
+      if (data.source !== "data") throw new Error(`source ${data.source ?? "missing"}`);
+      const events = eventsOf(data);
+      const game = events.find((event) => String(event.id) === "401628350");
+      if (!game) throw new Error("missing 401628350");
+      const ids = new Set((game.competitors ?? []).map((side) => String(side?.team?.id ?? "")));
+      if (!ids.has("275")) throw new Error("Wisconsin (team 275) missing from 401628350");
+      return `events=${events.length} source=data 401628350 includes team 275`;
+    });
+  }
+
+  if (!hasGames("cbb", 2024)) {
+    line("skip", "get_scoreboard", "cbb sat 20240106", "cbb games season 2024 is not in the manifest yet");
+  } else {
+    await check("get_scoreboard", "cbb sat 20240106", async () => {
+      const data = await call("get_scoreboard", {
+        sport: "basketball",
+        league: "mens-college-basketball",
+        date: "20240106",
+      });
+      if (data.source !== "data") throw new Error(`source ${data.source ?? "missing"}`);
+      const total = data.page?.total ?? eventsOf(data).length;
+      if (total <= 50) throw new Error(`only ${total} games`);
+      const events = eventsOf(data);
+      const game = events.find((event) => String(event.id) === "401600314");
+      const idsOnPage = new Set(events.flatMap((event) => (event.competitors ?? []).map((side) => String(side?.team?.id ?? ""))));
+      if (!game && !idsOnPage.has("275") && data.page) {
+        throw new Error(`401600314 was not on the first page of ${total} games`);
+      }
+      if (!game) throw new Error("missing 401600314");
+      const ids = new Set((game.competitors ?? []).map((side) => String(side?.team?.id ?? "")));
+      if (!ids.has("275")) throw new Error("Wisconsin (team 275) missing from 401600314");
+      return `games=${total} source=data 401600314 includes team 275`;
+    });
+  }
+}
+
+/**
  * Historical Parquet export on GitHub Releases. No API key. A cleared
  * manifest default with no SPORTSLEADER_DATA_* or BAYES_DATA_* URL is a
  * skip, not a failure. Checks come from the live manifest: a data set with
@@ -704,8 +836,11 @@ async function auditDataExport() {
         statGroup,
         limit: 5,
       });
-      const row = (logs.rows ?? []).find((entry) => entry?.player_id != null && entry.did_not_play !== true) ?? logs.rows?.[0];
-      if (row?.player_id == null) throw new Error("no player in the log");
+      const row = (logs.rows ?? []).find((entry) => {
+        const id = Number(entry?.player_id);
+        return Number.isFinite(id) && id > 0 && entry.did_not_play !== true;
+      });
+      if (!row) throw new Error("no player in the log");
       const data = await call("get_player_trends", {
         league: file.league,
         season: file.season,

@@ -3,6 +3,20 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.9.0 — 2026-11-17
+
+Older scoreboard days come from the games export in one query. 43 tools.
+
+### Added
+- `get_scoreboard` and `get_slate` read `games` for a day that is strictly older than the games file and strictly older than today and the previous 2 US-Eastern days. Freshness is the earlier of that file's `updated_at` and the manifest `generated_at`. One query covers every such day in the range, including a full season. `mlb`, `nba`, `nfl`, and `nhl` use the export seasons already published. `college-football` maps to `cfb` and `mens-college-basketball` maps to `cbb`. Those college seasons appear as the backfill publishes them. `game_id` is the ESPN event id.
+- The compact response adds `source` (`data`, `espn`, or `mixed`), `sourceNote`, and `days` (each date, its source, and its full game count) when any requested day is not a live or future ESPN day. A live-only response is unchanged. Games from the export omit period scores, records, odds, and broadcasts. On a slate those odds fields are null, `keyInjuries` is null, and the current injury report is not fetched when every game came from the export. A mixed slate still fetches that report once and applies it only to ESPN games.
+- A compact scoreboard or slate that would exceed the token budget returns a `page` and a note. `offset` returns the next slice. `days` still counts every game on every requested date. `raw=true` can still hit the truncation envelope.
+- The data tools accept `cfb` and `cbb`. College football player logs use the same passing, rushing, and receiving groups as the NFL. Men's college basketball uses the player group. A league or season the manifest does not have is still an error from those tools.
+
+### Changed
+- ESPN still rejects `dates=YYYYMMDD-YYYYMMDD` on every league. Today, the previous 2 Eastern days, future days, a week query, a missing season, a file that is not yet current through that day, and every league outside the export stay on ESPN, one day at a time, four at a time, at most 14 of those days. A `groups` value other than omitted, or `50` for men's college basketball, stays on ESPN. Women's college basketball is not in the export. If the manifest or the file cannot be read, the tool uses ESPN when that is 14 days or fewer and errors, with the export failure named, instead of requesting a longer range one day at a time. Preview and market lookups use the same scoreboard fetch for a single date.
+- The live contract check walks later Gamma events when the first slug has an empty markets list or the Polymarket US book has null `bestBid` and `bestAsk` (a just-settled game can stay `active` with `MARKET_STATE_EXPIRED`). A response that omits those keys still fails. The data-export trend check uses a positive `player_id`; college logs also publish a team-total row with a negative id.
+
 ## 0.8.4 — 2026-11-17
 
 CI runs the offline test suite, and the live audit checks the upstream contracts the scoreboard and market tools depend on. 43 tools.

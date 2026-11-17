@@ -3,7 +3,8 @@
  * fixtures from test/fixtures/<league>/. SDK-independent so it can be shared by
  * every end-to-end test file.
  */
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -124,11 +125,26 @@ export function hasFixture(league: string, name: string): boolean {
   return existsSync(join(FIXTURES, league, `${name}.json`));
 }
 
-/** Install the fixture router; returns a function that restores the real fetch. */
+function blocksDataExport(url: URL): boolean {
+  return url.hostname === "github.com" || url.hostname.endsWith(".githubusercontent.com");
+}
+
+/**
+ * Install the fixture router; returns a function that restores the real fetch.
+ * ESPN fixture tests must not read a developer's games-export cache or call
+ * GitHub. A historical scoreboard then falls back to the ESPN fixture.
+ */
 export function installFixtureFetch(): () => void {
+  if (!process.env.BAYES_DATA_CACHE_DIR) {
+    process.env.BAYES_DATA_CACHE_DIR = mkdtempSync(join(tmpdir(), "sports-leader-fixture-"));
+  }
+  process.env.BAYES_DATA_REVALIDATE_MS = "0";
   const realFetch = globalThis.fetch;
   globalThis.fetch = (async (input: any, init?: RequestInit) => {
     const url = new URL(typeof input === "string" ? input : input instanceof URL ? input.href : input.url);
+    if (blocksDataExport(url)) {
+      return new Response("fixture does not serve the games export", { status: 500 });
+    }
     const market = marketFixture(url);
     if (market) {
       init?.signal?.throwIfAborted?.();

@@ -83,6 +83,16 @@ export const groupsSchema = z
     "ESPN scoreboard group id. Men's and women's college basketball default to '50' (every Division I game). Pass another id to request one conference. Omit it for every other league.",
   );
 
+export const offsetSchema = z
+  .number()
+  .int()
+  .min(0)
+  .max(100_000)
+  .optional()
+  .describe(
+    "Skip this many games. Set from the page note when a scoreboard or slate was shortened to stay within the token budget.",
+  );
+
 export const limitSchema = z
   .number()
   .int()
