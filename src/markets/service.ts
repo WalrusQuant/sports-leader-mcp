@@ -6,7 +6,7 @@
 import { BASE } from "../endpoints.js";
 import { UpstreamError, fetchJson } from "../client.js";
 import { eventContext } from "../transforms.js";
-import { scoreboardQuery } from "../tools/scoreboard.js";
+import { fetchScoreboard } from "../tools/scoreboard.js";
 import {
   type LeagueMarketConfig,
   type ProTeam,
@@ -157,11 +157,7 @@ export async function loadEspnGame(args: {
     throw new Error(`League ${league.league} is a ${league.sport} league.`);
   }
   const date = args.date ? isoDate(args.date).replaceAll("-", "") : undefined;
-  const board = asRecord(
-    await fetchJson(`${BASE.site}/${league.sport}/${league.league}/scoreboard`, {
-      params: scoreboardQuery(league.sport, league.league, { dates: date }),
-    }),
-  );
+  const board = asRecord(await fetchScoreboard(league.sport, league.league, { dates: date }));
   const events = Array.isArray(board.events) ? board.events : [];
   let matchedBy = "first scoreboard game";
   let chosen = events;

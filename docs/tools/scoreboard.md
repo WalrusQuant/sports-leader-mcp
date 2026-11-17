@@ -10,7 +10,7 @@ Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`), `dateRange` (`YYYYM
 
 Men's and women's college basketball default `groups` to `50` (every Division I game) and request `limit=400`. The bare scoreboard is a short featured list: on 2026-11-15 it returned 6 of 44 Division I men's games and omitted Wisconsin (team id 275), and 12 of 72 women's games. A grouped scoreboard also stops at 100 events unless `limit` is set (155 men's games on 2026-02-07). Pass `groups` to request one conference. A `week` query stays on ESPN's own page, because an opening week is about 470 games and the compact scoreboard for that many games exceeds the token budget. College football already returns every FBS game with no group. Other leagues are unchanged.
 
-`dateRange` for those two basketball leagues is not sent as `dates=YYYYMMDD-YYYYMMDD`. ESPN returns HTTP 400 for that form, with or without `groups` and `limit`. The tool requests each day with the same Division I query (`groups=50`, `limit=400`, or the `groups` you passed), at most four days at a time, then dedupes events by id and sorts them by start time. A range longer than 14 days is an error. Other leagues still send ESPN one range.
+`dateRange` is not sent as `dates=YYYYMMDD-YYYYMMDD`. ESPN returns HTTP 400 for that form on every league scoreboard. The tool requests each day (four at a time, at most 14 days), dedupes events by id, and sorts them by start time. A range that ends before it starts is an error before any request. Men's and women's college basketball days still use the Division I query (`groups=50`, `limit=400`, or the `groups` you passed). A `week` query, including NFL and college football, stays one ESPN request and does not add the Division I group.
 
 Individual sports (golf, tennis, racing) put the player on `competitor.athlete` rather than `competitor.team`. Compact output adds `athlete` (`id`, `name`) and `order` when that name is present. Team sports are unchanged.
 
@@ -103,7 +103,7 @@ One call per game day. Returns every game with `eventId`, `startUtc`, `name`, `s
 
 Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`, ESPN's US-Eastern game day; omit for the current slate), optional `dateRange` (`YYYYMMDD-YYYYMMDD`), optional `groups` (same Division I default as `get_scoreboard`), optional `includeInjuries` (default `true`), and `raw`.
 
-A men's or women's college basketball `dateRange` uses the same per-day scoreboard fetch as `get_scoreboard` (at most 14 days). Other leagues send the range in one scoreboard request. The injury report is still one current league report, not one report per day.
+A `dateRange` uses the same per-day scoreboard fetch as `get_scoreboard` (every league, at most 14 days). The injury report is still one current league report, not one report per day.
 
 `keyInjuries` lists players marked `Out` or `Doubtful` (up to 12 per team). It is `null` when the injury report is unavailable, and `injuriesNote` explains why. ESPN returns empty injury reports for some leagues (for example EPL and NCAAF); `injuriesNote` flags that too. Upstream cost is two cached calls: the scoreboard and the league injury report.
 

@@ -1,6 +1,6 @@
 /**
- * Men's and women's college basketball scoreboards reject dates=YYYYMMDD-YYYYMMDD.
- * A requested range is one Division I day at a time, then merged.
+ * Every league scoreboard rejects dates=YYYYMMDD-YYYYMMDD.
+ * A requested range is one day at a time, then merged. Week queries stay one request.
  */
 import { describe, test } from "node:test";
 import assert from "node:assert/strict";
@@ -150,26 +150,98 @@ test("a college basketball range longer than 14 days errors before any fetch", a
   }
 });
 
-test("other leagues send ESPN one date range", async () => {
-  const stub = stubFetch(() => jsonResponse({ events: [] }));
+test("every league splits a dateRange, and NFL and college football weeks stay one request", async () => {
+  const stub = stubFetch(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 15));
+    return jsonResponse({ events: [] });
+  });
   try {
     await getScoreboard.handler({
       sport: "football",
       league: "nfl",
-      dateRange: "20261115-20261122",
+      dateRange: "20261117-20261119",
     });
-    await getSlate.handler({
+    assert.deepEqual(
+      stub.calls.map((url) => new URL(url).searchParams.get("dates")),
+      ["20261117", "20261118", "20261119"],
+    );
+    assert.equal(stub.maxInFlight(), 3);
+    for (const url of stub.calls) {
+      const params = new URL(url).searchParams;
+      assert.match(url, /\/football\/nfl\/scoreboard/);
+      assert.equal(params.get("dates")?.includes("-"), false);
+      assert.equal(params.get("groups"), null);
+      assert.equal(params.get("limit"), null);
+      assert.equal(params.get("week"), null);
+    }
+
+    const weekStart = stub.calls.length;
+    await getScoreboard.handler({ sport: "football", league: "nfl", week: 11, seasonType: 2 });
+    await getScoreboard.handler({ sport: "football", league: "college-football", week: 12, seasonType: 2 });
+    assert.equal(stub.calls.length, weekStart + 2);
+    const nflWeek = new URL(stub.calls[weekStart]);
+    assert.equal(nflWeek.searchParams.get("week"), "11");
+    assert.equal(nflWeek.searchParams.get("seasontype"), "2");
+    assert.equal(nflWeek.searchParams.get("dates"), null);
+    assert.equal(nflWeek.searchParams.get("groups"), null);
+    assert.equal(nflWeek.searchParams.get("limit"), null);
+    const cfbWeek = new URL(stub.calls[weekStart + 1]);
+    assert.match(cfbWeek.pathname, /\/football\/college-football\/scoreboard$/);
+    assert.equal(cfbWeek.searchParams.get("week"), "12");
+    assert.equal(cfbWeek.searchParams.get("seasontype"), "2");
+    assert.equal(cfbWeek.searchParams.get("dates"), null);
+    assert.equal(cfbWeek.searchParams.get("groups"), null);
+    assert.equal(cfbWeek.searchParams.get("limit"), null);
+
+    await assert.rejects(
+      () => getSlate.handler({
+        sport: "basketball",
+        league: "nba",
+        dateRange: "20261101-20261120",
+        includeInjuries: true,
+      }),
+      /20 days/,
+    );
+    await assert.rejects(
+      () => getScoreboard.handler({
+        sport: "hockey",
+        league: "nhl",
+        dateRange: "20261119-20261117",
+      }),
+      /ends before it starts/,
+    );
+    assert.equal(stub.calls.length, weekStart + 2);
+  } finally {
+    stub.restore();
+  }
+});
+
+test("get_slate splits an NBA range and still fetches injuries once", async () => {
+  const stub = stubFetch((url) => {
+    if (url.includes("/injuries")) return jsonResponse({ injuries: [] });
+    return jsonResponse({ events: [{ id: "1", date: "2026-11-18T00:00Z", competitions: [] }] });
+  });
+  try {
+    const raw = await getSlate.handler({
       sport: "basketball",
       league: "nba",
-      dateRange: "20261101-20261120",
-      includeInjuries: false,
+      dateRange: "20261117-20261119",
     });
-    assert.equal(stub.calls.length, 2);
-    assert.equal(new URL(stub.calls[0]).searchParams.get("dates"), "20261115-20261122");
-    assert.equal(new URL(stub.calls[0]).searchParams.get("groups"), null);
-    assert.equal(new URL(stub.calls[0]).searchParams.get("limit"), null);
-    assert.equal(new URL(stub.calls[1]).searchParams.get("dates"), "20261101-20261120");
-    assert.match(stub.calls[1], /\/basketball\/nba\/scoreboard/);
+    const boards = stub.calls.filter((url) => url.includes("/scoreboard"));
+    const injuries = stub.calls.filter((url) => url.includes("/injuries"));
+    assert.deepEqual(
+      boards.map((url) => new URL(url).searchParams.get("dates")),
+      ["20261117", "20261118", "20261119"],
+    );
+    for (const url of boards) {
+      const params = new URL(url).searchParams;
+      assert.equal(params.get("groups"), null);
+      assert.equal(params.get("limit"), null);
+      assert.equal(params.get("dates")?.includes("-"), false);
+    }
+    assert.equal(injuries.length, 1);
+    const slate = transformSlate(raw) as { games: Array<{ eventId: string }> };
+    assert.deepEqual(slate.games.map((game) => game.eventId), ["1"]);
   } finally {
     stub.restore();
   }

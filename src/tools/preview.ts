@@ -12,7 +12,7 @@ import { previewOutput } from "../output-schemas.js";
 import { codesEqual, resolveLeague } from "../markets/aliases.js";
 import { getMarketOdds } from "../markets/service.js";
 import { easternDate, teamHits } from "../markets/parse.js";
-import { scoreboardQuery } from "./scoreboard.js";
+import { fetchScoreboard as fetchLeagueScoreboard } from "./scoreboard.js";
 
 /**
  * One game: injuries and weather from the ESPN summary, probable pitchers or
@@ -357,9 +357,7 @@ function mergedVenue(summary: VenueInfo | undefined, board: VenueInfo | undefine
 }
 
 async function fetchScoreboard(sport: string, league: string, date?: string): Promise<ParsedGame[]> {
-  const data = await fetchJson(`${BASE.site}/${sport}/${league}/scoreboard`, {
-    params: scoreboardQuery(sport, league, { dates: date }),
-  });
+  const data = await fetchLeagueScoreboard(sport, league, { dates: date });
   return list(record(data)?.events)
     .map(gameFromScoreboardEvent)
     .filter((game): game is ParsedGame => game !== null);
