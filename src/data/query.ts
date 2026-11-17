@@ -1,10 +1,10 @@
 import type { DataConfig } from "./config.js";
 import { ensureParquetRetry } from "./cache.js";
-import { PLAYER_LOG_GROUPS } from "./datasets.js";
+import { isDataLeague, PLAYER_LOG_GROUPS } from "./datasets.js";
 import { DataExportError } from "./errors.js";
 import { defaultDeps, type DataDeps } from "./http.js";
 import { loadManifest } from "./cache.js";
-import type { Manifest, ManifestFile } from "./manifest.js";
+import type { Manifest, ManifestColumn, ManifestFile } from "./manifest.js";
 
 /**
  * Parquet is queried with @duckdb/node-api (DuckDB Neo). The package ships
@@ -146,8 +146,8 @@ function unionColumns(files: ManifestFile[]): string[] {
 }
 
 function resolveFiles(manifest: Manifest, query: DataQuery): ManifestFile[] {
-  if (!/^(mlb|nba|nfl|nhl)$/.test(query.league)) {
-    throw new DataExportError("league must be mlb, nba, nfl, or nhl");
+  if (!isDataLeague(query.league)) {
+    throw new DataExportError("league must be mlb, nba, nfl, nhl, cfb, or cbb");
   }
   const matching = manifest.files.filter((file) => file.dataset === query.dataset && file.league === query.league);
   if (matching.length === 0) {
@@ -398,6 +398,120 @@ export async function queryDataset(config: DataConfig, query: DataQuery, deps: D
     columns: selected,
     rows,
   };
+}
+
+const GAME_COLUMNS = [
+  "game_id",
+  "game_date",
+  "start_time",
+  "status",
+  "completed",
+  "season",
+  "season_type",
+  "ending",
+  "neutral_site",
+  "home_team_id",
+  "home_team_abbr",
+  "home_team_name",
+  "away_team_id",
+  "away_team_abbr",
+  "away_team_name",
+  "home_score",
+  "away_score",
+  "venue",
+  "venue_city",
+] as const;
+
+function sqlExpr(column: ManifestColumn): string {
+  const quoted = quoteIdent(column.name);
+  if (/bool/i.test(column.type)) return quoted;
+  if (/int|float|double|decimal|real|huge/i.test(column.type)) return quoted;
+  return `CAST(${quoted} AS VARCHAR) AS ${quoted}`;
+}
+
+/**
+ * Every games row in [from, to] across the named seasons. No row cap: scoreboard
+ * paging happens after the rows are turned into events. Dates are YYYY-MM-DD.
+ */
+export async function queryGamesByDate(
+  config: DataConfig,
+  league: string,
+  seasons: number[],
+  from: string,
+  to: string,
+  deps: DataDeps = defaultDeps(),
+): Promise<{ generated_at: string; files: ManifestFile[]; rows: Record<string, unknown>[] }> {
+  if (!isDataLeague(league)) {
+    throw new DataExportError("league must be mlb, nba, nfl, nhl, cfb, or cbb");
+  }
+  assertDate(from, "from");
+  assertDate(to, "to");
+  if (seasons.length === 0) throw new DataExportError("seasons must list at least one season");
+  if (seasons.length > 20) throw new DataExportError("at most 20 seasons can be queried at once");
+  const manifest = await loadManifest(config, deps);
+  const matching = manifest.files.filter((file) => file.dataset === "games" && file.league === league);
+  const selectedFiles = seasons.map((season) => {
+    if (!Number.isInteger(season)) throw new DataExportError(`season must be an integer (${season})`);
+    const file = matching.find((item) => item.season === season);
+    if (!file) {
+      const have = [...new Set(matching.map((item) => item.season))].sort((a, b) => a - b).join(", ") || "none";
+      throw new DataExportError(`games has no ${league} file for season ${season}. Available seasons: ${have}`);
+    }
+    return file;
+  });
+
+  const available = new Map<string, ManifestColumn>();
+  for (const file of selectedFiles) {
+    for (const column of file.columns) {
+      if (!available.has(column.name)) available.set(column.name, column);
+    }
+  }
+  const selected = GAME_COLUMNS.filter((name) => available.has(name)).map((name) => available.get(name)!);
+  if (!selected.some((column) => column.name === "game_id") || !selected.some((column) => column.name === "game_date")) {
+    throw new DataExportError(`games for ${league} is missing game_id or game_date`);
+  }
+
+  const locals: string[] = [];
+  const resolved: ManifestFile[] = [];
+  for (const file of selectedFiles) {
+    const got = await ensureParquetRetry(config, file, deps);
+    locals.push(got.path);
+    resolved.push(got.file);
+  }
+
+  const params: SqlValue[] = [];
+  const scans = locals.map((local) => {
+    params.push(local);
+    return "SELECT * FROM read_parquet(?)";
+  });
+  params.push(from, to);
+  const names = new Set(selected.map((column) => column.name));
+  const order = [
+    names.has("game_date") ? `${quoteIdent("game_date")} ASC` : "",
+    names.has("start_time") ? `${quoteIdent("start_time")} ASC NULLS LAST` : "",
+    `${quoteIdent("game_id")} ASC`,
+  ].filter(Boolean);
+  const sql = `
+    SELECT ${selected.map(sqlExpr).join(", ")}
+    FROM (${scans.join(" UNION ALL BY NAME ")}) AS src
+    WHERE ${quoteIdent("game_date")} >= CAST(? AS DATE) AND ${quoteIdent("game_date")} <= CAST(? AS DATE)
+    ORDER BY ${order.join(", ")}
+  `;
+
+  const rows = await enqueue(async () => {
+    const conn = await connection();
+    const result = await conn.runAndReadAll(sql, params);
+    const typeIds = Array.from({ length: result.columnCount }, (_, index) => result.columnTypeId(index));
+    return result.getRowObjectsJS().map((row) => {
+      const out: Record<string, unknown> = {};
+      for (const [index, column] of selected.entries()) {
+        out[column.name] = normalizeValue(row[column.name], typeIds[index] ?? 0);
+      }
+      return out;
+    });
+  });
+
+  return { generated_at: manifest.generated_at, files: resolved, rows };
 }
 
 export type TrendBy = "home_away" | "opponent" | "month" | "rest";

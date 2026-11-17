@@ -20,12 +20,12 @@ Large sub-payloads are also available as `espn://` resource templates (see the [
 
 | Tool | Description |
 |------|-------------|
-| [`get_scoreboard`](scoreboard.md#get_scoreboard) | Get live and scheduled games. Entry point for finding eventIds. |
+| [`get_scoreboard`](scoreboard.md#get_scoreboard) | Live and scheduled games. Older days come from the games export. Entry point for finding eventIds. |
 | [`get_game_summary`](scoreboard.md#get_game_summary) | Score, team/player boxscore, leaders, key plays, sampled win probability. |
 | [`get_game_plays`](scoreboard.md#get_game_plays) | Full play-by-play data for a game. |
 | [`get_game_odds`](scoreboard.md#get_game_odds) | Betting odds per provider with numeric moneylines, implied and no-vig probabilities, signed `homeSpread`, and consensus. |
 | [`get_game_probabilities`](scoreboard.md#get_game_probabilities) | Win probability timeline for a game. |
-| [`get_slate`](scoreboard.md#get_slate) | One-call daily slate: games, team IDs, status/score, consensus no-vig probabilities, key Out/Doubtful injuries. |
+| [`get_slate`](scoreboard.md#get_slate) | One-call slate: games, team IDs, status/score, consensus no-vig probabilities, key Out/Doubtful injuries. Older days come from the games export. |
 | [`get_game_preview`](scoreboard.md#get_game_preview) | One game: injuries, probables or lineups, weather, and Kalshi and Polymarket US winner prices. |
 
 ## Prediction markets
@@ -72,7 +72,7 @@ Keyless Kalshi and Polymarket prices. Venues are labelled and are not averaged. 
 
 ## Historical export
 
-Parquet files for MLB, NBA, NFL, and NHL from GitHub Releases ([sportsleader-data](https://github.com/WalrusQuant/sportsleader-data)), no API key. The manifest is `releases/download/manifest/manifest.json`; each file is fetched from its manifest `url`. Override with `SPORTSLEADER_DATA_MANIFEST_URL` (`BAYES_DATA_MANIFEST_URL` still works). `SPORTSLEADER_DATA_BASE_URL` is an optional directory mirror (`BAYES_DATA_BASE_URL` is the same). A data set the manifest does not publish returns a clear error; `get_data_status` lists what is there. See [Historical data](data.md). The live `get_injuries` and `get_transactions` tools are unchanged.
+Parquet files for MLB, NBA, NFL, and NHL, and for college football and men's college basketball as those seasons are published, from GitHub Releases ([sportsleader-data](https://github.com/WalrusQuant/sportsleader-data)), no API key. The manifest is `releases/download/manifest/manifest.json`; each file is fetched from its manifest `url`. Override with `SPORTSLEADER_DATA_MANIFEST_URL` (`BAYES_DATA_MANIFEST_URL` still works). `SPORTSLEADER_DATA_BASE_URL` is an optional directory mirror (`BAYES_DATA_BASE_URL` is the same). A data set the manifest does not publish returns a clear error; `get_data_status` lists what is there. See [Historical data](data.md). `get_scoreboard` and `get_slate` read `games` for older days. The live `get_injuries` and `get_transactions` tools are unchanged.
 
 | Tool | Description |
 |------|-------------|

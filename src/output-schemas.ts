@@ -91,8 +91,25 @@ const oddsBlockSchema = obj({
 
 // ─── get_scoreboard ───────────────────────────────────────────────────────────
 
+const coverageDaySchema = obj({
+  date: str,
+  source: z.enum(["data", "espn"]),
+  games: z.number(),
+});
+
+const pageSchema = obj({
+  offset: z.number(),
+  returned: z.number(),
+  total: z.number(),
+  note: str,
+});
+
 export const scoreboardOutput = withEnvelope({
   date: z.unknown(),
+  source: z.enum(["data", "espn", "mixed"]).optional(),
+  sourceNote: optStr,
+  days: z.array(coverageDaySchema).optional(),
+  page: pageSchema.optional(),
   spreadConvention: optStr,
   noVigMethod: optStr,
   events: z.array(
@@ -100,6 +117,7 @@ export const scoreboardOutput = withEnvelope({
       id: str,
       date: str.describe("Start time, ISO-8601 UTC."),
       name: str,
+      source: z.enum(["data", "espn"]).optional(),
       status: statusSchema,
       venue: obj({ name: str, city: z.unknown().optional() }).optional(),
       competitors: z.array(
@@ -495,6 +513,10 @@ export const slateOutput = withEnvelope({
   league: optStr,
   date: optStr,
   gameCount: z.number(),
+  source: z.enum(["data", "espn", "mixed"]).optional(),
+  sourceNote: optStr,
+  days: z.array(coverageDaySchema).optional(),
+  page: pageSchema.optional(),
   spreadConvention: str,
   noVigMethod: str,
   keyInjuryStatuses: z.array(str),
@@ -503,6 +525,7 @@ export const slateOutput = withEnvelope({
   games: z.array(
     obj({
       eventId: str,
+      source: z.enum(["data", "espn"]).optional(),
       startUtc: z.string().nullable(),
       name: str,
       status: statusSchema,

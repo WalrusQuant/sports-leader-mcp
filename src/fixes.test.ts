@@ -8,9 +8,11 @@ import assert from "node:assert/strict";
 import { apiCache } from "./client.js";
 import { seasonLeadersPaths } from "./season.js";
 import { getLeagueLeaders } from "./tools/league.js";
-import { getGameProbabilities, getScoreboard } from "./tools/scoreboard.js";
+import { getGameProbabilities, getScoreboard, setScoreboardNowForTests } from "./tools/scoreboard.js";
 import { getSlate } from "./tools/slate.js";
 import { getTeam, getTeams } from "./tools/teams.js";
+
+/** Nov 16, 2026, 1:00pm US Eastern. 20261114 and 20261115 stay inside the live window. */
 
 function jsonResponse(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), {
@@ -36,7 +38,12 @@ function stubFetch(handler: (url: string) => Response) {
 }
 
 describe("espn endpoint fixes", { concurrency: 1 }, () => {
-test.beforeEach(() => apiCache.clear());
+test.beforeEach(() => {
+  apiCache.clear();
+  setScoreboardNowForTests(() => new Date("2026-11-16T18:00:00Z"));
+});
+
+test.afterEach(() => setScoreboardNowForTests(null));
 
 test("season leaders prefer regular season, then soccer's type 1", () => {
   const paths = seasonLeadersPaths("soccer", "eng.1", 2025);

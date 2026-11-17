@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { OFFSEASON_QUIET_DAYS, STALE_AFTER_MS, requireDataConfig } from "./config.js";
 import { dataStatus } from "./cache.js";
-import { DATASET_NAMES, PLAYER_LOG_GROUPS } from "./datasets.js";
+import { DATA_LEAGUES, DATASET_NAMES, PLAYER_LOG_GROUPS } from "./datasets.js";
 import { DataExportError } from "./errors.js";
 import { defaultDeps } from "./http.js";
 import { aggregatePlayerTrends, queryDataset, type DataQuery } from "./query.js";
@@ -10,8 +10,10 @@ import { playerTrendsOutput } from "../output-schemas.js";
 import { defineTool } from "../tool.js";
 
 const leagueField = z
-  .enum(["mlb", "nba", "nfl", "nhl"])
-  .describe("League slug: mlb, nba, nfl, or nhl. Every row carries ESPN team and player ids.");
+  .enum(DATA_LEAGUES)
+  .describe(
+    "League slug: mlb, nba, nfl, nhl, cfb (college football, FBS), or cbb (men's college basketball, Division I). Every row carries ESPN team and player ids.",
+  );
 
 const seasonField = z
   .number()
@@ -19,7 +21,9 @@ const seasonField = z
   .min(1990)
   .max(2100)
   .optional()
-  .describe("Season year. NBA and NHL use the year the season ends (2026-27 is 2027). Omit for the current season in the export. Seasons start at 2021.");
+  .describe(
+    "Season year. NBA, NHL, and men's college basketball (cbb) use the year the season ends (2026-27 is 2027; 2020-21 is 2021). MLB, NFL, and college football (cfb) use the year the season starts. Omit for the current season in the export. Pro seasons start at 2021. College seasons appear as the backfill publishes them.",
+  );
 
 const seasonsField = z
   .array(z.number().int().min(1990).max(2100))
@@ -141,7 +145,9 @@ async function run(dataset: string, args: FilterArgs) {
 function datasetForPlayerLog(league: string, statGroup: string | undefined): string {
   const groups = PLAYER_LOG_GROUPS[league];
   if (!groups) {
-    throw new DataExportError(`player game logs are published for nba, nhl, mlb, and nfl, not ${league}`);
+    throw new DataExportError(
+      `player game logs are published for ${Object.keys(PLAYER_LOG_GROUPS).join(", ")}, not ${league}`,
+    );
   }
   const names = Object.keys(groups);
   if (!statGroup) {
@@ -159,7 +165,7 @@ const statGroupField = z
   .enum(["player", "skater", "goalie", "batting", "pitching", "passing", "rushing", "receiving"])
   .optional()
   .describe(
-    "Which box the league keeps. nba: player (optional). nhl: skater or goalie. mlb: batting or pitching. nfl: passing, rushing, or receiving.",
+    "Which box the league keeps. nba and cbb: player (optional). nhl: skater or goalie. mlb: batting or pitching. nfl and cfb: passing, rushing, or receiving.",
   );
 
 export const getGames = defineTool({

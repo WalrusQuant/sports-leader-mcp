@@ -131,10 +131,12 @@ test("Kalshi, Gamma, and Polymarket US fixtures", () => {
   ]);
   assert.equal(market.status, "pass");
   assert.equal(gammaMarketVerdict([{ sportsMarketType: "moneyline", outcomes: "[]" }]).status, "fail");
+  assert.equal(gammaMarketVerdict([]).status, "empty");
 
   const bbo = usBboVerdict(read("test/fixtures/nfl/polymarket-us.json"));
   assert.equal(bbo.status, "pass");
   assert.match(bbo.detail, /bestBid=0.4100/);
   assert.match(bbo.detail, /bestAsk=0.4300/);
   assert.equal(usBboVerdict({ price: 0.5 }).status, "fail");
+  assert.equal(usBboVerdict({ marketData: { bestBid: null, bestAsk: null, state: "MARKET_STATE_EXPIRED" } }).status, "empty");
 });

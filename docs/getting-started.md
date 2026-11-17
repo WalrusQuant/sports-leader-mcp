@@ -124,7 +124,7 @@ Several tools accept a `seasonType` parameter:
 ## Date Formats
 
 - **Single date:** `YYYYMMDD` (e.g. `20250315`)
-- **Date range:** `YYYYMMDD-YYYYMMDD` (e.g. `20250301-20250331`)
+- **Date range:** `YYYYMMDD-YYYYMMDD` (e.g. `20250301-20250331`). `get_scoreboard` and `get_slate` serve days older than the games export's freshness, and older than today and the previous 2 US-Eastern days, from that export. The remaining days are one ESPN request each, at most 14.
 
 ## Betting Provider IDs
 

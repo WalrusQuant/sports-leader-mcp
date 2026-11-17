@@ -257,27 +257,30 @@ export function gammaEventVerdict(payload) {
   const events = Array.isArray(payload) ? payload : payload && Array.isArray(payload.events) ? payload.events : null;
   if (!events) return { status: "fail", detail: "response is not an event list", event: null };
   if (events.length === 0) return { status: "empty", detail: "no events", event: null };
-  const event = events.find((item) => item?.slug && Array.isArray(item.teams) && item.teams.length >= 2) ?? null;
+  const matches = events.filter((item) => item?.slug && Array.isArray(item.teams) && item.teams.length >= 2);
+  const event = matches[0] ?? null;
   if (!event) {
     const keys = Object.keys(events[0] ?? {}).slice(0, 8).join(",");
-    return { status: "fail", detail: `no event with slug and teams (first keys: ${keys || "none"})`, event: null };
+    return { status: "fail", detail: `no event with slug and teams (first keys: ${keys || "none"})`, event: null, events: [] };
   }
   const problems = [];
   if (!event.teams.every((team) => team?.abbreviation)) problems.push("teams[].abbreviation");
   if (!event.eventDate && !event.startTime) problems.push("eventDate/startTime");
-  if (problems.length) return { status: "fail", detail: `missing ${problems.join(", ")} on ${event.slug}`, event };
+  if (problems.length) return { status: "fail", detail: `missing ${problems.join(", ")} on ${event.slug}`, event, events: [] };
+  const usable = matches.filter((item) => item.teams.every((team) => team?.abbreviation) && (item.eventDate || item.startTime));
   const ordering = event.teams.map((team) => team.ordering || "none").join("/");
   return {
     status: "pass",
     detail: `unchanged ${event.slug} eventDate=${event.eventDate ?? "none"} usId=${event.usId ?? "null"} ordering=${ordering}`,
     event,
+    events: usable,
   };
 }
 
 export function gammaMarketVerdict(payload) {
   const markets = Array.isArray(payload) ? payload : payload && Array.isArray(payload.markets) ? payload.markets : null;
   if (!markets) return { status: "fail", detail: "markets response is not a list" };
-  if (markets.length === 0) return { status: "fail", detail: "markets list is empty" };
+  if (markets.length === 0) return { status: "empty", detail: "markets list is empty" };
   const market = markets.find((item) => item && (item.sportsMarketType == null || item.sportsMarketType === "moneyline")) ?? markets[0];
   const missing = ["outcomes", "outcomePrices", "clobTokenIds"].filter((key) => market[key] == null || market[key] === "");
   if (missing.length) {
@@ -300,10 +303,13 @@ export function usBboVerdict(body) {
   if (!data || typeof data !== "object" || Array.isArray(data)) {
     return { status: "fail", detail: `marketData missing (top-level ${Object.keys(body).slice(0, 8).join(",") || "none"})` };
   }
+  if (!("bestBid" in data) || !("bestAsk" in data)) {
+    return { status: "fail", detail: `bestBid/bestAsk missing (marketData keys ${Object.keys(data).slice(0, 10).join(",")})` };
+  }
   const bid = quoteValue(data.bestBid);
   const ask = quoteValue(data.bestAsk);
   if (bid == null || ask == null || !Number.isFinite(Number(bid)) || !Number.isFinite(Number(ask))) {
-    return { status: "fail", detail: `bestBid/bestAsk not numeric (marketData keys ${Object.keys(data).slice(0, 10).join(",")})` };
+    return { status: "empty", detail: `no live book (bestBid=${bid ?? "null"} bestAsk=${ask ?? "null"} state=${data.state ?? "unset"})` };
   }
   const extras = ["lastTradePx", "currentPx", "longQuote", "shortQuote"].filter((key) => quoteValue(data[key]) == null);
   const extraNote = extras.length ? `; missing ${extras.join(",")}` : "";
@@ -604,7 +610,7 @@ async function auditMarkets({ check, getUrl, today }) {
     };
   });
 
-  let gammaEvent = null;
+  let gammaEvents = [];
   let gammaSport = "nfl";
   await check("gamma events", async () => {
     const tried = [];
@@ -624,7 +630,7 @@ async function auditMarkets({ check, getUrl, today }) {
         continue;
       }
       if (verdict.status === "pass") {
-        gammaEvent = verdict.event;
+        gammaEvents = verdict.events?.length ? verdict.events : [verdict.event];
         gammaSport = series.sport;
       }
       return { status: verdict.status, detail: `${verdict.detail} ${url}` };
@@ -633,23 +639,45 @@ async function auditMarkets({ check, getUrl, today }) {
   });
 
   await check("gamma markets", async () => {
-    if (!gammaEvent?.slug) return { status: "skip", detail: "no Gamma event from the events check" };
-    const url = `${GAMMA}/markets?slug=${encodeURIComponent(gammaEvent.slug)}`;
-    const res = await getUrl(url);
-    if (res.status !== 200) return { status: "fail", detail: `HTTP ${res.status} ${url}` };
-    const verdict = gammaMarketVerdict(res.body);
-    return { status: verdict.status, detail: `${verdict.detail} slug=${gammaEvent.slug} ${url}` };
+    if (!gammaEvents.length) return { status: "skip", detail: "no Gamma event from the events check" };
+    const tried = [];
+    for (const event of gammaEvents) {
+      const url = `${GAMMA}/markets?slug=${encodeURIComponent(event.slug)}`;
+      const res = await getUrl(url);
+      if (res.status !== 200) return { status: "fail", detail: `HTTP ${res.status} ${url}` };
+      const verdict = gammaMarketVerdict(res.body);
+      if (verdict.status === "empty") {
+        tried.push(event.slug);
+        continue;
+      }
+      return { status: verdict.status, detail: `${verdict.detail} slug=${event.slug} ${url}` };
+    }
+    return { status: "skip", detail: `no listed markets (${tried.slice(0, 4).join(", ")})` };
   });
 
   await check("polymarket us bbo", async () => {
-    if (!gammaEvent) return { status: "skip", detail: "no Gamma event to build a US slug" };
-    const slug = usSlug(gammaEvent, gammaSport);
-    if (!slug) return { status: "fail", detail: `could not build a US slug from ${gammaEvent.slug}` };
-    const url = `${US_GATEWAY}/${encodeURIComponent(slug)}/bbo`;
-    const res = await getUrl(url);
-    if (res.status === 404) return { status: "fail", detail: `HTTP 404 marketData.bestBid/bestAsk not observed ${url}` };
-    if (res.status !== 200) return { status: "fail", detail: `HTTP ${res.status} ${url}` };
-    const verdict = usBboVerdict(res.body);
-    return { status: verdict.status, detail: `${verdict.detail} ${url}` };
+    if (!gammaEvents.length) return { status: "skip", detail: "no Gamma event to build a US slug" };
+    const tried = [];
+    for (const event of gammaEvents) {
+      const slug = usSlug(event, gammaSport);
+      if (!slug) {
+        tried.push(event.slug);
+        continue;
+      }
+      const url = `${US_GATEWAY}/${encodeURIComponent(slug)}/bbo`;
+      const res = await getUrl(url);
+      if (res.status === 404) {
+        tried.push(slug);
+        continue;
+      }
+      if (res.status !== 200) return { status: "fail", detail: `HTTP ${res.status} ${url}` };
+      const verdict = usBboVerdict(res.body);
+      if (verdict.status === "empty") {
+        tried.push(`${slug} ${verdict.detail}`);
+        continue;
+      }
+      return { status: verdict.status, detail: `${verdict.detail} ${url}` };
+    }
+    return { status: "skip", detail: `no live US book (${tried.slice(0, 2).join("; ")})` };
   });
 }

@@ -3,7 +3,7 @@ import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { OFFSEASON_QUIET_DAYS, STALE_AFTER_MS, type DataConfig } from "./config.js";
-import { datasetInfo } from "./datasets.js";
+import { DATA_LEAGUE_PATH, datasetInfo } from "./datasets.js";
 import { ChecksumMismatchError, DataExportError } from "./errors.js";
 import { dataFetch, fileDownloadUrl, type DataDeps } from "./http.js";
 import {
@@ -61,7 +61,7 @@ function cachePaths(config: DataConfig) {
 }
 
 function parquetPath(config: DataConfig, rel: string): string {
-  if (!/^(mlb|nba|nfl|nhl)\/[a-z0-9_]+\/\d{4}\.parquet$/.test(rel)) {
+  if (!DATA_LEAGUE_PATH.test(rel)) {
     throw new DataExportError(`refusing manifest path ${rel}`);
   }
   const root = path.resolve(config.cacheDir, "files");

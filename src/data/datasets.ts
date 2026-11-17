@@ -14,6 +14,16 @@ export interface ColumnDef {
 export const LEAGUES = ["mlb", "nba", "nfl", "nhl"] as const;
 export type League = (typeof LEAGUES)[number];
 
+/** Leagues the public games export can name. College files use cfb and cbb. */
+export const DATA_LEAGUES = ["mlb", "nba", "nfl", "nhl", "cfb", "cbb"] as const;
+export type DataLeague = (typeof DATA_LEAGUES)[number];
+
+export const DATA_LEAGUE_PATH = /^(mlb|nba|nfl|nhl|cfb|cbb)\/[a-z0-9_]+\/\d{4}\.parquet$/;
+
+export function isDataLeague(value: string): value is DataLeague {
+  return (DATA_LEAGUES as readonly string[]).includes(value);
+}
+
 const COL_TYPES = new Set<ColType>(["str", "int", "float", "bool", "date", "ts"]);
 
 export function columns(spec: string): ColumnDef[] {
@@ -210,9 +220,11 @@ export const DATASET_NAMES: readonly string[] = DATASET_INFO.map((info) => info.
 /** statGroup -> dataset, by league. NBA has a single group. */
 export const PLAYER_LOG_GROUPS: Record<string, Record<string, string>> = {
   nba: { player: "player_game_logs" },
+  cbb: { player: "player_game_logs" },
   nhl: { skater: "skater_game_logs", goalie: "goalie_game_logs" },
   mlb: { batting: "batting_game_logs", pitching: "pitching_game_logs" },
   nfl: { passing: "passing_game_logs", rushing: "rushing_game_logs", receiving: "receiving_game_logs" },
+  cfb: { passing: "passing_game_logs", rushing: "rushing_game_logs", receiving: "receiving_game_logs" },
 };
 
 export function columnsFor(dataset: string, league: string): ColumnDef[] {
