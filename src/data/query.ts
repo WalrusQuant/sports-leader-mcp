@@ -32,6 +32,8 @@ export interface DataQuery {
   team?: string;
   opponent?: string;
   player?: string;
+  /** ESPN event id. Matches game_id when that column is in the file. */
+  gameId?: string;
   columns?: string[];
   sort?: string;
   order?: "asc" | "desc";
@@ -337,6 +339,14 @@ export async function queryDataset(config: DataConfig, query: DataQuery, deps: D
     ...addTeamFilters(query.dataset, available, query, params),
   ];
   if (query.player) where.push(addPlayerFilter(query.dataset, availableSet, query.player, params));
+  if (query.gameId) {
+    if (!availableSet.has("game_id")) {
+      throw new DataExportError(`${query.dataset} has no game_id column`);
+    }
+    if (!ID_RE.test(query.gameId)) throw new DataExportError("gameId must be an ESPN event id");
+    params.push(BigInt(query.gameId));
+    where.push(`${quoteIdent("game_id")} = ?`);
+  }
 
   const direction = query.order === "asc" ? "ASC" : "DESC";
   const sortCol = query.sort ?? (availableSet.has("game_date") ? "game_date" : availableSet.has("date") ? "date" : availableSet.has("valid_from") ? "valid_from" : undefined);

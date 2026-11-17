@@ -3,6 +3,15 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## 0.8.0 — 2026-11-16
+
+One call for a game's injuries, probables or lineups, weather, and winner prices. 43 tools.
+
+### Added
+- `get_game_preview` takes `sport`, `league`, and either `eventId` or `team` (optional `date`, default today in America/Chicago). It returns that one game: injuries and weather from the ESPN summary, the venue, MLB probable pitchers and NHL probable goalies from the scoreboard, and NBA, MLB, and NHL announced lineups from the same Parquet path as `get_lineups`.
+- Kalshi and Polymarket US winner prices come from the existing `get_market_odds` matcher. No new venue client. Prices are not averaged, and there are no sportsbook lines. A game with neither listing is `"no market found"`. Postponed games keep the original date in the Kalshi ticker.
+- `include` fetches only the named blocks. One block failing leaves the others in the response and puts the message on `errors`. An indoor venue is `{ "indoor": true }`. The summary venue often omits `indoor`; the scoreboard flag fills that in.
+
 ## 0.7.1 — 2026-11-16
 
 `get_athlete_gamelog` keeps every stat when ESPN repeats a label. 42 tools.

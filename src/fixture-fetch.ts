@@ -19,6 +19,8 @@ export const fixtureState = {
   hang: false,
   /** When true, athlete splits return 500 so a player report can keep the other blocks. */
   failSplits: false,
+  /** When true, the ESPN summary returns 500 so a preview can keep the other blocks. */
+  failSummary: false,
   /** Raw ESPN search document. Unset answers 404, which is what search did before this hook. */
   searchBody: undefined as unknown,
   /** Number of ESPN fetches that were aborted via their signal. */
@@ -27,25 +29,62 @@ export const fixtureState = {
 
 const MARKET_FIXTURES = join(FIXTURES, "markets");
 
+function firstExisting(paths: string[]): string | undefined {
+  return paths.find((file) => existsSync(file));
+}
+
 function marketFixture(url: URL): { status: number; file?: string } | undefined {
   const host = url.hostname;
   if (host === "api.elections.kalshi.com") {
     if (fixtureState.failKalshi) return { status: 500 };
     if (url.pathname.endsWith("/orderbook")) return { status: 200, file: join(MARKET_FIXTURES, "kalshi-nfl-orderbook.json") };
-    if (url.pathname.endsWith("/markets")) return { status: 200, file: join(MARKET_FIXTURES, "kalshi-nfl-markets.json") };
+    if (url.pathname.endsWith("/markets")) {
+      const series = url.searchParams.get("series_ticker") ?? "";
+      const nfl = series.startsWith("KXNFL") || series === "";
+      const file = nfl
+        ? firstExisting([
+            join(FIXTURES, "nfl", "kalshi-markets.json"),
+            join(MARKET_FIXTURES, "kalshi-nfl-markets.json"),
+          ])
+        : join(MARKET_FIXTURES, "kalshi-nfl-markets.json");
+      return { status: 200, file };
+    }
     return { status: 404 };
   }
   if (host === "gamma-api.polymarket.com") {
     if (url.pathname.includes("/events/slug/")) return { status: 404 };
-    if (url.pathname.endsWith("/markets")) return { status: 200, file: join(MARKET_FIXTURES, "gamma-nfl-market.json") };
-    if (url.pathname.endsWith("/events")) return { status: 200, file: join(MARKET_FIXTURES, "gamma-nfl-events.json") };
+    if (url.pathname.endsWith("/markets")) {
+      const slug = url.searchParams.get("slug") ?? "";
+      const file =
+        (slug.startsWith("nfl-")
+          ? firstExisting([join(FIXTURES, "nfl", "polymarket-market.json"), join(MARKET_FIXTURES, "gamma-nfl-market.json")])
+          : undefined) ?? join(MARKET_FIXTURES, "gamma-nfl-market.json");
+      return { status: 200, file };
+    }
+    if (url.pathname.endsWith("/events")) {
+      const series = url.searchParams.get("series_id") ?? "";
+      const nfl = series === "12185" || series === "";
+      const file = nfl
+        ? firstExisting([
+            join(FIXTURES, "nfl", "polymarket-events.json"),
+            join(MARKET_FIXTURES, "gamma-nfl-events.json"),
+          ])
+        : join(MARKET_FIXTURES, "gamma-nfl-events.json");
+      return { status: 200, file };
+    }
     return { status: 404 };
   }
   if (host === "clob.polymarket.com") {
     return { status: 200, file: join(MARKET_FIXTURES, "clob-books.json") };
   }
   if (host === "gateway.polymarket.us") {
-    if (url.pathname.endsWith("/bbo")) return { status: 200, file: join(MARKET_FIXTURES, "polymarket-us-bbo.json") };
+    if (url.pathname.endsWith("/bbo")) {
+      const nfl = url.pathname.includes("/nfl") || url.pathname.includes("aec-nfl");
+      const file = nfl
+        ? firstExisting([join(FIXTURES, "nfl", "polymarket-us.json"), join(MARKET_FIXTURES, "polymarket-us-bbo.json")])
+        : join(MARKET_FIXTURES, "polymarket-us-bbo.json");
+      return { status: 200, file };
+    }
     return { status: 404 };
   }
   return undefined;
@@ -56,7 +95,14 @@ function fixtureFor(url: URL): string | undefined {
   const league = p.match(/\/sports\/[^/]+\/leagues\/([^/]+)\//)?.[1] ?? p.match(/\/sports\/[^/]+\/([^/]+)\//)?.[1];
   if (!league) return undefined;
   if (p.endsWith("/scoreboard")) return join(FIXTURES, league, "scoreboard.json");
-  if (p.endsWith("/summary")) return join(FIXTURES, league, "summary.json");
+  if (p.endsWith("/summary")) {
+    const event = url.searchParams.get("event");
+    if (event && /^[0-9]+$/.test(event)) {
+      const specific = join(FIXTURES, league, `summary-${event}.json`);
+      if (existsSync(specific)) return specific;
+    }
+    return join(FIXTURES, league, "summary.json");
+  }
   if (/\/competitions\/\d+\/odds$/.test(p)) return join(FIXTURES, league, "odds.json");
   if (/\/competitions\/\d+\/plays$/.test(p)) return join(FIXTURES, league, "plays.json");
   if (/\/competitions\/\d+\/probabilities$/.test(p)) return join(FIXTURES, league, "probabilities.json");
@@ -110,6 +156,9 @@ export function installFixtureFetch(): () => void {
     }
     if (fixtureState.failSplits && /\/athletes\/[^/]+\/splits$/.test(url.pathname)) {
       return new Response(JSON.stringify({ error: "splits down" }), { status: 500, statusText: "Server Error" });
+    }
+    if (fixtureState.failSummary && url.pathname.endsWith("/summary")) {
+      return new Response(JSON.stringify({ error: "summary down" }), { status: 500, statusText: "Server Error" });
     }
     if (fixtureState.hang) {
       return new Promise<Response>((_resolve, reject) => {

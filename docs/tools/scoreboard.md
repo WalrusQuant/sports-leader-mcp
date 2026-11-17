@@ -1,6 +1,6 @@
 # Scoreboard and game tools
 
-All tools return compact JSON by default and accept optional `raw: true`. `get_scoreboard`, `get_game_summary`, `get_game_odds`, and `get_slate` publish an MCP `outputSchema`.
+All tools return compact JSON by default and accept optional `raw: true`. `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_slate`, and `get_game_preview` publish an MCP `outputSchema`.
 
 ## `get_scoreboard`
 
@@ -104,3 +104,17 @@ Parameters: `sport`, `league`, optional `date` (`YYYYMMDD`, ESPN's US-Eastern ga
 `keyInjuries` lists players marked `Out` or `Doubtful` (up to 12 per team). It is `null` when the injury report is unavailable, and `injuriesNote` explains why. ESPN returns empty injury reports for some leagues (for example EPL and NCAAF); `injuriesNote` flags that too. Upstream cost is two cached calls: the scoreboard and the league injury report.
 
 `get_slate` adds a `resource_link` to `espn://{sport}/{league}/injuries`. The slate itself is also readable as `espn://{sport}/{league}/slate/{date}`.
+
+## `get_game_preview`
+
+One game in one call. Returns the event (`id`, `startUtc`, `venue`, `indoor`, `home` and `away` with `id` and `abbr`), injuries, probables, lineups, weather, and Kalshi and Polymarket US winner prices. There are no sportsbook lines.
+
+Parameters: `sport`, `league`, and either `eventId` or `team`. `date` is `YYYYMMDD`. With `team` and no date, the day is today in America/Chicago. The team has to match one game. `include` is any of `injuries`, `probables`, `lineups`, `weather`, and `markets` (default all). `raw` is accepted.
+
+Injuries, weather, and the venue name come from the ESPN summary (`injuries`, `gameInfo.weather`, `gameInfo.venue`). An indoor venue is `{ "indoor": true }`. The summary venue often omits `indoor`; the scoreboard venue flag is used then. Current summaries publish `temperature`, `conditionId`, `gust`, and `precipitation`. `condition` is the AccuWeather label for that id. `windMph` uses `windSpeed` when ESPN sends it, otherwise `gust`.
+
+Probable pitchers (MLB) and goalies (NHL) are `competitors[].probables` on the scoreboard. Other leagues return `probables: null`. NBA, MLB, and NHL lineups are the latest Parquet rows for that game, the same query path as `get_lineups`. Other leagues return `lineups: null`.
+
+Winner prices reuse `get_market_odds`. Kalshi is `{ ticker, team, bid, ask, last }` for each side. Polymarket US is `{ slug, team, mid }` for each side. A missing venue on an otherwise priced game is `"no market found"` for that venue. When neither venue has a price, `markets` itself is `"no market found"`. Postponed games keep the original date in the Kalshi ticker.
+
+`errors` names a block whose fetch failed. The other blocks stay. `sources` lists the feeds that answered.
