@@ -50,7 +50,8 @@ export const getAthleteStats = defineTool({
 export const getAthleteGamelog = defineTool({
   name: "get_athlete_gamelog",
   title: "Get athlete game log",
-  description: "Get a compact game-by-game log. Returns date, opponent, home/away, result, score, and named stat fields; large duplicate event/reference objects are removed.",
+  description:
+    "Get a compact game-by-game log. Returns date, opponent, home/away, result, score, and named stat fields. When ESPN repeats a label across categories, stats are nested by category so every value stays (rushing.YDS and receiving.YDS). NFL and college football do this for YDS, AVG, TD, and LNG. A single-category log (MLB batting or pitching, NBA, NHL skater or goalie) stays a flat stat map. A repeated label inside one category gets a _2 suffix. categories lists each ESPN group and the stat keys inside it. Large duplicate event/reference objects are removed.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,

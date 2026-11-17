@@ -217,8 +217,20 @@ export const injuriesOutput = withEnvelope({
 
 // ─── get_athlete_gamelog ──────────────────────────────────────────────────────
 
+/** Flat when every label is unique. Nested by category when a label repeats. */
+const gamelogStatValue = z.union([str, z.record(z.string(), str)]);
+
 export const gamelogOutput = withEnvelope({
   labels: z.array(z.unknown()),
+  // Present when ESPN's category counts partition `labels` (football). Omitted
+  // for a single-category log (MLB, NBA, NHL), which keeps a flat stats map.
+  categories: z.array(
+    obj({
+      name: str,
+      displayName: optStr,
+      labels: z.array(str),
+    }),
+  ),
   games: z.array(
     obj({
       eventId: str,
@@ -227,7 +239,7 @@ export const gamelogOutput = withEnvelope({
       homeAway: z.enum(["H", "A"]),
       result: optStr,
       score: optStr,
-      stats: z.record(z.string(), str),
+      stats: z.record(z.string(), gamelogStatValue),
     }),
   ),
 });
@@ -239,7 +251,7 @@ const reportGame = obj({
   homeAway: z.enum(["H", "A"]),
   result: optStr,
   score: optStr,
-  stats: z.record(z.string(), z.union([str, z.record(z.string(), str)])),
+  stats: z.record(z.string(), gamelogStatValue),
 });
 
 export const playerReportOutput = withEnvelope({

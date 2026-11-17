@@ -88,7 +88,7 @@ Supported leagues: NFL, NBA, MLB, NHL, college football, men's college basketbal
 |------|-------------|
 | `get_athlete_overview` | Player snapshot — stats, next game, news |
 | `get_athlete_stats` | Season stats converted into named fields |
-| `get_athlete_gamelog` | Game-by-game log |
+| `get_athlete_gamelog` | Game-by-game log. A repeated label is nested by category (`rushing.YDS` and `receiving.YDS`); a single-category log stays flat |
 | `get_athlete_splits` | Home/away, by opponent, by situation |
 | `get_player_report` | One call: resolve a name inside the league, then season stats, last N games, and splits. An ambiguous name returns candidates |
 
@@ -237,6 +237,8 @@ npm run fixtures:capture    # re-record raw ESPN fixtures into test/fixtures
 Dedicated tools return compact, curated JSON by default. Every tool accepts `raw: true`, but raw ESPN responses can be extremely large and should be used only to recover a specific omitted field. Responses over `SPORTS_LEADER_MAX_TOKENS` are replaced with valid truncation metadata; the server never cuts JSON mid-document.
 
 Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent`; a top-level array result is exposed as `structuredContent: { "items": [...] }` (same shape for every protocol era). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
+
+`get_athlete_gamelog` nests each stat under its ESPN category when the flat label list repeats one (`stats.rushing.YDS` and `stats.receiving.YDS`). `categories` lists those groups. A single-category log, which is what MLB, NBA, and NHL publish, keeps `stats` as a flat map of abbreviation to value. `get_player_report` recent games use the same stat shape.
 
 ### Odds conventions
 
