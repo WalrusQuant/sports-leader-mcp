@@ -14,6 +14,7 @@ Built on ESPN's public JSON APIs. No authentication required — just connect yo
 - Read **league-wide injury reports** and transactions
 - Search for **any athlete, team, or article**
 - Access **real-time sports news** filtered by sport, league, or team
+- Query **historical games** for MLB, NBA, NFL, NHL, college football (FBS), and men's college basketball (Division I), every league from the 2021 season through today
 
 ## Quick Install
 
@@ -60,11 +61,11 @@ Built on MCP TypeScript SDK v2. The same server answers MCP **2026-07-28** (stat
 
 ## Self-Hosting
 
-Running as a hosted HTTP service? See the [Self-Hosting Guide](self-hosting.md) for stateless HTTP serving, caching, rate limiting, monitoring, and the kill switch. Release notes are in the [CHANGELOG](../CHANGELOG.md).
+Running as a hosted HTTP service? See the [Self-Hosting Guide](self-hosting.md) for stateless HTTP serving, caching, rate limiting, monitoring, and the kill switch. Release notes are in the [CHANGELOG](https://github.com/WalrusQuant/sports-leader-mcp/blob/main/CHANGELOG.md).
 
 ## Reference
 
-- [API Endpoints](../references/endpoints.md) — raw ESPN endpoint catalog
-- [Response Schemas](../references/response-schemas.md) — raw upstream examples, not compact MCP contracts
-- [League & Sport Slugs](../references/league-slugs.md) — broader slug reference; availability varies by endpoint
-- [Gotchas & Pitfalls](../references/gotchas.md) — ESPN API quirks and common mistakes
+- [API Endpoints](reference/endpoints.md) — raw ESPN endpoint catalog
+- [Response Schemas](reference/response-schemas.md) — raw upstream examples, not compact MCP contracts
+- [League & Sport Slugs](reference/league-slugs.md) — broader slug reference; availability varies by endpoint
+- [Gotchas & Pitfalls](reference/gotchas.md) — ESPN API quirks and common mistakes

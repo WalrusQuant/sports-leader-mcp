@@ -37,6 +37,8 @@ Setting `PORT` switches the server from stdio mode (for local MCP clients) to HT
 | `BAYES_DATA_CACHE_DIR` | `~/.cache/sports-leader-mcp/bayes-data` | On-disk cache for export files |
 | `BAYES_DATA_REVALIDATE_MS` | `14400000` | How often to re-check the export manifest |
 
+The default manifest publishes MLB, NBA, NFL, NHL, college football (FBS), and men's college basketball (Division I) from the 2021 season through today. The current season is rebuilt nightly, around 4:15 AM CT. `BAYES_DATA_MANIFEST_URL` and `BAYES_DATA_BASE_URL` remain as aliases of the `SPORTSLEADER_DATA_*` variables.
+
 ---
 
 ## Protocol versions and stateless HTTP
@@ -198,6 +200,6 @@ docker run -p 3000:3000 \
 ## Next Steps
 
 - Browse the [Tools](tools/) to see all 43 tools with parameters and examples
-- Run `npm run audit` from a checkout to hit every tool against live ESPN and print a pass/fail report, including the contract section for the raw scoreboard, summary, gamelog, and market shapes
-- Read [Gotchas & Pitfalls](../references/gotchas.md) for ESPN API quirks
-- Check the [API Endpoints](../references/endpoints.md) reference for the raw ESPN API catalog
+- Run `npm run audit` from a checkout to hit every tool against live ESPN and print a pass/fail report. After the tool checks it prints a `contract` section (pass, fail, skip, or info) for the raw scoreboard, summary, gamelog, Kalshi, and Polymarket shapes. `.github/workflows/ci.yml` runs the offline suite on pull requests and on `main`. `.github/workflows/contract.yml` runs the audit only when dispatched.
+- Read [Gotchas & Pitfalls](reference/gotchas.md) for ESPN API quirks
+- Check the [API Endpoints](reference/endpoints.md) reference for the raw ESPN API catalog

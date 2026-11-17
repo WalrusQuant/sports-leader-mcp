@@ -6,10 +6,10 @@ Deep reference material for the ESPN APIs that power sports-leader-mcp.
 
 ## Sections
 
-- **[API Endpoints](../../references/endpoints.md)** — ESPN endpoint catalog with URL patterns and query parameters.
+- **[API Endpoints](endpoints.md)** — ESPN endpoint catalog with URL patterns and query parameters.
 
-- **[Response Schemas](../../references/response-schemas.md)** — Annotated raw upstream examples; these are not compact MCP output schemas.
+- **[Response Schemas](response-schemas.md)** — Annotated raw upstream examples; these are not compact MCP output schemas.
 
-- **[League & Sport Slugs](../../references/league-slugs.md)** — Broader slug list. Less-common entries may not work across every public endpoint.
+- **[League & Sport Slugs](league-slugs.md)** — Broader slug list. Less-common entries may not work across every public endpoint.
 
-- **[Gotchas & Pitfalls](../../references/gotchas.md)** — ESPN API quirks, pagination traps, and sport-specific limitations.
+- **[Gotchas & Pitfalls](gotchas.md)** — ESPN API quirks, pagination traps, and sport-specific limitations.
