@@ -1,0 +1,28 @@
+[
+  {
+    "slug": "nfl-phi-jax-2026-10-11",
+    "title": "Eagles vs. Jaguars",
+    "eventDate": "2026-10-11",
+    "startTime": "2026-10-11T13:30:00Z",
+    "usId": "nfl-phi-jax-2026-10-11",
+    "active": true,
+    "closed": false,
+    "teams": [
+      { "abbreviation": "phi", "alias": "Eagles", "name": "Philadelphia Eagles", "ordering": "away" },
+      { "abbreviation": "jax", "alias": "Jaguars", "name": "Jacksonville Jaguars", "ordering": "home" }
+    ]
+  },
+  {
+    "slug": "nfl-sea-den-2020-09-01",
+    "title": "Seahawks vs. Broncos",
+    "eventDate": "2020-09-01",
+    "startTime": "2020-09-01T00:15:00Z",
+    "usId": "nfl-sea-den-2020-08-31",
+    "active": true,
+    "closed": false,
+    "teams": [
+      { "abbreviation": "sea", "alias": "Seahawks", "name": "Seattle Seahawks", "ordering": "away" },
+      { "abbreviation": "den", "alias": "Broncos", "name": "Denver Broncos", "ordering": "home" }
+    ]
+  }
+]

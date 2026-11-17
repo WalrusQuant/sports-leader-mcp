@@ -363,6 +363,7 @@ describe("bayes data export", { concurrency: 1 }, () => {
       "get_polymarket_markets",
       "get_market_odds",
       "get_player_report",
+      "get_game_preview",
     ]);
     assert.equal(names.includes("get_injuries"), true);
     assert.equal(names.includes("get_injury_reports"), true);
@@ -417,6 +418,11 @@ describe("bayes data export", { concurrency: 1 }, () => {
       assert.equal(logs.rows[0]?.player_id, 1966);
       const byPlayerId = await run({ dataset: "player_game_logs", league: "nba", player: "1966" });
       assert.equal(byPlayerId.rowCount, 1);
+      const lineup = await run({ dataset: "lineups", league: "nba", gameId: "401000" });
+      assert.equal(lineup.rowCount, 1);
+      const lineupMiss = await run({ dataset: "lineups", league: "nba", gameId: "999" });
+      assert.equal(lineupMiss.rowCount, 0);
+      await assert.rejects(() => run({ dataset: "lineups", league: "nba", gameId: "401000 OR 1=1" }), /gameId/);
       const injected = await run({ dataset: "player_game_logs", league: "nba", player: "James' OR '1'='1" });
       assert.equal(injected.rowCount, 0);
       await assert.rejects(() => run({ dataset: "games", league: "nba", sort: "game_date; drop table t" }), /unknown sort column/);

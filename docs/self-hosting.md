@@ -129,9 +129,9 @@ Basic liveness check. Always responds, even when the kill switch is active.
 ```json
 {
   "status": "ok",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "uptime": 3621.5,
-  "tools": 42,
+  "tools": 43,
   "stateless": true,
   "protocolVersions": {
     "modern": ["2026-07-28"],
@@ -197,7 +197,7 @@ docker run -p 3000:3000 \
 
 ## Next Steps
 
-- Browse the [Tools](tools/) to see all 42 tools with parameters and examples
+- Browse the [Tools](tools/) to see all 43 tools with parameters and examples
 - Run `npm run audit` from a checkout to hit every tool against live ESPN and print a pass/fail report
 - Read [Gotchas & Pitfalls](../references/gotchas.md) for ESPN API quirks
 - Check the [API Endpoints](../references/endpoints.md) reference for the raw ESPN API catalog

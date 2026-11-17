@@ -1,7 +1,7 @@
 # sports-leader-mcp
 
 
-Free MCP server for live sports data. **42 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, futures, and keyless Kalshi and Polymarket prices across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, and NHL.
+Free MCP server for live sports data. **43 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, futures, and keyless Kalshi and Polymarket prices across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, and NHL.
 
 No ESPN auth or API keys. Stdio mode has no server-side request quota; HTTP mode applies configurable per-IP limits.
 
@@ -44,7 +44,7 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | **News** | Real-time sports news filtered by sport, league, or team |
 | **Search** | Find any athlete, team, or article across ESPN |
 
-## Tools (42)
+## Tools (43)
 
 ### Discovery
 | Tool | Description |
@@ -62,6 +62,7 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | `get_game_odds` | Per-sportsbook lines with numeric moneylines, implied/no-vig probabilities, signed `homeSpread`, and consensus |
 | `get_game_probabilities` | Win probability timeline |
 | `get_slate` | One call per game day: games, team IDs, status/score, consensus no-vig probabilities, key Out/Doubtful injuries. College basketball is the full Division I slate |
+| `get_game_preview` | One game: injuries, probables or lineups, weather, and Kalshi and Polymarket US winner prices. No sportsbook lines |
 
 ### Prediction markets
 
@@ -230,13 +231,13 @@ npm run test:update-golden  # regenerate test/golden after an intentional output
 npm run fixtures:capture    # re-record raw ESPN fixtures into test/fixtures
 ```
 
-`npm run audit` is not part of `npm test`. It calls the real ESPN APIs for MLB, NBA, NFL, NHL, college football, men's and women's college basketball, WNBA, and the Premier League, validates compact output against each tool's schema, and exits non-zero on a failure. For the leagues with prediction markets it also calls `get_market_odds` on today's first game. A league with no listing (MLB in the offseason) is skipped. A 4xx, a Gamma 406, or a schema failure fails the audit. Re-run it when a tool starts returning empty or upstream errors. MLB in late October and November is the offseason: the audit accepts an empty current scoreboard and checks 2026-07-04 instead. It also checks the public historical export on GitHub Releases with no API key: one file for each data set the live manifest still publishes. A removed data set is not a failure. Those lines are `SKIP` only when the manifest default has been cleared and both the `SPORTSLEADER_DATA_*` and `BAYES_DATA_*` URL variables are unset.
+`npm run audit` is not part of `npm test`. It calls the real ESPN APIs for MLB, NBA, NFL, NHL, college football, men's and women's college basketball, WNBA, and the Premier League, validates compact output against each tool's schema, and exits non-zero on a failure. For the leagues with prediction markets it also calls `get_market_odds` on today's first game. A league with no listing (MLB in the offseason) is skipped. It previews the first game of the day for NFL, NBA, NHL, and men's college basketball; `"no market found"` passes with a note. A 4xx, a Gamma 406, or a schema failure fails the audit. Re-run it when a tool starts returning empty or upstream errors. MLB in late October and November is the offseason: the audit accepts an empty current scoreboard and checks 2026-07-04 instead. It also checks the public historical export on GitHub Releases with no API key: one file for each data set the live manifest still publishes. A removed data set is not a failure. Those lines are `SKIP` only when the manifest default has been cleared and both the `SPORTSLEADER_DATA_*` and `BAYES_DATA_*` URL variables are unset.
 
 ## Agent-safe responses
 
 Dedicated tools return compact, curated JSON by default. Every tool accepts `raw: true`, but raw ESPN responses can be extremely large and should be used only to recover a specific omitted field. Responses over `SPORTS_LEADER_MAX_TOKENS` are replaced with valid truncation metadata; the server never cuts JSON mid-document.
 
-Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent`; a top-level array result is exposed as `structuredContent: { "items": [...] }` (same shape for every protocol era). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
+Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent`; a top-level array result is exposed as `structuredContent: { "items": [...] }` (same shape for every protocol era). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_game_preview`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
 
 `get_athlete_gamelog` nests each stat under its ESPN category when the flat label list repeats one (`stats.rushing.YDS` and `stats.receiving.YDS`). `categories` lists those groups. A single-category log, which is what MLB, NBA, and NHL publish, keeps `stats` as a flat map of abbreviation to value. `get_player_report` recent games use the same stat shape.
 

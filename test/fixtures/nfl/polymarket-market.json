@@ -1,0 +1,14 @@
+[
+  {
+    "slug": "nfl-phi-jax-2026-10-11",
+    "question": "Eagles vs. Jaguars",
+    "sportsMarketType": "moneyline",
+    "outcomes": "[\"Eagles\", \"Jaguars\"]",
+    "clobTokenIds": "[\"111\", \"222\"]",
+    "outcomePrices": "[\"0.420\", \"0.580\"]",
+    "bestBid": 0.41,
+    "bestAsk": 0.43,
+    "lastTradePrice": 0.42,
+    "closed": false
+  }
+]

@@ -1,0 +1,84 @@
+{
+  "header": {
+    "id": "401872981",
+    "competitions": [
+      {
+        "id": "401872981",
+        "date": "2026-10-11T13:30Z",
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "0",
+            "team": {
+              "id": "30",
+              "abbreviation": "JAX",
+              "location": "Jacksonville",
+              "name": "Jaguars",
+              "displayName": "Jacksonville Jaguars"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "0",
+            "team": {
+              "id": "21",
+              "abbreviation": "PHI",
+              "location": "Philadelphia",
+              "name": "Eagles",
+              "displayName": "Philadelphia Eagles"
+            }
+          }
+        ],
+        "status": {
+          "type": {
+            "state": "pre",
+            "shortDetail": "Sun, October 11th at 9:30 AM EDT"
+          }
+        }
+      }
+    ]
+  },
+  "gameInfo": {
+    "venue": {
+      "id": "5534",
+      "fullName": "Tottenham Hotspur Stadium",
+      "address": { "city": "London", "country": "England" },
+      "indoor": false,
+      "grass": true
+    },
+    "weather": {
+      "temperature": 64,
+      "highTemperature": 68,
+      "conditionId": "33",
+      "gust": 12,
+      "precipitation": 10
+    }
+  },
+  "injuries": [
+    {
+      "team": { "id": "30", "abbreviation": "JAX", "displayName": "Jacksonville Jaguars" },
+      "injuries": [
+        {
+          "status": "Doubtful",
+          "athlete": { "id": "4880001", "displayName": "Travis Hunter" },
+          "details": { "side": "Right", "type": "Hamstring" }
+        }
+      ]
+    },
+    {
+      "team": { "id": "21", "abbreviation": "PHI", "displayName": "Philadelphia Eagles" },
+      "injuries": [
+        {
+          "status": "Out",
+          "athlete": { "id": "14081", "displayName": "Lane Johnson" },
+          "details": { "side": "Left", "type": "Knee", "detail": "Surgery" }
+        },
+        {
+          "status": "Active",
+          "athlete": { "id": "1", "displayName": "News Only" },
+          "details": { "detail": "Should be filtered" }
+        }
+      ]
+    }
+  ]
+}

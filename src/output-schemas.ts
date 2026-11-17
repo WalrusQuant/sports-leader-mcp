@@ -510,3 +510,88 @@ export const slateOutput = withEnvelope({
     }),
   ),
 });
+
+const previewSide = obj({
+  id: str,
+  abbr: str,
+});
+
+const probableSide = obj({
+  player: str,
+  role: str,
+  status: str,
+});
+
+const lineupPlayer = obj({
+  player: str,
+  position: optStr,
+  slot: optStr,
+  role: optStr,
+  status: optStr,
+});
+
+const kalshiWinner = obj({
+  ticker: str,
+  team: str,
+  bid: nullableNum,
+  ask: nullableNum,
+  last: nullableNum,
+});
+
+const polymarketWinner = obj({
+  slug: str,
+  team: str,
+  mid: nullableNum,
+});
+
+const previewWeather = z.union([
+  z.null(),
+  obj({ indoor: z.literal(true) }),
+  obj({
+    tempF: nullableNum,
+    condition: z.string().nullable(),
+    windMph: nullableNum,
+    precipPct: nullableNum,
+  }),
+]);
+
+/** get_game_preview. Markets is the string when neither venue has a winner price. */
+export const previewOutput = withEnvelope({
+  event: obj({
+    id: str,
+    startUtc: str,
+    venue: z.string().nullable(),
+    indoor: z.boolean().nullable(),
+    home: previewSide,
+    away: previewSide,
+  }),
+  injuries: obj({
+    home: z.array(obj({ player: str, status: str, detail: z.string().nullable() })),
+    away: z.array(obj({ player: str, status: str, detail: z.string().nullable() })),
+  }),
+  probables: z.union([
+    z.null(),
+    obj({
+      home: z.union([z.null(), probableSide]),
+      away: z.union([z.null(), probableSide]),
+    }),
+  ]),
+  lineups: z.union([
+    z.null(),
+    obj({
+      home: z.array(lineupPlayer),
+      away: z.array(lineupPlayer),
+      asOf: z.string().nullable(),
+    }),
+  ]),
+  weather: previewWeather,
+  markets: z.union([
+    z.literal("no market found"),
+    obj({
+      kalshi: z.union([z.array(kalshiWinner), z.literal("no market found")]),
+      polymarketUS: z.union([z.array(polymarketWinner), z.literal("no market found")]),
+    }),
+  ]),
+  errors: z.record(z.string(), str),
+  sources: z.array(str),
+});
