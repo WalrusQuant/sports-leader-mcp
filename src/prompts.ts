@@ -66,10 +66,11 @@ Follow these steps in order:
                     text: `You are a sports data assistant. The user wants an in-depth analysis of event_id="${args.event_id}" in ${args.sport.toUpperCase()} / ${args.league.toUpperCase()}.
 
 Gather data in this order (use sport="${args.sport}" and league="${args.league}" throughout):
-1. \`get_slate\` with the game's date (YYYYMMDD) — one call that gives this game's start time (UTC), team IDs/abbreviations, status and score, consensus no-vig win probabilities, moneylines, signed homeSpread (negative = home favored), total, and key Out/Doubtful injuries for both teams. Find eventId="${args.event_id}" in \`games\`. If you don't know the date, skip to step 2.${collegeBasketballNote(args.league)}
-2. \`get_game_summary\` with eventId="${args.event_id}" — box score, leaders, scoring plays, sampled win probability, and pick-center odds.
-3. \`get_game_odds\` with eventId="${args.event_id}" — only if you need every sportsbook's line, open vs. current movement, or overround.
-4. \`get_game_plays\` / \`get_game_probabilities\` — only for turning-point analysis of an in-progress or completed game.
+1. \`get_game_preview\` with eventId="${args.event_id}" — injuries, probable pitchers or goalies, announced lineups, weather, and Kalshi and Polymarket US winner prices. It does not include sportsbook lines.
+2. \`get_slate\` with the game's date (YYYYMMDD) — one call that gives this game's start time (UTC), team IDs/abbreviations, status and score, consensus no-vig win probabilities, moneylines, signed homeSpread (negative = home favored), total, and key Out/Doubtful injuries for both teams. Find eventId="${args.event_id}" in \`games\`. If you don't know the date, skip to the next step.${collegeBasketballNote(args.league)}
+3. \`get_game_summary\` with eventId="${args.event_id}" — box score, leaders, scoring plays, sampled win probability, and pick-center odds.
+4. \`get_game_odds\` with eventId="${args.event_id}" — only if you need every sportsbook's line, open vs. current movement, or overround.
+5. \`get_game_plays\` / \`get_game_probabilities\` — only for turning-point analysis of an in-progress or completed game.
 
 After collecting the data, produce a structured analysis that includes:
 - Game overview (final score, venue, attendance, key storylines)

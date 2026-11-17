@@ -511,6 +511,8 @@ const PREDICTION_LEAGUES = [
 
 await auditPredictionMarkets();
 
+await auditGamePreviews();
+
 await auditDataExport();
 
 const failed = rows.filter((row) => row.status === "fail");
@@ -587,6 +589,56 @@ async function auditPredictionMarkets() {
       const message = err instanceof Error ? err.message.split("\n")[0] : String(err);
       line("fail", "get_market_odds", label, message.slice(0, 240));
     }
+  }
+}
+
+/**
+ * One preview of the first game on today's scoreboard for NFL, NBA, NHL, and
+ * men's college basketball. "no market found" is a pass. A block that errors
+ * (upstream 4xx/5xx, schema) fails. An empty lineup or an unannounced probable
+ * does not.
+ */
+async function auditGamePreviews() {
+  console.log("");
+  console.log("game preview");
+  const leagues = [
+    { key: "nfl", sport: "football", league: "nfl" },
+    { key: "nba", sport: "basketball", league: "nba" },
+    { key: "nhl", sport: "hockey", league: "nhl" },
+    { key: "cbb", sport: "basketball", league: "mens-college-basketball" },
+  ];
+  for (const league of leagues) {
+    const events = eventsOf(boards.get(`${league.key}:today`));
+    if (!events.length) {
+      line("skip", "get_game_preview", `${league.key} today`, "no ESPN game today");
+      continue;
+    }
+    const eventId = String(events[0].id);
+    await check("get_game_preview", `${league.key} ${eventId}`, async () => {
+      const data = await call("get_game_preview", {
+        sport: league.sport,
+        league: league.league,
+        eventId,
+      });
+      if (String(data?.event?.id) !== eventId) throw new Error(`event ${data?.event?.id}`);
+      if (!data.event?.home?.abbr || !data.event?.away?.abbr) throw new Error("missing teams");
+      const failures = Object.entries(data.errors ?? {});
+      if (failures.length) {
+        throw new Error(failures.map(([name, message]) => `${name}: ${message}`).join("; "));
+      }
+      const marketNote =
+        data.markets === "no market found"
+          ? "no market found"
+          : [
+              Array.isArray(data.markets?.kalshi) ? `kalshi ${data.markets.kalshi.length}` : `kalshi ${data.markets?.kalshi}`,
+              Array.isArray(data.markets?.polymarketUS)
+                ? `polymarketUS ${data.markets.polymarketUS.length}`
+                : `polymarketUS ${data.markets?.polymarketUS}`,
+            ].join(" ");
+      const weather = data.weather?.indoor === true ? "indoor" : data.weather?.tempF != null ? `${data.weather.tempF}F` : "no weather";
+      const injuries = (data.injuries?.home?.length ?? 0) + (data.injuries?.away?.length ?? 0);
+      return `${data.event.away.abbr}@${data.event.home.abbr} injuries=${injuries} ${weather} ${marketNote}`;
+    });
   }
 }
 

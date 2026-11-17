@@ -1,10 +1,10 @@
 # Tools
 
-Overview of all 42 tools available in sports-leader-mcp.
+Overview of all 43 tools available in sports-leader-mcp.
 
 Compact JSON is the default. Every tool accepts optional `raw: true`; oversized output is replaced with a valid `{ "truncated": true, ... }` envelope instead of partial JSON.
 
-Results carry the compact JSON as a text block and as MCP `structuredContent` (top-level arrays as `{ "items": [...] }`). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_team_stats`, `get_rankings`, `get_power_index`, `get_futures`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an `outputSchema`; schemas allow extra properties because fields are only ever added. With `raw: true` the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`.
+Results carry the compact JSON as a text block and as MCP `structuredContent` (top-level arrays as `{ "items": [...] }`). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_game_preview`, `get_team_stats`, `get_rankings`, `get_power_index`, `get_futures`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an `outputSchema`; schemas allow extra properties because fields are only ever added. With `raw: true` the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`.
 
 Large sub-payloads are also available as `espn://` resource templates (see the [README](../../README.md#resource-templates)); `get_game_summary` and `get_slate` return `resource_link` items that point at them.
 
@@ -26,6 +26,7 @@ Large sub-payloads are also available as `espn://` resource templates (see the [
 | [`get_game_odds`](scoreboard.md#get_game_odds) | Betting odds per provider with numeric moneylines, implied and no-vig probabilities, signed `homeSpread`, and consensus. |
 | [`get_game_probabilities`](scoreboard.md#get_game_probabilities) | Win probability timeline for a game. |
 | [`get_slate`](scoreboard.md#get_slate) | One-call daily slate: games, team IDs, status/score, consensus no-vig probabilities, key Out/Doubtful injuries. |
+| [`get_game_preview`](scoreboard.md#get_game_preview) | One game: injuries, probables or lineups, weather, and Kalshi and Polymarket US winner prices. |
 
 ## Prediction markets
 

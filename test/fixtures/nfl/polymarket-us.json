@@ -1,0 +1,12 @@
+{
+  "marketData": {
+    "marketSlug": "aec-nfl-phi-jax-2026-10-11",
+    "currentPx": { "value": "0.4200", "currency": "USD" },
+    "lastTradePx": { "value": "0.4200", "currency": "USD" },
+    "bestBid": { "value": "0.4100", "currency": "USD" },
+    "bestAsk": { "value": "0.4300", "currency": "USD" },
+    "longQuote": { "value": "0.4300", "currency": "USD" },
+    "shortQuote": { "value": "0.5900", "currency": "USD" },
+    "state": "MARKET_STATE_OPEN"
+  }
+}

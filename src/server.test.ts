@@ -9,6 +9,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { Client, InMemoryTransport } from "@modelcontextprotocol/client";
 import { createServer } from "./server.js";
+import { chicagoToday } from "./tools/preview.js";
 import { apiCache } from "./client.js";
 import { fixtureState, hasFixture, installFixtureFetch, readFixture } from "./fixture-fetch.js";
 import { resetMarketClient } from "./markets/http.js";
@@ -25,7 +26,7 @@ const SCHEMA_TOOLS = [
   "get_scoreboard", "get_game_summary", "get_game_odds", "get_injuries", "get_athlete_gamelog", "get_slate",
   "get_team_stats", "get_rankings", "get_power_index", "get_futures",
   "get_kalshi_markets", "get_polymarket_markets", "get_market_odds",
-  "get_player_report", "get_player_trends",
+  "get_player_report", "get_player_trends", "get_game_preview",
 ];
 const MARKET_TOOLS = ["get_kalshi_markets", "get_polymarket_markets", "get_market_odds"];
 const ADDED_TOOLS = ["get_slate", "get_team_stats", "get_rankings", "get_power_index", "get_futures"];
@@ -35,6 +36,7 @@ const DATA_TOOLS = [
   "get_probables", "get_lineups", "get_weather", "get_player_trends", "get_data_status",
 ];
 const PLAYER_TOOLS = ["get_player_report"];
+const PREVIEW_TOOLS = ["get_game_preview"];
 
 test.after(installFixtureFetch());
 
@@ -63,7 +65,11 @@ test("tools/list keeps every existing tool, adds get_slate, and publishes output
   for (const n of DATA_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
   for (const n of MARKET_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
   for (const n of PLAYER_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
-  assert.equal(names.length, ORIGINAL_TOOLS.length + ADDED_TOOLS.length + DATA_TOOLS.length + MARKET_TOOLS.length + PLAYER_TOOLS.length);
+  for (const n of PREVIEW_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
+  assert.equal(
+    names.length,
+    ORIGINAL_TOOLS.length + ADDED_TOOLS.length + DATA_TOOLS.length + MARKET_TOOLS.length + PLAYER_TOOLS.length + PREVIEW_TOOLS.length,
+  );
   for (const t of tools) {
     if (SCHEMA_TOOLS.includes(t.name)) {
       assert.equal((t.outputSchema as any)?.type, "object", `${t.name} outputSchema`);
@@ -350,4 +356,170 @@ test("get_player_report resolves Josh Jacobs in the NFL and keeps the other bloc
     fixtureState.failSplits = false;
     fixtureState.searchBody = undefined;
   }
+});
+
+test("chicagoToday is the America/Chicago calendar day", () => {
+  assert.equal(chicagoToday(new Date("2026-11-17T04:30:00Z")), "20261116");
+  assert.equal(chicagoToday(new Date("2026-11-17T06:30:00Z")), "20261117");
+});
+
+test("get_game_preview: one game, schema, call count, and both winner books", async () => {
+  const { client } = await connect();
+  resetMarketClient();
+  const res = await call(client, "get_game_preview", {
+    sport: "football",
+    league: "nfl",
+    eventId: "401872981",
+  });
+  const sc = res.structuredContent;
+  assert.equal(sc.event.id, "401872981");
+  assert.equal(sc.event.away.abbr, "PHI");
+  assert.equal(sc.event.home.abbr, "JAX");
+  assert.equal(sc.event.venue, "Tottenham Hotspur Stadium");
+  assert.equal(sc.event.indoor, false);
+  assert.equal(sc.event.startUtc, "2026-10-11T13:30Z");
+  assert.deepEqual(
+    sc.injuries.away.map((row: { player: string }) => row.player),
+    ["Lane Johnson"],
+  );
+  assert.equal(sc.injuries.away[0].detail, "Left Knee Surgery");
+  assert.equal(sc.injuries.home[0].player, "Travis Hunter");
+  assert.equal(sc.injuries.home[0].status, "Doubtful");
+  assert.equal(sc.probables, null);
+  assert.equal(sc.lineups, null);
+  assert.deepEqual(sc.weather, { tempF: 64, condition: "Clear", windMph: 12, precipPct: 10 });
+  const kalshi = sc.markets.kalshi;
+  assert.equal(kalshi.find((row: { team: string }) => row.team === "PHI").bid, 0.41);
+  assert.equal(kalshi.find((row: { team: string }) => row.team === "JAX").ticker, "KXNFLGAME-26OCT11PHIJAC-JAC");
+  const us = sc.markets.polymarketUS;
+  assert.equal(us.find((row: { team: string }) => row.team === "PHI").mid, 0.42);
+  assert.equal(us.find((row: { team: string }) => row.team === "JAX").mid, 0.59);
+  assert.equal(us[0].slug, "aec-nfl-phi-jax-2026-10-11");
+  assert.equal(sc.errors, undefined);
+  assert.ok(sc.sources.includes("espn summary"));
+  assert.ok(sc.sources.includes("kalshi trade-api/v2"));
+  assert.ok(sc.sources.includes("polymarket.us gateway"));
+  const paths = fixtureState.log;
+  assert.equal(paths.filter((path) => path.endsWith("/summary")).length, 1);
+  assert.equal(paths.filter((path) => path.endsWith("/scoreboard")).length, 1, paths.join(", "));
+  assert.equal(paths.filter((path) => path.includes("/trade-api/")).length, 1);
+  assert.equal(paths.filter((path) => path === "/events").length, 1);
+  assert.equal(paths.filter((path) => path === "/markets").length, 1);
+  assert.equal(paths.filter((path) => path.endsWith("/bbo")).length, 1);
+  assert.equal(paths.length, 6, paths.join(", "));
+});
+
+test("get_game_preview include fetches only the requested block", async () => {
+  const { client } = await connect();
+  resetMarketClient();
+  const res = await call(client, "get_game_preview", {
+    sport: "football",
+    league: "nfl",
+    eventId: "401872981",
+    include: ["injuries"],
+  });
+  const sc = res.structuredContent;
+  assert.equal(sc.injuries.away[0].player, "Lane Johnson");
+  assert.equal(sc.weather, undefined);
+  assert.equal(sc.markets, undefined);
+  assert.equal(sc.probables, undefined);
+  assert.equal(sc.lineups, undefined);
+  assert.deepEqual(
+    fixtureState.log.map((path) => path.split("/").pop()),
+    ["summary"],
+  );
+});
+
+test("get_game_preview keeps the other blocks when one fetch fails", async () => {
+  const { client } = await connect();
+  resetMarketClient();
+  fixtureState.failSummary = true;
+  try {
+    const failedSummary = await call(client, "get_game_preview", {
+      sport: "football",
+      league: "nfl",
+      eventId: "401872981",
+    });
+    const sc = failedSummary.structuredContent;
+    assert.equal(sc.event.away.abbr, "PHI");
+    assert.equal(sc.injuries, undefined);
+    assert.match(sc.errors.injuries, /500/);
+    assert.match(sc.errors.weather, /500/);
+    assert.equal(sc.markets.kalshi.length, 2);
+    assert.equal(sc.markets.polymarketUS[0].slug, "aec-nfl-phi-jax-2026-10-11");
+  } finally {
+    fixtureState.failSummary = false;
+  }
+
+  resetMarketClient();
+  fixtureState.failKalshi = true;
+  try {
+    const failedKalshi = await call(client, "get_game_preview", {
+      sport: "football",
+      league: "nfl",
+      eventId: "401872981",
+    });
+    const sc = failedKalshi.structuredContent;
+    assert.equal(sc.injuries.away[0].player, "Lane Johnson");
+    assert.equal(sc.weather.tempF, 64);
+    assert.equal(sc.markets.kalshi, "no market found");
+    assert.equal(sc.markets.polymarketUS.length, 2);
+    assert.match(sc.errors.markets, /kalshi:/);
+    assert.match(sc.errors.markets, /500/);
+  } finally {
+    fixtureState.failKalshi = false;
+  }
+});
+
+test("get_game_preview resolves one team and keeps a postponed Kalshi date", async () => {
+  const { client } = await connect();
+  resetMarketClient();
+  const byTeam = await call(client, "get_game_preview", {
+    sport: "football",
+    league: "nfl",
+    team: "PHI",
+    date: "20261011",
+    include: ["markets"],
+  });
+  assert.equal(byTeam.structuredContent.event.id, "401872981");
+  assert.equal(byTeam.structuredContent.event.home.abbr, "JAX");
+
+  resetMarketClient();
+  const postponed = await call(client, "get_game_preview", {
+    sport: "football",
+    league: "nfl",
+    eventId: "401872990",
+    include: ["markets"],
+  });
+  const tickers = postponed.structuredContent.markets.kalshi.map((row: { ticker: string }) => row.ticker);
+  assert.ok(tickers.some((ticker: string) => ticker.includes("26OCT10")));
+  assert.equal(postponed.structuredContent.markets.polymarketUS, "no market found");
+
+  const missing = await client.callTool({
+    name: "get_game_preview",
+    arguments: { sport: "football", league: "nfl", team: "NOPE", date: "20261011" },
+  });
+  assert.equal(missing.isError, true);
+  const neither = await client.callTool({
+    name: "get_game_preview",
+    arguments: { sport: "football", league: "nfl" },
+  });
+  assert.equal(neither.isError, true);
+});
+
+test("get_game_preview reads MLB probables from the scoreboard", async () => {
+  const { client } = await connect();
+  const res = await call(client, "get_game_preview", {
+    sport: "baseball",
+    league: "mlb",
+    eventId: "401908015",
+    include: ["probables"],
+  });
+  const sc = res.structuredContent;
+  assert.equal(sc.event.id, "401908015");
+  assert.equal(sc.probables.home.player, "Chris Sale");
+  assert.equal(sc.probables.home.role, "Probable Starting Pitcher");
+  assert.equal(sc.probables.away.player, "Yoshinobu Yamamoto");
+  assert.equal(sc.markets, undefined);
+  assert.equal(sc.injuries, undefined);
 });

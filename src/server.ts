@@ -10,6 +10,7 @@ import { researchTools } from "./tools/research.js";
 import { dataTools } from "./data/tools.js";
 import { marketTools } from "./tools/markets.js";
 import { getPlayerReport } from "./tools/player-report.js";
+import { getGamePreview } from "./tools/preview.js";
 import type { AnyToolDef } from "./tool.js";
 import { UpstreamError, CancelledError, withRequestSignal } from "./client.js";
 import { applyBudget } from "./transforms.js";
@@ -30,6 +31,7 @@ export const ALL_TOOLS: AnyToolDef[] = [
   ...dataTools,
   ...marketTools,
   getPlayerReport,
+  getGamePreview,
 ];
 
 /**

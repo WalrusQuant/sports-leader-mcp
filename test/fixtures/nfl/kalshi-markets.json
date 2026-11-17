@@ -1,0 +1,53 @@
+{
+  "cursor": "",
+  "markets": [
+    {
+      "ticker": "KXNFLGAME-26OCT11PHIJAC-PHI",
+      "event_ticker": "KXNFLGAME-26OCT11PHIJAC",
+      "title": "Philadelphia wins",
+      "yes_sub_title": "Philadelphia",
+      "status": "active",
+      "yes_bid_dollars": "0.4100",
+      "yes_ask_dollars": "0.4300",
+      "no_bid_dollars": "0.5700",
+      "no_ask_dollars": "0.5900",
+      "last_price_dollars": "0.4200"
+    },
+    {
+      "ticker": "KXNFLGAME-26OCT11PHIJAC-JAC",
+      "event_ticker": "KXNFLGAME-26OCT11PHIJAC",
+      "title": "Jacksonville wins",
+      "yes_sub_title": "Jacksonville",
+      "status": "active",
+      "yes_bid_dollars": "0.5700",
+      "yes_ask_dollars": "0.5900",
+      "no_bid_dollars": "0.4100",
+      "no_ask_dollars": "0.4300",
+      "last_price_dollars": "0.5800"
+    },
+    {
+      "ticker": "KXNFLGAME-26OCT10CHIGB-GB",
+      "event_ticker": "KXNFLGAME-26OCT10CHIGB",
+      "title": "Green Bay wins",
+      "yes_sub_title": "Green Bay",
+      "status": "active",
+      "yes_bid_dollars": "0.5000",
+      "yes_ask_dollars": "0.5200",
+      "no_bid_dollars": "0.4800",
+      "no_ask_dollars": "0.5000",
+      "last_price_dollars": "0.5100"
+    },
+    {
+      "ticker": "KXNFLGAME-26OCT10CHIGB-CHI",
+      "event_ticker": "KXNFLGAME-26OCT10CHIGB",
+      "title": "Chicago wins",
+      "yes_sub_title": "Chicago",
+      "status": "active",
+      "yes_bid_dollars": "0.4800",
+      "yes_ask_dollars": "0.5000",
+      "no_bid_dollars": "0.5000",
+      "no_ask_dollars": "0.5200",
+      "last_price_dollars": "0.4900"
+    }
+  ]
+}
