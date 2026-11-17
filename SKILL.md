@@ -109,13 +109,13 @@ curl "https://cdn.espn.com/core/nfl/boxscore?xhr=1&gameId=401671793"
 
 | Parameter | Description | Example |
 |-----------|-------------|---------|
-| `dates` | Date filter (YYYYMMDD or range) | `20250315` or `20250301-20250331` |
+| `dates` | One calendar day, YYYYMMDD. A `YYYYMMDD-YYYYMMDD` range is HTTP 400 on every league scoreboard | `20250315` |
 | `season` | Season year | `2025` |
 | `seasontype` | 1=preseason, 2=regular, 3=postseason, 4=offseason | `2` |
 | `week` | Week number | `1` |
 | `limit` | Results per page | `100` |
 | `page` | Page number | `1` |
-| `groups` | Conference ID (college sports) | `8` (SEC) |
+| `groups` | Scoreboard group. Men's and women's college basketball Division I is `50` (with `limit=400`). Other ids are one conference | `50` |
 | `xhr` | Required for CDN endpoints | `1` |
 | `active` | Filter active athletes | `true` |
 
@@ -182,12 +182,23 @@ async function getNBAScoreboard(date?: string) {
 
 ## Using the sports-leader MCP server instead of raw URLs
 
-If the sports-leader MCP server is connected, prefer its tools over hand-built URLs: they return compact JSON and validate slugs.
+If the sports-leader MCP server is connected (v0.9.0, 43 tools), prefer its tools over hand-built URLs. They return compact JSON and validate slugs. `raw: true` on any tool returns the untouched ESPN response.
 
-- `get_slate(sport, league, date?)`: every game for a day with team IDs, status/score, consensus no-vig probabilities, and Out/Doubtful injuries. Start here. For `mens-college-basketball` and `womens-college-basketball` this is every Division I game. Pass `groups` only to narrow to one conference.
+- `get_slate(sport, league, date?)` and `get_scoreboard`: start here for a day of games. Men's and women's college basketball default to every Division I game (`groups=50`, `limit=400`). Pass `groups` only to narrow to one conference.
+- A `dateRange` (`YYYYMMDD-YYYYMMDD`) is not sent to ESPN as one range. ESPN rejects that form. Today and the previous 2 US-Eastern days, plus future days, stay on ESPN, one day at a time, at most 14 of those days. Older days for `mlb`, `nba`, `nfl`, `nhl`, `college-football`, and `mens-college-basketball` come from the games export in one query. The response `source` is `data`, `espn`, or `mixed`. `days` lists each date. A result that would exceed the token budget returns a `page`; pass `offset` for the next slice.
 - `get_game_odds(sport, league, eventId)`: per-book numeric American moneylines, `*ImpliedProb` (vig included), `*NoVigProb` (normalized to 1; three-way for soccer), `homeSpread` (**negative = home team favored**), `total`, and a `consensus`.
+- `get_game_preview`: one game's injuries, probable pitchers or goalies, lineups, weather, and Kalshi and Polymarket US winner prices. `windMph` is sustained wind and is null when ESPN does not send one. `gustMph` is the gust. A gust is never copied into `windMph`. `condition` is the AccuWeather label for `conditionId` (codes 1–44; code 8 is Dreary (Overcast), code 37 is Hazy Moonlight).
+- `get_player_report`: one call for a name or id inside the league, then season stats, recent games, and splits. Recent games leave preseason out unless `includePreseason` is true, and include a current injury when ESPN lists one. `get_player_trends` groups the Parquet log by home/away, opponent, month, or rest. Rate stats are recomputed (save percentage, passer rating, QBR). `longest` is a maximum. A player queried in the wrong stat group returns `reason: "wrong_group"`.
+- NHL lineups in the export, and in `get_game_preview`, come from the official NHL API. Starting goalies are ESPN probables before the game and the NHL box score after it. Lines and pairs come from the official shift charts.
 - `get_game_summary`: box score, leaders, key plays, plus `resource_link` items to `espn://` resources for full plays, probabilities, odds, and injuries.
-- `raw: true` on any tool returns the untouched ESPN response.
+
+## Historical export
+
+The public Parquet export is [WalrusQuant/sportsleader-data](https://github.com/WalrusQuant/sportsleader-data). No API key. The manifest is `https://github.com/WalrusQuant/sportsleader-data/releases/download/manifest/manifest.json`. `SPORTSLEADER_DATA_MANIFEST_URL` overrides it. `BAYES_DATA_MANIFEST_URL` is the same setting. `SPORTSLEADER_DATA_BASE_URL` (`BAYES_DATA_BASE_URL` is the alias) is an optional directory mirror.
+
+Six leagues are published from the 2021 season through today: `mlb`, `nba`, `nfl`, `nhl`, `cfb` (college football, FBS), and `cbb` (men's college basketball, Division I). The current season is rebuilt nightly, around 4:15 AM CT. NBA, NHL, and `cbb` are named by the year the season ends (2026-27 is `2027`). NFL, MLB, and `cfb` are named by the year the season starts (the 2026 NFL season is `2026`). Every league starts at 2021.
+
+`get_games`, `get_player_game_logs`, `get_player_trends`, `get_lineups`, and `get_data_status` are the export tools. College football player logs use passing, rushing, and receiving. Men's college basketball uses the player group.
 
 ## For Deeper Reference
 

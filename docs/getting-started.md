@@ -100,7 +100,7 @@ Most tools take a `sport` and `league` slug. Here are the most common ones:
 
 Don't know the slug? Call `list_sports_and_leagues` to discover all valid values.
 
-The tool and `sports://leagues` return a curated catalog verified against the public endpoints. The broader [League & Sport Slugs](../references/league-slugs.md) file includes less-common values that may not work across every tool.
+The tool and `sports://leagues` return a curated catalog verified against the public endpoints. The broader [League & Sport Slugs](reference/league-slugs.md) file includes less-common values that may not work across every tool.
 
 ## Compact and raw mode
 
@@ -124,7 +124,7 @@ Several tools accept a `seasonType` parameter:
 ## Date Formats
 
 - **Single date:** `YYYYMMDD` (e.g. `20250315`)
-- **Date range:** `YYYYMMDD-YYYYMMDD` (e.g. `20250301-20250331`). `get_scoreboard` and `get_slate` serve days older than the games export's freshness, and older than today and the previous 2 US-Eastern days, from that export. The remaining days are one ESPN request each, at most 14.
+- **Date range:** `YYYYMMDD-YYYYMMDD` (e.g. `20250301-20250331`). ESPN rejects that form, so `get_scoreboard` and `get_slate` do not send it as one `dates` value. Days older than the games file, and older than today and the previous 2 US-Eastern days, come from the games export for MLB, NBA, NFL, NHL, college football, and men's college basketball (every one of those leagues from the 2021 season through today). Today, the previous 2 Eastern days, and future days stay on ESPN, one day at a time, at most 14 of those days. `source` is `data`, `espn`, or `mixed`. A result past the token budget returns a `page`; pass `offset` for the next slice.
 
 ## Betting Provider IDs
 
@@ -143,5 +143,5 @@ When filtering odds by sportsbook:
 
 - Browse the [Tools](tools/) to see all 43 tools with parameters and examples
 - Read the [Self-Hosting Guide](self-hosting.md) if running as an HTTP service
-- Check the [API Endpoints](../references/endpoints.md) reference for the raw ESPN API catalog
-- Read [Gotchas & Pitfalls](../references/gotchas.md) to avoid common mistakes
+- Check the [API Endpoints](reference/endpoints.md) reference for the raw ESPN API catalog
+- Read [Gotchas & Pitfalls](reference/gotchas.md) to avoid common mistakes

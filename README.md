@@ -1,7 +1,7 @@
 # sports-leader-mcp
 
 
-Free MCP server for live sports data. **43 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, futures, and keyless Kalshi and Polymarket prices across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, and NHL.
+Free MCP server for live sports data. **43 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, futures, and keyless Kalshi and Polymarket prices across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, NHL, college football, and men's college basketball from the 2021 season through today.
 
 No ESPN auth or API keys. Stdio mode has no server-side request quota; HTTP mode applies configurable per-IP limits.
 
@@ -62,7 +62,7 @@ Replace `/absolute/path/to/` with the actual path where you cloned the repo.
 | `get_game_odds` | Per-sportsbook lines with numeric moneylines, implied/no-vig probabilities, signed `homeSpread`, and consensus |
 | `get_game_probabilities` | Win probability timeline |
 | `get_slate` | One call per game day: games, team IDs, status/score, consensus no-vig probabilities, key Out/Doubtful injuries. Older days come from the games export. College basketball is the full Division I slate |
-| `get_game_preview` | One game: injuries, probables or lineups, weather, and Kalshi and Polymarket US winner prices. No sportsbook lines |
+| `get_game_preview` | One game: injuries, probables or lineups, weather (`windMph` is sustained wind, `gustMph` is the gust), and Kalshi and Polymarket US winner prices. No sportsbook lines |
 
 ### Prediction markets
 
@@ -107,23 +107,23 @@ Supported leagues: NFL, NBA, MLB, NHL, college football, men's college basketbal
 
 ### Historical export (MLB, NBA, NFL, NHL, college football, men's college basketball)
 
-Nightly Parquet files: schedule and results, team box scores and counting stats, player game logs, rosters, injuries, transactions, depth charts, probables, lineups, and weather. Rows are denormalized (ESPN ids and names on every row). Pro seasons start at 2021. NBA, NHL, and men's college basketball (`cbb`) are named by the year they end (2026-27 is 2027; 2020-21 is 2021). College football (`cfb`) uses the year the season starts. College files appear as the backfill publishes them. `get_injury_reports` and `get_transaction_log` are the export, and `get_injuries` and `get_transactions` stay the live feeds. A data set the manifest does not include returns an error naming it.
+Nightly Parquet files: schedule and results, team box scores and counting stats, player game logs, rosters, injuries, transactions, depth charts, probables, lineups, and weather. Rows are denormalized (ESPN ids and names on every row). All six leagues are published from the 2021 season through today and refreshed nightly, around 4:15 AM CT. NBA, NHL, and men's college basketball (`cbb`) are named by the year they end (2026-27 is 2027). NFL, MLB, and college football (`cfb`) are named by the year they start (the 2026 NFL season is 2026). `get_injury_reports` and `get_transaction_log` are the export, and `get_injuries` and `get_transactions` stay the live feeds. A data set the manifest does not include returns an error naming it. NHL lineups come from the official NHL API: starting goalies are ESPN probables before the game and the NHL box score after it, and lines and pairs come from the official shift charts. That file does not use Daily Faceoff.
 
-`get_scoreboard` and `get_slate` read `games` for days older than the file (`updated_at` and the manifest `generated_at`, whichever is earlier) and older than today and the previous 2 US-Eastern days. `game_id` is the ESPN event id. `college-football` maps to `cfb` and `mens-college-basketball` maps to `cbb`. Those days omit period scores, records, odds, and broadcasts. The response `source` is `data`, `espn`, or `mixed`, and `days` lists each date. Today, the previous 2 days, future days, a week query, a missing season, and every other league stay on ESPN. ESPN still rejects `dates=YYYYMMDD-YYYYMMDD`, so those days are one request each, at most 14. A season-length range is one games query when the export covers it. A result that would pass the token budget returns a `page` and a note; pass `offset` for the next page. `days` still counts every game. A `groups` value other than `50` on men's college basketball stays on ESPN, because the file has no conference column. If the manifest or the file cannot be read, the tool falls back to ESPN when that is 14 days or fewer, and errors instead of requesting a longer range one day at a time. Preview and market lookups use the same scoreboard fetch for a single date.
+`get_scoreboard` and `get_slate` read `games` for days older than the file (`updated_at` and the manifest `generated_at`, whichever is earlier) and older than today and the previous 2 US-Eastern days. `game_id` is the ESPN event id. `college-football` maps to `cfb` and `mens-college-basketball` maps to `cbb`. Those days omit period scores, records, odds, and broadcasts. The response `source` is `data`, `espn`, or `mixed`, and `days` lists each date. Today, the previous 2 days, future days, a week query, a missing season, and every other league stay on ESPN. ESPN still rejects `dates=YYYYMMDD-YYYYMMDD`, so those days are one request each, at most 14. A season-length range is one games query when the export covers it. A result that would exceed the token budget returns a `page` and a note; pass `offset` for the next page. `days` still counts every game. A `groups` value other than `50` on men's college basketball stays on ESPN, because the file has no conference column. If the manifest or the file cannot be read, the tool falls back to ESPN when that is 14 days or fewer, and errors instead of requesting a longer range one day at a time. Preview and market lookups use the same scoreboard fetch for a single date.
 
 | Tool | Data set |
 |------|----------|
 | `get_games` | Schedule and results |
 | `get_team_box_scores` | ESPN team box line |
 | `get_team_game_stats` | Team counting stats for and against |
-| `get_player_game_logs` | NBA player, NHL skater/goalie, MLB batting/pitching, NFL passing/rushing/receiving (`statGroup`) |
+| `get_player_game_logs` | NBA and men's college basketball player, NHL skater/goalie, MLB batting/pitching, NFL and college football passing/rushing/receiving (`statGroup`) |
 | `get_player_trends` | Averages and totals by home/away, opponent, month, or days of rest. Rates are recomputed; longest is a max |
 | `get_rosters` | Roster spans (`valid_to` empty means still current) |
 | `get_injury_reports` | Injury history |
 | `get_transaction_log` | Transaction history |
 | `get_depth_charts` | NFL depth chart |
 | `get_probables` | Probable pitchers and goalies |
-| `get_lineups` | Announced lineups |
+| `get_lineups` | MLB batting orders, NBA starting fives, NHL lines and pairs (official NHL API) |
 | `get_weather` | Game weather |
 | `get_data_status` | Manifest summary and freshness |
 
@@ -131,7 +131,7 @@ Filters: `league` (`mlb`, `nba`, `nfl`, `nhl`, `cfb`, `cbb`), `season` / `season
 
 #### Configuration
 
-No API key. Install and the historical data is available: seasons from 2021, published to GitHub Releases nightly after about 7:15 AM CT.
+No API key. Install and the historical data is available: every league from the 2021 season through today, published to GitHub Releases nightly around 4:15 AM CT.
 
 ```ts
 // src/data/config.ts
@@ -228,7 +228,7 @@ npm run dev       # watch mode — recompiles on file changes
 npm start         # run the server via stdio
 PORT=3000 npm start  # run as HTTP server on port 3000
 npm test          # build and run unit, golden-file, and MCP end-to-end tests
-npm run audit     # live pass/fail check of every tool against ESPN; data export when a base URL is set
+npm run audit     # live pass/fail of every tool, then the contract section; public export unless its URLs are cleared
 npm run test:update-golden  # regenerate test/golden after an intentional output change
 npm run fixtures:capture    # re-record raw ESPN fixtures into test/fixtures
 ```

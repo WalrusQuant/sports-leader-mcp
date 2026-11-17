@@ -6,7 +6,7 @@ Compact JSON is the default. Every tool accepts optional `raw: true`; oversized 
 
 Results carry the compact JSON as a text block and as MCP `structuredContent` (top-level arrays as `{ "items": [...] }`). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_game_preview`, `get_team_stats`, `get_rankings`, `get_power_index`, `get_futures`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an `outputSchema`; schemas allow extra properties because fields are only ever added. With `raw: true` the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`.
 
-Large sub-payloads are also available as `espn://` resource templates (see the [README](../../README.md#resource-templates)); `get_game_summary` and `get_slate` return `resource_link` items that point at them.
+Large sub-payloads are also available as `espn://` resource templates (see the [docs home](../README.md#resources)); `get_game_summary` and `get_slate` return `resource_link` items that point at them.
 
 ## Discovery & Search
 
@@ -72,20 +72,20 @@ Keyless Kalshi and Polymarket prices. Venues are labelled and are not averaged. 
 
 ## Historical export
 
-Parquet files for MLB, NBA, NFL, and NHL, and for college football and men's college basketball as those seasons are published, from GitHub Releases ([sportsleader-data](https://github.com/WalrusQuant/sportsleader-data)), no API key. The manifest is `releases/download/manifest/manifest.json`; each file is fetched from its manifest `url`. Override with `SPORTSLEADER_DATA_MANIFEST_URL` (`BAYES_DATA_MANIFEST_URL` still works). `SPORTSLEADER_DATA_BASE_URL` is an optional directory mirror (`BAYES_DATA_BASE_URL` is the same). A data set the manifest does not publish returns a clear error; `get_data_status` lists what is there. See [Historical data](data.md). `get_scoreboard` and `get_slate` read `games` for older days. The live `get_injuries` and `get_transactions` tools are unchanged.
+Parquet files for MLB, NBA, NFL, NHL, college football (FBS), and men's college basketball (Division I), every league from the 2021 season through today, from GitHub Releases ([sportsleader-data](https://github.com/WalrusQuant/sportsleader-data)), no API key. The current season is rebuilt nightly, around 4:15 AM CT. The manifest is `releases/download/manifest/manifest.json`; each file is fetched from its manifest `url`. Override with `SPORTSLEADER_DATA_MANIFEST_URL` (`BAYES_DATA_MANIFEST_URL` still works). `SPORTSLEADER_DATA_BASE_URL` is an optional directory mirror (`BAYES_DATA_BASE_URL` is the same). A data set the manifest does not publish returns a clear error; `get_data_status` lists what is there. See [Historical data](data.md). `get_scoreboard` and `get_slate` read `games` for older days. The live `get_injuries` and `get_transactions` tools are unchanged.
 
 | Tool | Description |
 |------|-------------|
 | [`get_games`](data.md#get_games) | Schedule and results. |
-| [`get_team_box_scores`](data.md#tools) | Team box line. |
-| [`get_team_game_stats`](data.md#tools) | Team counting stats for and against. |
+| [`get_team_box_scores`](data.md#get_team_box_scores) | Team box line. |
+| [`get_team_game_stats`](data.md#get_team_game_stats) | Team counting stats for and against. |
 | [`get_player_game_logs`](data.md#get_player_game_logs) | Player box lines. `statGroup` picks the league's file. |
 | [`get_player_trends`](data.md#get_player_trends) | Averages and totals by home/away, opponent, month, or rest. Rates are recomputed; longest is a max. |
-| [`get_rosters`](data.md#tools) | Roster spans. |
-| [`get_injury_reports`](data.md#tools) | Injury history from the export. |
-| [`get_transaction_log`](data.md#tools) | Transaction history from the export. |
-| [`get_depth_charts`](data.md#tools) | NFL depth chart. |
-| [`get_probables`](data.md#tools) | Probable pitchers and goalies. |
-| [`get_lineups`](data.md#tools) | Announced lineups. |
-| [`get_weather`](data.md#tools) | Game weather. |
+| [`get_rosters`](data.md#get_rosters) | Roster spans. |
+| [`get_injury_reports`](data.md#get_injury_reports) | Injury history from the export. |
+| [`get_transaction_log`](data.md#get_transaction_log) | Transaction history from the export. |
+| [`get_depth_charts`](data.md#get_depth_charts) | NFL depth chart. |
+| [`get_probables`](data.md#get_probables) | Probable pitchers and goalies. |
+| [`get_lineups`](data.md#get_lineups) | Lineups. NHL rows come from the official NHL API. |
+| [`get_weather`](data.md#get_weather) | Game weather. |
 | [`get_data_status`](data.md#get_data_status) | Manifest summary and freshness. |

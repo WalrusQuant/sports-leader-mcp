@@ -156,11 +156,11 @@ The `/injuries` endpoint returns HTTP 500 for individual sports:
 
 ## 11. Season Year Meaning Varies by Sport
 
-- **NFL, College Football:** Season year is the *start* year (2024 season = fall 2024)
-- **NBA, NHL:** Season year can mean the *end* year (2024-25 season = `2025` in some endpoints)
+- **NFL, college football:** Season year is the *start* year (the 2026 season is `2026`)
+- **NBA, NHL, men's college basketball:** Season year is the *end* year (2026-27 is `2027`)
 - **MLB:** Season year matches the calendar year
 
-Always check the `season` object in responses to confirm which convention is used.
+The historical export uses those same names. Every league in that export (`mlb`, `nba`, `nfl`, `nhl`, `cfb`, `cbb`) starts at the 2021 season and runs through today. The current season is rebuilt nightly, around 4:15 AM CT. Always check the `season` object in a live ESPN response to confirm which convention that endpoint uses.
 
 ---
 
@@ -278,10 +278,16 @@ A grouped scoreboard returns 100 events unless `limit` is set. On 2026-02-07, gr
 
 `get_scoreboard` and `get_slate` default both leagues to group `50` and `limit=400`. Pass `groups` to request one conference. A `week` query is left on ESPN's own page, because opening week is about 470 games and the compact scoreboard for that many games exceeds the token budget. College football already returns every FBS game with no group. Other leagues are unchanged.
 
-Every league scoreboard rejects `dates=YYYYMMDD-YYYYMMDD` (HTTP 400), including NBA, NHL, NFL, college football, MLB, and both college basketball leagues, with or without `groups` and `limit`. Days that stay on ESPN are requested separately (at most 14 of those days, four at a time), deduped by id, and sorted by start time. College basketball ESPN days still use group `50` and `limit=400`. A week query stays one request. Older days for MLB, NBA, NFL, NHL, college football, and men's college basketball come from the games export in one query when the file is current and the day is before today and the previous 2 US-Eastern days.
+Every league scoreboard rejects `dates=YYYYMMDD-YYYYMMDD` (HTTP 400), including NBA, NHL, NFL, college football, MLB, and both college basketball leagues, with or without `groups` and `limit`. Days that stay on ESPN are requested separately (at most 14 of those days, four at a time), deduped by id, and sorted by start time. College basketball ESPN days still use group `50` and `limit=400`. A week query stays one request. Older days for MLB, NBA, NFL, NHL, college football, and men's college basketball come from the games export in one query when the file is current and the day is before today and the previous 2 US-Eastern days. Those six leagues are published from the 2021 season through today. `source` on the compact scoreboard or slate is `data`, `espn`, or `mixed`. A result past the token budget includes a `page`; `offset` returns the next slice. `days` still counts every game.
 
 ---
 
 ## 22. Core API v3 Host Is Dead
 
 `https://sports.core.api.espn.com/v3/sports/...` returned 404 on 2026-10-31 for the athlete resources this catalog used to attribute to it. Use Web API v3 (`site.web.api.espn.com/apis/common/v3`) for athlete stats. The CDN base (`cdn.espn.com/core/{league}?xhr=1`) still returns JSON and is only an `espn_fetch` escape hatch; team schedules in the tools use the Site API.
+
+---
+
+## 23. NHL Lineups Come From the Official NHL API
+
+`get_lineups` for `nhl`, and the lineup block on `get_game_preview`, read the Parquet lineup file. Those NHL rows come from the official NHL API. Starting goalies are the ESPN probables before the game and the NHL box score after it. Lines and pairs come from the official shift charts. The file does not use Daily Faceoff.

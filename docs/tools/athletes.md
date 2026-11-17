@@ -79,7 +79,7 @@ One call for how a player has looked lately. `player` is a name or an ESPN athle
 
 `include` defaults to `season`, `recent`, and `splits`. `season` is the season stat line ESPN publishes for that year (or the latest year in the document). `recent` is the last `lastN` gamelog rows, most recent first (default 5), with the same stat shape as [`get_athlete_gamelog`](#get_athlete_gamelog). Preseason games are left out unless `includePreseason` is true. A label ESPN repeats, such as `YDS` for rushing and receiving, is nested under its category so both values stay. `splits` is the split list ESPN publishes, with named stat fields. When the ESPN athlete page lists a current injury, `athlete.injury` carries the status and a summary (Josh Jacobs: Out, Right Finger Surgery). One of those blocks failing is reported in `errors` and the others are still returned. `sources` names the documents that were requested. Publishes an MCP `outputSchema`.
 
-Parameters: `sport`, `league`, `player`, optional `season`, `lastN`, `include`, and `raw`.
+Parameters: `sport`, `league`, `player`, optional `season`, `lastN` (default 5), `includePreseason` (default false), `include` (`season`, `recent`, `splits`; default all three), and `raw`.
 
 ```json
 {
