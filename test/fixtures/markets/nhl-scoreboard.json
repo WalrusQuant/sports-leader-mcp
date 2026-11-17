@@ -1,0 +1,68 @@
+{
+  "events": [
+    {
+      "id": "401892726",
+      "name": "Montreal Canadiens at New York Rangers",
+      "date": "2026-11-17T00:30:00Z",
+      "competitions": [
+        {
+          "date": "2026-11-17T00:30:00Z",
+          "competitors": [
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "8",
+                "abbreviation": "MTL",
+                "location": "Montreal",
+                "name": "Canadiens",
+                "displayName": "Montreal Canadiens"
+              }
+            },
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "11",
+                "abbreviation": "NYR",
+                "location": "New York",
+                "name": "Rangers",
+                "displayName": "New York Rangers"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401892727",
+      "name": "Vancouver Canucks at Utah Mammoth",
+      "date": "2026-11-17T02:30:00Z",
+      "competitions": [
+        {
+          "date": "2026-11-17T02:30:00Z",
+          "competitors": [
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "23",
+                "abbreviation": "VAN",
+                "location": "Vancouver",
+                "name": "Canucks",
+                "displayName": "Vancouver Canucks"
+              }
+            },
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "129764",
+                "abbreviation": "UTA",
+                "location": "Utah",
+                "name": "Mammoth",
+                "displayName": "Utah Mammoth"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "cursor": "",
+  "markets": [
+    {
+      "ticker": "KXNBATOTAL-26NOV16DENMIN-220",
+      "event_ticker": "KXNBATOTAL-26NOV16DENMIN",
+      "title": "Full Game: Over 219.5 points scored",
+      "yes_sub_title": "Over 219.5 points",
+      "yes_bid_dollars": "0.5000",
+      "yes_ask_dollars": "0.5200",
+      "last_price_dollars": "0.5100"
+    },
+    {
+      "ticker": "KXNBATOTAL-26NOV17UTALAC-230",
+      "event_ticker": "KXNBATOTAL-26NOV17UTALAC",
+      "title": "Full Game: Over 229.5 points scored",
+      "yes_sub_title": "Over 229.5 points",
+      "yes_bid_dollars": "0.4800",
+      "yes_ask_dollars": "0.5000",
+      "last_price_dollars": "0.4900"
+    }
+  ]
+}

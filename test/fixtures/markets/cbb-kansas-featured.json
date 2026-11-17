@@ -1,0 +1,36 @@
+{
+  "events": [
+    {
+      "id": "401916289",
+      "name": "Arkansas Razorbacks at Indiana Hoosiers",
+      "date": "2026-11-17T23:00:00Z",
+      "competitions": [
+        {
+          "date": "2026-11-17T23:00:00Z",
+          "competitors": [
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "8",
+                "abbreviation": "ARK",
+                "location": "Arkansas",
+                "name": "Razorbacks",
+                "displayName": "Arkansas Razorbacks"
+              }
+            },
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "84",
+                "abbreviation": "IU",
+                "location": "Indiana",
+                "name": "Hoosiers",
+                "displayName": "Indiana Hoosiers"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

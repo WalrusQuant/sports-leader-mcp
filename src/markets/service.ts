@@ -6,10 +6,15 @@
 import { BASE } from "../endpoints.js";
 import { UpstreamError, fetchJson } from "../client.js";
 import { eventContext } from "../transforms.js";
+import { scoreboardQuery } from "../tools/scoreboard.js";
 import {
   type LeagueMarketConfig,
-  kalshiCodesFor,
+  type ProTeam,
+  codeSpellings,
+  codesEqual,
+  proTeamByCode,
   resolveLeague,
+  seedTeamCodes,
   supportedLeagueList,
 } from "./aliases.js";
 import { marketFetch } from "./http.js";
@@ -35,6 +40,7 @@ import {
   polymarketUsSlug,
   polymarketVenues,
   sideMatches,
+  teamHits,
 } from "./parse.js";
 
 const KALSHI_ORIGIN = "https://api.elections.kalshi.com/trade-api/v2";
@@ -59,6 +65,7 @@ export interface EspnGame {
 interface KalshiSide {
   code: string;
   name: string;
+  nickname?: string;
 }
 
 interface KalshiEvent {
@@ -149,9 +156,10 @@ export async function loadEspnGame(args: {
   if (args.sport !== league.sport) {
     throw new Error(`League ${league.league} is a ${league.sport} league.`);
   }
+  const date = args.date ? isoDate(args.date).replaceAll("-", "") : undefined;
   const board = asRecord(
     await fetchJson(`${BASE.site}/${league.sport}/${league.league}/scoreboard`, {
-      params: { dates: args.date },
+      params: scoreboardQuery(league.sport, league.league, { dates: date }),
     }),
   );
   const events = Array.isArray(board.events) ? board.events : [];
@@ -161,34 +169,62 @@ export async function loadEspnGame(args: {
     chosen = events.filter((event) => String(asRecord(event).id ?? "") === args.eventId);
     matchedBy = "eventId";
   } else if (args.team) {
-    chosen = events.filter((event) => scoreboardHasTeam(event, args.team ?? ""));
+    chosen = events.filter((event) => scoreboardHitsTeam(event, league.league, args.team ?? ""));
     matchedBy = "team";
   }
-  const fromBoard = chosen.map(scoreboardGame).find((game): game is EspnGame => game !== null);
-  if (fromBoard) return { game: fromBoard, matchedBy };
+  const games = chosen.map(scoreboardGame).filter((game): game is EspnGame => game !== null);
+  if (!args.eventId && args.team && games.length > 1) {
+    throw new Error(
+      `${args.team} matches ${games.length} ${league.league} games on ${date ?? "the scoreboard"} (${games.map((game) => game.eventId).join(", ")}). Pass eventId.`,
+    );
+  }
+  const fromBoard = games[0];
+  if (fromBoard) {
+    if (args.eventId && args.team && !gameHasTeam(fromBoard, league.league, args.team)) {
+      throw new Error(teamDisagrees(args.team, fromBoard));
+    }
+    return { game: fromBoard, matchedBy };
+  }
 
   if (args.eventId) {
     const raw = await fetchJson(`${BASE.core}/${league.sport}/leagues/${league.league}/events/${args.eventId}`);
     const fromCore = coreGame(raw);
-    if (fromCore) return { game: fromCore, matchedBy: "eventId" };
+    if (fromCore) {
+      if (args.team && !gameHasTeam(fromCore, league.league, args.team)) {
+        throw new Error(teamDisagrees(args.team, fromCore));
+      }
+      return { game: fromCore, matchedBy: "eventId" };
+    }
   }
   throw new Error(
     args.eventId
       ? `No ESPN game ${args.eventId} on the ${league.league} scoreboard.`
-      : `No ESPN game matched for ${league.league}.`,
+      : args.team
+        ? `No ${args.team} game on the ${league.league} scoreboard for ${date ?? "the current slate"}.`
+        : `No ESPN game matched for ${league.league}.`,
   );
 }
 
-function scoreboardHasTeam(event: unknown, team: string): boolean {
+function gameHasTeam(game: EspnGame, league: string, team: string): boolean {
+  return teamHits(league, game.away, team) || teamHits(league, game.home, team);
+}
+
+function teamDisagrees(team: string, game: EspnGame): string {
+  return `Team ${team} is not on event ${game.eventId} (${game.away.abbrev} at ${game.home.abbrev}).`;
+}
+
+function scoreboardHitsTeam(event: unknown, league: string, team: string): boolean {
   const comp = asRecord(asList(asRecord(event).competitions)[0]);
   const competitors = Array.isArray(comp.competitors) ? comp.competitors : [];
-  const needle = team.trim().toLowerCase();
   return competitors.some((competitor) => {
     const side = asRecord(asRecord(competitor).team);
-    const fields = [side.abbreviation, side.location, side.name, side.displayName, side.shortDisplayName]
-      .filter((value) => typeof value === "string")
-      .map((value) => String(value).toLowerCase());
-    return fields.some((value) => value === needle || value.includes(needle));
+    return teamHits(league, {
+      abbrev: String(side.abbreviation ?? ""),
+      location: String(side.location ?? ""),
+      name: String(side.name ?? ""),
+      displayName: String(side.displayName ?? ""),
+      shortDisplayName: String(side.shortDisplayName ?? ""),
+    }, team);
   });
 }
 
@@ -263,7 +299,58 @@ async function fetchKalshiMarkets(series: string): Promise<Record<string, unknow
   return markets;
 }
 
-function buildKalshiEvents(rows: Record<string, unknown>[], league: string): KalshiEvent[] {
+interface KalshiSeed {
+  codes: Set<string>;
+  names: Map<string, string>;
+}
+
+function teamCodeFromSuffix(suffix: string): string {
+  return suffix.replace(/\d+$/, "");
+}
+
+/** "Utah wins by over 8.5 points" is Utah. A total title is not a team. */
+function cleanTeamName(value: string): string | null {
+  const text = value.trim();
+  if (!text) return null;
+  const lead = text.match(/^(.+?) wins by over\b/i);
+  if (lead?.[1]) return lead[1].trim();
+  if (/^over\s+\d/i.test(text) || /points scored/i.test(text)) return null;
+  return text;
+}
+
+function blankKalshiSeed(league: string): KalshiSeed {
+  const codes = new Set(seedTeamCodes(league));
+  const names = new Map<string, string>();
+  for (const code of codes) {
+    const team = proTeamByCode(league, code);
+    if (team) names.set(team.code.toUpperCase(), team.name);
+  }
+  return { codes, names };
+}
+
+function absorbKalshiRows(seed: KalshiSeed, rows: Record<string, unknown>[]): void {
+  for (const row of rows) {
+    const eventTicker = String(row.event_ticker ?? "");
+    const suffix = teamCodeFromSuffix(kalshiOutcomeCode(eventTicker, String(row.ticker ?? "")));
+    if (!/^[A-Z]{2,}$/.test(suffix)) continue;
+    seed.codes.add(suffix);
+    const sub = typeof row.yes_sub_title === "string" ? cleanTeamName(row.yes_sub_title) : null;
+    const title = typeof row.title === "string" ? cleanTeamName(row.title) : null;
+    const name = sub ?? title;
+    if (name) seed.names.set(suffix, name);
+  }
+}
+
+function kalshiSide(league: string, code: string, name: string): KalshiSide {
+  const team: ProTeam | undefined = proTeamByCode(league, code);
+  return {
+    code,
+    name,
+    ...(team?.nickname ? { nickname: team.nickname } : {}),
+  };
+}
+
+function buildKalshiEvents(rows: Record<string, unknown>[], league: string, seed: KalshiSeed): KalshiEvent[] {
   const grouped = new Map<string, Record<string, unknown>[]>();
   for (const row of rows) {
     const eventTicker = String(row.event_ticker ?? "");
@@ -272,26 +359,26 @@ function buildKalshiEvents(rows: Record<string, unknown>[], league: string): Kal
     list.push(row);
     grouped.set(eventTicker, list);
   }
-  const codes = new Set(kalshiCodesFor(league));
-  for (const [eventTicker, group] of grouped) {
-    for (const row of group) {
-      const suffix = kalshiOutcomeCode(eventTicker, String(row.ticker ?? ""));
-      if (/^[A-Z]+$/.test(suffix)) codes.add(suffix);
-    }
-  }
+  absorbKalshiRows(seed, rows);
+  const codes = [...seed.codes];
   const events: KalshiEvent[] = [];
   for (const [eventTicker, group] of grouped) {
-    const parsed = parseKalshiEventTicker(eventTicker, [...codes]);
+    const parsed = parseKalshiEventTicker(eventTicker, codes);
     const markets = group.map((row) => kalshiMarket(eventTicker, row));
     const nameFor = (code: string) => {
-      const row = group.find((item) => kalshiOutcomeCode(eventTicker, String(item.ticker ?? "")) === code);
-      return typeof row?.yes_sub_title === "string" && row.yes_sub_title ? row.yes_sub_title : code;
+      const row = group.find(
+        (item) => teamCodeFromSuffix(kalshiOutcomeCode(eventTicker, String(item.ticker ?? ""))) === code,
+      );
+      const fromRow =
+        (typeof row?.yes_sub_title === "string" ? cleanTeamName(row.yes_sub_title) : null) ??
+        (typeof row?.title === "string" ? cleanTeamName(row.title) : null);
+      return fromRow || seed.names.get(code) || code;
     };
     events.push({
       eventTicker,
       scheduledDate: parsed?.scheduledDate ?? null,
-      away: parsed ? { code: parsed.awayCode, name: nameFor(parsed.awayCode) } : null,
-      home: parsed ? { code: parsed.homeCode, name: nameFor(parsed.homeCode) } : null,
+      away: parsed ? kalshiSide(league, parsed.awayCode, nameFor(parsed.awayCode)) : null,
+      home: parsed ? kalshiSide(league, parsed.homeCode, nameFor(parsed.homeCode)) : null,
       markets,
     });
   }
@@ -334,20 +421,44 @@ function kalshiSideOk(league: string, team: EspnSide, side: KalshiSide | null): 
   return sideMatches(league, team, side.code, [side.name, side.code]);
 }
 
+function kalshiOrder(league: string, game: EspnGame, event: KalshiEvent): "same" | "swapped" | null {
+  if (kalshiSideOk(league, game.away, event.away) && kalshiSideOk(league, game.home, event.home)) return "same";
+  if (kalshiSideOk(league, game.away, event.home) && kalshiSideOk(league, game.home, event.away)) return "swapped";
+  return null;
+}
+
+function alignKalshi(event: KalshiEvent, order: "same" | "swapped"): KalshiEvent {
+  if (order === "same" || !event.away || !event.home) return event;
+  return { ...event, away: event.home, home: event.away };
+}
+
 function matchKalshi(events: KalshiEvent[], game: EspnGame, league: string): { event: KalshiEvent; matchedBy: string } | null {
   const hits = events.flatMap((event) => {
-    if (!kalshiSideOk(league, game.away, event.away) || !kalshiSideOk(league, game.home, event.home)) return [];
-    const matchedBy =
-      event.scheduledDate === game.easternDate
-        ? "teams+scheduledDate"
-        : `teams (Kalshi ticker date ${event.scheduledDate ?? "unknown"}; postponed games keep the original scheduled date)`;
-    return [{ event, matchedBy }];
+    const order = kalshiOrder(league, game, event);
+    if (!order) return [];
+    const note = order === "swapped" ? " (ticker lists the teams in the other order)" : "";
+    const exact = event.scheduledDate === game.easternDate;
+    const matchedBy = exact
+      ? `teams+scheduledDate${note}`
+      : `teams (Kalshi ticker date ${event.scheduledDate ?? "unknown"}; postponed games keep the original scheduled date)${note}`;
+    return [{ event: alignKalshi(event, order), matchedBy, exact }];
   });
   if (!hits.length) return null;
-  const exact = hits.find((hit) => hit.matchedBy === "teams+scheduledDate");
-  if (exact) return exact;
+  const dated = hits.find((hit) => hit.exact);
+  if (dated) return { event: dated.event, matchedBy: dated.matchedBy };
   hits.sort((a, b) => (a.event.scheduledDate ?? "").localeCompare(b.event.scheduledDate ?? ""));
-  return hits[hits.length - 1] ?? null;
+  const last = hits[hits.length - 1];
+  return last ? { event: last.event, matchedBy: last.matchedBy } : null;
+}
+
+function kalshiTeamQuery(league: string, side: KalshiSide | null, query: string): boolean {
+  if (!side) return false;
+  const needle = query.trim().toLowerCase();
+  if (!needle) return false;
+  if (side.code.toLowerCase() === needle || codesEqual(league, side.code, query)) return true;
+  if (side.name.toLowerCase() === needle || side.nickname?.toLowerCase() === needle) return true;
+  const team = proTeamByCode(league, side.code);
+  return team !== undefined && (team.name.toLowerCase() === needle || team.nickname.toLowerCase() === needle);
 }
 
 function publicKalshiEvent(event: KalshiEvent): Record<string, unknown> {
@@ -382,17 +493,21 @@ export async function getKalshiMarkets(args: {
       events: [],
     };
   }
-  const events = buildKalshiEvents(await fetchKalshiMarkets(series), league.league);
+  const rows = await fetchKalshiMarkets(series);
+  const seed = blankKalshiSeed(league.league);
+  if (market !== "winner" && league.kalshi.winner && league.kalshi.winner !== series) {
+    try {
+      absorbKalshiRows(seed, await fetchKalshiMarkets(league.kalshi.winner));
+    } catch {
+      // ESPN and pro codes still split NBA and NFL. A winner-series miss leaves those names in place.
+    }
+  }
+  const events = buildKalshiEvents(rows, league.league, seed);
   const date = args.date ? isoDate(args.date) : undefined;
   const filtered = events.filter((event) => {
     if (date && event.scheduledDate !== date) return false;
     if (!args.team) return true;
-    const team = args.team;
-    return [event.away, event.home].some((side) => {
-      if (!side) return false;
-      if (side.code.toLowerCase() === team.toLowerCase() || side.name.toLowerCase().includes(team.toLowerCase())) return true;
-      return sideMatches(league.league, { abbrev: team.toUpperCase(), location: team, name: team, displayName: team }, side.code, [side.name]);
-    });
+    return [event.away, event.home].some((side) => kalshiTeamQuery(league.league, side, args.team ?? ""));
   });
   if (args.includeBook) await attachKalshiBooks(filtered);
   return {
@@ -439,29 +554,71 @@ function blankSide(abbrev: string): EspnSide {
   return { abbrev, location: "", name: "", displayName: "" };
 }
 
+function gammaLabels(team: GammaTeam): Array<string | undefined> {
+  return [team.alias, team.name, team.abbreviation];
+}
+
 function gammaMatch(event: GammaEvent, game: EspnGame, league: string): string | null {
   const teams = gammaTeams(event);
   if (!teams) return null;
-  const awayOk = sideMatches(league, game.away, teams.away.abbreviation, [teams.away.alias, teams.away.name, teams.away.abbreviation]);
-  const homeOk = sideMatches(league, game.home, teams.home.abbreviation, [teams.home.alias, teams.home.name, teams.home.abbreviation]);
-  if (!awayOk || !homeOk) return null;
-  const usedAlias = [teams.away.abbreviation, teams.home.abbreviation].some(
-    (code, index) =>
-      Boolean(code) &&
-      codesDiffer(league, index === 0 ? game.away.abbrev : game.home.abbrev, code ?? ""),
+  const same =
+    sideMatches(league, game.away, teams.away.abbreviation, gammaLabels(teams.away)) &&
+    sideMatches(league, game.home, teams.home.abbreviation, gammaLabels(teams.home));
+  const swapped =
+    !same &&
+    sideMatches(league, game.away, teams.home.abbreviation, gammaLabels(teams.home)) &&
+    sideMatches(league, game.home, teams.away.abbreviation, gammaLabels(teams.away));
+  if (!same && !swapped) return null;
+  const pairs: Array<[GammaTeam, EspnSide]> = same
+    ? [
+        [teams.away, game.away],
+        [teams.home, game.home],
+      ]
+    : [
+        [teams.away, game.home],
+        [teams.home, game.away],
+      ];
+  const usedAlias = pairs.some(
+    ([gamma, espn]) => Boolean(gamma.abbreviation) && codesDiffer(league, espn.abbrev, gamma.abbreviation ?? ""),
   );
   const how = usedAlias ? "alias" : "teams";
-  if (event.eventDate && event.eventDate === game.easternDate) return `${how}+eventDate`;
-  if (event.startTime) return `${how}+startTime`;
-  return how;
+  const note = swapped ? " (listed in the other order)" : "";
+  if (event.eventDate && event.eventDate === game.easternDate) return `${how}+eventDate${note}`;
+  if (event.startTime) return `${how}+startTime${note}`;
+  return `${how}${note}`;
+}
+
+function dedupeGamma(events: GammaEvent[]): GammaEvent[] {
+  const seen = new Set<string>();
+  const out: GammaEvent[] = [];
+  for (const event of events) {
+    const key = event.slug || `${event.title ?? ""}|${event.eventDate ?? ""}|${event.startTime ?? ""}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(event);
+  }
+  return out;
 }
 
 function filterGammaEvents(events: GammaEvent[], sport: string, date: string | undefined, now: Date): GammaEvent[] {
-  return events.filter((event) => {
-    if (!isGammaGameSlug(sport, event.slug) || !(event.teams && event.teams.length >= 2)) return false;
-    if (date) return gammaEventOnDate(event, date);
-    return gammaEventIsCurrent(event, now);
-  });
+  return dedupeGamma(
+    events.filter((event) => {
+      if (!isGammaGameSlug(sport, event.slug) || !(event.teams && event.teams.length >= 2)) return false;
+      if (date) return gammaEventOnDate(event, date);
+      return gammaEventIsCurrent(event, now);
+    }),
+  );
+}
+
+function gammaTeamQuery(league: string, side: GammaTeam, query: string): boolean {
+  const needle = query.trim().toLowerCase();
+  if (!needle) return false;
+  const abbr = side.abbreviation ?? "";
+  if (abbr && (abbr.toLowerCase() === needle || codesEqual(league, abbr, query))) return true;
+  if ((side.alias ?? "").toLowerCase() === needle) return true;
+  if ((side.name ?? "").toLowerCase() === needle) return true;
+  const team = proTeamByCode(league, abbr);
+  return team !== undefined && (team.name.toLowerCase() === needle || team.nickname.toLowerCase() === needle);
 }
 
 async function gammaMarketsFor(slug: string, gammaType: string): Promise<Record<string, unknown>[]> {
@@ -532,8 +689,12 @@ async function booksFor(tokenIds: string[]): Promise<Map<string, ReturnType<type
   return map;
 }
 
-function publicGammaEvent(event: GammaEvent, markets: Record<string, unknown>[]): Record<string, unknown> {
+function publicGammaEvent(event: GammaEvent, markets: Record<string, unknown>[], swapped = false): Record<string, unknown> {
   const teams = gammaTeams(event);
+  const away = swapped ? teams?.home : teams?.away;
+  const home = swapped ? teams?.away : teams?.home;
+  const side = (team: GammaTeam | undefined) =>
+    team ? { code: team.abbreviation ?? null, name: team.name ?? team.alias ?? null } : null;
   return {
     venue: "polymarket",
     slug: event.slug ?? null,
@@ -541,12 +702,8 @@ function publicGammaEvent(event: GammaEvent, markets: Record<string, unknown>[])
     eventDate: event.eventDate ?? null,
     startTime: event.startTime ?? null,
     usId: event.usId ?? null,
-    away: teams
-      ? { code: teams.away.abbreviation ?? null, name: teams.away.name ?? teams.away.alias ?? null }
-      : null,
-    home: teams
-      ? { code: teams.home.abbreviation ?? null, name: teams.home.name ?? teams.home.alias ?? null }
-      : null,
+    away: side(away),
+    home: side(home),
     markets,
   };
 }
@@ -568,7 +725,11 @@ async function polymarketGlobal(
       books = await booksFor(tokenIds);
     }
     built.push({
-      ...publicGammaEvent(item.event, markets.map((market) => compactGammaMarket(market, books))),
+      ...publicGammaEvent(
+        item.event,
+        markets.map((market) => compactGammaMarket(market, books)),
+        item.matchedBy.includes("other order"),
+      ),
       matchedBy: item.matchedBy,
     });
   }
@@ -581,43 +742,118 @@ function money(value: unknown): number | null {
   return dollarPrice(record.value ?? value);
 }
 
-async function polymarketUs(events: Array<{ event: GammaEvent; matchedBy: string }>): Promise<VenueResult> {
+function round4(value: number): number {
+  return Math.round(value * 10000) / 10000;
+}
+
+interface UsLookup {
+  league: LeagueMarketConfig;
+  game?: EspnGame;
+}
+
+function rememberPair(pairs: Array<[string, string]>, away?: string, home?: string): void {
+  const left = (away ?? "").trim().toLowerCase();
+  const right = (home ?? "").trim().toLowerCase();
+  if (!left || !right) return;
+  if (pairs.some((pair) => pair[0] === left && pair[1] === right)) return;
+  pairs.push([left, right]);
+}
+
+function addCodePairs(pairs: Array<[string, string]>, league: string, away: string, home: string): void {
+  for (const left of codeSpellings(league, away)) {
+    for (const right of codeSpellings(league, home)) rememberPair(pairs, left, right);
+  }
+}
+
+/** Gamma usId when it is set. Otherwise aec-{sport}-{away}-{home}-{eventDate}, both code sets, both orders. */
+function usSlugCandidates(lookup: UsLookup, event: GammaEvent): string[] {
+  if (event.usId) return [polymarketUsSlug(event.usId)];
+  const date = event.eventDate;
+  if (!date) return [];
+  const pairs: Array<[string, string]> = [];
+  const league = lookup.league.league;
+  if (lookup.game) {
+    addCodePairs(pairs, league, lookup.game.away.abbrev, lookup.game.home.abbrev);
+    addCodePairs(pairs, league, lookup.game.home.abbrev, lookup.game.away.abbrev);
+  }
+  const teams = gammaTeams(event);
+  if (teams?.away.abbreviation && teams.home.abbreviation) {
+    addCodePairs(pairs, league, teams.away.abbreviation, teams.home.abbreviation);
+    addCodePairs(pairs, league, teams.home.abbreviation, teams.away.abbreviation);
+  }
+  return pairs.slice(0, 12).map(([away, home]) => `aec-${lookup.league.gammaSport}-${away}-${home}-${date}`);
+}
+
+function teamFromSlugCode(league: string, code: string, event: GammaEvent): { code: string; name: string; side: string | null } {
+  const teams = gammaTeams(event);
+  const found = [teams?.away, teams?.home].find((team) => {
+    const abbr = team?.abbreviation ?? "";
+    return abbr.toLowerCase() === code.toLowerCase() || (abbr !== "" && codesEqual(league, abbr, code));
+  });
+  const known = proTeamByCode(league, found?.abbreviation ?? code);
+  return {
+    code: found?.abbreviation ?? code,
+    name: found?.name ?? found?.alias ?? known?.nickname ?? code,
+    side: found?.ordering ?? null,
+  };
+}
+
+async function polymarketUs(
+  events: Array<{ event: GammaEvent; matchedBy: string }>,
+  lookup: UsLookup,
+): Promise<VenueResult> {
   if (!events.length) return noneFound("polymarket_us");
   const built = [];
   for (const item of events) {
-    const usId = item.event.usId;
-    if (!usId) continue;
-    const slug = polymarketUsSlug(usId);
+    const candidates = usSlugCandidates(lookup, item.event);
     let data: unknown;
-    try {
-      data = await marketFetch(`${US_ORIGIN}/markets/${encodeURIComponent(slug)}/bbo`);
-    } catch (err) {
-      if (err instanceof UpstreamError && err.status === 404) continue;
-      throw err;
+    let slug = "";
+    for (const candidate of candidates) {
+      try {
+        data = await marketFetch(`${US_ORIGIN}/markets/${encodeURIComponent(candidate)}/bbo`);
+        slug = candidate;
+        break;
+      } catch (err) {
+        if (err instanceof UpstreamError && err.status === 404) continue;
+        throw err;
+      }
     }
+    if (!data || !slug) continue;
     const quote = asRecord(asRecord(data).marketData);
-    const teams = gammaTeams(item.event);
+    const parts = slug.match(/^aec-[a-z0-9]+-([a-z0-9]+)-([a-z0-9]+)-\d{4}-\d{2}-\d{2}$/i);
+    const longTeam = teamFromSlugCode(lookup.league.league, parts?.[1] ?? "", item.event);
+    const shortTeam = teamFromSlugCode(lookup.league.league, parts?.[2] ?? "", item.event);
+    const bid = money(quote.bestBid);
+    const ask = money(quote.bestAsk);
+    const mid = bid != null && ask != null ? round4((bid + ask) / 2) : null;
+    const fromGamma = Boolean(item.event.usId);
     built.push({
       venue: "polymarket_us",
       slug,
-      usId,
+      usId: fromGamma ? item.event.usId : slug.replace(/^aec-/, ""),
       priceSource: "bbo",
-      matchedBy: `${item.matchedBy}+usId`,
+      matchedBy: fromGamma ? `${item.matchedBy}+usId` : `${item.matchedBy}+constructed slug`,
       long: {
-        side: teams?.away.ordering ?? "away",
-        code: teams?.away.abbreviation ?? null,
-        name: teams?.away.name ?? teams?.away.alias ?? null,
-        bid: money(quote.bestBid),
-        ask: money(quote.bestAsk),
+        side: longTeam.side,
+        code: longTeam.code || null,
+        name: longTeam.name || null,
+        bid,
+        ask,
         last: money(quote.lastTradePx),
         current: money(quote.currentPx),
+        mid,
+        label: "mid",
         quote: money(quote.longQuote),
         priceSource: "bbo",
       },
       short: {
-        side: teams?.home.ordering ?? "home",
-        code: teams?.home.abbreviation ?? null,
-        name: teams?.home.name ?? teams?.home.alias ?? null,
+        side: shortTeam.side,
+        code: shortTeam.code || null,
+        name: shortTeam.name || null,
+        bid: ask != null ? round4(1 - ask) : null,
+        ask: bid != null ? round4(1 - bid) : null,
+        mid: mid != null ? round4(1 - mid) : null,
+        label: "mid",
         quote: money(quote.shortQuote),
         priceSource: "bbo",
       },
@@ -684,11 +920,9 @@ export async function getPolymarketMarkets(args: {
   try {
     events = filterGammaEvents(await fetchGammaEvents(league.gammaSeriesId, date), league.gammaSport, date, now);
     if (args.team) {
-      const team = args.team.toLowerCase();
+      const team = args.team;
       events = events.filter((event) =>
-        (event.teams ?? []).some((side) =>
-          [side.abbreviation, side.alias, side.name].some((value) => String(value ?? "").toLowerCase().includes(team)),
-        ),
+        (event.teams ?? []).some((side) => gammaTeamQuery(league.league, side, team)),
       );
     }
   } catch (err) {
@@ -705,7 +939,9 @@ export async function getPolymarketMarkets(args: {
   }
   if (wanted.includes("polymarket_us")) {
     venues.push(
-      listError ? unavailable("polymarket_us", listError) : await safeVenue("polymarket_us", () => polymarketUs(tagged)),
+      listError
+        ? unavailable("polymarket_us", listError)
+        : await safeVenue("polymarket_us", () => polymarketUs(tagged, { league })),
     );
   }
   return {
@@ -736,7 +972,8 @@ export async function getMarketOdds(args: {
     venues.push(
       await safeVenue("kalshi", async () => {
         const series = league.kalshi.winner;
-        const events = buildKalshiEvents(await fetchKalshiMarkets(series), league.league);
+        const rows = await fetchKalshiMarkets(series);
+        const events = buildKalshiEvents(rows, league.league, blankKalshiSeed(league.league));
         const hit = matchKalshi(events, game, league.league);
         if (!hit) return noneFound("kalshi");
         return {
@@ -755,16 +992,12 @@ export async function getMarketOdds(args: {
     let tagged: Array<{ event: GammaEvent; matchedBy: string }> = [];
     let listError: unknown;
     try {
-      const listed = await fetchGammaEvents(league.gammaSeriesId, game.easternDate);
+      const listed = dedupeGamma(await fetchGammaEvents(league.gammaSeriesId, game.easternDate));
       const hits = listed.filter((event) => isGammaGameSlug(league.gammaSport, event.slug)).flatMap((event) => {
         const why = gammaMatch(event, game, league.league);
         return why ? [{ event, matchedBy: why }] : [];
       });
-      const sameDay = hits.filter(
-        (hit) =>
-          hit.event.eventDate === game.easternDate ||
-          (hit.event.startTime ? easternDate(hit.event.startTime) === game.easternDate : false),
-      );
+      const sameDay = hits.filter((hit) => gammaEventOnDate(hit.event, game.easternDate));
       tagged = sameDay.length ? sameDay : closestGamma(hits, game);
     } catch (err) {
       listError = err;
@@ -778,7 +1011,9 @@ export async function getMarketOdds(args: {
     }
     if (wantUs) {
       venues.push(
-        listError ? unavailable("polymarket_us", listError) : await safeVenue("polymarket_us", () => polymarketUs(tagged)),
+        listError
+          ? unavailable("polymarket_us", listError)
+          : await safeVenue("polymarket_us", () => polymarketUs(tagged, { league, game })),
       );
     }
   }

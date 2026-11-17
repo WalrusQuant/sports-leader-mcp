@@ -1,0 +1,46 @@
+[
+  {
+    "slug": "nba-por-min-2026-11-16",
+    "title": "Trail Blazers vs. Timberwolves",
+    "eventDate": "2026-11-16",
+    "startTime": "2026-11-17T01:00:00Z",
+    "usId": "nba-por-min-2026-11-16",
+    "teams": [
+      { "abbreviation": "por", "alias": "Trail Blazers", "name": "Trail Blazers", "ordering": "away" },
+      { "abbreviation": "min", "alias": "Timberwolves", "name": "Timberwolves", "ordering": "home" }
+    ]
+  },
+  {
+    "slug": "nba-por-min-2026-11-17",
+    "title": "Trail Blazers vs. Timberwolves",
+    "eventDate": "2026-11-17",
+    "startTime": "2026-11-18T01:00:00Z",
+    "usId": "nba-por-min-2026-11-17",
+    "teams": [
+      { "abbreviation": "por", "alias": "Trail Blazers", "name": "Trail Blazers", "ordering": "away" },
+      { "abbreviation": "min", "alias": "Timberwolves", "name": "Timberwolves", "ordering": "home" }
+    ]
+  },
+  {
+    "slug": "nba-por-min-2026-11-17",
+    "title": "Trail Blazers vs. Timberwolves",
+    "eventDate": "2026-11-17",
+    "startTime": "2026-11-18T01:00:00Z",
+    "usId": "nba-por-min-2026-11-17",
+    "teams": [
+      { "abbreviation": "por", "alias": "Trail Blazers", "name": "Trail Blazers", "ordering": "away" },
+      { "abbreviation": "min", "alias": "Timberwolves", "name": "Timberwolves", "ordering": "home" }
+    ]
+  },
+  {
+    "slug": "nba-uta-lac-2026-11-17",
+    "title": "Jazz vs. Clippers",
+    "eventDate": "2026-11-17",
+    "startTime": "2026-11-18T03:00:00Z",
+    "usId": "nba-uta-lac-2026-11-17",
+    "teams": [
+      { "abbreviation": "uta", "alias": "Jazz", "name": "Jazz", "ordering": "away" },
+      { "abbreviation": "lac", "alias": "Clippers", "name": "Clippers", "ordering": "home" }
+    ]
+  }
+]

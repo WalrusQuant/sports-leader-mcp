@@ -1,0 +1,38 @@
+{
+  "cursor": "",
+  "markets": [
+    {
+      "ticker": "KXNBASPREAD-26NOV16GSWNOP-NOP9",
+      "event_ticker": "KXNBASPREAD-26NOV16GSWNOP",
+      "title": "New Orleans wins by over 8.5 points",
+      "yes_sub_title": "New Orleans wins by over 8.5 points",
+      "yes_bid_dollars": "0.4400",
+      "yes_ask_dollars": "0.4600",
+      "no_bid_dollars": "0.5400",
+      "no_ask_dollars": "0.5600",
+      "last_price_dollars": "0.4500"
+    },
+    {
+      "ticker": "KXNBASPREAD-26NOV16ZZZYYY-ZZZ9",
+      "event_ticker": "KXNBASPREAD-26NOV16ZZZYYY",
+      "title": "Zeta wins by over 8.5 points",
+      "yes_sub_title": "Zeta wins by over 8.5 points",
+      "yes_bid_dollars": "0.2000",
+      "yes_ask_dollars": "0.2200",
+      "no_bid_dollars": "0.7800",
+      "no_ask_dollars": "0.8000",
+      "last_price_dollars": "0.2100"
+    },
+    {
+      "ticker": "KXNBASPREAD-26NOV17UTALAC-UTA5",
+      "event_ticker": "KXNBASPREAD-26NOV17UTALAC",
+      "title": "Utah wins by over 4.5 points",
+      "yes_sub_title": "Utah wins by over 4.5 points",
+      "yes_bid_dollars": "0.1700",
+      "yes_ask_dollars": "0.1900",
+      "no_bid_dollars": "0.8100",
+      "no_ask_dollars": "0.8300",
+      "last_price_dollars": "0.1800"
+    }
+  ]
+}
