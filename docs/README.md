@@ -18,18 +18,43 @@ Built on ESPN's public JSON APIs. No authentication required — just connect yo
 
 ## Quick Install
 
+Requires Node.js 20 or newer. Clone the repository and build it, then point the MCP client at `dist/index.js`:
+
 ```bash
-npx -y @smithery/cli install @wickwireadam-o0nh/sports-leader-mcp --client claude
+git clone https://github.com/WalrusQuant/sports-leader-mcp && cd sports-leader-mcp && npm ci && npm run build
 ```
 
-The scoped identifier above is a Smithery registry identifier, not this repository's npm package name. For a source checkout, build the repository and point the client at `dist/index.js`:
+```bash
+node /path/to/sports-leader-mcp/dist/index.js
+```
+
+Replace `/path/to/sports-leader-mcp` with the directory created by the clone.
+
+### Claude Desktop
+
+`claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "sports-leader": {
       "command": "node",
-      "args": ["/absolute/path/to/sports-leader-mcp/dist/index.js"]
+      "args": ["/path/to/sports-leader-mcp/dist/index.js"]
+    }
+  }
+}
+```
+
+### Cursor
+
+`.cursor/mcp.json` (project) or `~/.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "sports-leader": {
+      "command": "node",
+      "args": ["/path/to/sports-leader-mcp/dist/index.js"]
     }
   }
 }
