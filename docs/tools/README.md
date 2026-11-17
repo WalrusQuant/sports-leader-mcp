@@ -52,7 +52,7 @@ Keyless Kalshi and Polymarket prices. Venues are labelled and are not averaged. 
 |------|-------------|
 | [`get_athlete_overview`](athletes.md#get_athlete_overview) | Player snapshot — season stats, next game, news. |
 | [`get_athlete_stats`](athletes.md#get_athlete_stats) | Season statistics converted into named fields. |
-| [`get_athlete_gamelog`](athletes.md#get_athlete_gamelog) | Game-by-game log with stats per game. |
+| [`get_athlete_gamelog`](athletes.md#get_athlete_gamelog) | Game-by-game log. Repeated labels are nested by category (`rushing.YDS` and `receiving.YDS`). |
 | [`get_athlete_splits`](athletes.md#get_athlete_splits) | Statistical splits — home/away, by opponent, by situation. |
 | [`get_player_report`](athletes.md#get_player_report) | One call: name resolution, season stats, last N games, and splits. |
 
