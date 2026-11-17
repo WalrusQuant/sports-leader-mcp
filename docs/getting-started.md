@@ -2,42 +2,51 @@
 
 ## Installation
 
-### Via Smithery
+Requires Node.js 20 or newer. Clone the repository and build it:
 
 ```bash
-npx -y @smithery/cli install @wickwireadam-o0nh/sports-leader-mcp --client claude
+git clone https://github.com/WalrusQuant/sports-leader-mcp && cd sports-leader-mcp && npm ci && npm run build
 ```
 
-The scoped Smithery identifier above is a hosted registry/install identifier; it is not the npm package name in this repository.
+Point the MCP client at the built server:
 
-### Manual configuration from a source checkout
+```bash
+node /path/to/sports-leader-mcp/dist/index.js
+```
 
-Add to your MCP client's config file:
+Replace `/path/to/sports-leader-mcp` with the directory created by the clone.
+
+### Claude Desktop
+
+Add this to `claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "sports-leader": {
       "command": "node",
-      "args": ["/absolute/path/to/sports-leader-mcp/dist/index.js"]
+      "args": ["/path/to/sports-leader-mcp/dist/index.js"]
     }
   }
 }
 ```
 
-### From Source
+### Cursor
 
-Requires Node.js 20 or newer.
+Add the same shape to `.cursor/mcp.json` in a project, or to `~/.cursor/mcp.json`:
 
-```bash
-git clone https://github.com/WalrusQuant/sports-leader-mcp.git
-cd sports-leader-mcp
-npm install
-npm run build
-npm start
+```json
+{
+  "mcpServers": {
+    "sports-leader": {
+      "command": "node",
+      "args": ["/path/to/sports-leader-mcp/dist/index.js"]
+    }
+  }
+}
 ```
 
-To run as an HTTP service instead of stdio, set `PORT`:
+To run the process yourself instead of letting the client launch it, use `npm start`. To run as an HTTP service instead of stdio, set `PORT`:
 
 ```bash
 PORT=3000 npm start

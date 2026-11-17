@@ -395,15 +395,20 @@
       border: 1px solid var(--card-border);
       border-radius: 12px;
       padding: 2rem 2.5rem;
-      max-width: 650px;
+      max-width: 100%;
       margin: 2.5rem auto 0;
       position: relative;
+      overflow-x: auto;
     }
     .install-block code {
       font-family: var(--mono);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--text);
       user-select: all;
+      display: block;
+      text-align: left;
+      white-space: pre;
+      line-height: 1.7;
     }
     .install-block .comment {
       color: var(--text-dim);
@@ -472,7 +477,6 @@
       <a href="#tools">Tools</a>
       <a href="docs.html">Docs</a>
       <a href="https://github.com/WalrusQuant/sports-leader-mcp" target="_blank">GitHub</a>
-      <a href="https://smithery.ai/servers/wickwireadam-o0nh/sports-leader-mcp" class="nav-cta" target="_blank">Smithery</a>
     </div>
   </nav>
 
@@ -730,11 +734,14 @@
   <section class="install-section" id="install">
     <div class="section-inner">
       <div class="section-label fade-in">Get Started</div>
-      <h2 class="section-title fade-in">One command to connect</h2>
+      <h2 class="section-title fade-in">Clone, build, connect</h2>
 
       <div class="install-block fade-in">
-        <code><span class="comment"># Install via Smithery</span><br>
-npx -y @smithery/cli install @wickwireadam-o0nh/sports-leader-mcp --client claude</code>
+        <code><span class="comment"># Clone and build</span>
+git clone https://github.com/WalrusQuant/sports-leader-mcp &amp;&amp; cd sports-leader-mcp &amp;&amp; npm ci &amp;&amp; npm run build
+
+<span class="comment"># Point the MCP client at the built server</span>
+node /path/to/sports-leader-mcp/dist/index.js</code>
       </div>
 
       <p class="install-or fade-in">or <a href="docs.html#getting-started">see manual config &rarr;</a></p>
@@ -746,7 +753,6 @@ npx -y @smithery/cli install @wickwireadam-o0nh/sports-leader-mcp --client claud
     <div class="footer-links">
       <a href="docs.html">Docs</a>
       <a href="https://github.com/WalrusQuant/sports-leader-mcp">GitHub</a>
-      <a href="https://smithery.ai/servers/wickwireadam-o0nh/sports-leader-mcp">Smithery</a>
     </div>
     <p>sports-leader-mcp &mdash; Free &amp; open source. MIT License.</p>
   </footer>
