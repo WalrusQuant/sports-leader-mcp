@@ -1,0 +1,34 @@
+{
+  "leagues": [{ "abbreviation": "NCAAM" }],
+  "eventsDate": { "date": "2026-11-16T00:00Z" },
+  "events": [
+    {
+      "id": "401000002",
+      "date": "2026-11-15T18:00Z",
+      "name": "Duke Blue Devils at North Carolina Tar Heels",
+      "shortName": "DUKE @ UNC",
+      "status": { "type": { "state": "post", "shortDetail": "Final" } },
+      "competitions": [{
+        "date": "2026-11-15T18:00Z",
+        "competitors": [
+          { "homeAway": "away", "team": { "id": "150", "abbreviation": "DUKE", "displayName": "Duke Blue Devils" }, "score": "68" },
+          { "homeAway": "home", "team": { "id": "153", "abbreviation": "UNC", "displayName": "North Carolina Tar Heels" }, "score": "70" }
+        ]
+      }]
+    },
+    {
+      "id": "401000003",
+      "date": "2026-11-17T02:00Z",
+      "name": "Purdue Boilermakers at Indiana Hoosiers",
+      "shortName": "PUR @ IU",
+      "status": { "type": { "state": "pre", "shortDetail": "Scheduled" } },
+      "competitions": [{
+        "date": "2026-11-17T02:00Z",
+        "competitors": [
+          { "homeAway": "away", "team": { "id": "2509", "abbreviation": "PUR", "displayName": "Purdue Boilermakers" }, "score": "0" },
+          { "homeAway": "home", "team": { "id": "84", "abbreviation": "IU", "displayName": "Indiana Hoosiers" }, "score": "0" }
+        ]
+      }]
+    }
+  ]
+}

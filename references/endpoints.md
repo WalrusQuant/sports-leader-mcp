@@ -12,7 +12,7 @@ Complete reference of every ESPN API endpoint organized by domain and resource t
 |----------|-------------|
 | `scoreboard` | Live and scheduled events with scores |
 | `scoreboard?dates={YYYYMMDD}` | Scores for a specific date |
-| `scoreboard?dates={YYYYMMDD}-{YYYYMMDD}` | Scores for a date range |
+| `scoreboard?dates={YYYYMMDD}-{YYYYMMDD}` | Rejected with HTTP 400 on every league. `get_scoreboard` and `get_slate` request each day instead (at most 14). |
 | `scoreboard?week={n}&seasontype={t}` | Scores by week (football) |
 | `scoreboard?dates={YYYYMMDD}&groups=50&limit=400` | Every Division I men's or women's college basketball game. The bare scoreboard is a short featured list, and a grouped scoreboard stops at 100 events without `limit`. |
 | `summary?event={id}` | Full game summary: boxscore, plays, leaders, broadcasts |

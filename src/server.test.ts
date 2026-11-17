@@ -387,7 +387,13 @@ test("get_game_preview: one game, schema, call count, and both winner books", as
   assert.equal(sc.injuries.home[0].status, "Doubtful");
   assert.equal(sc.probables, null);
   assert.equal(sc.lineups, null);
-  assert.deepEqual(sc.weather, { tempF: 64, condition: "Clear", windMph: 12, precipPct: 10 });
+  assert.deepEqual(sc.weather, {
+    tempF: 64,
+    condition: "Clear",
+    windMph: null,
+    gustMph: 12,
+    precipPct: 10,
+  });
   const kalshi = sc.markets.kalshi;
   assert.equal(kalshi.find((row: { team: string }) => row.team === "PHI").bid, 0.41);
   assert.equal(kalshi.find((row: { team: string }) => row.team === "JAX").ticker, "KXNFLGAME-26OCT11PHIJAC-JAC");

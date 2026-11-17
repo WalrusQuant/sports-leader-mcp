@@ -12,7 +12,7 @@ import { previewOutput } from "../output-schemas.js";
 import { codesEqual, resolveLeague } from "../markets/aliases.js";
 import { getMarketOdds } from "../markets/service.js";
 import { easternDate, teamHits } from "../markets/parse.js";
-import { scoreboardQuery } from "./scoreboard.js";
+import { fetchScoreboard as fetchLeagueScoreboard } from "./scoreboard.js";
 
 /**
  * One game: injuries and weather from the ESPN summary, probable pitchers or
@@ -27,7 +27,12 @@ type Block = (typeof BLOCKS)[number];
 const PROBABLE_LEAGUES = new Set(["mlb", "nhl"]);
 const LINEUP_LEAGUES = new Set(["mlb", "nba", "nhl"]);
 
-/** AccuWeather icon ids, which is what ESPN puts in gameInfo.weather.conditionId. */
+/**
+ * AccuWeather icon ids, which is what ESPN puts in gameInfo.weather.conditionId.
+ * The published weather-icons table covers 1–44 and leaves 9, 10, 27, and 28 unused.
+ * Labels stay in this title-case wording ("with", "Thunderstorms"). Code 8 is
+ * Dreary (Overcast). Night 36–38 are Intermittent Clouds, Hazy Moonlight, Mostly Cloudy.
+ */
 const CONDITION_BY_ID: Record<string, string> = {
   "1": "Sunny",
   "2": "Mostly Sunny",
@@ -36,7 +41,7 @@ const CONDITION_BY_ID: Record<string, string> = {
   "5": "Hazy Sunshine",
   "6": "Mostly Cloudy",
   "7": "Cloudy",
-  "8": "Overcast",
+  "8": "Dreary (Overcast)",
   "11": "Fog",
   "12": "Showers",
   "13": "Mostly Cloudy with Showers",
@@ -61,7 +66,7 @@ const CONDITION_BY_ID: Record<string, string> = {
   "34": "Mostly Clear",
   "35": "Partly Cloudy",
   "36": "Intermittent Clouds",
-  "37": "Hazy",
+  "37": "Hazy Moonlight",
   "38": "Mostly Cloudy",
   "39": "Partly Cloudy with Showers",
   "40": "Mostly Cloudy with Showers",
@@ -115,9 +120,15 @@ interface LineupRow {
   status?: string;
 }
 
-type Weather =
-  | { indoor: true }
-  | { tempF: number | null; condition: string | null; windMph: number | null; precipPct: number | null };
+type OutdoorWeather = {
+  tempF: number | null;
+  condition: string | null;
+  windMph: number | null;
+  gustMph: number | null;
+  precipPct: number | null;
+};
+
+type Weather = { indoor: true } | OutdoorWeather;
 
 interface KalshiPrice {
   ticker: string;
@@ -297,28 +308,45 @@ function injuriesFor(raw: unknown, home: Side, away: Side): { home: InjuryRow[];
   return { home: forSide(home), away: forSide(away) };
 }
 
-function conditionName(conditionId: unknown): string | null {
+/** AccuWeather label for an ESPN conditionId. Null when the id is unused or unknown. */
+export function conditionLabel(conditionId: unknown): string | null {
   if (conditionId == null || conditionId === "") return null;
   return CONDITION_BY_ID[String(conditionId)] ?? null;
 }
 
 /**
- * ESPN's current summary weather is temperature, conditionId, gust, and
- * precipitation. Older documents also send displayValue and windSpeed.
- * windMph prefers a sustained speed, then a "NW 12 mph" string, then gust,
- * which is the only wind figure on the current document.
+ * Sustained wind only. A gust is a different field and must not fill this in.
+ * ESPN's current summary often sends gust and no sustained speed at all.
  */
-function outdoorWeather(raw: unknown): Weather | null {
+function sustainedMph(weather: Record<string, unknown>): number | null {
+  const speed = num(weather.windSpeed);
+  if (speed != null) return speed;
+  const wind = weather.wind;
+  if (wind && typeof wind === "object" && !Array.isArray(wind)) {
+    const nested = wind as Record<string, unknown>;
+    return num(nested.speed) ?? num(nested.displayValue);
+  }
+  return num(wind);
+}
+
+/**
+ * ESPN's current summary weather is temperature, conditionId, gust, and
+ * precipitation. Older documents also send displayValue, windSpeed, or a
+ * "NW 12 mph" wind string. windMph is sustained wind and stays null when
+ * that is missing. gustMph is the gust, including 0.
+ */
+export function parseOutdoorWeather(raw: unknown): OutdoorWeather | null {
   const weather = record(raw);
   if (!weather) return null;
   const display = text(weather.displayValue);
   const condition =
-    display && display.toLowerCase() !== "weather" ? display : conditionName(weather.conditionId);
+    display && display.toLowerCase() !== "weather" ? display : conditionLabel(weather.conditionId);
   const tempF = num(weather.temperature) ?? num(weather.highTemperature);
-  const windMph = num(weather.windSpeed) ?? num(weather.wind) ?? num(weather.gust);
+  const windMph = sustainedMph(weather);
+  const gustMph = num(weather.gust);
   const precipPct = num(weather.precipitation) ?? num(weather.precipitationProbability);
-  if (tempF == null && condition == null && windMph == null && precipPct == null) return null;
-  return { tempF, condition, windMph, precipPct };
+  if (tempF == null && condition == null && windMph == null && gustMph == null && precipPct == null) return null;
+  return { tempF, condition, windMph, gustMph, precipPct };
 }
 
 function mergedVenue(summary: VenueInfo | undefined, board: VenueInfo | undefined): VenueInfo {
@@ -329,9 +357,7 @@ function mergedVenue(summary: VenueInfo | undefined, board: VenueInfo | undefine
 }
 
 async function fetchScoreboard(sport: string, league: string, date?: string): Promise<ParsedGame[]> {
-  const data = await fetchJson(`${BASE.site}/${sport}/${league}/scoreboard`, {
-    params: scoreboardQuery(sport, league, { dates: date }),
-  });
+  const data = await fetchLeagueScoreboard(sport, league, { dates: date });
   return list(record(data)?.events)
     .map(gameFromScoreboardEvent)
     .filter((game): game is ParsedGame => game !== null);
@@ -555,6 +581,7 @@ export const getGamePreview = defineTool({
     "No sportsbook lines. Pass eventId, or team plus an optional date (YYYYMMDD, default today in America/Chicago). The team must match one game. " +
     "include defaults to injuries, probables, lineups, weather, and markets. Only listed blocks are fetched. " +
     "Injuries, weather, and venue come from the ESPN summary (gameInfo.weather and gameInfo.venue). An indoor venue is { indoor: true }; the scoreboard venue flag is used when the summary omits indoor. " +
+    "Outdoor condition is the AccuWeather label for conditionId. windMph is sustained wind and is null when ESPN does not send one; gusts are gustMph and are never copied into windMph. " +
     "Probables are scoreboard competitors[].probables. Lineups are the latest Parquet rows for that game, the same path as get_lineups. " +
     "Markets reuse get_market_odds (Kalshi trade-api v2 and the Polymarket US gateway, keyless). Prices are not averaged. " +
     "Polymarket US mid is the bid/ask midpoint for the slug's first team and one minus that midpoint for the other team, labelled mid. " +
@@ -772,7 +799,7 @@ export const getGamePreview = defineTool({
       if (venue.indoor === true) {
         result.weather = { indoor: true };
       } else {
-        result.weather = outdoorWeather(record(record(summaryRaw)?.gameInfo)?.weather);
+        result.weather = parseOutdoorWeather(record(record(summaryRaw)?.gameInfo)?.weather);
       }
     }
 

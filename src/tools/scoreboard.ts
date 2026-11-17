@@ -37,6 +37,9 @@ import { gameOddsOutput, gameSummaryOutput, scoreboardOutput } from "../output-s
 const DIVISION_I_BASKETBALL = new Set(["mens-college-basketball", "womens-college-basketball"]);
 const DIVISION_I_GROUP = "50";
 const DIVISION_I_SCOREBOARD_LIMIT = 400;
+/** ESPN returns 400 for dates=YYYYMMDD-YYYYMMDD on every league scoreboard. */
+const SCOREBOARD_RANGE_DAYS = 14;
+const SCOREBOARD_RANGE_CONCURRENCY = 4;
 
 export function scoreboardQuery(
   sport: string,
@@ -54,11 +57,132 @@ export function scoreboardQuery(
   };
 }
 
+function ymdToUtc(ymd: string): number {
+  return Date.UTC(Number(ymd.slice(0, 4)), Number(ymd.slice(4, 6)) - 1, Number(ymd.slice(6, 8)));
+}
+
+function utcToYmd(time: number): string {
+  const date = new Date(time);
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  return `${date.getUTCFullYear()}${month}${day}`;
+}
+
+/**
+ * Inclusive calendar days for a YYYYMMDD-YYYYMMDD range. Throws when the end
+ * is before the start, or when the range is longer than 14 days.
+ */
+export function scoreboardRangeDays(dateRange: string): string[] {
+  const start = dateRange.slice(0, 8);
+  const end = dateRange.slice(9);
+  const startUtc = ymdToUtc(start);
+  const endUtc = ymdToUtc(end);
+  if (endUtc < startUtc) {
+    throw new Error(`dateRange ${dateRange} ends before it starts.`);
+  }
+  const days: string[] = [];
+  for (let time = startUtc; time <= endUtc; time += 86_400_000) {
+    days.push(utcToYmd(time));
+  }
+  if (days.length > SCOREBOARD_RANGE_DAYS) {
+    throw new Error(
+      `dateRange ${dateRange} is ${days.length} days. ESPN rejects a date range on every scoreboard, so each day is requested separately, and a range can be at most ${SCOREBOARD_RANGE_DAYS} days.`,
+    );
+  }
+  return days;
+}
+
+function isDateRange(dates?: string): dates is string {
+  return Boolean(dates && dates.includes("-"));
+}
+
+/** Throws before any fetch when a scoreboard range is reversed or longer than 14 days. */
+export function assertScoreboardRange(dates?: string): void {
+  if (isDateRange(dates)) scoreboardRangeDays(dates);
+}
+
+async function mapLimit<T, R>(items: T[], limit: number, fn: (item: T) => Promise<R>): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (cursor < items.length) {
+      const index = cursor++;
+      results[index] = await fn(items[index]!);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+function eventStart(event: Record<string, unknown>): string {
+  if (typeof event.date === "string" && event.date) return event.date;
+  const competitions = Array.isArray(event.competitions) ? event.competitions : [];
+  const first = competitions[0];
+  if (first && typeof first === "object" && !Array.isArray(first)) {
+    const date = (first as Record<string, unknown>).date;
+    if (typeof date === "string") return date;
+  }
+  return "";
+}
+
+/** One scoreboard document. Later days overwrite the same event id, then events are sorted by start. */
+export function mergeScoreboards(boards: unknown[]): Record<string, unknown> {
+  const byId = new Map<string, Record<string, unknown>>();
+  const withoutId: Record<string, unknown>[] = [];
+  let shell: Record<string, unknown> | undefined;
+  for (const board of boards) {
+    if (!board || typeof board !== "object" || Array.isArray(board)) continue;
+    const doc = board as Record<string, unknown>;
+    if (!shell) shell = doc;
+    const events = Array.isArray(doc.events) ? doc.events : [];
+    for (const item of events) {
+      if (!item || typeof item !== "object" || Array.isArray(item)) continue;
+      const event = item as Record<string, unknown>;
+      const id = event.id == null ? "" : String(event.id);
+      if (!id) {
+        withoutId.push(event);
+        continue;
+      }
+      byId.set(id, event);
+    }
+  }
+  const events = [...byId.values(), ...withoutId].sort((a, b) => {
+    const byStart = eventStart(a).localeCompare(eventStart(b));
+    if (byStart !== 0) return byStart;
+    return String(a.id ?? "").localeCompare(String(b.id ?? ""));
+  });
+  return { ...(shell ?? {}), events };
+}
+
+/**
+ * A dateRange is one scoreboardQuery per day, four at a time, for every league.
+ * Events are deduped by id and sorted by start. A single day, an omitted date,
+ * and a week query are one ESPN request. College basketball still gets group 50
+ * and limit 400 from scoreboardQuery, except on a week query.
+ */
+export async function fetchScoreboard(
+  sport: string,
+  league: string,
+  input: { dates?: string; week?: number; seasontype?: number; groups?: string },
+): Promise<unknown> {
+  const url = `${BASE.site}/${sport}/${league}/scoreboard`;
+  if (isDateRange(input.dates)) {
+    const days = scoreboardRangeDays(input.dates);
+    const boards = await mapLimit(days, SCOREBOARD_RANGE_CONCURRENCY, (day) =>
+      fetchJson(url, {
+        params: scoreboardQuery(sport, league, { ...input, dates: day }),
+      }),
+    );
+    return mergeScoreboards(boards);
+  }
+  return fetchJson(url, { params: scoreboardQuery(sport, league, input) });
+}
+
 export const getScoreboard = defineTool({
   name: "get_scoreboard",
   title: "Get scoreboard",
   description:
-    "Entry point for live, completed, and scheduled games. Returns eventId, start time, state/detail, competitors with team IDs, current/final and period scores, records, and venue, plus normalized odds (numeric moneylines, implied and no-vig probabilities, signed homeSpread) when ESPN lists them. Individual sports (golf, tennis, racing) include competitor.athlete (name, id) and order. Men's and women's college basketball default to every Division I game (group 50, limit 400); pass groups to request one conference. Other leagues, including college football, are unchanged. Pass eventId to the other game tools; use get_slate for a one-call daily view with injuries.",
+    "Entry point for live, completed, and scheduled games. Returns eventId, start time, state/detail, competitors with team IDs, current/final and period scores, records, and venue, plus normalized odds (numeric moneylines, implied and no-vig probabilities, signed homeSpread) when ESPN lists them. Individual sports (golf, tennis, racing) include competitor.athlete (name, id) and order. Men's and women's college basketball default to every Division I game (group 50, limit 400); pass groups to request one conference. A week query (NFL and college football included) is one ESPN request and does not add that Division I group. dateRange is fetched one day at a time for every league (at most 14 days, four at a time) because ESPN rejects YYYYMMDD-YYYYMMDD on every scoreboard; events are deduped and sorted by start time. Pass eventId to the other game tools; use get_slate for a one-call daily view with injuries.",
   inputShape: {
     sport: sportSchema,
     league: leagueSchema,
@@ -69,13 +193,13 @@ export const getScoreboard = defineTool({
     groups: groupsSchema,
   },
   handler: async ({ sport, league, date, dateRange, week, seasonType, groups }) => {
-    return fetchJson(`${BASE.site}/${sport}/${league}/scoreboard`, {
-      params: scoreboardQuery(sport, league, {
-        dates: dateRange ?? date,
-        week,
-        seasontype: seasonType,
-        groups,
-      }),
+    const dates = dateRange ?? date;
+    assertScoreboardRange(dates);
+    return fetchScoreboard(sport, league, {
+      dates,
+      week,
+      seasontype: seasonType,
+      groups,
     });
   },
   outputSchema: scoreboardOutput,
