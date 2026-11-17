@@ -91,7 +91,8 @@ curl ".../scoreboard?dates=2025-03-15"
 # CORRECT
 curl ".../scoreboard?dates=20250315"
 
-# Date ranges use a dash between two compact dates
+# WRONG — a range is HTTP 400 on every league scoreboard.
+# get_scoreboard and get_slate request each day (at most 14).
 curl ".../scoreboard?dates=20250301-20250331"
 ```
 
@@ -275,6 +276,8 @@ The site scoreboard for `mens-college-basketball` and `womens-college-basketball
 A grouped scoreboard returns 100 events unless `limit` is set. On 2026-02-07, group 50 with no limit returned 100 of 155 men's games. `limit=400` covers any single date.
 
 `get_scoreboard` and `get_slate` default both leagues to group `50` and `limit=400`. Pass `groups` to request one conference. A `week` query is left on ESPN's own page, because opening week is about 470 games and the compact scoreboard for that many games exceeds the token budget. College football already returns every FBS game with no group. Other leagues are unchanged.
+
+Every league scoreboard rejects `dates=YYYYMMDD-YYYYMMDD` (HTTP 400), including NBA, NHL, NFL, college football, MLB, and both college basketball leagues, with or without `groups` and `limit`. `get_scoreboard` and `get_slate` request each day separately (at most 14 days, four at a time), dedupe events by id, and sort by start time. College basketball days still use group `50` and `limit=400`. A week query stays one request.
 
 ---
 

@@ -1,0 +1,34 @@
+{
+  "leagues": [{ "abbreviation": "NCAAM" }],
+  "eventsDate": { "date": "2026-11-15T00:00Z" },
+  "events": [
+    {
+      "id": "401000002",
+      "date": "2026-11-15T18:00Z",
+      "name": "Duke Blue Devils at North Carolina Tar Heels",
+      "shortName": "DUKE @ UNC",
+      "status": { "type": { "state": "pre", "shortDetail": "Scheduled" } },
+      "competitions": [{
+        "date": "2026-11-15T18:00Z",
+        "competitors": [
+          { "homeAway": "away", "team": { "id": "150", "abbreviation": "DUKE", "displayName": "Duke Blue Devils" }, "score": "0" },
+          { "homeAway": "home", "team": { "id": "153", "abbreviation": "UNC", "displayName": "North Carolina Tar Heels" }, "score": "0" }
+        ]
+      }]
+    },
+    {
+      "id": "401920896",
+      "date": "2026-11-16T01:00Z",
+      "name": "Coastal Carolina Chanticleers at Wisconsin Badgers",
+      "shortName": "CCU @ WIS",
+      "status": { "type": { "state": "pre", "shortDetail": "Scheduled" } },
+      "competitions": [{
+        "date": "2026-11-16T01:00Z",
+        "competitors": [
+          { "homeAway": "away", "team": { "id": "324", "abbreviation": "CCU", "displayName": "Coastal Carolina Chanticleers" }, "score": "0" },
+          { "homeAway": "home", "team": { "id": "275", "abbreviation": "WIS", "displayName": "Wisconsin Badgers" }, "score": "0" }
+        ]
+      }]
+    }
+  ]
+}
