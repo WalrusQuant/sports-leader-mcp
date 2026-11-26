@@ -6,6 +6,8 @@ are equal-width on [0, 1]; scikit-learn does not ship an ECE.
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 from sklearn.metrics import (
     brier_score_loss,
@@ -28,7 +30,7 @@ def classification_scores(y_true, y_prob, *, n_bins: int = 10, with_bins: bool =
             "ece": None,
             "reliability_bins": [] if with_bins else None,
         }
-    scores = {
+    scores: dict[str, Any] = {
         "log_loss": float(log_loss(y, probability, labels=[0, 1])),
         "brier": float(brier_score_loss(y, probability)),
         "auc": _auc(y, probability),

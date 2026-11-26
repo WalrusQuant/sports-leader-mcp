@@ -23,7 +23,7 @@ from sports_leader_lab.features.load import feature_inputs_from_views
 from sports_leader_lab.features.registry import FeatureRegistry, FeatureSpec, build_features, default_registry
 from sports_leader_lab.payload import jsonable
 from sports_leader_lab.runs import new_id, save_dataset
-from sports_leader_lab.sqlguard import locked_connection, referenced_columns, validate_select
+from sports_leader_lab.sqlguard import feature_sql_problem, locked_connection, validate_select
 from sports_leader_lab.store import RunStore
 
 CT = ZoneInfo("America/Chicago")
@@ -62,7 +62,7 @@ def build_dataset(
     store: RunStore | None = None,
     cache: DataCache | None = None,
     inputs: FeatureInputs | None = None,
-    con: object | None = None,
+    con: Any | None = None,
     registry: FeatureRegistry | None = None,
 ) -> dict[str, Any]:
     """Build one game-grain dataset and save it when the leakage audit passes."""
@@ -102,13 +102,17 @@ def build_dataset(
     families = []
     columns = {}
     for name in kept:
-        meta = built.columns[name]
-        columns[name] = {"known_at": meta["known_at"], "family": meta["family"], "description": meta["description"]}
-        if meta["family"] not in families:
-            families.append(meta["family"])
+        column_meta = built.columns[name]
+        columns[name] = {
+            "known_at": column_meta["known_at"],
+            "family": column_meta["family"],
+            "description": column_meta["description"],
+        }
+        if column_meta["family"] not in families:
+            families.append(column_meta["family"])
     dataset_id = new_id("dataset")
     warnings = list(dict.fromkeys([*built.warnings, *target_warnings, *drop_warnings, *report.warnings]))
-    meta = {
+    meta: dict[str, Any] = {
         "dataset_id": dataset_id,
         "league": league,
         "target": target,
@@ -203,16 +207,15 @@ def _sql_specs(raw: Sequence[dict] | None) -> list[FeatureSpec]:
     return specs
 
 
-def _refuse_postgame_sql(con: object, specs: list[FeatureSpec]) -> None:
+def _refuse_postgame_sql(con: Any, specs: list[FeatureSpec]) -> None:
     if not specs:
         return
-    _sandbox, dropped = locked_connection(con, drop_postgame=True)
+    _sandbox, dropped, raw_snapshots = locked_connection(con, drop_postgame=True)
     failures = []
     for spec in specs:
-        named = referenced_columns(spec.sql or "", dropped)
-        if named:
-            listed = ", ".join(sorted(named))
-            failures.append(f"{spec.name} references postgame columns: {listed}")
+        problem = feature_sql_problem(spec.sql or "", dropped, raw_snapshots)
+        if problem:
+            failures.append(f"{spec.name} {problem}")
     if failures:
         raise LabError("audit failed, dataset not saved: " + "; ".join(failures))
 

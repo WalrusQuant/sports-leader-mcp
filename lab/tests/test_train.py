@@ -1,12 +1,16 @@
 """Walk-forward training stays inside the training fold and flags a loss to Elo."""
 
+from types import SimpleNamespace
+
 import numpy as np
 import pandas as pd
+import pytest
 
 from sports_leader_lab import DISCLAIMER
+from sports_leader_lab.errors import LabError
 from sports_leader_lab.runs import save_dataset
 from sports_leader_lab.store import RunStore
-from sports_leader_lab.training import train_classifier, train_regressor
+from sports_leader_lab.training import _fit_negbin, train_classifier, train_regressor
 
 
 def test_classifier_flags_a_model_that_loses_to_elo_and_keeps_the_holdout_inside_train(tmp_path):
@@ -61,6 +65,64 @@ def test_regressor_reports_margin_and_count_metrics(tmp_path):
     assert any("count targets" in warning for warning in poisson["warnings"])
 
 
+def test_one_class_training_fold_is_skipped_by_fold_number(tmp_path):
+    store = RunStore(tmp_path)
+    frame = _class_rows()
+    dataset_id = _save(store, frame, "home_win", "binary", ["noise"])
+    result = train_classifier(dataset_id, model="logistic", min_train_seasons=1, store=store)
+    assert any("fold 0" in warning and "one class" in warning for warning in result["warnings"])
+    assert result["folds"]
+    assert result["folds"][0]["fold"] == 1
+
+    only = frame.loc[frame["season"].isin([2023, 2024])].copy()
+    only["target"] = 1.0
+    flat_id = _save(store, only, "home_win", "binary", ["noise"])
+    with pytest.raises(LabError, match="skipped"):
+        train_classifier(flat_id, model="logistic", min_train_seasons=1, store=store)
+
+
+def test_negbin_rejects_a_failed_optimizer_and_warns_at_the_poisson_bound(monkeypatch):
+    def failed(*_args, **_kwargs):
+        return SimpleNamespace(success=False, message="ABNORMAL", fun=1.0, x=np.zeros(3))
+
+    monkeypatch.setattr("scipy.optimize.minimize", failed)
+    with pytest.raises(LabError, match="negbin fit failed"):
+        _fit_negbin(np.ones((8, 1)), np.arange(8, dtype=float), [])
+
+    def at_bound(*_args, **_kwargs):
+        return SimpleNamespace(success=True, message="ok", fun=1.0, x=np.array([0.0, 0.0, -8.0]))
+
+    monkeypatch.setattr("scipy.optimize.minimize", at_bound)
+    warnings: list[str] = []
+    fitted = _fit_negbin(np.ones((8, 1)), np.full(8, 12.0), warnings)
+    assert fitted.alpha == pytest.approx(np.exp(-8.0))
+    assert any("Poisson" in warning for warning in warnings)
+
+
+def _class_rows() -> pd.DataFrame:
+    rows = []
+    plan = (
+        (2023, 24, True),
+        (2024, 24, False),
+        (2025, 24, False),
+    )
+    for season, count, one_class in plan:
+        for index in range(count):
+            y = 1.0 if one_class or index % 2 == 0 else 0.0
+            rows.append(
+                {
+                    "game_id": f"{season}-{index}",
+                    "game_date": pd.Timestamp(f"{season}-09-01") + pd.Timedelta(days=index),
+                    "season": season,
+                    "home_field": 1.0,
+                    "neutral_site": False,
+                    "noise": float(index),
+                    "target": y,
+                }
+            )
+    return pd.DataFrame(rows)
+
+
 def _save_noise_dataset(store: RunStore) -> str:
     frame = _rows(target="binary")
     return _save(store, frame, "home_win", "binary", ["noise"])
@@ -77,7 +139,7 @@ def _save_count_dataset(store: RunStore) -> str:
 
 
 def _save(store, frame, target, kind, features) -> str:
-    dataset_id = "dataset_test"
+    dataset_id = "dataset_0123456789ab"
     meta = {
         "dataset_id": dataset_id,
         "league": "nfl",

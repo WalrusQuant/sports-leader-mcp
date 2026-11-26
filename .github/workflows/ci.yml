@@ -39,6 +39,12 @@ jobs:
       - name: Install lab
         working-directory: lab
         run: uv sync --frozen --group dev
+      - name: Lint lab
+        working-directory: lab
+        run: uv run ruff check
+      - name: Typecheck lab
+        working-directory: lab
+        run: uv run mypy src
       - name: Test lab
         working-directory: lab
         run: uv run pytest

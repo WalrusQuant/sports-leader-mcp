@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Callable, Sequence
+from typing import Any, Callable, Sequence
 
 import pandas as pd
 
@@ -24,8 +24,8 @@ from sports_leader_lab.sqlguard import (
     FEATURE_SQL_MAX_ROWS,
     FEATURE_SQL_TIMEOUT_S,
     execute_select,
+    feature_sql_problem,
     locked_connection,
-    referenced_columns,
     validate_select,
 )
 
@@ -109,7 +109,7 @@ class FeatureRegistry:
                 return spec
         raise LabError(f"unknown feature '{name}'")
 
-    def list_features(self, league: str) -> list[dict[str, object]]:
+    def list_features(self, league: str) -> list[dict[str, Any]]:
         rows = []
         for spec in self.for_league(league):
             rows.append(
@@ -318,11 +318,10 @@ def _run_sql(spec: FeatureSpec, ctx: FeatureContext) -> pd.DataFrame:
     if ctx.con is None:
         raise LabError(f"feature '{spec.name}' is SQL and needs a DuckDB connection")
     sql = validate_select(spec.sql or "")
-    sandbox, dropped = locked_connection(ctx.con, drop_postgame=True)
-    named = referenced_columns(sql, dropped)
-    if named:
-        listed = ", ".join(sorted(named))
-        raise LabError(f"SQL feature '{spec.name}' references postgame columns: {listed}")
+    sandbox, dropped, raw_snapshots = locked_connection(ctx.con, drop_postgame=True)
+    problem = feature_sql_problem(sql, dropped, raw_snapshots)
+    if problem:
+        raise LabError(f"SQL feature '{spec.name}' {problem}")
     try:
         frame, _truncated = execute_select(
             sandbox,

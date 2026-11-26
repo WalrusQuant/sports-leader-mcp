@@ -28,11 +28,20 @@ mcp = MCPServer("sports-leader-lab", instructions=INSTRUCTIONS, version=__versio
 
 
 def _call(fn, *args, **kwargs):
-    """Turn an anticipated lab error into the message the MCP client shows."""
+    """Turn a tool failure into the message the MCP client shows.
+
+    Lab errors stay as written. Anything else still becomes a tool error, with
+    the exception type and message, instead of a generic "Error executing tool".
+    """
     try:
         return jsonable(fn(*args, **kwargs))
+    except ToolError:
+        raise
     except (LabError, ValueError) as err:
         raise ToolError(str(err)) from None
+    except Exception as err:
+        detail = str(err).strip() or err.__class__.__name__
+        raise ToolError(f"{err.__class__.__name__}: {detail}") from None
 
 
 def health() -> dict[str, Any]:

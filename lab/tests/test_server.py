@@ -12,6 +12,18 @@ def test_server_reports_the_package_version():
     assert mcp.version == "0.1.0.dev0"
 
 
+def test_unexpected_exceptions_are_tool_errors_with_the_message():
+    from mcp.server.mcpserver.exceptions import ToolError
+
+    from sports_leader_lab.server import _call
+
+    def boom():
+        raise AttributeError("'Fold' object has no attribute 'index'")
+
+    with pytest.raises(ToolError, match="no attribute 'index'"):
+        _call(boom)
+
+
 def test_unknown_league_is_a_clear_tool_error():
     from mcp.server.mcpserver.exceptions import ToolError
 

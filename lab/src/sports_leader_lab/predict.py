@@ -110,11 +110,13 @@ def predict(
             "start_time_ct": _as_ct(row.start_time),
             "estimate": float(estimate),
             "estimate_kind": _kind(meta["target"]),
-            "implied_home_win_prob": _implied(estimate, bundle, meta),
             "market": markets.get(game_id),
             "completed": completed,
             "model_version": run_id,
         }
+        implied = _implied(estimate, bundle, meta)
+        if implied is not None:
+            item["implied_home_win_prob"] = implied
         games.append(item)
     note = (
         "Current prices were passed in for this call and were not stored."

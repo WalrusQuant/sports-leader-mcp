@@ -7,6 +7,7 @@ This module does not list, compare, or write model cards.
 from __future__ import annotations
 
 import json
+import re
 import uuid
 from pathlib import Path
 from typing import Any
@@ -17,6 +18,11 @@ import pandas as pd
 from sports_leader_lab.errors import LabError
 from sports_leader_lab.payload import jsonable
 from sports_leader_lab.store import RunStore
+
+# Ids are a prefix plus 12 hex characters. Anything else is refused before a
+# path join, and the resolved path has to stay inside the kind directory.
+_ID = re.compile(r"^(run|dataset)_[0-9a-f]{12}$")
+_KIND_PREFIX = {"datasets": "dataset", "models": "run"}
 
 
 def new_id(prefix: str) -> str:
@@ -59,18 +65,31 @@ def load_run(store: RunStore, run_id: str) -> tuple[dict, dict]:
 
 
 def _dir(store: RunStore, kind: str, item_id: str) -> Path:
-    if not item_id or "/" in item_id or item_id.startswith("."):
-        raise LabError(f"illegal id '{item_id}'")
-    path = store.ensure() / kind / item_id
+    path = _checked(store, kind, item_id)
     path.mkdir(parents=True, mode=0o700, exist_ok=True)
     return path
 
 
 def _existing(store: RunStore, kind: str, item_id: str) -> Path:
-    path = store.root / kind / item_id
+    path = _checked(store, kind, item_id)
     if not (path / "meta.json").is_file():
         label = "dataset" if kind == "datasets" else "run"
         raise LabError(f"unknown {label} '{item_id}'")
+    return path
+
+
+def _checked(store: RunStore, kind: str, item_id: str) -> Path:
+    """Reject an id that is not `run_` or `dataset_` plus 12 hex digits, or that resolves outside its kind directory."""
+    prefix = _KIND_PREFIX.get(kind)
+    if prefix is None or not isinstance(item_id, str) or _ID.fullmatch(item_id) is None:
+        raise LabError(f"illegal id '{item_id}'")
+    if not item_id.startswith(prefix + "_"):
+        raise LabError(f"illegal id '{item_id}'")
+    root = store.ensure().resolve()
+    kind_root = (root / kind).resolve()
+    path = (kind_root / item_id).resolve()
+    if path == kind_root or path.parent != kind_root or not path.is_relative_to(kind_root):
+        raise LabError(f"illegal id '{item_id}'")
     return path
 
 

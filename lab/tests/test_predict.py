@@ -12,7 +12,7 @@ from sports_leader_lab.features.context import FeatureInputs
 from sports_leader_lab.predict import predict
 from sports_leader_lab.runs import load_run
 from sports_leader_lab.store import RunStore
-from sports_leader_lab.training import train_classifier
+from sports_leader_lab.training import train_classifier, train_regressor
 
 import pytest
 
@@ -63,6 +63,7 @@ def test_predict_is_as_of_central_time_and_does_not_store_the_price(tmp_path):
     assert game["game_id"] == "9001"
     assert game["start_time_ct"].endswith("-06:00")
     assert game["estimate_kind"] == "home_win_probability"
+    assert "implied_home_win_prob" not in game
     assert game["market"]["home_implied_prob"] == pytest.approx(0.42)
     assert game["market"]["source"] == "caller"
     assert "not stored" in result["market_note"].lower() or "were not stored" in result["market_note"]
@@ -96,6 +97,17 @@ def test_predict_refuses_a_game_with_no_start_time(tmp_path):
     trained = train_classifier(built["dataset_id"], model="logistic", min_train_seasons=1, store=store)
     with pytest.raises(LabError, match="no start_time"):
         predict(trained["run_id"], game_ids=["77"], inputs=inputs, store=store)
+
+
+def test_margin_predict_includes_the_implied_win_probability(tmp_path):
+    store = RunStore(tmp_path)
+    inputs = FeatureInputs(league="nfl", games=pd.DataFrame(_games(2023, 16) + _games(2024, 16)))
+    built = build_dataset("nfl", "margin", [2023, 2024], features=["elo"], inputs=inputs, store=store)
+    trained = train_regressor(built["dataset_id"], model="ridge", min_train_seasons=1, store=store)
+    result = predict(trained["run_id"], game_ids=["2023000"], inputs=inputs, store=store)
+    implied = result["games"][0]["implied_home_win_prob"]
+    assert 0.0 < implied < 1.0
+    assert result["games"][0]["market"] is None
 
 
 def _games(season: int, n: int) -> list[dict]:

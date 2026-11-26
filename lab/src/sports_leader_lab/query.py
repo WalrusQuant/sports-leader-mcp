@@ -101,7 +101,7 @@ def query_data(
     con = open_duckdb()
     for league, dataset in views:
         register_views(con, source, leagues=[league], datasets=[dataset], seasons=chosen)
-    sandbox, _dropped = locked_connection(con, drop_postgame=False)
+    sandbox, _dropped, _raw_snapshots = locked_connection(con, drop_postgame=False)
     frame, truncated = execute_select(
         sandbox,
         text,

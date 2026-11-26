@@ -13,6 +13,7 @@ negative, so Poisson and negative binomial are refused for it.
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Any
 from zoneinfo import ZoneInfo
 
 import lightgbm as lgb
@@ -171,7 +172,10 @@ def _train(
             count=count,
         )
         if fitted is None:
-            warnings.append(f"fold {fold.index} was skipped because the training fold had one class")
+            seasons = ", ".join(str(season) for season in fold.test_seasons)
+            warnings.append(
+                f"fold {fold.fold} (test {seasons}) was skipped because the training fold had one class"
+            )
             continue
         _guard_inner_dates(fitted, test)
         warnings.extend(fitted["warnings"])
@@ -309,7 +313,7 @@ def _fit_predict(train, test, features, *, kind, model, calibration, count):
 def _score_fold(fitted, test, *, kind, count) -> dict:
     pred = fitted["predictions"]
     model_scores = _metric_block(pred["y"], pred["prediction"], kind=kind, count=count, with_bins=True)
-    table = {"model": model_scores}
+    table: dict[str, Any] = {"model": model_scores}
     for name in ("constant", "home_field", "elo"):
         column = pred[f"baseline_{name}"]
         if column.isna().all():
@@ -330,7 +334,7 @@ def _pool(predictions: pd.DataFrame, *, kind, count, target_kind) -> dict:
     model_scores = _metric_block(
         predictions["y"], predictions["prediction"], kind=kind, count=count, with_bins=True
     )
-    table = {"model": model_scores}
+    table: dict[str, Any] = {"model": model_scores}
     warnings = []
     for name in ("constant", "home_field", "elo"):
         column = predictions[f"baseline_{name}"]
@@ -452,7 +456,7 @@ def _estimator(model, *, kind, count, x_fit, y_fit, x_stop, y_stop, warnings):
         estimator.fit(x_fit, y_fit)
         return estimator
     if model == "negbin":
-        return _fit_negbin(x_fit, y_fit)
+        return _fit_negbin(x_fit, y_fit, warnings)
     if model == "lightgbm":
         if kind == "classifier":
             estimator = lgb.LGBMClassifier(
@@ -492,7 +496,7 @@ def _estimator(model, *, kind, count, x_fit, y_fit, x_stop, y_stop, warnings):
     raise LabError(f"unknown model '{model}'")
 
 
-def _fit_negbin(features: np.ndarray, y: np.ndarray) -> _NegBin:
+def _fit_negbin(features: np.ndarray, y: np.ndarray, warnings: list[str]) -> _NegBin:
     from scipy.optimize import minimize
     from scipy.special import gammaln
 
@@ -518,10 +522,19 @@ def _fit_negbin(features: np.ndarray, y: np.ndarray) -> _NegBin:
         return float(-np.mean(log_like) + 1e-4 * np.dot(beta[1:], beta[1:]))
 
     result = minimize(nll, start, method="L-BFGS-B")
-    if not np.isfinite(result.fun):
-        raise LabError("negbin fit failed")
+    if not result.success or not np.isfinite(result.fun):
+        detail = getattr(result, "message", "") or "optimizer did not converge"
+        raise LabError(f"negbin fit failed ({detail})")
+    log_alpha = float(result.x[-1])
+    # The likelihood clips log(alpha) to [-8, 8]. The lower end is Poisson.
+    if log_alpha <= -8.0 + 1e-6:
+        warnings.append(
+            "negbin dispersion hit its lower bound, so the fit is Poisson"
+        )
+    elif log_alpha >= 8.0 - 1e-6:
+        warnings.append("negbin dispersion hit its upper bound")
     beta = result.x[:-1]
-    alpha = float(np.exp(np.clip(result.x[-1], -8.0, 8.0)))
+    alpha = float(np.exp(np.clip(log_alpha, -8.0, 8.0)))
     return _NegBin(beta, alpha)
 
 

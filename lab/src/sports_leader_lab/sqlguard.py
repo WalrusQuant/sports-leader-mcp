@@ -15,7 +15,7 @@ from typing import Iterable
 import duckdb
 import pandas as pd
 
-from sports_leader_lab.data.catalog import DATASETS, LEAGUES, column_timing
+from sports_leader_lab.data.catalog import DATASETS, GRAIN, LEAGUES, column_timing, is_snapshot_dataset
 from sports_leader_lab.errors import LabError
 
 _NAME = re.compile(r"^[a-z][a-z0-9_]*$")
@@ -46,15 +46,21 @@ def validate_select(sql: str) -> str:
     return text
 
 
-def locked_connection(con: object, *, drop_postgame: bool = False):
+def locked_connection(con: duckdb.DuckDBPyConnection, *, drop_postgame: bool = False):
     """Copy `main` tables into a connection that cannot read the filesystem.
 
     Views over local Parquet stay on the caller's connection, because turning
     `enable_external_access` off there would stop those views from reading.
-    Returns the sandbox and the column names that were removed.
+    Returns the sandbox, the column names that were removed, and the raw
+    snapshot table names that were replaced. Custom SQL (`drop_postgame=True`)
+    does not receive those raw tables. It receives `{table}_asof`, which keeps
+    a snapshot row only when `valid_from <= start_time` and `valid_to` is null
+    or later than `start_time`. `query_data` leaves the tables as published.
     """
     sandbox = duckdb.connect(database=":memory:")
     dropped: set[str] = set()
+    raw_snapshots: set[str] = set()
+    frames: dict[str, pd.DataFrame] = {}
     names = con.execute(
         """
         SELECT table_name
@@ -65,14 +71,45 @@ def locked_connection(con: object, *, drop_postgame: bool = False):
     for (name,) in names:
         if not isinstance(name, str) or not _NAME.match(name):
             continue
-        frame = con.execute(f"SELECT * FROM {name}").fetchdf()
+        frames[name] = con.execute(f"SELECT * FROM {name}").fetchdf()
+    games = {
+        league_of(name): frame
+        for name, frame in frames.items()
+        if dataset_of(name) == "games" and league_of(name) is not None
+    }
+    for name, frame in frames.items():
+        dataset = dataset_of(name)
+        if drop_postgame and dataset is not None and is_snapshot_dataset(dataset):
+            raw_snapshots.add(name)
+            league = league_of(name)
+            schedule = games.get(league) if league is not None else None
+            asof = asof_snapshot(dataset, schedule, frame)
+            sandbox.register(f"{name}_asof", asof)
+            continue
         if drop_postgame:
             frame, gone = strip_postgame(name, frame)
             dropped.update(gone)
         sandbox.register(name, frame)
     sandbox.execute("SET enable_external_access = false")
     sandbox.execute("SET lock_configuration = true")
-    return sandbox, dropped
+    return sandbox, dropped, raw_snapshots
+
+
+def feature_sql_problem(sql: str, dropped: Iterable[str], raw_snapshots: Iterable[str]) -> str | None:
+    """A reason to refuse one custom SQL feature, or None when it is safe to run."""
+    named = referenced_columns(sql, dropped)
+    if named:
+        listed = ", ".join(sorted(named))
+        return f"references postgame columns: {listed}"
+    raw = referenced_columns(sql, raw_snapshots)
+    if raw:
+        listed = ", ".join(sorted(raw))
+        views = ", ".join(f"{table}_asof" for table in sorted(raw))
+        return (
+            f"references raw snapshot {listed}; use {views}, which only includes rows "
+            "with valid_from <= start_time and valid_to null or later than start_time"
+        )
+    return None
 
 
 def strip_postgame(table: str, frame: pd.DataFrame) -> tuple[pd.DataFrame, set[str]]:
@@ -94,6 +131,16 @@ def strip_postgame(table: str, frame: pd.DataFrame) -> tuple[pd.DataFrame, set[s
     return frame.loc[:, keep].copy(), gone
 
 
+def league_of(table: str) -> str | None:
+    dataset = dataset_of(table)
+    if dataset is None or not table.endswith("_" + dataset):
+        return None
+    league = table[: -(len(dataset) + 1)]
+    if league in LEAGUES:
+        return league
+    return None
+
+
 def dataset_of(table: str) -> str | None:
     for league in LEAGUES:
         prefix = league + "_"
@@ -104,6 +151,80 @@ def dataset_of(table: str) -> str | None:
     if table in DATASETS:
         return table
     return None
+
+
+def asof_snapshot(dataset: str, games: pd.DataFrame | None, snaps: pd.DataFrame) -> pd.DataFrame:
+    """Snapshot rows that are valid at each game's start. Raw rows are not returned.
+
+    The window is half-open: `valid_from <= start` and `valid_to` null or
+    `valid_to > start`. A `date` column is used when the table has no
+    `valid_from`. Game-scoped snapshots (probables, lineups, weather) also
+    have to name that game. Team snapshots have to name the home or away team.
+    """
+    extra = [column for column in snaps.columns if column not in {"game_id", "start_time"}]
+    empty = pd.DataFrame(columns=["game_id", "start_time", *extra])
+    if games is None or games.empty or "game_id" not in games.columns or "start_time" not in games.columns:
+        return empty
+    clock = "valid_from" if "valid_from" in snaps.columns else "date" if "date" in snaps.columns else None
+    if clock is None or snaps.empty:
+        return empty
+    schedule = pd.DataFrame(
+        {
+            "game_id": games["game_id"].to_numpy(),
+            "g_start": _naive_utc(games["start_time"]),
+        }
+    )
+    if "home_team_id" in games.columns:
+        schedule["home_team_id"] = games["home_team_id"].to_numpy()
+    if "away_team_id" in games.columns:
+        schedule["away_team_id"] = games["away_team_id"].to_numpy()
+    rows = snaps.drop(columns=[column for column in ("start_time",) if column in snaps.columns]).copy()
+    rows["_from"] = _naive_utc(rows[clock])
+    rows["_to"] = _naive_utc(rows["valid_to"]) if "valid_to" in rows.columns else pd.NaT
+    rows = rows[rows["_from"].notna()]
+    if rows.empty:
+        return empty
+    game_scoped = "game_id" in GRAIN.get(dataset, ())
+    if game_scoped and "game_id" in rows.columns:
+        joined = rows.merge(schedule, on="game_id", how="inner")
+        if "team_id" in joined.columns and "home_team_id" in joined.columns:
+            home = joined["team_id"] == joined["home_team_id"]
+            away = (
+                joined["team_id"] == joined["away_team_id"]
+                if "away_team_id" in joined.columns
+                else False
+            )
+            joined = joined.loc[home | away]
+    elif "team_id" in rows.columns and "home_team_id" in schedule.columns:
+        if "game_id" in rows.columns:
+            rows = rows.drop(columns=["game_id"])
+        parts = [rows.merge(schedule, left_on="team_id", right_on="home_team_id", how="inner")]
+        if "away_team_id" in schedule.columns:
+            parts.append(rows.merge(schedule, left_on="team_id", right_on="away_team_id", how="inner"))
+        joined = pd.concat(parts, ignore_index=True)
+    else:
+        if not game_scoped and "game_id" in rows.columns:
+            rows = rows.drop(columns=["game_id"])
+        joined = rows.merge(schedule, how="cross")
+    if joined.empty:
+        return empty
+    start = joined["g_start"]
+    active = joined["_from"].notna() & (joined["_from"] <= start) & (joined["_to"].isna() | (joined["_to"] > start))
+    joined = joined.loc[active].copy()
+    if joined.empty:
+        return empty
+    joined["start_time"] = joined["g_start"]
+    keep = ["game_id", "start_time"]
+    for column in snaps.columns:
+        if column in {"game_id", "start_time"} or column not in joined.columns:
+            continue
+        keep.append(column)
+    return joined.loc[:, keep].drop_duplicates().reset_index(drop=True)
+
+
+def _naive_utc(series: pd.Series) -> pd.Series:
+    converted = pd.to_datetime(series, utc=True, format="mixed", errors="coerce")
+    return converted.dt.tz_convert("UTC").dt.tz_localize(None)
 
 
 def referenced_columns(sql: str, names: Iterable[str]) -> set[str]:
@@ -117,7 +238,7 @@ def referenced_columns(sql: str, names: Iterable[str]) -> set[str]:
 
 
 def execute_select(
-    con: object,
+    con: duckdb.DuckDBPyConnection,
     sql: str,
     *,
     max_rows: int,

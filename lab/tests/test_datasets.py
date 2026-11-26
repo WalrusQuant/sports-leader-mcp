@@ -151,6 +151,79 @@ def test_build_dataset_warns_on_a_single_feature_with_high_auc(tmp_path):
     assert (tmp_path / "datasets" / result["dataset_id"] / "data.parquet").is_file()
 
 
+def test_custom_sql_cannot_read_rows_from_after_the_kickoff(tmp_path):
+    store = RunStore(tmp_path)
+    games = pd.DataFrame(
+        [
+            _played(1, "2023-09-10 18:00"),
+            _played(2, "2023-09-17 18:00"),
+        ]
+    )
+    injuries = pd.DataFrame(
+        [
+            {
+                "player_id": 10,
+                "team_id": 1,
+                "season": 2023,
+                "valid_from": "2023-09-10 12:00",
+                "valid_to": None,
+                "status": "out",
+            },
+            {
+                "player_id": 11,
+                "team_id": 1,
+                "season": 2023,
+                "valid_from": "2023-09-10 20:00",
+                "valid_to": None,
+                "status": "out",
+            },
+        ]
+    )
+    inputs = FeatureInputs(league="nfl", games=games, injuries=injuries)
+    leak = {
+        "name": "late_injuries",
+        "sql": (
+            "SELECT g.game_id, COUNT(*) AS late_injuries "
+            "FROM nfl_games g "
+            "JOIN nfl_injuries i ON i.team_id = g.home_team_id AND i.valid_from > g.start_time "
+            "GROUP BY g.game_id"
+        ),
+        "columns": ["late_injuries"],
+        "known_at": "as_of_start",
+    }
+    with pytest.raises(LabError, match="raw snapshot"):
+        build_dataset(
+            "nfl",
+            "home_win",
+            [2023],
+            features=[],
+            sql_features=[leak],
+            inputs=inputs,
+            store=store,
+        )
+    assert list(tmp_path.rglob("*.parquet")) == []
+
+    safe = {
+        "name": "known_injuries",
+        "sql": "SELECT game_id, COUNT(*) AS known_injuries FROM nfl_injuries_asof GROUP BY game_id",
+        "columns": ["known_injuries"],
+        "known_at": "as_of_start",
+    }
+    result = build_dataset(
+        "nfl",
+        "home_win",
+        [2023],
+        features=[],
+        sql_features=[safe],
+        inputs=inputs,
+        store=store,
+    )
+    saved = pd.read_parquet(tmp_path / "datasets" / result["dataset_id"] / "data.parquet")
+    counts = saved.set_index("game_id")["known_injuries"]
+    assert counts.loc[1] == 1
+    assert counts.loc[2] == 2
+
+
 def test_margin_total_and_team_points_targets(tmp_path):
     store = RunStore(tmp_path)
     games = _games(4)
@@ -171,6 +244,24 @@ def test_margin_total_and_team_points_targets(tmp_path):
     )
     assert any("home team's points" in warning for warning in points["warnings"])
     assert total["rows"] == 4
+
+
+def _played(game_id: int, start: str) -> dict:
+    return {
+        "game_id": game_id,
+        "game_date": start[:10],
+        "start_time": start,
+        "season": 2023,
+        "season_type": "regular",
+        "status": "final",
+        "completed": True,
+        "home_team_id": 1,
+        "away_team_id": 2,
+        "home_score": 24,
+        "away_score": 10,
+        "neutral_site": False,
+        "venue": "Home",
+    }
 
 
 def _games(n: int, season: int = 2023) -> pd.DataFrame:
