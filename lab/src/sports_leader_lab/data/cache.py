@@ -45,6 +45,10 @@ class DataCache:
         self._fetcher = fetcher if fetcher is not None else http_get
         self._clock = clock if clock is not None else time.time
 
+    @classmethod
+    def from_config(cls, config: LabConfig | None = None) -> DataCache:
+        return cls(config if config is not None else load_config())
+
     def load_manifest(self, *, force: bool = False) -> Manifest:
         path, meta_path = self._manifest_paths()
         meta = _read_json(meta_path)

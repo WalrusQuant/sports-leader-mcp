@@ -1,0 +1,397 @@
+"""SELECT-only SQL on a connection that cannot read the filesystem.
+
+User-facing SQL (query_data, and custom SQL features) runs here. The sandbox
+is a copy of the caller's tables with `enable_external_access` off and
+`lock_configuration` on, so a statement cannot turn file access back on.
+Custom SQL features also have postgame columns removed from that copy.
+"""
+
+from __future__ import annotations
+
+import re
+import threading
+from typing import Iterable
+
+import duckdb
+import pandas as pd
+
+from sports_leader_lab.data.catalog import DATASETS, LEAGUES, column_timing
+from sports_leader_lab.errors import LabError
+
+_NAME = re.compile(r"^[a-z][a-z0-9_]*$")
+_SELECT = re.compile(r"^(select|with)\b", re.IGNORECASE)
+
+# Result fields a custom feature must not be able to name, even on a table
+# whose dataset we cannot infer. Snapshot tables still keep their own as-of
+# `status` when the dataset is known (an injury status is not the game result).
+_ALWAYS_POSTGAME = frozenset(
+    {"home_score", "away_score", "score", "opponent_score", "completed"}
+)
+
+QUERY_TIMEOUT_S = 20.0
+QUERY_MAX_ROWS = 500
+QUERY_MAX_ROWS_LIMIT = 5000
+FEATURE_SQL_TIMEOUT_S = 60.0
+FEATURE_SQL_MAX_ROWS = 2_000_000
+
+
+def validate_select(sql: str) -> str:
+    """One SELECT or WITH. A semicolon inside a string or comment is allowed."""
+    statements = [part for part in _split_sql(sql) if part.strip()]
+    if len(statements) != 1:
+        raise LabError("SQL must be a single SELECT")
+    text = _strip_leading_comments(statements[0]).strip()
+    if not _SELECT.match(text):
+        raise LabError("SQL must be a SELECT")
+    return text
+
+
+def locked_connection(con: object, *, drop_postgame: bool = False):
+    """Copy `main` tables into a connection that cannot read the filesystem.
+
+    Views over local Parquet stay on the caller's connection, because turning
+    `enable_external_access` off there would stop those views from reading.
+    Returns the sandbox and the column names that were removed.
+    """
+    sandbox = duckdb.connect(database=":memory:")
+    dropped: set[str] = set()
+    names = con.execute(
+        """
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = 'main'
+        """
+    ).fetchall()
+    for (name,) in names:
+        if not isinstance(name, str) or not _NAME.match(name):
+            continue
+        frame = con.execute(f"SELECT * FROM {name}").fetchdf()
+        if drop_postgame:
+            frame, gone = strip_postgame(name, frame)
+            dropped.update(gone)
+        sandbox.register(name, frame)
+    sandbox.execute("SET enable_external_access = false")
+    sandbox.execute("SET lock_configuration = true")
+    return sandbox, dropped
+
+
+def strip_postgame(table: str, frame: pd.DataFrame) -> tuple[pd.DataFrame, set[str]]:
+    """Drop result columns from one sandbox table."""
+    dataset = dataset_of(table)
+    keep: list[str] = []
+    gone: set[str] = set()
+    for column in frame.columns:
+        if _is_postgame(dataset, str(column)):
+            gone.add(str(column).lower())
+            continue
+        keep.append(column)
+    if not keep:
+        if "game_id" in frame.columns:
+            keep = ["game_id"]
+            gone.discard("game_id")
+        else:
+            raise LabError(f"table '{table}' has no pregame columns to query")
+    return frame.loc[:, keep].copy(), gone
+
+
+def dataset_of(table: str) -> str | None:
+    for league in LEAGUES:
+        prefix = league + "_"
+        if table.startswith(prefix):
+            dataset = table[len(prefix) :]
+            if dataset in DATASETS:
+                return dataset
+    if table in DATASETS:
+        return table
+    return None
+
+
+def referenced_columns(sql: str, names: Iterable[str]) -> set[str]:
+    """Column names used outside of strings and comments."""
+    masked = _mask_literals(sql).lower()
+    found: set[str] = set()
+    for name in names:
+        if re.search(rf"\b{re.escape(name.lower())}\b", masked):
+            found.add(name.lower())
+    return found
+
+
+def execute_select(
+    con: object,
+    sql: str,
+    *,
+    max_rows: int,
+    timeout_s: float,
+    overflow: str = "truncate",
+) -> tuple[pd.DataFrame, bool]:
+    """Run one SELECT with a row cap and a wall-clock timeout.
+
+    `overflow='truncate'` returns the first `max_rows` and a truncated flag.
+    `overflow='error'` raises when the result is longer than `max_rows`.
+    The timeout calls `interrupt()` from the waiting thread.
+    """
+    if max_rows < 1:
+        raise LabError("max_rows must be >= 1")
+    if timeout_s <= 0:
+        raise LabError("timeout must be > 0")
+    if overflow not in {"truncate", "error"}:
+        raise LabError("overflow must be truncate or error")
+    text = validate_select(sql)
+    limited = f"SELECT * FROM (\n{text}\n) AS _lab_query LIMIT {max_rows + 1}"
+    box: dict[str, object] = {}
+
+    def work() -> None:
+        try:
+            box["frame"] = con.execute(limited).fetchdf()
+        except Exception as err:
+            box["error"] = err
+
+    thread = threading.Thread(target=work, daemon=True)
+    thread.start()
+    thread.join(timeout_s)
+    if thread.is_alive():
+        interrupt = getattr(con, "interrupt", None)
+        if interrupt is not None:
+            try:
+                interrupt()
+            except Exception:
+                pass
+        thread.join(5)
+        raise LabError(f"query exceeded {timeout_s:g}s")
+    if "error" in box:
+        err = box["error"]
+        raise LabError(f"query failed ({err.__class__.__name__})") from None
+    frame = box.get("frame")
+    if not isinstance(frame, pd.DataFrame):
+        raise LabError("query failed (empty result)")
+    frame.columns = [str(column).lower() for column in frame.columns]
+    truncated = len(frame) > max_rows
+    if truncated and overflow == "error":
+        raise LabError(f"query returned more than {max_rows} rows")
+    if truncated:
+        frame = frame.iloc[:max_rows].copy()
+    return frame, truncated
+
+
+def _is_postgame(dataset: str | None, column: str) -> bool:
+    lowered = column.lower()
+    if dataset is None:
+        return lowered in _ALWAYS_POSTGAME or lowered == "status"
+    if lowered in _ALWAYS_POSTGAME:
+        return True
+    return column_timing(dataset, lowered) == "postgame"
+
+
+def _mask_literals(sql: str) -> str:
+    """Replace strings and comments with spaces so a word inside them is not a column."""
+    out: list[str] = []
+    i = 0
+    in_single = False
+    in_double = False
+    in_line = False
+    in_block = False
+    dollar: str | None = None
+    while i < len(sql):
+        ch = sql[i]
+        nxt = sql[i + 1] if i + 1 < len(sql) else ""
+        if in_line:
+            out.append("\n" if ch == "\n" else " ")
+            if ch == "\n":
+                in_line = False
+            i += 1
+            continue
+        if in_block:
+            out.append("\n" if ch == "\n" else " ")
+            if ch == "*" and nxt == "/":
+                out.append(" ")
+                i += 2
+                in_block = False
+                continue
+            i += 1
+            continue
+        if dollar is not None:
+            if sql.startswith(dollar, i):
+                out.extend(" " for _ in dollar)
+                i += len(dollar)
+                dollar = None
+                continue
+            out.append("\n" if ch == "\n" else " ")
+            i += 1
+            continue
+        if in_single:
+            out.append(" ")
+            if ch == "'" and nxt == "'":
+                out.append(" ")
+                i += 2
+                continue
+            if ch == "'":
+                in_single = False
+            i += 1
+            continue
+        if in_double:
+            out.append(" ")
+            if ch == '"' and nxt == '"':
+                out.append(" ")
+                i += 2
+                continue
+            if ch == '"':
+                in_double = False
+            i += 1
+            continue
+        if ch == "-" and nxt == "-":
+            out.append(" ")
+            out.append(" ")
+            i += 2
+            in_line = True
+            continue
+        if ch == "/" and nxt == "*":
+            out.append(" ")
+            out.append(" ")
+            i += 2
+            in_block = True
+            continue
+        if ch == "'":
+            in_single = True
+            out.append(" ")
+            i += 1
+            continue
+        if ch == '"':
+            in_double = True
+            out.append(" ")
+            i += 1
+            continue
+        if ch == "$":
+            tag = _dollar_tag(sql, i)
+            if tag is not None:
+                dollar = tag
+                out.extend(" " for _ in tag)
+                i += len(tag)
+                continue
+        out.append(ch)
+        i += 1
+    return "".join(out)
+
+
+def _split_sql(sql: str) -> list[str]:
+    parts: list[str] = []
+    buf: list[str] = []
+    i = 0
+    in_single = False
+    in_double = False
+    in_line = False
+    in_block = False
+    dollar: str | None = None
+    while i < len(sql):
+        ch = sql[i]
+        nxt = sql[i + 1] if i + 1 < len(sql) else ""
+        if in_line:
+            buf.append(ch)
+            if ch == "\n":
+                in_line = False
+            i += 1
+            continue
+        if in_block:
+            buf.append(ch)
+            if ch == "*" and nxt == "/":
+                buf.append(nxt)
+                i += 2
+                in_block = False
+                continue
+            i += 1
+            continue
+        if dollar is not None:
+            if sql.startswith(dollar, i):
+                buf.append(dollar)
+                i += len(dollar)
+                dollar = None
+                continue
+            buf.append(ch)
+            i += 1
+            continue
+        if in_single:
+            buf.append(ch)
+            if ch == "'" and nxt == "'":
+                buf.append(nxt)
+                i += 2
+                continue
+            if ch == "'":
+                in_single = False
+            i += 1
+            continue
+        if in_double:
+            buf.append(ch)
+            if ch == '"' and nxt == '"':
+                buf.append(nxt)
+                i += 2
+                continue
+            if ch == '"':
+                in_double = False
+            i += 1
+            continue
+        if ch == "-" and nxt == "-":
+            buf.append(ch)
+            buf.append(nxt)
+            i += 2
+            in_line = True
+            continue
+        if ch == "/" and nxt == "*":
+            buf.append(ch)
+            buf.append(nxt)
+            i += 2
+            in_block = True
+            continue
+        if ch == "'":
+            in_single = True
+            buf.append(ch)
+            i += 1
+            continue
+        if ch == '"':
+            in_double = True
+            buf.append(ch)
+            i += 1
+            continue
+        if ch == "$":
+            tag = _dollar_tag(sql, i)
+            if tag is not None:
+                dollar = tag
+                buf.append(tag)
+                i += len(tag)
+                continue
+        if ch == ";":
+            parts.append("".join(buf))
+            buf = []
+            i += 1
+            continue
+        buf.append(ch)
+        i += 1
+    parts.append("".join(buf))
+    return parts
+
+
+def _dollar_tag(sql: str, index: int) -> str | None:
+    if not sql.startswith("$", index):
+        return None
+    end = sql.find("$", index + 1)
+    if end < 0:
+        return None
+    tag = sql[index : end + 1]
+    body = tag[1:-1]
+    if body and not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", body):
+        return None
+    return tag
+
+
+def _strip_leading_comments(sql: str) -> str:
+    text = sql.lstrip()
+    while True:
+        if text.startswith("--"):
+            newline = text.find("\n")
+            text = "" if newline < 0 else text[newline + 1 :].lstrip()
+            continue
+        if text.startswith("/*"):
+            end = text.find("*/")
+            if end < 0:
+                return ""
+            text = text[end + 2 :].lstrip()
+            continue
+        return text

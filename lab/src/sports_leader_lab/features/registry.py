@@ -20,9 +20,16 @@ from sports_leader_lab.features.snapshots import (
     build_injuries,
     build_probables,
 )
+from sports_leader_lab.sqlguard import (
+    FEATURE_SQL_MAX_ROWS,
+    FEATURE_SQL_TIMEOUT_S,
+    execute_select,
+    locked_connection,
+    referenced_columns,
+    validate_select,
+)
 
 _NAME = re.compile(r"^[a-z][a-z0-9_]*$")
-_SELECT = re.compile(r"^(select|with)\b", re.IGNORECASE)
 
 # On the frame so build_dataset can filter and join. Not model features.
 # season_type is known from the schedule; it is listed here so it is not trained on.
@@ -86,7 +93,7 @@ class FeatureRegistry:
         if (spec.builder is None) == (spec.sql is None):
             raise LabError(f"feature '{spec.name}' needs a Python builder or SQL, not both")
         if spec.sql is not None:
-            _validate_select(spec.sql)
+            validate_select(spec.sql)
             if not spec.columns and spec.columns_for is None:
                 raise LabError(f"SQL feature '{spec.name}' must declare its columns")
         if not isinstance(spec.known_at, KnownAt):
@@ -164,7 +171,9 @@ def default_registry() -> FeatureRegistry:
             description=(
                 "Elo ratings entering the game. Each team's rating starts at 1500 for the "
                 "first loaded game and updates only after a completed non-preseason game. "
-                "Preseason results are ignored. Load every season the rating should see."
+                "At each new season, ratings move one third of the way back to 1500 "
+                "(elo_season_regress, 0 disables it). The earliest loaded season is a cold "
+                "start: ratings change if that season is left out. Preseason results are ignored."
             ),
             known_at=KnownAt.PRIOR_GAMES,
             datasets=frozenset({"games"}),
@@ -212,6 +221,7 @@ def build_features(
     elo_k: float = ELO_K,
     elo_home_adv: float = ELO_HOME_ADV,
     elo_initial: float = ELO_INITIAL,
+    elo_season_regress: float = 1.0 / 3.0,
     con: object | None = None,
 ) -> BuiltFeatures:
     """One row per game. Feature columns exclude the game's own result."""
@@ -227,6 +237,7 @@ def build_features(
         elo_k=elo_k,
         elo_home_adv=elo_home_adv,
         elo_initial=elo_initial,
+        elo_season_regress=elo_season_regress,
         con=con,
     )
     if bool(games["start_time_missing"].any()):
@@ -235,7 +246,19 @@ def build_features(
         )
     specs = _select(source, inputs.league, names)
     postgame = tuple(column for column in POSTGAME_COLUMNS if column in games.columns)
-    base_columns = ["game_id", "game_date", "start_time", "season", "home_team_id", "away_team_id", *postgame]
+    identity = [
+        column
+        for column in (
+            "home_team_abbr",
+            "away_team_abbr",
+            "home_team_name",
+            "away_team_name",
+            "in_history",
+            "start_time_missing",
+        )
+        if column in games.columns
+    ]
+    base_columns = ["game_id", "game_date", "start_time", "season", "home_team_id", "away_team_id", *identity, *postgame]
     base = games[base_columns].copy()
     meta: dict[str, dict[str, str]] = {}
     frame = base
@@ -294,179 +317,25 @@ def _run_spec(spec: FeatureSpec, ctx: FeatureContext) -> pd.DataFrame:
 def _run_sql(spec: FeatureSpec, ctx: FeatureContext) -> pd.DataFrame:
     if ctx.con is None:
         raise LabError(f"feature '{spec.name}' is SQL and needs a DuckDB connection")
-    sql = _validate_select(spec.sql or "")
-    sandbox = _locked_sql_connection(ctx.con)
+    sql = validate_select(spec.sql or "")
+    sandbox, dropped = locked_connection(ctx.con, drop_postgame=True)
+    named = referenced_columns(sql, dropped)
+    if named:
+        listed = ", ".join(sorted(named))
+        raise LabError(f"SQL feature '{spec.name}' references postgame columns: {listed}")
     try:
-        frame = sandbox.execute(sql).fetchdf()
-    except Exception as err:
-        raise LabError(f"SQL feature '{spec.name}' failed ({err.__class__.__name__})") from None
-    frame.columns = [str(column).lower() for column in frame.columns]
+        frame, _truncated = execute_select(
+            sandbox,
+            sql,
+            max_rows=FEATURE_SQL_MAX_ROWS,
+            timeout_s=FEATURE_SQL_TIMEOUT_S,
+            overflow="error",
+        )
+    except LabError as err:
+        raise LabError(f"SQL feature '{spec.name}' failed ({err})") from None
     expected = spec.output_columns(ctx.league)
     missing = [column for column in ("game_id", *expected) if column not in frame.columns]
     if missing:
         raise LabError(f"feature '{spec.name}' SQL is missing {', '.join(missing)}")
     return frame[["game_id", *expected]]
 
-
-def _locked_sql_connection(con: object):
-    """Copy the caller's tables into a connection that cannot read the filesystem.
-
-    Views over local Parquet stay on the caller's connection, because turning
-    `enable_external_access` off there would stop those views from reading.
-    SQL features run here instead. `lock_configuration` blocks a statement
-    from turning external access back on.
-    """
-    import duckdb
-
-    sandbox = duckdb.connect(database=":memory:")
-    names = con.execute(
-        """
-        SELECT table_name
-        FROM information_schema.tables
-        WHERE table_schema = 'main'
-        """
-    ).fetchall()
-    for (name,) in names:
-        if not isinstance(name, str) or not _NAME.match(name):
-            continue
-        frame = con.execute(f"SELECT * FROM {name}").fetchdf()
-        sandbox.register(name, frame)
-    sandbox.execute("SET enable_external_access = false")
-    sandbox.execute("SET lock_configuration = true")
-    return sandbox
-
-
-def _validate_select(sql: str) -> str:
-    """One SELECT or WITH. A semicolon inside a string or comment is allowed."""
-    statements = [part for part in _split_sql(sql) if part.strip()]
-    if len(statements) != 1:
-        raise LabError("SQL feature must be a single SELECT")
-    text = _strip_leading_comments(statements[0]).strip()
-    if not _SELECT.match(text):
-        raise LabError("SQL feature must be a SELECT")
-    return text
-
-
-def _split_sql(sql: str) -> list[str]:
-    parts: list[str] = []
-    buf: list[str] = []
-    i = 0
-    in_single = False
-    in_double = False
-    in_line = False
-    in_block = False
-    dollar: str | None = None
-    while i < len(sql):
-        ch = sql[i]
-        nxt = sql[i + 1] if i + 1 < len(sql) else ""
-        if in_line:
-            buf.append(ch)
-            if ch == "\n":
-                in_line = False
-            i += 1
-            continue
-        if in_block:
-            buf.append(ch)
-            if ch == "*" and nxt == "/":
-                buf.append(nxt)
-                i += 2
-                in_block = False
-                continue
-            i += 1
-            continue
-        if dollar is not None:
-            if sql.startswith(dollar, i):
-                buf.append(dollar)
-                i += len(dollar)
-                dollar = None
-                continue
-            buf.append(ch)
-            i += 1
-            continue
-        if in_single:
-            buf.append(ch)
-            if ch == "'" and nxt == "'":
-                buf.append(nxt)
-                i += 2
-                continue
-            if ch == "'":
-                in_single = False
-            i += 1
-            continue
-        if in_double:
-            buf.append(ch)
-            if ch == '"' and nxt == '"':
-                buf.append(nxt)
-                i += 2
-                continue
-            if ch == '"':
-                in_double = False
-            i += 1
-            continue
-        if ch == "-" and nxt == "-":
-            buf.append(ch)
-            buf.append(nxt)
-            i += 2
-            in_line = True
-            continue
-        if ch == "/" and nxt == "*":
-            buf.append(ch)
-            buf.append(nxt)
-            i += 2
-            in_block = True
-            continue
-        if ch == "'":
-            in_single = True
-            buf.append(ch)
-            i += 1
-            continue
-        if ch == '"':
-            in_double = True
-            buf.append(ch)
-            i += 1
-            continue
-        if ch == "$":
-            tag = _dollar_tag(sql, i)
-            if tag is not None:
-                dollar = tag
-                buf.append(tag)
-                i += len(tag)
-                continue
-        if ch == ";":
-            parts.append("".join(buf))
-            buf = []
-            i += 1
-            continue
-        buf.append(ch)
-        i += 1
-    parts.append("".join(buf))
-    return parts
-
-
-def _dollar_tag(sql: str, index: int) -> str | None:
-    if not sql.startswith("$", index):
-        return None
-    end = sql.find("$", index + 1)
-    if end < 0:
-        return None
-    tag = sql[index : end + 1]
-    body = tag[1:-1]
-    if body and not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", body):
-        return None
-    return tag
-
-
-def _strip_leading_comments(sql: str) -> str:
-    text = sql.lstrip()
-    while True:
-        if text.startswith("--"):
-            newline = text.find("\n")
-            text = "" if newline < 0 else text[newline + 1 :].lstrip()
-            continue
-        if text.startswith("/*"):
-            end = text.find("*/")
-            if end < 0:
-                return ""
-            text = text[end + 2 :].lstrip()
-            continue
-        return text
