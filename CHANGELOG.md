@@ -3,6 +3,12 @@
 All notable changes to sports-leader-mcp. Dates are US Central.
 
 
+## Unreleased
+
+### Added
+- ML lab foundations under `lab/`. `sports-leader-lab` is a second stdio server (`python -m sports_leader_lab`) with a ping tool. It reads the public sportsleader-data manifest, caches Parquet outside the repo after a sha256 check, and registers DuckDB views such as `nhl_games`. Feature families declare `known_at`: shifted rolling and EWMA form, rest and travel from the schedule, home and neutral site, as-of Elo, MLB probable counts, and injury counts at start time. Splits are walk-forward by season or by date, with an embargo. The lab is research software and does not report a betting edge. The Node server is unchanged. Modeling tools are not in this change.
+
+
 ## 0.9.0 — 2026-11-17
 
 Older scoreboard days come from the games export in one query. 43 tools.

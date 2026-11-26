@@ -1,0 +1,32 @@
+[project]
+name = "sports-leader-lab"
+version = "0.1.0.dev0"
+description = "Research lab for walk-forward sports models on the public sportsleader-data Parquet. Not a betting edge."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = "MIT"
+dependencies = [
+    "mcp>=2.0,<3",
+    "duckdb>=1.1",
+    "pandas>=2.2",
+    "pyarrow>=16",
+    "scikit-learn>=1.5",
+    "lightgbm>=4.5",
+]
+
+[project.scripts]
+sports-leader-lab = "sports_leader_lab.server:main"
+
+[dependency-groups]
+dev = ["pytest>=8.3"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-q"]
+markers = [
+    "live: downloads the public sportsleader-data release; set SPORTSLEADER_LAB_LIVE=1",
+]
