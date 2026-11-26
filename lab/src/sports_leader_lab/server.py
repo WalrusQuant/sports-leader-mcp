@@ -14,7 +14,7 @@ INSTRUCTIONS = (
     "when later tools use them. " + DISCLAIMER
 )
 
-mcp = MCPServer("sports-leader-lab", instructions=INSTRUCTIONS)
+mcp = MCPServer("sports-leader-lab", instructions=INSTRUCTIONS, version=__version__)
 
 
 def health() -> dict[str, Any]:

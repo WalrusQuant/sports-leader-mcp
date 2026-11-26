@@ -17,6 +17,16 @@ DEFAULT_MANIFEST_URL = (
 # Current-season files are rechecked on this cadence. Past seasons are not.
 DEFAULT_REVALIDATE_HOURS = 4.0
 
+# github.com redirects a release download to release-assets.githubusercontent.com.
+# objects.githubusercontent.com is the older asset host.
+ALLOWED_DOWNLOAD_HOSTS = frozenset(
+    {
+        "github.com",
+        "objects.githubusercontent.com",
+        "release-assets.githubusercontent.com",
+    }
+)
+
 _MANIFEST_ENV = ("SPORTSLEADER_LAB_MANIFEST_URL", "SPORTSLEADER_DATA_MANIFEST_URL")
 
 
@@ -82,10 +92,17 @@ def _revalidate_seconds(env: Mapping[str, str]) -> float:
 
 
 def _require_http_url(value: str, label: str) -> None:
+    require_public_url(value, label, ConfigError)
+
+
+def require_public_url(value: str, label: str, error: type[Exception]) -> None:
+    """Reject credentials and any host other than the public GitHub release hosts."""
     from urllib.parse import urlparse
 
     parsed = urlparse(value)
-    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
-        raise ConfigError(f"{label} must be an http or https URL")
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+        raise error(f"{label} must be an http or https URL")
     if parsed.username or parsed.password:
-        raise ConfigError(f"{label} must not include credentials")
+        raise error(f"{label} must not include credentials")
+    if parsed.hostname.lower() not in ALLOWED_DOWNLOAD_HOSTS:
+        raise error(f"{label} host must be a GitHub release host")

@@ -47,7 +47,17 @@ def test_embargo_drops_the_tail_of_training_and_overlap_fails():
     assert train_dates == {"2022-05-20"}
     assert fold.test_rows == 1
     _assert_order(frame, fold)
-    assert (fold.test_start - fold.train_end).days >= 7
+    assert (fold.test_start - fold.train_end).days >= 8
+
+
+def test_embargo_of_zero_and_one_are_different():
+    frame = _frame([("2022-06-01", 2021), ("2022-06-02", 2021), ("2022-06-03", 2022)])
+    zero = walk_forward(frame, scheme="season", min_train_seasons=1, embargo_days=0)[0]
+    one = walk_forward(frame, scheme="season", min_train_seasons=1, embargo_days=1)[0]
+    assert set(frame.iloc[list(zero.train_iloc)]["game_date"]) == {"2022-06-01", "2022-06-02"}
+    assert set(frame.iloc[list(one.train_iloc)]["game_date"]) == {"2022-06-01"}
+    assert (zero.test_start - zero.train_end).days == 1
+    assert (one.test_start - one.train_end).days == 2
 
     # A prior-season game dated after the test season starts is not training data.
     overlap = _frame([("2022-05-01", 2021), ("2022-06-10", 2021), ("2022-06-01", 2022)])
@@ -65,17 +75,17 @@ def test_embargo_drops_the_tail_of_training_and_overlap_fails():
 
 def test_date_folds_expand_with_an_embargo_gap():
     # Ten days labeled 2021, then twenty labeled 2022, with no offseason gap.
-    # Embargo of 2 days makes 2022-01-03 the first date with a training season.
+    # Embargo of 2 full days makes 2022-01-04 the first date with a training row.
     rows = [("2022-01-%02d" % day, 2021) for day in range(1, 11)]
     rows += [("2022-01-%02d" % day, 2022) for day in range(11, 31)]
     frame = _frame(rows)
     folds = walk_forward(frame, scheme="date", min_train_seasons=1, embargo_days=2, test_days=10)
     assert [(fold.test_start.isoformat(), fold.test_end.isoformat(), fold.train_rows, fold.test_rows) for fold in folds] == [
-        ("2022-01-03", "2022-01-12", 1, 10),
-        ("2022-01-13", "2022-01-22", 11, 10),
-        ("2022-01-23", "2022-01-30", 21, 8),
+        ("2022-01-04", "2022-01-13", 1, 10),
+        ("2022-01-14", "2022-01-23", 11, 10),
+        ("2022-01-24", "2022-01-30", 21, 7),
     ]
-    # Jan 12 is inside the two-day embargo before the Jan 13 window, so it is in neither side.
+    # Jan 12 is inside the embargo before the Jan 14 window, so it is in neither side.
     january_12 = frame.index[frame["game_date"] == "2022-01-12"].tolist()
     assert january_12[0] not in folds[1].train_iloc
     assert january_12[0] not in folds[1].test_iloc
@@ -83,11 +93,28 @@ def test_date_folds_expand_with_an_embargo_gap():
     assert folds[1].train_seasons == (2021, 2022)
     for fold in folds:
         _assert_order(frame, fold)
-        assert (fold.test_start - fold.train_end).days >= 2
+        assert (fold.test_start - fold.train_end).days >= 3
 
     later = walk_forward(frame, scheme="date", min_train_seasons=2, embargo_days=2, test_days=10)
-    assert [fold.test_start.isoformat() for fold in later] == ["2022-01-13", "2022-01-23"]
+    assert [fold.test_start.isoformat() for fold in later] == ["2022-01-14", "2022-01-24"]
     assert all(fold.train_seasons == (2021, 2022) for fold in later)
+
+
+def test_date_folds_skip_windows_below_the_minimum_train_rows():
+    rows = [("2022-01-%02d" % day, 2021) for day in range(1, 31)]
+    frame = _frame(rows)
+    folds = walk_forward(
+        frame,
+        scheme="date",
+        min_train_seasons=1,
+        min_train_rows=12,
+        embargo_days=0,
+        test_days=10,
+    )
+    assert [fold.test_start.isoformat() for fold in folds] == ["2022-01-13", "2022-01-23"]
+    assert all(fold.train_rows >= 12 for fold in folds)
+    assert folds[0].train_rows == 12
+    assert folds[0].describe()["min_train_rows"] == 12
 
 
 def _frame(rows: list[tuple[str, int]]) -> pd.DataFrame:

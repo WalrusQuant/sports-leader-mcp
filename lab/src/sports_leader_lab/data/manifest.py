@@ -7,6 +7,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
+from sports_leader_lab.config import require_public_url
 from sports_leader_lab.errors import DataError
 
 _SHA = re.compile(r"^[a-f0-9]{64}$")
@@ -152,13 +153,7 @@ def _release_url(league: str, dataset: str, season: int) -> str:
 
 
 def _require_public_url(url: str, path: str) -> None:
-    from urllib.parse import urlparse
-
-    parsed = urlparse(url)
-    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
-        raise DataError(f"manifest {path} url must be http or https")
-    if parsed.username or parsed.password:
-        raise DataError(f"manifest {path} url must not include credentials")
+    require_public_url(url, f"manifest {path} url", DataError)
 
 
 def _req_str(entry: dict[str, Any], key: str, label: str) -> str:

@@ -59,6 +59,12 @@ def test_bad_settings_are_rejected():
     with pytest.raises(ConfigError):
         load_config({"SPORTSLEADER_LAB_REVALIDATE_HOURS": "-1"})
     with pytest.raises(ConfigError):
-        load_config({"SPORTSLEADER_LAB_MANIFEST_URL": "https://user:secret@data.invalid/manifest.json"})
+        load_config({"SPORTSLEADER_LAB_MANIFEST_URL": "https://user:secret@github.com/WalrusQuant/manifest.json"})
     with pytest.raises(ConfigError):
         load_config({"SPORTSLEADER_LAB_MANIFEST_URL": "file:///tmp/manifest.json"})
+    with pytest.raises(ConfigError, match="GitHub release host"):
+        load_config({"SPORTSLEADER_LAB_MANIFEST_URL": "https://example.com/manifest.json"})
+    allowed = load_config(
+        {"SPORTSLEADER_LAB_MANIFEST_URL": "https://release-assets.githubusercontent.com/manifest.json"}
+    )
+    assert allowed.manifest_url.startswith("https://release-assets.githubusercontent.com/")

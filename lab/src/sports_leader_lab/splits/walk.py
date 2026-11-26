@@ -20,6 +20,7 @@ class Fold:
     test_start: date
     test_end: date
     embargo_days: int
+    min_train_rows: int
     train_rows: int
     test_rows: int
     train_seasons: tuple[int, ...]
@@ -37,6 +38,7 @@ class Fold:
             "test_start": self.test_start.isoformat(),
             "test_end": self.test_end.isoformat(),
             "embargo_days": self.embargo_days,
+            "min_train_rows": self.min_train_rows,
             "train_rows": self.train_rows,
             "test_rows": self.test_rows,
             "train_seasons": list(self.train_seasons),
@@ -52,6 +54,7 @@ def walk_forward(
     date_col: str = "game_date",
     season_col: str = "season",
     min_train_seasons: int = 2,
+    min_train_rows: int = 1,
     embargo_days: int = 0,
     test_days: int = 14,
 ) -> list[Fold]:
@@ -60,15 +63,21 @@ def walk_forward(
     `scheme='season'` trains on earlier seasons and tests the next one.
     `scheme='date'` walks calendar windows of `test_days`. The first window
     starts on the first date whose embargoed history already contains
-    `min_train_seasons` distinct seasons, and later windows step forward
-    from there. `embargo_days` drops the training rows immediately before
-    each test window.
+    `min_train_seasons` distinct seasons and at least `min_train_rows` rows.
+    Later windows step forward from there.
+
+    `embargo_days=N` keeps a training row only when its date is at least N
+    full days before the test start. The last allowed training date is
+    `test_start - (N + 1) days`. N=0 still drops the test date and keeps the
+    previous day. N=1 also drops that previous day, so 0 and 1 differ.
 
     A random or shuffled split is not available.
     """
     kind = _scheme(scheme)
     if min_train_seasons < 1:
         raise ValueError("min_train_seasons must be >= 1")
+    if min_train_rows < 1:
+        raise ValueError("min_train_rows must be >= 1")
     if embargo_days < 0:
         raise ValueError("embargo_days must be >= 0")
     if kind == "date" and test_days < 1:
@@ -87,8 +96,8 @@ def walk_forward(
         raise ValueError(f"{season_col} has a missing season")
     work["_lab_pos"] = range(len(work))
     if kind == "season":
-        return _season_folds(work, min_train_seasons, embargo_days)
-    return _date_folds(work, min_train_seasons, embargo_days, test_days)
+        return _season_folds(work, min_train_seasons, min_train_rows, embargo_days)
+    return _date_folds(work, min_train_seasons, min_train_rows, embargo_days, test_days)
 
 
 def _scheme(scheme: str) -> Scheme:
@@ -98,7 +107,12 @@ def _scheme(scheme: str) -> Scheme:
     return kind  # type: ignore[return-value]
 
 
-def _season_folds(work: pd.DataFrame, min_train_seasons: int, embargo_days: int) -> list[Fold]:
+def _season_folds(
+    work: pd.DataFrame,
+    min_train_seasons: int,
+    min_train_rows: int,
+    embargo_days: int,
+) -> list[Fold]:
     seasons = sorted(int(season) for season in work["_lab_season"].unique())
     folds: list[Fold] = []
     for index in range(min_train_seasons, len(seasons)):
@@ -113,13 +127,14 @@ def _season_folds(work: pd.DataFrame, min_train_seasons: int, embargo_days: int)
         ]
         if train.empty:
             continue
-        folds.append(_make_fold(len(folds), "season", train, test, embargo_days, min_train_seasons))
+        folds.append(_make_fold(len(folds), "season", train, test, embargo_days, min_train_seasons, min_train_rows))
     return folds
 
 
 def _date_folds(
     work: pd.DataFrame,
     min_train_seasons: int,
+    min_train_rows: int,
     embargo_days: int,
     test_days: int,
 ) -> list[Fold]:
@@ -127,7 +142,7 @@ def _date_folds(
     origin: pd.Timestamp | None = None
     for day in unique_dates:
         history = work[_train_mask(work["_lab_date"], day, embargo_days)]
-        if len(history) and history["_lab_season"].nunique() >= min_train_seasons:
+        if len(history) >= min_train_rows and history["_lab_season"].nunique() >= min_train_seasons:
             origin = day
             break
     if origin is None:
@@ -144,9 +159,9 @@ def _date_folds(
             continue
         test_start = pd.Timestamp(test["_lab_date"].min())
         train = work[_train_mask(work["_lab_date"], test_start, embargo_days)]
-        if train.empty or train["_lab_season"].nunique() < min_train_seasons:
+        if len(train) < min_train_rows or train["_lab_season"].nunique() < min_train_seasons:
             continue
-        folds.append(_make_fold(len(folds), "date", train, test, embargo_days, min_train_seasons))
+        folds.append(_make_fold(len(folds), "date", train, test, embargo_days, min_train_seasons, min_train_rows))
     return folds
 
 
@@ -157,6 +172,7 @@ def _make_fold(
     test: pd.DataFrame,
     embargo_days: int,
     min_train_seasons: int,
+    min_train_rows: int,
 ) -> Fold:
     _assert_time_order(train["_lab_date"], test["_lab_date"], embargo_days, number)
     overlap = set(train["_lab_pos"]).intersection(test["_lab_pos"])
@@ -170,6 +186,7 @@ def _make_fold(
         test_start=_as_date(test["_lab_date"].min()),
         test_end=_as_date(test["_lab_date"].max()),
         embargo_days=embargo_days,
+        min_train_rows=min_train_rows,
         train_rows=int(len(train)),
         test_rows=int(len(test)),
         train_seasons=tuple(sorted(int(season) for season in train["_lab_season"].unique())),
@@ -196,15 +213,14 @@ def _assert_time_order(
             f"train date (train ends {train_end.date().isoformat()})"
         )
     gap = (test_start - train_end).days
-    if gap < embargo_days:
+    if gap < embargo_days + 1:
         raise AssertionError(f"fold {fold_id}: embargo is {embargo_days} days but the gap is {gap}")
 
 
 def _train_mask(dates: pd.Series, test_start: pd.Timestamp, embargo_days: int) -> pd.Series:
-    start = pd.Timestamp(test_start)
-    if embargo_days <= 0:
-        return dates < start
-    return dates <= start - pd.Timedelta(days=embargo_days)
+    """Training dates at least `embargo_days` full days before `test_start`."""
+    cutoff = pd.Timestamp(test_start) - pd.Timedelta(days=embargo_days + 1)
+    return dates <= cutoff
 
 
 def _dates(series: pd.Series) -> pd.Series:

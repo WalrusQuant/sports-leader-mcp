@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from typing import Sequence
 
 import duckdb
+import numpy as np
 import pandas as pd
 
 from sports_leader_lab.data.cache import DataCache
@@ -59,9 +60,7 @@ def register_views(
     snapshot = manifest if manifest is not None else cache.load_manifest()
     league_filter = _names(leagues, "league", snapshot.leagues())
     dataset_filter = _names(datasets, "dataset", snapshot.datasets())
-    season_filter = set(seasons) if seasons is not None else None
-    if season_filter is not None and any(not isinstance(season, int) for season in season_filter):
-        raise DataError("seasons must be integers")
+    season_filter = set(_season_ints(seasons)) if seasons is not None else None
 
     groups: dict[tuple[str, str], list[ManifestFile]] = {}
     for entry in snapshot.files:
@@ -154,13 +153,22 @@ def read_view(
         raise DataError(f"unknown view '{name}'")
     if seasons is None:
         return con.execute(f"SELECT * FROM {name}").fetchdf()
-    if any(not isinstance(season, int) for season in seasons):
-        raise DataError("seasons must be integers")
-    placeholders = ", ".join(["?"] * len(seasons))
+    chosen = _season_ints(seasons)
+    placeholders = ", ".join(["?"] * len(chosen))
     return con.execute(
         f"SELECT * FROM {name} WHERE season IN ({placeholders})",
-        list(seasons),
+        chosen,
     ).fetchdf()
+
+
+def _season_ints(seasons: Sequence[object]) -> list[int]:
+    """Accept Python ints and numpy integer scalars. Booleans are not seasons."""
+    chosen: list[int] = []
+    for season in seasons:
+        if isinstance(season, bool) or not isinstance(season, (int, np.integer)):
+            raise DataError("seasons must be integers")
+        chosen.append(int(season))
+    return chosen
 
 
 def _names(requested: Sequence[str] | None, label: str, known: set[str]) -> set[str] | None:

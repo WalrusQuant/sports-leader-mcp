@@ -30,23 +30,36 @@ def prepare_games(games: pd.DataFrame) -> pd.DataFrame:
     frame["game_date"] = _as_timestamp(frame["game_date"])
     if frame["game_date"].isna().any():
         raise LabError("games has a missing game_date")
-    if "start_time" in frame.columns:
-        frame["start_time"] = _as_timestamp(frame["start_time"]).fillna(frame["game_date"])
-    else:
-        frame["start_time"] = frame["game_date"]
     if "neutral_site" not in frame.columns:
         frame["neutral_site"] = pd.NA
+    if "venue" not in frame.columns:
+        frame["venue"] = pd.NA
     if "venue_city" not in frame.columns:
         frame["venue_city"] = pd.NA
+    if "status" not in frame.columns:
+        frame["status"] = pd.NA
     if "season_type" not in frame.columns:
         frame["season_type"] = pd.NA
+    if "start_time" in frame.columns:
+        frame["start_time"] = _as_timestamp(frame["start_time"])
+    else:
+        frame["start_time"] = pd.Series(pd.NaT, index=frame.index)
+    # A missing clock sorts after every timed game that day, and as-of joins
+    # use the end of the date so a midnight fill does not look earlier.
+    frame["start_time_missing"] = frame["start_time"].isna()
+    end_of_day = frame["game_date"] + pd.Timedelta(days=1) - pd.Timedelta(microseconds=1)
+    frame["start_time"] = frame["start_time"].fillna(end_of_day)
     if "completed" in frame.columns:
         completed = frame["completed"].map(_as_bool)
     else:
         completed = frame["home_score"].notna() & frame["away_score"].notna()
     frame["completed"] = completed.fillna(False).astype(bool)
+    frame["played"] = [
+        was_played(status, done)
+        for status, done in zip(frame["status"].tolist(), frame["completed"].tolist(), strict=True)
+    ]
     frame["in_history"] = (
-        frame["completed"]
+        pd.Series(frame["played"], index=frame.index)
         & frame["home_score"].notna()
         & frame["away_score"].notna()
         & ~frame["season_type"].map(is_preseason)
@@ -60,6 +73,26 @@ def prepare_table(frame: pd.DataFrame | None) -> pd.DataFrame | None:
     if frame is None:
         return None
     return _lower(frame)
+
+
+def was_played(status: Any, completed: bool) -> bool:
+    """True when the game was played.
+
+    Postponed, cancelled, and abandoned games are not a previous game for
+    rest or travel. A suspension counts only when the game was completed.
+    """
+    text = ""
+    if status is not None and status is not pd.NA:
+        try:
+            if status == status:  # NaN
+                text = str(status).strip().lower()
+        except Exception:
+            text = ""
+    if any(token in text for token in ("postpon", "cancel", "abandon")):
+        return False
+    if "suspend" in text and not completed:
+        return False
+    return bool(completed)
 
 
 def is_preseason(value: Any) -> bool:
@@ -82,9 +115,11 @@ def team_long(games: pd.DataFrame) -> pd.DataFrame:
         "start_time",
         "season",
         "season_type",
+        "venue",
         "venue_city",
         "neutral_site",
         "in_history",
+        "played",
     ]
     home = games[shared].copy()
     home["team_id"] = games["home_team_id"]

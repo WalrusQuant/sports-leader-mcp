@@ -2,7 +2,10 @@
 
 A row counts when `valid_from <= start` and (`valid_to` is null or
 `valid_to > start`). The interval is half-open at the end. A season the
-snapshot frame does not cover stays null, rather than a false zero.
+snapshot frame does not cover stays null. A game before the earliest
+`valid_from` or `first_seen` in that snapshot also stays null: the export
+often starts mid-season, and a zero there would mean "healthy" rather than
+"not yet published".
 """
 
 from __future__ import annotations
@@ -80,6 +83,15 @@ def _counts(
         usable["valid_to"] = pd.NaT
     if "player_id" not in usable.columns:
         usable["player_id"] = np.arange(len(usable))
+    coverage = _coverage_start(usable)
+    if pd.notna(coverage):
+        starts = pd.to_datetime(games["start_time"], errors="coerce")
+        if bool((starts.notna() & (starts < pd.Timestamp(coverage))).any()):
+            _warn(
+                ctx,
+                f"{label} counts are null before {pd.Timestamp(coverage).isoformat()} "
+                "because the snapshot has no earlier rows",
+            )
     out = [math.nan] * size
     work = games[["game_id", "season", "start_time"]].copy()
     work["team_id"] = teams.to_numpy()
@@ -90,11 +102,25 @@ def _counts(
             season = int(row.season) if pd.notna(row.season) else None
             if covered is not None and season not in covered:
                 continue
+            start = row.start_time
+            if pd.isna(start) or (pd.notna(coverage) and pd.Timestamp(start) < pd.Timestamp(coverage)):
+                continue
             rows = team_snaps
             if by_game:
                 rows = team_snaps[team_snaps["game_id"] == row.game_id]
             out[int(row.row_pos)] = _distinct_in_window(rows, row.start_time)
     return out
+
+
+def _coverage_start(snaps: pd.DataFrame) -> pd.Timestamp:
+    """Earliest moment the snapshot is known to exist for this league."""
+    stamps = [snaps["valid_from"]]
+    if "first_seen" in snaps.columns:
+        stamps.append(_clock(snaps["first_seen"]))
+    combined = pd.concat(stamps, ignore_index=True).dropna()
+    if combined.empty:
+        return pd.NaT
+    return pd.Timestamp(combined.min())
 
 
 def _clock(series: pd.Series) -> pd.Series:

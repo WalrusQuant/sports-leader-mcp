@@ -7,7 +7,8 @@ import json
 
 import pandas as pd
 
-ORIGIN = "https://data.invalid"
+ORIGIN = "https://github.com/WalrusQuant/sportsleader-data/releases/download"
+MANIFEST_URL = f"{ORIGIN}/manifest/manifest.json"
 
 
 def parquet_bytes(frame: pd.DataFrame) -> bytes:

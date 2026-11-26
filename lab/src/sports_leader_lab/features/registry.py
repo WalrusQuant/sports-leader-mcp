@@ -24,6 +24,10 @@ from sports_leader_lab.features.snapshots import (
 _NAME = re.compile(r"^[a-z][a-z0-9_]*$")
 _SELECT = re.compile(r"^(select|with)\b", re.IGNORECASE)
 
+# On the frame so build_dataset can filter and join. Not model features.
+# season_type is known from the schedule; it is listed here so it is not trained on.
+POSTGAME_COLUMNS = ("status", "completed", "season_type", "home_score", "away_score")
+
 Builder = Callable[[FeatureContext], pd.DataFrame]
 ColumnsFor = Callable[[str], tuple[str, ...]]
 
@@ -51,9 +55,19 @@ class FeatureSpec:
 
 @dataclass
 class BuiltFeatures:
+    """One row per game.
+
+    `columns` are the model features (`feature_names`). `postgame` columns
+    are also on `frame` and are not features. `home_score` and `away_score`
+    are the target. `status` and `completed` drop postponed, cancelled, and
+    unplayed rows. `season_type` drops preseason. A later `build_dataset`
+    should train on `feature_names` only.
+    """
+
     frame: pd.DataFrame
     columns: dict[str, dict[str, str]]
     warnings: list[str]
+    postgame: tuple[str, ...] = ()
 
     @property
     def feature_names(self) -> list[str]:
@@ -124,8 +138,9 @@ def default_registry() -> FeatureRegistry:
         FeatureSpec(
             name="rest",
             description=(
-                "Days since each team's previous scheduled game, whether the venue city "
-                "changed, and whether the team is on a second straight road game. Results are not used."
+                "Days since the previous played game, a venue-name change, and consecutive away games. "
+                "Postponed, cancelled, and suspended-without-play games are not the previous game. "
+                "The first game, and any gap longer than 21 days, is null."
             ),
             known_at=KnownAt.SCHEDULE,
             datasets=frozenset({"games"}),
@@ -214,10 +229,14 @@ def build_features(
         elo_initial=elo_initial,
         con=con,
     )
+    if bool(games["start_time_missing"].any()):
+        warnings.append(
+            "a null start_time sorts after other games that day and is treated as the end of that date"
+        )
     specs = _select(source, inputs.league, names)
-    base = games[
-        ["game_id", "game_date", "start_time", "season", "home_team_id", "away_team_id"]
-    ].copy()
+    postgame = tuple(column for column in POSTGAME_COLUMNS if column in games.columns)
+    base_columns = ["game_id", "game_date", "start_time", "season", "home_team_id", "away_team_id", *postgame]
+    base = games[base_columns].copy()
     meta: dict[str, dict[str, str]] = {}
     frame = base
     for spec in specs:
@@ -242,7 +261,12 @@ def build_features(
                 "description": spec.description,
             }
         frame = frame.merge(part, on="game_id", how="left", validate="one_to_one")
-    return BuiltFeatures(frame=frame, columns=meta, warnings=list(dict.fromkeys(warnings)))
+    return BuiltFeatures(
+        frame=frame,
+        columns=meta,
+        warnings=list(dict.fromkeys(warnings)),
+        postgame=postgame,
+    )
 
 
 def _select(registry: FeatureRegistry, league: str, names: Sequence[str] | None) -> list[FeatureSpec]:
@@ -271,7 +295,11 @@ def _run_sql(spec: FeatureSpec, ctx: FeatureContext) -> pd.DataFrame:
     if ctx.con is None:
         raise LabError(f"feature '{spec.name}' is SQL and needs a DuckDB connection")
     sql = _validate_select(spec.sql or "")
-    frame = ctx.con.execute(sql).fetchdf()
+    sandbox = _locked_sql_connection(ctx.con)
+    try:
+        frame = sandbox.execute(sql).fetchdf()
+    except Exception as err:
+        raise LabError(f"SQL feature '{spec.name}' failed ({err.__class__.__name__})") from None
     frame.columns = [str(column).lower() for column in frame.columns]
     expected = spec.output_columns(ctx.league)
     missing = [column for column in ("game_id", *expected) if column not in frame.columns]
@@ -280,10 +308,165 @@ def _run_sql(spec: FeatureSpec, ctx: FeatureContext) -> pd.DataFrame:
     return frame[["game_id", *expected]]
 
 
+def _locked_sql_connection(con: object):
+    """Copy the caller's tables into a connection that cannot read the filesystem.
+
+    Views over local Parquet stay on the caller's connection, because turning
+    `enable_external_access` off there would stop those views from reading.
+    SQL features run here instead. `lock_configuration` blocks a statement
+    from turning external access back on.
+    """
+    import duckdb
+
+    sandbox = duckdb.connect(database=":memory:")
+    names = con.execute(
+        """
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = 'main'
+        """
+    ).fetchall()
+    for (name,) in names:
+        if not isinstance(name, str) or not _NAME.match(name):
+            continue
+        frame = con.execute(f"SELECT * FROM {name}").fetchdf()
+        sandbox.register(name, frame)
+    sandbox.execute("SET enable_external_access = false")
+    sandbox.execute("SET lock_configuration = true")
+    return sandbox
+
+
 def _validate_select(sql: str) -> str:
-    text = sql.strip().rstrip(";").strip()
-    if not text or ";" in text:
+    """One SELECT or WITH. A semicolon inside a string or comment is allowed."""
+    statements = [part for part in _split_sql(sql) if part.strip()]
+    if len(statements) != 1:
         raise LabError("SQL feature must be a single SELECT")
+    text = _strip_leading_comments(statements[0]).strip()
     if not _SELECT.match(text):
         raise LabError("SQL feature must be a SELECT")
     return text
+
+
+def _split_sql(sql: str) -> list[str]:
+    parts: list[str] = []
+    buf: list[str] = []
+    i = 0
+    in_single = False
+    in_double = False
+    in_line = False
+    in_block = False
+    dollar: str | None = None
+    while i < len(sql):
+        ch = sql[i]
+        nxt = sql[i + 1] if i + 1 < len(sql) else ""
+        if in_line:
+            buf.append(ch)
+            if ch == "\n":
+                in_line = False
+            i += 1
+            continue
+        if in_block:
+            buf.append(ch)
+            if ch == "*" and nxt == "/":
+                buf.append(nxt)
+                i += 2
+                in_block = False
+                continue
+            i += 1
+            continue
+        if dollar is not None:
+            if sql.startswith(dollar, i):
+                buf.append(dollar)
+                i += len(dollar)
+                dollar = None
+                continue
+            buf.append(ch)
+            i += 1
+            continue
+        if in_single:
+            buf.append(ch)
+            if ch == "'" and nxt == "'":
+                buf.append(nxt)
+                i += 2
+                continue
+            if ch == "'":
+                in_single = False
+            i += 1
+            continue
+        if in_double:
+            buf.append(ch)
+            if ch == '"' and nxt == '"':
+                buf.append(nxt)
+                i += 2
+                continue
+            if ch == '"':
+                in_double = False
+            i += 1
+            continue
+        if ch == "-" and nxt == "-":
+            buf.append(ch)
+            buf.append(nxt)
+            i += 2
+            in_line = True
+            continue
+        if ch == "/" and nxt == "*":
+            buf.append(ch)
+            buf.append(nxt)
+            i += 2
+            in_block = True
+            continue
+        if ch == "'":
+            in_single = True
+            buf.append(ch)
+            i += 1
+            continue
+        if ch == '"':
+            in_double = True
+            buf.append(ch)
+            i += 1
+            continue
+        if ch == "$":
+            tag = _dollar_tag(sql, i)
+            if tag is not None:
+                dollar = tag
+                buf.append(tag)
+                i += len(tag)
+                continue
+        if ch == ";":
+            parts.append("".join(buf))
+            buf = []
+            i += 1
+            continue
+        buf.append(ch)
+        i += 1
+    parts.append("".join(buf))
+    return parts
+
+
+def _dollar_tag(sql: str, index: int) -> str | None:
+    if not sql.startswith("$", index):
+        return None
+    end = sql.find("$", index + 1)
+    if end < 0:
+        return None
+    tag = sql[index : end + 1]
+    body = tag[1:-1]
+    if body and not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", body):
+        return None
+    return tag
+
+
+def _strip_leading_comments(sql: str) -> str:
+    text = sql.lstrip()
+    while True:
+        if text.startswith("--"):
+            newline = text.find("\n")
+            text = "" if newline < 0 else text[newline + 1 :].lstrip()
+            continue
+        if text.startswith("/*"):
+            end = text.find("*/")
+            if end < 0:
+                return ""
+            text = text[end + 2 :].lstrip()
+            continue
+        return text

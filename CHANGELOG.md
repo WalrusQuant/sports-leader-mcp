@@ -7,6 +7,7 @@ All notable changes to sports-leader-mcp. Dates are US Central.
 
 ### Added
 - ML lab foundations under `lab/`. `sports-leader-lab` is a second stdio server (`python -m sports_leader_lab`) with a ping tool. It reads the public sportsleader-data manifest, caches Parquet outside the repo after a sha256 check, and registers DuckDB views such as `nhl_games`. Feature families declare `known_at`: shifted rolling and EWMA form, rest and travel from the schedule, home and neutral site, as-of Elo, MLB probable counts, and injury counts at start time. Splits are walk-forward by season or by date, with an embargo. The lab is research software and does not report a betting edge. The Node server is unchanged. Modeling tools are not in this change.
+- Lab review fixes: injury and probable counts stay null before the snapshot's first row; rest skips postponed, cancelled, and suspended-without-play games and nulls gaps over 21 days; venue change uses the venue name; an embargo of N full days differs from N-1; SQL features run with external access off; `build_features` carries postgame filter and target columns.
 
 
 ## 0.9.0 — 2026-11-17

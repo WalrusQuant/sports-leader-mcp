@@ -17,10 +17,11 @@ import os
 import time
 import urllib.error
 import urllib.request
+import warnings
 from pathlib import Path
 from typing import Callable
 
-from sports_leader_lab.config import LabConfig, load_config
+from sports_leader_lab.config import LabConfig, load_config, require_public_url
 from sports_leader_lab.data.manifest import Manifest, ManifestFile, parse_manifest
 from sports_leader_lab.errors import ChecksumMismatch, DataError
 
@@ -47,16 +48,32 @@ class DataCache:
     def load_manifest(self, *, force: bool = False) -> Manifest:
         path, meta_path = self._manifest_paths()
         meta = _read_json(meta_path)
-        fresh = (
-            not force
-            and meta is not None
-            and meta.get("url") == self.config.manifest_url
-            and self._clock() - float(meta.get("checked_at", 0)) < self.config.revalidate_seconds
-            and path.is_file()
-        )
-        if fresh:
-            return parse_manifest(path.read_text(encoding="utf8"))
-        body = self._fetcher(self.config.manifest_url)
+        if not force and _manifest_is_fresh(meta, path, self.config.manifest_url, self._clock(), self.config.revalidate_seconds):
+            cached = _cached_manifest(path)
+            if cached is not None:
+                return cached
+        try:
+            body = self._fetcher(self.config.manifest_url)
+        except DataError:
+            cached = _cached_manifest(path)
+            if cached is None:
+                raise
+            warnings.warn(
+                "manifest refresh failed; using the cached manifest",
+                UserWarning,
+                stacklevel=2,
+            )
+            return cached
+        except Exception as err:
+            cached = _cached_manifest(path)
+            if cached is None:
+                raise DataError(f"manifest refresh failed ({err.__class__.__name__})") from None
+            warnings.warn(
+                "manifest refresh failed; using the cached manifest",
+                UserWarning,
+                stacklevel=2,
+            )
+            return cached
         manifest = parse_manifest(body)
         _atomic_write(path, body if isinstance(body, bytes) else body.encode("utf-8"))
         _atomic_write(
@@ -102,20 +119,15 @@ class DataCache:
 
 
 def http_get(url: str) -> bytes:
-    """GET one public URL, following redirects. The URL is not included in errors."""
-    from urllib.parse import urlparse
-
-    parsed = urlparse(url)
-    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
-        raise DataError("download URL must be http or https")
-    if parsed.username or parsed.password:
-        raise DataError("download URL must not include credentials")
+    """GET one public GitHub release URL, following redirects. The URL is not included in errors."""
+    require_public_url(url, "download URL", DataError)
     request = urllib.request.Request(
         url,
         headers={"User-Agent": USER_AGENT, "Accept": "*/*"},
     )
+    opener = urllib.request.build_opener(_GuardedRedirect)
     try:
-        with urllib.request.urlopen(request, timeout=_TIMEOUT_SECONDS) as response:
+        with opener.open(request, timeout=_TIMEOUT_SECONDS) as response:
             chunks: list[bytes] = []
             total = 0
             while True:
@@ -133,6 +145,38 @@ def http_get(url: str) -> bytes:
         raise DataError(f"download failed with HTTP {err.code}") from None
     except Exception as err:
         raise DataError(f"download failed ({err.__class__.__name__})") from None
+
+
+class _GuardedRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        require_public_url(newurl, "download URL", DataError)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _manifest_is_fresh(
+    meta: dict[str, object] | None,
+    path: Path,
+    url: str,
+    now: float,
+    revalidate_seconds: float,
+) -> bool:
+    if meta is None or not path.is_file() or meta.get("url") != url:
+        return False
+    checked = meta.get("checked_at")
+    try:
+        age = now - float(checked)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return False
+    return age < revalidate_seconds
+
+
+def _cached_manifest(path: Path) -> Manifest | None:
+    if not path.is_file():
+        return None
+    try:
+        return parse_manifest(path.read_text(encoding="utf8"))
+    except (OSError, UnicodeError, DataError):
+        return None
 
 
 def _sha256(body: bytes) -> str:

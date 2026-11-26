@@ -7,6 +7,10 @@ from sports_leader_lab import DISCLAIMER
 from sports_leader_lab.server import health, mcp
 
 
+def test_server_reports_the_package_version():
+    assert mcp.version == "0.1.0.dev0"
+
+
 def test_health_payload_is_a_research_ping():
     payload = health()
     assert payload["ok"] is True

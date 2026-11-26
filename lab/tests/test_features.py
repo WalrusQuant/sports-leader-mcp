@@ -182,6 +182,151 @@ def test_registry_accepts_a_python_family_and_a_select():
         )
 
 
+def test_snapshot_counts_are_null_before_the_snapshot_begins():
+    # MLB 2026 injuries in the public export start 2026-10-28. Earlier games
+    # in that season must stay null, not a false zero.
+    games = pd.DataFrame(
+        [
+            _game(1, "2026-04-08 18:00", 2026, 1, 2, 3, 1),
+            _game(2, "2026-10-28 18:00", 2026, 1, 2, 4, 2),
+            _game(3, "2026-10-30 18:00", 2026, 1, 2, 1, 0),
+        ]
+    )
+    injuries = pd.DataFrame(
+        [
+            {
+                "season": 2026,
+                "team_id": 1,
+                "player_id": 7,
+                "valid_from": "2026-10-28 12:00",
+                "valid_to": pd.NaT,
+                "first_seen": "2026-10-20 00:00",
+            }
+        ]
+    )
+    built = build_features(FeatureInputs(league="mlb", games=games, injuries=injuries), names=["injuries"])
+    frame = built.frame.set_index("game_id")
+    # first_seen on Oct 20 is earlier than valid_from, so that is the coverage start.
+    assert math.isnan(frame.loc[1, "home_injury_count"])
+    assert math.isnan(frame.loc[1, "away_injury_count"])
+    assert frame.loc[2, "home_injury_count"] == pytest.approx(1.0)
+    assert frame.loc[2, "away_injury_count"] == pytest.approx(0.0)
+    assert frame.loc[3, "home_injury_count"] == pytest.approx(1.0)
+    assert any("null before" in warning for warning in built.warnings)
+
+
+def test_rest_ignores_unplayed_games_and_long_gaps():
+    games = pd.DataFrame(
+        [
+            _game(1, "2022-04-07 18:00", 2022, 1, 2, None, None, completed=False, status="postponed"),
+            _game(2, "2022-04-08 13:00", 2022, 1, 2, 5, 3, status="final"),
+            _game(10, "2022-11-16 19:00", 2022, 3, 4, 2, 1, status="final", venue="Arena"),
+            _game(11, "2022-11-18 19:00", 2022, 3, 4, None, None, completed=False, status="cancelled"),
+            _game(12, "2022-11-19 19:00", 2022, 3, 4, None, None, completed=False, status="suspended"),
+            _game(13, "2022-11-20 19:00", 2022, 3, 4, 4, 3, status="final", venue="Arena"),
+            _game(20, "2021-03-01 18:00", 2021, 5, 6, 1, 0, status="final"),
+            _game(21, "2022-04-08 13:00", 2022, 5, 6, 2, 1, status="final"),
+        ]
+    )
+    built = build_features(FeatureInputs(league="mlb", games=games), names=["rest"])
+    frame = built.frame.set_index("game_id")
+    # The April 7 postponement is not a previous game, so the opener has no rest.
+    assert math.isnan(frame.loc[2, "home_rest_days"])
+    assert math.isnan(frame.loc[2, "away_rest_days"])
+    # Nov 18 cancelled and Nov 19 suspended-without-play are skipped: Nov 20 is 4 days after Nov 16.
+    assert frame.loc[13, "home_rest_days"] == pytest.approx(4.0)
+    assert frame.loc[13, "home_venue_changed"] == pytest.approx(0.0)
+    # 2021-03-01 to 2022-04-08 is an offseason, not hundreds of days of rest.
+    assert math.isnan(frame.loc[21, "home_rest_days"])
+
+
+def test_venue_change_uses_the_venue_name_when_city_is_null():
+    games = pd.DataFrame(
+        [
+            _game(1, "2023-04-01 18:00", 2023, 1, 2, 1, 0, venue=None),
+            _game(2, "2023-04-04 18:00", 2023, 1, 2, 2, 1, venue=None),
+        ]
+    )
+    games["venue"] = ["Park A", "Park B"]
+    games["venue_city"] = [pd.NA, pd.NA]
+    built = build_features(FeatureInputs(league="mlb", games=games), names=["rest"])
+    frame = built.frame.set_index("game_id")
+    assert frame.loc[2, "home_venue_changed"] == pytest.approx(1.0)
+
+    blank = games.copy()
+    blank["venue"] = [pd.NA, pd.NA]
+    warned = build_features(FeatureInputs(league="mlb", games=blank), names=["rest"])
+    assert math.isnan(warned.frame.set_index("game_id").loc[2, "home_venue_changed"])
+    assert any("venue_changed" in warning for warning in warned.warnings)
+
+
+def test_null_start_time_sorts_after_same_day_games_and_postgame_columns_are_carried():
+    rows = [
+        _game(2, "2023-04-01 18:00", 2023, 1, 2, 3, 1, status="final"),
+        _game(1, "2023-04-01 18:00", 2023, 1, 3, 2, 0, status="final"),
+    ]
+    rows[1]["start_time"] = None
+    built = build_features(FeatureInputs(league="mlb", games=pd.DataFrame(rows)), names=["rest"])
+    assert built.frame["game_id"].tolist()[:2] == [2, 1]
+    assert built.postgame == ("status", "completed", "season_type", "home_score", "away_score")
+    assert "home_score" not in built.feature_names
+    assert built.frame.loc[built.frame["game_id"] == 2, "home_score"].iloc[0] == 3
+    assert bool(built.frame.loc[built.frame["game_id"] == 2, "completed"].iloc[0]) is True
+    assert any("null start_time" in warning for warning in built.warnings)
+
+
+def test_sql_feature_allows_a_semicolon_in_a_string_and_blocks_file_reads():
+    games = pd.DataFrame([_game(1, "2023-04-01 18:00", 2023, 1, 2, 1, 0)])
+    con = duckdb.connect()
+    con.register("mlb_games", games)
+    registry = default_registry()
+    registry.register(
+        FeatureSpec(
+            name="quoted_semicolon",
+            description="A label that contains a semicolon.",
+            known_at=KnownAt.SCHEDULE,
+            datasets=frozenset({"games"}),
+            sql="SELECT game_id, 'a;b' AS label FROM mlb_games",
+            columns=("label",),
+        )
+    )
+    built = build_features(
+        FeatureInputs(league="mlb", games=games),
+        registry=registry,
+        names=["quoted_semicolon"],
+        con=con,
+    )
+    assert built.frame.loc[0, "label"] == "a;b"
+    with pytest.raises(Exception, match="single SELECT"):
+        registry.register(
+            FeatureSpec(
+                name="two_statements",
+                description="two statements",
+                known_at=KnownAt.SCHEDULE,
+                datasets=frozenset({"games"}),
+                sql="SELECT game_id FROM mlb_games; SELECT game_id FROM mlb_games",
+                columns=("game_id",),
+            )
+        )
+    registry.register(
+        FeatureSpec(
+            name="read_host",
+            description="must not read a local file",
+            known_at=KnownAt.SCHEDULE,
+            datasets=frozenset({"games"}),
+            sql="SELECT * FROM read_text('/etc/hostname')",
+            columns=("hostname",),
+        )
+    )
+    with pytest.raises(Exception, match="failed"):
+        build_features(
+            FeatureInputs(league="mlb", games=games),
+            registry=registry,
+            names=["read_host"],
+            con=con,
+        )
+
+
 def test_unplayed_game_does_not_enter_history():
     rows = [
         _game(1, "2023-04-01 18:00", 2023, 1, 2, 10, 0),
@@ -266,7 +411,9 @@ def _game(game_id, start, season, home, away, home_score, away_score, **extra):
         "home_score": home_score,
         "away_score": away_score,
         "neutral_site": extra.get("neutral", False),
-        "venue_city": extra.get("venue", "CityA"),
+        "venue_city": extra.get("venue_city", extra.get("venue", "CityA")),
+        "venue": extra.get("venue_name"),
+        "status": extra.get("status", "final"),
         "completed": extra.get("completed", True),
     }
     return row

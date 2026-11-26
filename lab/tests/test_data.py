@@ -2,12 +2,12 @@ import pandas as pd
 import pytest
 
 from sports_leader_lab.config import LabConfig
+from sports_leader_lab.errors import ChecksumMismatch, ConfigError, DataError
 from sports_leader_lab.data.cache import DataCache
 from sports_leader_lab.data.catalog import DATASETS, LEAGUES, column_timing
 from sports_leader_lab.data.manifest import parse_manifest
 from sports_leader_lab.data.views import open_duckdb, read_view, register_views
-from sports_leader_lab.errors import ChecksumMismatch, DataError
-from tests.support import ORIGIN, Origin, file_entry, manifest
+from tests.support import MANIFEST_URL, ORIGIN, Origin, file_entry, manifest
 
 FOUR_HOURS = 4 * 3600
 
@@ -35,7 +35,7 @@ def test_manifest_rejects_a_path_that_does_not_match(tmp_path):
     with pytest.raises(DataError, match="does not match"):
         parse_manifest(manifest([entry]))
     entry["path"] = "nfl/games/2023.parquet"
-    entry["url"] = "https://user:secret@data.invalid/nfl_games/2023.parquet"
+    entry["url"] = "https://user:secret@github.com/WalrusQuant/sportsleader-data/nfl_games/2023.parquet"
     with pytest.raises(DataError, match="credentials"):
         parse_manifest(manifest([entry]))
 
@@ -49,7 +49,7 @@ def test_past_season_is_not_redownloaded_and_current_season_revalidates(tmp_path
     origin = Origin(payload, {past["url"]: past_bytes, current["url"]: current_bytes})
     clock = {"now": 1_000_000.0}
     cache = _cache(tmp_path, origin, clock)
-    manifest_url = f"{ORIGIN}/manifest.json"
+    manifest_url = MANIFEST_URL
 
     first = cache.load_manifest()
     past_path = cache.ensure(first.find("nfl", "games", 2023))
@@ -137,7 +137,9 @@ def test_views_cover_every_dataset_and_league_and_filter_by_season(tmp_path):
         assert all(not path.startswith("http") for path in view.paths)
         assert view.rows >= 1
 
-    nfl_2023 = read_view(con, "nfl_games", seasons=[2023])
+    import numpy as np
+
+    nfl_2023 = read_view(con, "nfl_games", seasons=[np.int64(2023)])
     nfl_all = read_view(con, "nfl_games")
     assert nfl_2023["season"].tolist() == [2023]
     assert sorted(nfl_all["season"].tolist()) == [2023, 2024]
@@ -156,9 +158,51 @@ def test_views_cover_every_dataset_and_league_and_filter_by_season(tmp_path):
         register_views(con, cache, leagues=["nfl"], datasets=["games"], seasons=[1999])
 
 
+def test_corrupt_manifest_meta_is_refetched(tmp_path):
+    entry, body = file_entry("nfl", "games", 2023, pd.DataFrame({"season": [2023], "game_id": [1]}))
+    origin = Origin(manifest([entry]), {entry["url"]: body})
+    cache = _cache(tmp_path, origin, {"now": 50.0})
+    cache.load_manifest()
+    meta = tmp_path / "manifest.meta.json"
+    meta.write_text('{"checked_at": "nope", "url": "%s"}' % MANIFEST_URL, encoding="utf8")
+    cache.load_manifest()
+    assert origin.calls.count(MANIFEST_URL) == 2
+
+
+def test_offline_refresh_uses_the_cached_manifest(tmp_path):
+    entry, body = file_entry("nfl", "games", 2023, pd.DataFrame({"season": [2023], "game_id": [1]}))
+    origin = Origin(manifest([entry]), {entry["url"]: body})
+    clock = {"now": 50.0}
+    cache = _cache(tmp_path, origin, clock)
+    first = cache.load_manifest()
+    clock["now"] += FOUR_HOURS + 5
+
+    def offline(url: str) -> bytes:
+        raise OSError("offline")
+
+    cache._fetcher = offline
+    with pytest.warns(UserWarning, match="cached manifest"):
+        second = cache.load_manifest()
+    assert second.find("nfl", "games", 2023).sha256 == first.find("nfl", "games", 2023).sha256
+
+
+def test_manifest_url_host_must_be_github(tmp_path):
+    entry, _ = file_entry("nfl", "games", 2023, pd.DataFrame({"season": [2023]}))
+    entry["url"] = "https://example.com/nfl_games/2023.parquet"
+    with pytest.raises(DataError, match="GitHub release host"):
+        parse_manifest(manifest([entry]))
+    with pytest.raises(ConfigError, match="GitHub release host"):
+        LabConfig(
+            manifest_url="https://example.com/manifest.json",
+            cache_dir=tmp_path,
+            run_dir=tmp_path / "runs",
+            revalidate_seconds=FOUR_HOURS,
+        )
+
+
 def _cache(tmp_path, origin: Origin, clock: dict) -> DataCache:
     config = LabConfig(
-        manifest_url=f"{ORIGIN}/manifest.json",
+        manifest_url=MANIFEST_URL,
         cache_dir=tmp_path,
         run_dir=tmp_path / "runs",
         revalidate_seconds=FOUR_HOURS,
