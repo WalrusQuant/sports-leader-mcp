@@ -253,6 +253,52 @@ All normalized odds (in `get_game_odds`, `get_scoreboard` events, `get_game_summ
 - **`homeSpread`**: the home team's spread. **Negative means the home team is favored.**
 - **`consensus`**: mean of per-provider no-vig probabilities (re-normalized), median spread and total.
 
+## ML lab
+
+`sports-leader-lab` is a second stdio server for research models on the same public Parquet export. It does not replace the Node server. Phase 1 is the cache, a leakage-safe feature registry, and walk-forward splits. It does not train a model yet, and it does not report a betting edge, a pick, or a recommendation to bet. There is no odds history and no Kalshi data in the lab.
+
+Requires Python 3.11, 3.12, or 3.13, and [uv](https://docs.astral.sh/uv/).
+
+```bash
+cd lab
+uv sync --group dev
+uv run python -m sports_leader_lab
+```
+
+Point an MCP client at that command:
+
+```json
+{
+  "mcpServers": {
+    "sports-leader-lab": {
+      "command": "uv",
+      "args": ["run", "--directory", "/absolute/path/to/sports-leader-mcp/lab", "python", "-m", "sports_leader_lab"]
+    }
+  }
+}
+```
+
+The only tool today is `ping`. The Python API underneath it is what later tools will call: `register_views` (for example `nfl_games` and `mlb_team_game_stats`, with a `season` filter), `build_features`, and `walk_forward`. Files are downloaded with Python and then read locally. DuckDB's httpfs extension is not used.
+
+Past seasons are downloaded once and kept while the sha256 matches the manifest. The manifest is rechecked every few hours, so a changed current-season file is downloaded again. A past season whose hash is unchanged is not downloaded again.
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `SPORTSLEADER_LAB_CACHE_DIR` | `$XDG_CACHE_HOME/sports-leader-lab/data` or `~/.cache/sports-leader-lab/data` | Parquet cache. Outside the repo |
+| `SPORTSLEADER_LAB_RUN_DIR` | `$XDG_CACHE_HOME/sports-leader-lab/runs` or `~/.cache/sports-leader-lab/runs` | Later run artifacts. Outside the repo |
+| `SPORTSLEADER_LAB_MANIFEST_URL` | the public GitHub Releases manifest | Override. `SPORTSLEADER_DATA_MANIFEST_URL` is the fallback |
+| `SPORTSLEADER_LAB_REVALIDATE_HOURS` | `4` | How often to re-check the manifest, and therefore the current season |
+
+```bash
+cd lab
+uv run pytest
+SPORTSLEADER_LAB_LIVE=1 uv run pytest -m live
+```
+
+`uv run pytest` stays on small fixture files. The live marker downloads NFL 2023 and 2024 `games` and `team_game_stats` from the public release and checks the sha256, the views, one leakage scrub, and a season fold. CI runs the offline suite in its own job and does not set the live variable.
+
+Each built-in feature has a `known_at` of `schedule` (rest, travel, home/neutral), `prior_games` (rolling and EWMA form shifted one game, Elo before the game), or `as_of_start` (MLB probable count and injury count, using `valid_from <= start` and `valid_to` null or `valid_to > start`). A season the snapshot does not cover stays null. So does a game before the earliest `valid_from` or `first_seen` in that snapshot, which is how a mid-season export avoids a false zero. Rest uses the previous played game. Postponed, cancelled, and suspended-without-play games do not count, and a gap longer than 21 days (an offseason, often about 245 days) is null. Travel keys on the venue name, then the city when the name is missing. `build_features` keeps `status`, `completed`, `season_type`, `home_score`, and `away_score` on the frame as `postgame` columns so a later dataset builder can filter unplayed games and join targets. Those columns are not features. Elo starts at 1500 for the first loaded game of each team, so the frame has to include every season the rating should see. Preseason results are left out of form and Elo. Splits are `scheme="season"` or `scheme="date"` with `min_train_seasons`, `min_train_rows`, and `embargo_days`. An embargo of N full days keeps training rows on or before `test_start - (N + 1) days`, so an embargo of 0 and an embargo of 1 are different. A random split is not part of the API. A SQL feature runs on a copy of the tables with external file access disabled. New datasets can be registered as another feature family without changing the cache. Manifest and file URLs have to be on `github.com`, `objects.githubusercontent.com`, or `release-assets.githubusercontent.com`.
+
 ## License
 
 MIT

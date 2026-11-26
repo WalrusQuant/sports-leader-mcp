@@ -25,3 +25,20 @@ jobs:
       - run: npm run build
       - run: npm run typecheck
       - run: npm test
+
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: lab/uv.lock
+      - name: Install lab
+        working-directory: lab
+        run: uv sync --frozen --group dev
+      - name: Test lab
+        working-directory: lab
+        run: uv run pytest
