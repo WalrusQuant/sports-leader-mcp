@@ -143,13 +143,27 @@ def test_synthetic_leaks_fail_and_a_high_auc_feature_warns(tmp_path):
     assert warned["verdict"] == "REVIEW REQUIRED"
     assert any("AUC" in warning for warning in warned["warnings"])
 
-    one_nan = _audit_builder(inputs, "one_nan", _one_nan_score, "margin")
+    wide_games = _games(64)
+    wide = FeatureInputs(league="nfl", games=wide_games, team_game_stats=_yards(wide_games))
+    one_nan = _audit_builder(wide, "one_nan", _one_nan_score, "margin")
     assert one_nan["ok"] is False
     assert any("copies home_score" in item for item in one_nan["failures"]), one_nan["failures"]
 
-    half_null = _audit_builder(inputs, "half_null", _half_null_score, "margin")
-    assert half_null["ok"] is True
-    assert half_null["failures"] == []
+    half_null = _audit_builder(wide, "half_null", _half_null_score, "margin")
+    assert half_null["ok"] is False
+    assert half_null["verdict"] == "NOT CLEAN"
+    assert any("copies home_score" in item for item in half_null["failures"]), half_null["failures"]
+    with pytest.raises(LabError, match="audit failed"):
+        build_dataset(
+            "nfl",
+            "margin",
+            [2023],
+            features=["half_null"],
+            inputs=wide,
+            store=RunStore(tmp_path / "half_null"),
+            registry=_registry("half_null", _half_null_score),
+        )
+    assert list((tmp_path / "half_null").rglob("*.parquet")) == []
 
     scaled = _audit_builder(inputs, "scaled", _scaled_margin, "margin")
     assert scaled["ok"] is False
@@ -254,6 +268,27 @@ def test_run_record_lists_compares_and_writes_a_model_card(tmp_path):
     assert (run_dir / "model_card.md").is_file()
 
 
+def test_clean_schedule_features_do_not_copy_constant_box_flags():
+    """home_consecutive_away is 0 on every played home row. Away is_home is 0 too."""
+    games, stats = _round_robin(48)
+    inputs = FeatureInputs(league="nfl", games=games, team_game_stats=stats)
+    report = audit_features(
+        "nfl",
+        "home_win",
+        [2023],
+        features=["site", "elo", "team_form", "rest"],
+        inputs=inputs,
+    )
+    assert report["ok"] is True
+    assert report["verdict"] == "REVIEW REQUIRED"
+    assert report["failures"] == []
+    assert report["rows"] >= 30
+    joined = " ".join(report["warnings"])
+    assert "is_home" not in joined
+    assert "home_consecutive_away" not in joined
+    assert "flat_zero" not in joined
+
+
 def test_same_second_runs_use_sequence_then_run_id(tmp_path, monkeypatch):
     store = RunStore(tmp_path)
     stamp = "2026-11-26T18:15:07-06:00"
@@ -281,7 +316,7 @@ def test_same_second_runs_use_sequence_then_run_id(tmp_path, monkeypatch):
     assert list_runs("nfl", limit=1, store=store)["runs"][0]["run_id"] == "run_bbbbbbbbbbbb"
 
 
-def _audit_builder(inputs, name, builder, target):
+def _registry(name, builder):
     registry = default_registry()
     registry.register(
         FeatureSpec(
@@ -293,7 +328,18 @@ def _audit_builder(inputs, name, builder, target):
             columns=(name,),
         )
     )
-    return audit_features("nfl", target, [2023], features=[name], inputs=inputs, registry=registry)
+    return registry
+
+
+def _audit_builder(inputs, name, builder, target):
+    return audit_features(
+        "nfl",
+        target,
+        [2023],
+        features=[name],
+        inputs=inputs,
+        registry=_registry(name, builder),
+    )
 
 
 def _one_nan_score(ctx):
@@ -361,6 +407,66 @@ def _yards(games: pd.DataFrame) -> pd.DataFrame:
             "total_yards": [100 + index for index in range(len(games))],
         }
     )
+
+
+def _round_robin(n: int) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Several teams over consecutive days, with is_home and a constant stat column."""
+    pairings = ((1, 2), (3, 4), (1, 3), (2, 4), (1, 4), (2, 3))
+    games = []
+    stats = []
+    start = pd.Timestamp("2023-09-07")
+    for index in range(n):
+        home, away = pairings[index % len(pairings)]
+        if (index // len(pairings)) % 2 == 1:
+            home, away = away, home
+        when = start + pd.Timedelta(days=index)
+        home_score = 17 + (index % 11)
+        away_score = 9 + (index % 7)
+        game_id = 5000 + index
+        games.append(
+            {
+                "game_id": game_id,
+                "game_date": when.date().isoformat(),
+                "start_time": when.isoformat(sep=" "),
+                "season": 2023,
+                "season_type": "regular",
+                "status": "final",
+                "completed": True,
+                "home_team_id": home,
+                "away_team_id": away,
+                "home_score": home_score,
+                "away_score": away_score,
+                "neutral_site": False,
+                "venue": f"Venue {home}",
+                "venue_city": f"City {home}",
+            }
+        )
+        for team, opponent, is_home, points, allowed in (
+            (home, away, True, home_score, away_score),
+            (away, home, False, away_score, home_score),
+        ):
+            stats.append(
+                {
+                    "game_id": game_id,
+                    "team_id": team,
+                    "opponent_id": opponent,
+                    "team_abbr": f"T{team}",
+                    "opponent_abbr": f"T{opponent}",
+                    "team_name": f"Team {team}",
+                    "opponent_name": f"Team {opponent}",
+                    "is_home": is_home,
+                    "league": "nfl",
+                    "season": 2023,
+                    "season_type": "regular",
+                    "game_date": when.date().isoformat(),
+                    "score": points,
+                    "opponent_score": allowed,
+                    "total_yards": 280 + index + (0 if is_home else 15),
+                    "plays": 60 + (index % 5),
+                    "flat_zero": 0,
+                }
+            )
+    return pd.DataFrame(games), pd.DataFrame(stats)
 
 
 def _games(n: int) -> pd.DataFrame:

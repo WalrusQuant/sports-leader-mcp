@@ -17,11 +17,9 @@ from sports_leader_lab.features.registry import POSTGAME_COLUMNS
 PREGAME_KNOWN = frozenset({"schedule", "prior_games", "as_of_start"})
 FORBIDDEN_NAMES = frozenset(POSTGAME_COLUMNS) | {"score", "opponent_score", "target"}
 _AUC_WARN = 0.95
-# A copy may leave a few rows null. 90% of the rows, and at least this many
-# paired values, is still the same column. A full overlap of a shorter frame
-# is also a copy, so a four-row fixture still fails.
-_OVERLAP_COVERAGE = 0.90
-_OVERLAP_MIN = 8
+# Compare the non-null overlap once it has this many rows. A shorter frame
+# is compared only when every row overlaps, so a four-row fixture still fails.
+_OVERLAP_MIN = 30
 
 
 @dataclass
@@ -92,15 +90,25 @@ _STAT_KEYS = frozenset(
     {
         "game_id",
         "team_id",
+        "team_abbr",
+        "team_name",
         "season",
+        "season_type",
         "league",
         "opponent_id",
         "opponent_team_id",
+        "opponent_abbr",
+        "opponent_name",
         "home_away",
+        "is_home",
         "start_time",
         "game_date",
         "home_team_id",
+        "home_team_abbr",
+        "home_team_name",
         "away_team_id",
+        "away_team_abbr",
+        "away_team_name",
     }
 )
 
@@ -139,20 +147,24 @@ def _copy_columns(frame: pd.DataFrame) -> list[str]:
 
 
 def _paired(series: pd.Series, other: pd.Series) -> tuple[np.ndarray, np.ndarray] | None:
-    """Non-null overlap when it covers the column, or at least 90% and 8 rows."""
+    """Non-null overlap of at least 30 rows, or every row when the frame is shorter."""
     left = pd.to_numeric(series, errors="coerce")
     right = pd.to_numeric(other, errors="coerce")
     if len(left) == 0 or len(left) != len(right):
         return None
     both = (left.notna() & right.notna()).to_numpy()
     count = int(both.sum())
-    if count == 0:
-        return None
-    full = count == len(left)
-    covered = count >= _OVERLAP_MIN and count / len(left) >= _OVERLAP_COVERAGE
-    if not full and not covered:
+    needed = min(_OVERLAP_MIN, len(left))
+    if count < needed:
         return None
     return left.to_numpy(dtype=float)[both], right.to_numpy(dtype=float)[both]
+
+
+def _distinct(values: np.ndarray) -> int:
+    """Distinct values after rounding, so a near-constant column counts as one value."""
+    if values.size == 0:
+        return 0
+    return int(np.unique(np.round(values, 8)).size)
 
 
 def _same(series: pd.Series, other: pd.Series) -> bool:
@@ -160,6 +172,9 @@ def _same(series: pd.Series, other: pd.Series) -> bool:
     if paired is None:
         return False
     left, right = paired
+    # Two constants match by arithmetic and carry no information about leakage.
+    if _distinct(left) < 2 or _distinct(right) < 2:
+        return False
     return bool(np.allclose(left, right))
 
 
@@ -169,7 +184,7 @@ def _affine(series: pd.Series, other: pd.Series) -> bool:
     if paired is None:
         return False
     left, right = paired
-    if np.unique(np.round(right, 8)).size < 2:
+    if _distinct(left) < 2 or _distinct(right) < 2:
         return False
     design = np.column_stack([right, np.ones(len(right))])
     coef, _, _, _ = np.linalg.lstsq(design, left, rcond=None)
