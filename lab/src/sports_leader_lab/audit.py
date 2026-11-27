@@ -1,8 +1,7 @@
-"""Leakage checks run when a dataset is saved.
+"""Leakage checks shared by build_dataset and audit_features.
 
-This is not the standalone audit_features tool. build_dataset calls it and
-refuses to write the dataset when a check fails. A single feature with a very
-high AUC is a warning, not a failure.
+A failed check is NOT CLEAN. A pass, including a high-AUC warning, is
+REVIEW REQUIRED. The automated check never returns CLEAN.
 """
 
 from __future__ import annotations
@@ -18,6 +17,9 @@ from sports_leader_lab.features.registry import POSTGAME_COLUMNS
 PREGAME_KNOWN = frozenset({"schedule", "prior_games", "as_of_start"})
 FORBIDDEN_NAMES = frozenset(POSTGAME_COLUMNS) | {"score", "opponent_score", "target"}
 _AUC_WARN = 0.95
+# Compare the non-null overlap once it has this many rows. A shorter frame
+# is compared only when every row overlaps, so a four-row fixture still fails.
+_OVERLAP_MIN = 30
 
 
 @dataclass
@@ -35,6 +37,7 @@ def audit_dataset(
     feature_columns: list[str],
     target_column: str,
     column_meta: dict,
+    stats: pd.DataFrame | None = None,
 ) -> AuditReport:
     failures: list[str] = []
     warnings: list[str] = []
@@ -58,13 +61,23 @@ def audit_dataset(
         series = frame[name]
         if _same(series, target):
             failures.append(f"{name} copies the target")
-        for banned in ("home_score", "away_score", "score", "opponent_score"):
-            if banned in frame.columns and _same(series, frame[banned]):
+        elif _affine(series, target):
+            failures.append(f"{name} is an affine copy of the target")
+        for banned in _copy_columns(frame):
+            if _same(series, frame[banned]):
                 failures.append(f"{name} copies {banned}")
+            elif _affine(series, frame[banned]):
+                failures.append(f"{name} is an affine copy of {banned}")
         if margin is not None and _same(series, margin):
             failures.append(f"{name} copies the score margin")
+        elif margin is not None and _affine(series, margin):
+            failures.append(f"{name} is an affine copy of the score margin")
         if total is not None and _same(series, total):
             failures.append(f"{name} copies the score total")
+        elif total is not None and _affine(series, total):
+            failures.append(f"{name} is an affine copy of the score total")
+        for column in _same_game_box_stats(series, frame, stats):
+            failures.append(f"{name} copies same-game box stat {column}")
         if _after_start(series, frame):
             failures.append(f"{name} has timestamps after start_time")
         suspicious = _suspicious_auc(name, series, target)
@@ -73,15 +86,115 @@ def audit_dataset(
     return AuditReport(ok=not failures, failures=_unique(failures), warnings=_unique(warnings))
 
 
-def _same(series: pd.Series, other: pd.Series) -> bool:
+_STAT_KEYS = frozenset(
+    {
+        "game_id",
+        "team_id",
+        "team_abbr",
+        "team_name",
+        "season",
+        "season_type",
+        "league",
+        "opponent_id",
+        "opponent_team_id",
+        "opponent_abbr",
+        "opponent_name",
+        "home_away",
+        "is_home",
+        "start_time",
+        "game_date",
+        "home_team_id",
+        "home_team_abbr",
+        "home_team_name",
+        "away_team_id",
+        "away_team_abbr",
+        "away_team_name",
+    }
+)
+
+
+def _same_game_box_stats(series: pd.Series, frame: pd.DataFrame, stats: pd.DataFrame | None) -> list[str]:
+    """Same-game home or away stat columns that match this feature on every row."""
+    if stats is None or stats.empty:
+        return []
+    if "game_id" not in stats.columns or "team_id" not in stats.columns or "game_id" not in frame.columns:
+        return []
+    found: list[str] = []
+    for side in ("home_team_id", "away_team_id"):
+        if side not in frame.columns:
+            continue
+        keys = frame[["game_id", side]].drop_duplicates("game_id")
+        joined = stats.merge(keys, left_on=["game_id", "team_id"], right_on=["game_id", side], how="inner")
+        if joined.empty:
+            continue
+        aligned = joined.drop_duplicates("game_id").set_index("game_id")
+        for column in aligned.columns:
+            if column in _STAT_KEYS:
+                continue
+            mapped = frame["game_id"].map(aligned[column])
+            if _same(series, pd.Series(mapped.to_numpy(), index=series.index)):
+                found.append(str(column))
+    return list(dict.fromkeys(found))
+
+
+def _copy_columns(frame: pd.DataFrame) -> list[str]:
+    """Score columns. `completed` is constant on the rows that reach the audit, so it is not a copy target."""
+    columns: list[str] = []
+    for name in ("home_score", "away_score", "score", "opponent_score"):
+        if name in frame.columns and name not in columns:
+            columns.append(name)
+    return columns
+
+
+def _paired(series: pd.Series, other: pd.Series) -> tuple[np.ndarray, np.ndarray] | None:
+    """Non-null overlap of at least 30 rows, or every row when the frame is shorter."""
     left = pd.to_numeric(series, errors="coerce")
     right = pd.to_numeric(other, errors="coerce")
-    if len(left) == 0:
+    if len(left) == 0 or len(left) != len(right):
+        return None
+    both = (left.notna() & right.notna()).to_numpy()
+    count = int(both.sum())
+    needed = min(_OVERLAP_MIN, len(left))
+    if count < needed:
+        return None
+    return left.to_numpy(dtype=float)[both], right.to_numpy(dtype=float)[both]
+
+
+def _distinct(values: np.ndarray) -> int:
+    """Distinct values after rounding, so a near-constant column counts as one value."""
+    if values.size == 0:
+        return 0
+    return int(np.unique(np.round(values, 8)).size)
+
+
+def _same(series: pd.Series, other: pd.Series) -> bool:
+    paired = _paired(series, other)
+    if paired is None:
         return False
-    both = left.notna() & right.notna()
-    if int(both.sum()) != len(left):
+    left, right = paired
+    # Two constants match by arithmetic and carry no information about leakage.
+    if _distinct(left) < 2 or _distinct(right) < 2:
         return False
-    return bool(np.allclose(left.to_numpy(dtype=float), right.to_numpy(dtype=float)))
+    return bool(np.allclose(left, right))
+
+
+def _affine(series: pd.Series, other: pd.Series) -> bool:
+    """True when the feature is a*column + b on the overlap, and not a constant or an exact copy."""
+    paired = _paired(series, other)
+    if paired is None:
+        return False
+    left, right = paired
+    if _distinct(left) < 2 or _distinct(right) < 2:
+        return False
+    design = np.column_stack([right, np.ones(len(right))])
+    coef, _, _, _ = np.linalg.lstsq(design, left, rcond=None)
+    slope = float(coef[0])
+    intercept = float(coef[1])
+    if abs(slope) <= 1e-8:
+        return False
+    if np.allclose(slope, 1.0) and np.allclose(intercept, 0.0):
+        return False
+    return bool(np.allclose(design @ coef, left))
 
 
 def _after_start(series: pd.Series, frame: pd.DataFrame) -> bool:

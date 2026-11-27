@@ -1,11 +1,12 @@
 """Dataset and model files under the run store.
 
-A later index can glob `datasets/*/meta.json` and `models/*/meta.json`.
-This module does not list, compare, or write model cards.
+Listing and comparison live in registry.py and call the helpers here, so every
+read still goes through the id check.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import uuid
@@ -15,6 +16,7 @@ from typing import Any
 import joblib
 import pandas as pd
 
+from sports_leader_lab.cards import csv_frame, fold_document, render_model_card
 from sports_leader_lab.errors import LabError
 from sports_leader_lab.payload import jsonable
 from sports_leader_lab.store import RunStore
@@ -52,9 +54,35 @@ def save_run(
 ) -> Path:
     path = _dir(store, "models", run_id)
     joblib.dump(bundle, path / "model.joblib")
-    _write_json(path / "meta.json", meta)
-    _write_json(path / "folds.json", folds)
+    document = fold_document(folds, kind=str(meta.get("kind") or ""))
+    _write_json(path / "folds.json", document)
+    csv_frame(predictions).to_csv(path / "predictions.csv", index=False)
     predictions.to_parquet(path / "predictions.parquet", index=False)
+    stored = dict(meta)
+    checksums = {
+        "model.joblib": _sha256(path / "model.joblib"),
+        "folds.json": _sha256(path / "folds.json"),
+        "predictions.csv": _sha256(path / "predictions.csv"),
+        "predictions.parquet": _sha256(path / "predictions.parquet"),
+    }
+    stored["artifacts"] = {
+        "model": "model.joblib",
+        "folds": "folds.json",
+        "predictions": "predictions.csv",
+        "predictions_parquet": "predictions.parquet",
+        "model_card": "model_card.md",
+        "meta": "meta.json",
+    }
+    stored["checksums"] = checksums
+    # The card is rendered from the same sorted JSON a later read reloads.
+    # The model_card.md checksum is added after that render, and the renderer
+    # skips it, so the bytes stay the same.
+    on_disk_folds = json.loads((path / "folds.json").read_text(encoding="utf-8"))
+    markdown = render_model_card(_canonical(stored), on_disk_folds)
+    card_path = path / "model_card.md"
+    card_path.write_text(markdown, encoding="utf-8")
+    checksums["model_card.md"] = _sha256(card_path)
+    _write_json(path / "meta.json", stored)
     return path
 
 
@@ -62,6 +90,51 @@ def load_run(store: RunStore, run_id: str) -> tuple[dict, dict]:
     path = _existing(store, "models", run_id)
     bundle = joblib.load(path / "model.joblib")
     return bundle, _read_json(path / "meta.json")
+
+
+def read_run_meta(store: RunStore, run_id: str) -> dict:
+    """Run record only. The model file is not unpickled."""
+    path = _existing(store, "models", run_id)
+    return _read_json(path / "meta.json")
+
+
+def read_run_folds(store: RunStore, run_id: str) -> dict:
+    path = _existing(store, "models", run_id)
+    payload = json.loads((path / "folds.json").read_text(encoding="utf-8"))
+    if isinstance(payload, dict):
+        return payload
+    return {"schema": "legacy", "aggregation": "unknown", "folds": payload}
+
+
+def next_sequence(store: RunStore) -> int:
+    """One more than the highest sequence already stored. Missing sequences count as zero."""
+    best = 0
+    for meta in iter_run_metas(store):
+        seq = meta.get("sequence")
+        if isinstance(seq, int) and not isinstance(seq, bool) and seq > best:
+            best = seq
+    return best + 1
+
+
+def iter_run_metas(store: RunStore) -> list[dict]:
+    """Metas whose directory name is a legal run id and whose path stays inside the store."""
+    root = store.ensure().resolve()
+    kind_root = root / "models"
+    if not kind_root.is_dir():
+        return []
+    found: list[dict] = []
+    for child in kind_root.iterdir():
+        if _ID.fullmatch(child.name) is None or not child.name.startswith("run_"):
+            continue
+        try:
+            path = _checked(store, "models", child.name)
+        except LabError:
+            continue
+        meta_path = path / "meta.json"
+        if not meta_path.is_file():
+            continue
+        found.append(_read_json(meta_path))
+    return found
 
 
 def _dir(store: RunStore, kind: str, item_id: str) -> Path:
@@ -91,6 +164,17 @@ def _checked(store: RunStore, kind: str, item_id: str) -> Path:
     if path == kind_root or path.parent != kind_root or not path.is_relative_to(kind_root):
         raise LabError(f"illegal id '{item_id}'")
     return path
+
+
+def _canonical(payload: object) -> Any:
+    """The object `json.loads` returns after a sorted write."""
+    return json.loads(json.dumps(jsonable(payload), sort_keys=True))
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    digest.update(path.read_bytes())
+    return digest.hexdigest()
 
 
 def _write_json(path: Path, payload: object) -> None:

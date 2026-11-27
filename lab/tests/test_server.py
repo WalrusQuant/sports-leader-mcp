@@ -43,8 +43,12 @@ def test_unknown_league_is_a_clear_tool_error():
 def test_ping_tool_is_registered():
     tools = asyncio.run(_tool_names(mcp))
     assert set(tools) == {
+        "audit_features",
         "build_dataset",
+        "compare_runs",
         "inspect_data",
+        "list_runs",
+        "model_card",
         "ping",
         "predict",
         "query_data",

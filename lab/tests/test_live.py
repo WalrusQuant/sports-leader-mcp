@@ -18,10 +18,12 @@ from sports_leader_lab.config import load_config
 from sports_leader_lab.data.cache import DataCache
 from sports_leader_lab.data.catalog import DATASETS, LEAGUES
 from sports_leader_lab.data.views import open_duckdb, read_view, register_views
-from sports_leader_lab.datasets import build_dataset
+from sports_leader_lab.datasets import audit_features, build_dataset
 from sports_leader_lab.features.context import FeatureInputs
 from sports_leader_lab.features.registry import build_features
 from sports_leader_lab.predict import predict
+from sports_leader_lab.registry import compare_runs, list_runs, model_card
+from sports_leader_lab.runs import load_dataset
 from sports_leader_lab.query import inspect_data, query_data
 from sports_leader_lab.splits import walk_forward
 from sports_leader_lab.store import RunStore
@@ -175,6 +177,84 @@ def test_p2_tools_run_on_nfl_2023_2024(tmp_path):
     assert isinstance(game["estimate"], float)
     assert "implied_home_win_prob" not in game
     assert game["market"] is None
+
+
+def test_p3_audit_registry_and_model_card(tmp_path):
+    cache = DataCache(load_config())
+    store = RunStore(tmp_path / "runs")
+    clean = audit_features("nfl", "home_win", [2023, 2024], features=["site", "elo"], cache=cache)
+    assert clean["ok"] is True
+    assert clean["verdict"] == "REVIEW REQUIRED"
+    assert clean["saved"] is False
+    assert clean["disclaimer"] == DISCLAIMER
+
+    leak = audit_features(
+        "nfl",
+        "home_win",
+        [2024],
+        features=[],
+        sql_features=[
+            {
+                "name": "leaked",
+                "sql": 'SELECT game_id, "home_score" AS leaked FROM nfl_games',
+                "columns": ["leaked"],
+                "known_at": "schedule",
+            }
+        ],
+        cache=cache,
+    )
+    assert leak["ok"] is False
+    assert leak["verdict"] == "NOT CLEAN"
+    assert any("postgame" in item for item in leak["failures"])
+
+    quoted = audit_features(
+        "nfl",
+        "home_win",
+        [2024],
+        features=[],
+        sql_features=[
+            {
+                "name": "quoted",
+                "sql": 'SELECT game_id, COUNT(*) AS quoted FROM "nfl_injuries" GROUP BY game_id',
+                "columns": ["quoted"],
+                "known_at": "as_of_start",
+            }
+        ],
+        cache=cache,
+    )
+    assert quoted["ok"] is False
+    assert any("raw snapshot" in item for item in quoted["failures"])
+
+    built = build_dataset(
+        "nfl",
+        "home_win",
+        [2023, 2024],
+        features=["site", "elo"],
+        store=store,
+        cache=cache,
+    )
+    _frame, meta = load_dataset(store, built["dataset_id"])
+    assert meta["data_manifest"]
+    assert all(len(item["sha256"]) == 64 and "url" not in item for item in meta["data_manifest"])
+
+    logistic = train_classifier(built["dataset_id"], model="logistic", min_train_seasons=1, store=store)
+    boosted = train_classifier(built["dataset_id"], model="lightgbm", min_train_seasons=1, store=store)
+    listed = list_runs("nfl", limit=10, store=store)
+    ids = {row["run_id"] for row in listed["runs"]}
+    assert logistic["run_id"] in ids
+    assert boosted["run_id"] in ids
+    assert listed["disclaimer"] == DISCLAIMER
+    compared = compare_runs([logistic["run_id"], boosted["run_id"]], store=store)
+    assert compared["comparable"] is True
+    assert compared["caveat"] is None
+    assert compared["disclaimer"] == DISCLAIMER
+    card = model_card(logistic["run_id"], store=store)
+    assert "## 1. Identity" in card["markdown"]
+    assert "## 11. Artifact manifest and reproduction" in card["markdown"]
+    assert card["card"]["analysis_type"] == "predictive"
+    assert card["card"]["reproduction"]["lab_version"] == "0.1.0.dev0"
+    assert card["card"]["reproduction"]["data_manifest"]
+    assert card["disclaimer"] == DISCLAIMER
 
 
 def _later_ids(games: pd.DataFrame, game_id: object) -> set[object]:

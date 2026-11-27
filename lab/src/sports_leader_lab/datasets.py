@@ -50,6 +50,7 @@ _ID_COLUMNS = (
 )
 
 _OPTIONAL_DATASETS = ("team_game_stats", "injuries", "probables")
+_MANIFEST_DATASETS = frozenset({"games", *_OPTIONAL_DATASETS})
 
 
 def build_dataset(
@@ -71,8 +72,10 @@ def build_dataset(
         raise LabError(f"unknown target '{target}'. Expected one of: {listed}")
     chosen_seasons = _seasons(seasons)
     destination = store if store is not None else RunStore.from_config()
+    manifest_files: list[dict[str, Any]] = []
     if inputs is None:
-        inputs, con = _load(league, chosen_seasons, cache)
+        inputs, con, source = _load(league, chosen_seasons, cache)
+        manifest_files = _manifest_files(source, league, chosen_seasons)
     elif con is None:
         con = _register_frames(inputs)
     registry = default_registry() if registry is None else registry
@@ -91,7 +94,7 @@ def build_dataset(
     if labeled.empty:
         raise LabError(f"target '{target}' has no rows after ties and unplayed games were dropped")
     feature_names = [name for name in built.feature_names if name in labeled.columns]
-    report = audit_dataset(labeled, feature_names, "target", built.columns)
+    report = audit_dataset(labeled, feature_names, "target", built.columns, stats=inputs.team_game_stats)
     if not report.ok:
         raise LabError("audit failed, dataset not saved: " + "; ".join(report.failures))
     kept, drop_warnings = _drop_empty(labeled, feature_names)
@@ -124,6 +127,7 @@ def build_dataset(
         "feature_columns": kept,
         "columns": columns,
         "sql_features": [_sql_meta(spec) for spec in sql_specs],
+        "data_manifest": manifest_files,
         "audit": report.to_dict(),
         "warnings": warnings,
         "created_at": datetime.now(CT).isoformat(timespec="seconds"),
@@ -149,6 +153,96 @@ def build_dataset(
     )
 
 
+def audit_features(
+    league: str,
+    target: str,
+    seasons: Sequence[int],
+    features: Sequence[str] | None = None,
+    sql_features: Sequence[dict] | None = None,
+    *,
+    cache: DataCache | None = None,
+    inputs: FeatureInputs | None = None,
+    con: Any | None = None,
+    registry: FeatureRegistry | None = None,
+) -> dict[str, Any]:
+    """Run the same leakage checks as build_dataset, without saving a dataset."""
+    if target not in TARGETS:
+        listed = ", ".join(TARGETS)
+        raise LabError(f"unknown target '{target}'. Expected one of: {listed}")
+    chosen_seasons = _seasons(seasons)
+    if inputs is None:
+        inputs, con, _source = _load(league, chosen_seasons, cache)
+    elif con is None:
+        con = _register_frames(inputs)
+    registry = default_registry() if registry is None else registry
+    sql_specs = _sql_specs(sql_features)
+    sql_failures = _sql_problems(con, sql_specs)
+    requested = _feature_names(features, sql_specs) or []
+    if sql_failures:
+        return _audit_payload(
+            ok=False,
+            failures=sql_failures,
+            warnings=[],
+            league=league,
+            target=target,
+            seasons=chosen_seasons,
+            features=list(requested),
+            rows=0,
+        )
+    for spec in sql_specs:
+        registry.register(spec)
+    built = build_features(inputs, registry=registry, names=requested, con=con)
+    labeled = built.frame.loc[built.frame["in_history"]].copy()
+    if labeled.empty:
+        raise LabError(f"no completed non-preseason games for {league} in {chosen_seasons}")
+    values, _target_warnings = _target_values(labeled, target)
+    labeled = labeled.loc[values.notna()].copy()
+    labeled["target"] = values.loc[labeled.index].to_numpy()
+    if labeled.empty:
+        raise LabError(f"target '{target}' has no rows after ties and unplayed games were dropped")
+    feature_names = [name for name in built.feature_names if name in labeled.columns]
+    report = audit_dataset(labeled, feature_names, "target", built.columns, stats=inputs.team_game_stats)
+    return _audit_payload(
+        ok=report.ok,
+        failures=report.failures,
+        warnings=list(dict.fromkeys([*report.warnings, *built.warnings])),
+        league=league,
+        target=target,
+        seasons=chosen_seasons,
+        features=feature_names,
+        rows=int(len(labeled)),
+    )
+
+
+def _audit_payload(
+    *,
+    ok: bool,
+    failures: list[str],
+    warnings: list[str],
+    league: str,
+    target: str,
+    seasons: list[int],
+    features: list[str],
+    rows: int,
+) -> dict[str, Any]:
+    return jsonable(
+        {
+            "ok": ok,
+            "verdict": "NOT CLEAN" if not ok else "REVIEW REQUIRED",
+            "failures": list(failures),
+            "warnings": list(warnings),
+            "league": league,
+            "target": target,
+            "seasons": seasons,
+            "features": features,
+            "rows": rows,
+            "decision_time": "pregame",
+            "saved": False,
+            "disclaimer": DISCLAIMER,
+        }
+    )
+
+
 def _load(league: str, seasons: list[int], cache: DataCache | None):
     source = cache if cache is not None else DataCache.from_config()
     con = open_duckdb()
@@ -158,7 +252,29 @@ def _load(league: str, seasons: list[int], cache: DataCache | None):
             register_views(con, source, leagues=[league], datasets=[dataset], seasons=seasons)
         except DataError:
             continue
-    return feature_inputs_from_views(con, league, seasons=seasons), con
+    return feature_inputs_from_views(con, league, seasons=seasons), con, source
+
+
+def _manifest_files(cache: DataCache, league: str, seasons: list[int]) -> list[dict[str, Any]]:
+    """Checksums of the files this build read. URLs are not stored."""
+    wanted = set(seasons)
+    rows: list[dict[str, Any]] = []
+    for entry in cache.load_manifest().files:
+        if entry.league != league or entry.season not in wanted or entry.dataset not in _MANIFEST_DATASETS:
+            continue
+        rows.append(
+            {
+                "path": entry.path,
+                "league": entry.league,
+                "dataset": entry.dataset,
+                "season": entry.season,
+                "sha256": entry.sha256,
+                "rows": entry.rows,
+                "bytes": entry.bytes,
+            }
+        )
+    rows.sort(key=lambda item: (str(item["dataset"]), int(item["season"])))
+    return rows
 
 
 def _register_frames(inputs: FeatureInputs):
@@ -207,15 +323,20 @@ def _sql_specs(raw: Sequence[dict] | None) -> list[FeatureSpec]:
     return specs
 
 
-def _refuse_postgame_sql(con: Any, specs: list[FeatureSpec]) -> None:
+def _sql_problems(con: Any, specs: list[FeatureSpec]) -> list[str]:
     if not specs:
-        return
+        return []
     _sandbox, dropped, raw_snapshots = locked_connection(con, drop_postgame=True)
     failures = []
     for spec in specs:
         problem = feature_sql_problem(spec.sql or "", dropped, raw_snapshots)
         if problem:
             failures.append(f"{spec.name} {problem}")
+    return failures
+
+
+def _refuse_postgame_sql(con: Any, specs: list[FeatureSpec]) -> None:
+    failures = _sql_problems(con, specs)
     if failures:
         raise LabError("audit failed, dataset not saved: " + "; ".join(failures))
 
