@@ -1,4 +1,10 @@
-"""Run directory for later train/predict artifacts. Phase 1 only reserves the path."""
+"""Run directory for dataset and model artifacts.
+
+Layout, so a later index can glob it:
+
+- `datasets/<dataset_id>/data.parquet` and `meta.json`
+- `models/<run_id>/model.joblib`, `meta.json`, `folds.json`, `predictions.parquet`
+"""
 
 from __future__ import annotations
 
@@ -8,7 +14,7 @@ from sports_leader_lab.config import LabConfig, load_config
 
 
 class RunStore:
-    """Directory outside the repo where later phases write models, folds, and cards."""
+    """Directory outside the repo where datasets and trained runs are written."""
 
     def __init__(self, root: Path) -> None:
         self.root = root

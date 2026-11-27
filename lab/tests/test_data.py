@@ -7,7 +7,7 @@ from sports_leader_lab.data.cache import DataCache
 from sports_leader_lab.data.catalog import DATASETS, LEAGUES, column_timing
 from sports_leader_lab.data.manifest import parse_manifest
 from sports_leader_lab.data.views import open_duckdb, read_view, register_views
-from tests.support import MANIFEST_URL, ORIGIN, Origin, file_entry, manifest
+from tests.support import MANIFEST_URL, Origin, file_entry, manifest
 
 FOUR_HOURS = 4 * 3600
 

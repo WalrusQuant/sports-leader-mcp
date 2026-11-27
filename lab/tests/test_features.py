@@ -339,6 +339,47 @@ def test_unplayed_game_does_not_enter_history():
     assert frame.loc[1, "home_elo"] == pytest.approx(1500.0)
 
 
+def test_elo_regresses_one_third_at_a_season_boundary_and_names_the_cold_start():
+    games = pd.DataFrame(
+        [
+            _game(1, "2023-09-01 18:00", 2023, 1, 2, 10, 0),
+            _game(2, "2024-09-01 18:00", 2024, 1, 2, 0, 10),
+        ]
+    )
+    raw = build_features(FeatureInputs(league="nfl", games=games), names=["elo"], elo_season_regress=0)
+    pulled = build_features(FeatureInputs(league="nfl", games=games), names=["elo"])
+    updated = raw.frame.set_index("game_id").loc[2, "home_elo"]
+    expected = (2.0 / 3.0) * updated + (1.0 / 3.0) * 1500.0
+    assert pulled.frame.set_index("game_id").loc[2, "home_elo"] == pytest.approx(expected)
+    assert pulled.frame.set_index("game_id").loc[1, "home_elo"] == pytest.approx(1500.0)
+    assert any("cold-starts" in warning and "season 2023" in warning for warning in pulled.warnings)
+    assert any("1/3" in warning or "0.333" in warning for warning in pulled.warnings)
+
+
+def test_sql_feature_cannot_read_postgame_columns():
+    games = pd.DataFrame([_game(1, "2023-04-01 18:00", 2023, 1, 2, 1, 0)])
+    con = duckdb.connect()
+    con.register("nfl_games", games)
+    registry = default_registry()
+    registry.register(
+        FeatureSpec(
+            name="copied_score",
+            description="must not see the score",
+            known_at=KnownAt.SCHEDULE,
+            datasets=frozenset({"games"}),
+            sql="SELECT game_id, home_score AS leaked FROM nfl_games",
+            columns=("leaked",),
+        )
+    )
+    with pytest.raises(Exception, match="postgame"):
+        build_features(
+            FeatureInputs(league="nfl", games=games),
+            registry=registry,
+            names=["copied_score"],
+            con=con,
+        )
+
+
 def _inputs() -> FeatureInputs:
     games = pd.DataFrame(
         [

@@ -79,7 +79,9 @@ def test_date_folds_expand_with_an_embargo_gap():
     rows = [("2022-01-%02d" % day, 2021) for day in range(1, 11)]
     rows += [("2022-01-%02d" % day, 2022) for day in range(11, 31)]
     frame = _frame(rows)
-    folds = walk_forward(frame, scheme="date", min_train_seasons=1, embargo_days=2, test_days=10)
+    folds = walk_forward(
+        frame, scheme="date", min_train_seasons=1, min_train_rows=1, embargo_days=2, test_days=10
+    )
     assert [(fold.test_start.isoformat(), fold.test_end.isoformat(), fold.train_rows, fold.test_rows) for fold in folds] == [
         ("2022-01-04", "2022-01-13", 1, 10),
         ("2022-01-14", "2022-01-23", 11, 10),
@@ -95,9 +97,20 @@ def test_date_folds_expand_with_an_embargo_gap():
         _assert_order(frame, fold)
         assert (fold.test_start - fold.train_end).days >= 3
 
-    later = walk_forward(frame, scheme="date", min_train_seasons=2, embargo_days=2, test_days=10)
+    later = walk_forward(
+        frame, scheme="date", min_train_seasons=2, min_train_rows=1, embargo_days=2, test_days=10
+    )
     assert [fold.test_start.isoformat() for fold in later] == ["2022-01-14", "2022-01-24"]
     assert all(fold.train_seasons == (2021, 2022) for fold in later)
+
+
+def test_date_folds_default_to_fifty_training_rows():
+    rows = [("2022-01-%02d" % day, 2021) for day in range(1, 31)]
+    frame = _frame(rows)
+    assert walk_forward(frame, scheme="date", min_train_seasons=1, test_days=5) == []
+    folds = walk_forward(frame, scheme="date", min_train_seasons=1, min_train_rows=1, test_days=5)
+    assert folds
+    assert folds[0].describe()["min_train_rows"] == 1
 
 
 def test_date_folds_skip_windows_below_the_minimum_train_rows():

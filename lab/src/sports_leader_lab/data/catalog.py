@@ -127,6 +127,11 @@ _STAT_TABLES = {
 }
 
 
+def is_snapshot_dataset(dataset: str) -> bool:
+    """True for tables whose rows are only pregame after an as-of window."""
+    return dataset in _SNAPSHOTS
+
+
 def column_timing(dataset: str, column: str) -> str:
     """Return `pregame`, `postgame`, or `as_of`.
 

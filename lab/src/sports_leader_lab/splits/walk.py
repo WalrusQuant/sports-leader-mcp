@@ -54,17 +54,21 @@ def walk_forward(
     date_col: str = "game_date",
     season_col: str = "season",
     min_train_seasons: int = 2,
-    min_train_rows: int = 1,
+    min_train_rows: int = 50,
     embargo_days: int = 0,
     test_days: int = 14,
 ) -> list[Fold]:
     """Expanding walk-forward folds.
 
     `scheme='season'` trains on earlier seasons and tests the next one.
+    Season folds do not drop a fold for being short; they record `min_train_rows`
+    and key off `min_train_seasons`.
+
     `scheme='date'` walks calendar windows of `test_days`. The first window
     starts on the first date whose embargoed history already contains
     `min_train_seasons` distinct seasons and at least `min_train_rows` rows.
-    Later windows step forward from there.
+    Later windows step forward from there. The default `min_train_rows` is 50,
+    so a date fold is not a one-row fit. Pass a smaller value to override it.
 
     `embargo_days=N` keeps a training row only when its date is at least N
     full days before the test start. The last allowed training date is

@@ -43,6 +43,8 @@ class FeatureContext:
     elo_k: float = 20.0
     elo_home_adv: float = 60.0
     elo_initial: float = 1500.0
+    # Fraction of the gap to 1500 closed at each new season. 0 leaves the rating unchanged.
+    elo_season_regress: float = 1.0 / 3.0
     con: Any = None
 
     @property

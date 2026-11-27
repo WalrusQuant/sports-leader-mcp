@@ -96,9 +96,9 @@ def register_views(
             continue
         if season_filter is not None and named:
             have = {entry.season for entry in chosen}
-            missing = sorted(season_filter - have)
-            if missing:
-                listed = ", ".join(str(season) for season in missing)
+            absent = sorted(season_filter - have)
+            if absent:
+                listed = ", ".join(str(season) for season in absent)
                 raise DataError(f"no files for {league} {dataset} season {listed}")
         view = register_view(con, cache, league, dataset, chosen)
         registered.append(view)

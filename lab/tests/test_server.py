@@ -1,6 +1,7 @@
 import asyncio
 import sys
 
+import pytest
 from mcp import Client, StdioServerParameters
 
 from sports_leader_lab import DISCLAIMER
@@ -11,7 +12,25 @@ def test_server_reports_the_package_version():
     assert mcp.version == "0.1.0.dev0"
 
 
-def test_health_payload_is_a_research_ping():
+def test_unexpected_exceptions_are_tool_errors_with_the_message():
+    from mcp.server.mcpserver.exceptions import ToolError
+
+    from sports_leader_lab.server import _call
+
+    def boom():
+        raise AttributeError("'Fold' object has no attribute 'index'")
+
+    with pytest.raises(ToolError, match="no attribute 'index'"):
+        _call(boom)
+
+
+def test_unknown_league_is_a_clear_tool_error():
+    from mcp.server.mcpserver.exceptions import ToolError
+
+    from sports_leader_lab.server import inspect_data
+
+    with pytest.raises(ToolError, match="unknown league"):
+        inspect_data("zzz", "games", [2023])
     payload = health()
     assert payload["ok"] is True
     assert payload["server"] == "sports-leader-lab"
@@ -23,7 +42,15 @@ def test_health_payload_is_a_research_ping():
 
 def test_ping_tool_is_registered():
     tools = asyncio.run(_tool_names(mcp))
-    assert tools == ["ping"]
+    assert set(tools) == {
+        "build_dataset",
+        "inspect_data",
+        "ping",
+        "predict",
+        "query_data",
+        "train_classifier",
+        "train_regressor",
+    }
 
 
 def test_stdio_module_entrypoint_answers_ping():
@@ -40,7 +67,8 @@ def test_stdio_module_entrypoint_answers_ping():
             return names, _payload(result)
 
     names, payload = asyncio.run(run())
-    assert names == ["ping"]
+    assert "ping" in names
+    assert "build_dataset" in names
     assert payload["ok"] is True
     assert payload["server"] == "sports-leader-lab"
     assert "not a recommendation to bet" in payload["disclaimer"].lower()
