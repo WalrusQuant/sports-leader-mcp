@@ -1,6 +1,6 @@
 {
   "name": "sports-leader-mcp",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "MCP server for live sports data: scores, standings, rosters, stats, odds, play-by-play, injuries, and news across 30 verified leagues across 11 sports, keyless Kalshi and Polymarket prices, plus historical Parquet from GitHub Releases (no API key), including games for MLB, NBA, NFL, NHL, and college football and men's college basketball as those seasons are published. Scoreboards for older days read that games file. Includes a one-call player report, home/away, opponent, month, and rest trends, and a one-call game preview.",
   "license": "MIT",
   "type": "module",

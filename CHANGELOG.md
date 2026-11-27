@@ -5,7 +5,11 @@ All notable changes to sports-leader-mcp. Dates are US Central.
 
 ## Unreleased
 
-Release-notes draft for the research lab. Versions are not bumped in this change. The Node server stays 0.9.0. The lab stays 0.1.0.dev0. The later version bump also sets the `sports-leader-lab` package version in `lab/uv.lock`.
+
+
+## 0.10.0 — 2026-11-26
+
+Research lab 0.1.0, beside the Node server at 0.10.0. 43 Node tools.
 
 ### Added
 
@@ -16,7 +20,7 @@ Release-notes draft for the research lab. Versions are not bumped in this change
 - Leakage audit on `build_dataset` (a failure does not save) and on `audit_features` (never saves). Hard failures: a target, score, or margin copy, including a scaled copy, once 30 overlapping values are non-null or on every row of a shorter frame; a same-game box stat; a timestamp after start; a raw snapshot name, including a quoted `"nfl_injuries"`. A column with fewer than two distinct values is not a copy, and `is_home` is not a box stat. A very high single-feature AUC is a warning. An automated pass is REVIEW REQUIRED, never clean.
 - Run records under the run directory: lab version, feature families and columns, params, split spec, seeds, and the sha256 of each manifest file the dataset used. Each run writes `model.joblib`, `meta.json`, `folds.json`, `predictions.csv`, `predictions.parquet` (checksummed), and a twelve-section `model_card.md`. Re-rendering the card matches those bytes. `list_runs` orders by timestamp (microseconds), a monotonic sequence, then run id. `compare_runs` labels runs that do not share a league and target. The card's approval-history section records that the card is not an approval.
 - `predict` scores as of America/Chicago, refuses a game with no start time, and labels a completed game as a research replay. For a `home_win` model, `estimate` is P(home team wins) and `estimate_kind` is `home_win_probability`. `home_team_abbr` and `away_team_abbr` name the sides: GB at LAR with `estimate` 0.688 is P(LAR win) = 0.688, so P(GB win) is about 0.312. For `margin`, `total`, or `team_points`, `estimate` is that target and `estimate_kind` is the target name. A caller-supplied `market_prices` list is shown for that call and is not stored. The lab does not fetch odds and does not read Kalshi.
-- `ruff` and `mypy` check the lab in CI. The Node server version is unchanged.
+- `ruff` and `mypy` check the lab in CI.
 - Every tool result carries the same disclaimer: a research estimate of fit against simple baselines, not a betting edge, not a pick, and not a recommendation to bet.
 - Golden tests, gated by `SPORTSLEADER_LAB_LIVE=1`, for NHL 2023 and MLB 2023 `home_win` (site and Elo, date-fold logistic). They pin the manifest sha256 of `games` and `team_game_stats` and require log loss within 0.02 of Elo on the same held-out rows. The same live run starts the server over stdio and scores a Brewers, Packers, and Bucks game, checking the disclaimer, the research-replay warning, and US Central as-of times.
 - `lab/scripts/smoke.py` builds, trains, and predicts one NFL `home_win` model. `npm run audit` prints that check as a `lab smoke` row and skips it when `uv` is not installed. This repository does not schedule a Monday job.

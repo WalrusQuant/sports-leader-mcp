@@ -3,7 +3,7 @@
 Importing this package does not open a database or start the server.
 """
 
-__version__ = "0.1.0.dev0"
+__version__ = "0.1.0"
 
 DISCLAIMER = (
     "Research estimate of how well a model fits past games against simple baselines. "

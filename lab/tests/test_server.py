@@ -9,7 +9,7 @@ from sports_leader_lab.server import health, mcp
 
 
 def test_server_reports_the_package_version():
-    assert mcp.version == "0.1.0.dev0"
+    assert mcp.version == "0.1.0"
 
 
 def test_unexpected_exceptions_are_tool_errors_with_the_message():
@@ -52,7 +52,7 @@ def test_unknown_league_is_a_clear_tool_error():
     payload = health()
     assert payload["ok"] is True
     assert payload["server"] == "sports-leader-lab"
-    assert payload["version"] == "0.1.0.dev0"
+    assert payload["version"] == "0.1.0"
     assert payload["disclaimer"] == DISCLAIMER
     assert "betting edge" in DISCLAIMER
     assert "not a recommendation to bet" in DISCLAIMER.lower()
