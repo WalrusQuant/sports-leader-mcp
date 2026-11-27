@@ -63,6 +63,7 @@ def save_run(
         "model.joblib": _sha256(path / "model.joblib"),
         "folds.json": _sha256(path / "folds.json"),
         "predictions.csv": _sha256(path / "predictions.csv"),
+        "predictions.parquet": _sha256(path / "predictions.parquet"),
     }
     stored["artifacts"] = {
         "model": "model.joblib",
@@ -73,7 +74,11 @@ def save_run(
         "meta": "meta.json",
     }
     stored["checksums"] = checksums
-    markdown = render_model_card(stored, document)
+    # The card is rendered from the same sorted JSON a later read reloads.
+    # The model_card.md checksum is added after that render, and the renderer
+    # skips it, so the bytes stay the same.
+    on_disk_folds = json.loads((path / "folds.json").read_text(encoding="utf-8"))
+    markdown = render_model_card(_canonical(stored), on_disk_folds)
     card_path = path / "model_card.md"
     card_path.write_text(markdown, encoding="utf-8")
     checksums["model_card.md"] = _sha256(card_path)
@@ -99,6 +104,16 @@ def read_run_folds(store: RunStore, run_id: str) -> dict:
     if isinstance(payload, dict):
         return payload
     return {"schema": "legacy", "aggregation": "unknown", "folds": payload}
+
+
+def next_sequence(store: RunStore) -> int:
+    """One more than the highest sequence already stored. Missing sequences count as zero."""
+    best = 0
+    for meta in iter_run_metas(store):
+        seq = meta.get("sequence")
+        if isinstance(seq, int) and not isinstance(seq, bool) and seq > best:
+            best = seq
+    return best + 1
 
 
 def iter_run_metas(store: RunStore) -> list[dict]:
@@ -149,6 +164,11 @@ def _checked(store: RunStore, kind: str, item_id: str) -> Path:
     if path == kind_root or path.parent != kind_root or not path.is_relative_to(kind_root):
         raise LabError(f"illegal id '{item_id}'")
     return path
+
+
+def _canonical(payload: object) -> Any:
+    """The object `json.loads` returns after a sorted write."""
+    return json.loads(json.dumps(jsonable(payload), sort_keys=True))
 
 
 def _sha256(path: Path) -> str:

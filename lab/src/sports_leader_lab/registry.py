@@ -35,6 +35,7 @@ def list_runs(league: str, limit: int = 20, *, store: RunStore | None = None) ->
             {
                 "run_id": meta.get("run_id"),
                 "created_at": meta.get("created_at"),
+                "sequence": _sequence(meta),
                 "league": meta.get("league"),
                 "target": meta.get("target"),
                 "model": meta.get("model"),
@@ -45,7 +46,7 @@ def list_runs(league: str, limit: int = 20, *, store: RunStore | None = None) ->
                 "lab_version": (meta.get("reproducibility") or {}).get("lab_version"),
             }
         )
-    rows.sort(key=lambda item: str(item.get("created_at") or ""), reverse=True)
+    rows.sort(key=_newest, reverse=True)
     return jsonable(
         {
             "league": league,
@@ -95,6 +96,18 @@ def model_card(run_id: str, *, store: RunStore | None = None) -> dict[str, Any]:
             "disclaimer": DISCLAIMER,
         }
     )
+
+
+def _sequence(meta: dict[str, Any]) -> int:
+    seq = meta.get("sequence")
+    if isinstance(seq, int) and not isinstance(seq, bool):
+        return seq
+    return 0
+
+
+def _newest(item: dict[str, Any]) -> tuple[str, int, str]:
+    """Microsecond timestamp, then the monotonic sequence, then the run id."""
+    return (str(item.get("created_at") or ""), _sequence(item), str(item.get("run_id") or ""))
 
 
 def _compare_row(meta: dict[str, Any]) -> dict[str, Any]:

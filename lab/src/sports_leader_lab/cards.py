@@ -8,6 +8,7 @@ are never dropped.
 
 from __future__ import annotations
 
+import json
 from typing import Any
 
 import pandas as pd
@@ -46,7 +47,11 @@ def fold_document(rows: list[dict], *, kind: str) -> dict[str, Any]:
 
 
 def render_model_card(meta: dict[str, Any], folds: dict[str, Any]) -> str:
-    """Eleven sections from the model-card template, filled from the run record."""
+    """Model card from the template, plus the skill's approval-history section.
+
+    Callers pass the sorted JSON object a reload returns. Dicts in the text are
+    serialized with sorted keys so a second render of that record is the same bytes.
+    """
     repro = meta.get("reproducibility") or {}
     pooled = (meta.get("metrics") or {}).get("pooled") or {}
     model_metrics = pooled.get("model") or {}
@@ -58,7 +63,8 @@ def render_model_card(meta: dict[str, Any], folds: dict[str, Any]) -> str:
     seasons = meta.get("seasons") or []
     window = _window(seasons)
     manifest = list(repro.get("data_manifest") or [])
-    features = list(repro.get("features") or meta.get("feature_columns") or [])
+    families = [str(name) for name in (repro.get("families") or meta.get("families") or [])]
+    features = [str(name) for name in (repro.get("features") or meta.get("feature_columns") or [])]
     split = repro.get("split") or {}
     beats = pooled.get("beats_elo")
     if beats is True:
@@ -107,7 +113,8 @@ def render_model_card(meta: dict[str, Any], folds: dict[str, Any]) -> str:
         "",
         "## 5. Features",
         "",
-        f"- Feature list: {', '.join(features) if features else 'none recorded'}.",
+        f"- Feature families: {', '.join(families) if families else 'none recorded'}. These are the names `build_dataset` takes.",
+        f"- Feature columns: {', '.join(features) if features else 'none recorded'}.",
         "- Transforms: linear models median-impute and standardize on the fit slice of each training fold. LightGBM keeps missing values.",
         "- Time safety: the dataset audit runs before save. An automated pass is REVIEW REQUIRED, not CLEAN.",
         "",
@@ -147,16 +154,16 @@ def render_model_card(meta: dict[str, Any], folds: dict[str, Any]) -> str:
         "- Monitoring: none.",
         "- Retrain trigger: a new saved dataset, not a schedule.",
         "- Kill conditions: see Limits.",
-        "- Review history: none.",
-        f"- Linked experiment: `{meta.get('run_id')}`.",
         "",
         "## 11. Artifact manifest and reproduction",
         "",
         "- Artifacts, relative to the run directory: model.joblib, folds.json, predictions.csv, predictions.parquet, meta.json, model_card.md.",
         f"- Lab version: {repro.get('lab_version')}.",
-        f"- Seeds: `{repro.get('seeds')}`.",
-        f"- Params: `{repro.get('params')}`.",
-        f"- Command recorded with the run: `{repro.get('command')}`.",
+        f"- Feature families: {_stable(families)}.",
+        f"- Feature columns: {_stable(features)}.",
+        f"- Seeds: {_stable(repro.get('seeds'))}.",
+        f"- Params: {_stable(repro.get('params'))}.",
+        f"- Command recorded with the run: {_stable(repro.get('command'))}.",
         "- Data manifest sha256:",
     ]
     if manifest:
@@ -167,15 +174,25 @@ def render_model_card(meta: dict[str, Any], folds: dict[str, Any]) -> str:
     checksums = meta.get("checksums") or {}
     if checksums:
         lines.append("- Artifact sha256:")
-        for name, digest in checksums.items():
+        for name in sorted(checksums):
             if name == "model_card.md":
                 continue
-            lines.append(f"  - `{name}` {digest}")
+            lines.append(f"  - `{name}` {checksums[name]}")
     warnings = meta.get("warnings") or []
     if warnings:
         lines.extend(["", "Warnings recorded on the run:"])
         lines.extend(f"- {warning}" for warning in warnings)
-    lines.append("")
+    lines.extend(
+        [
+            "",
+            "## 12. Approval history and linked experiments",
+            "",
+            "- Approval history: none. This card is not an approval.",
+            "- Reviewers: none recorded.",
+            f"- Linked experiment: `{meta.get('run_id')}`.",
+            "",
+        ]
+    )
     return "\n".join(lines)
 
 
@@ -324,6 +341,10 @@ def _window(seasons: list) -> str:
     return f"{ordered[0]}-{ordered[-1]}"
 
 
+def _stable(value: Any) -> str:
+    return json.dumps(value, sort_keys=True, separators=(", ", ": "), default=str)
+
+
 def _fmt(value: Any) -> str:
     if isinstance(value, (int, float)) and not isinstance(value, bool):
         return f"{float(value):.6f}"
@@ -348,7 +369,7 @@ def _fold_table(folds: dict[str, Any]) -> str:
                     _fmt(row.get("baseline_primary")),
                     _fmt(row.get("candidate_primary")),
                     _fmt(row.get("gap")),
-                    str(row.get("secondary_metrics")),
+                    _stable(row.get("secondary_metrics")),
                     str(row.get("exclusions")),
                     str(row.get("failures")),
                 ]

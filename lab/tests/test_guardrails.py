@@ -2,6 +2,7 @@
 
 import json
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -142,6 +143,22 @@ def test_synthetic_leaks_fail_and_a_high_auc_feature_warns(tmp_path):
     assert warned["verdict"] == "REVIEW REQUIRED"
     assert any("AUC" in warning for warning in warned["warnings"])
 
+    one_nan = _audit_builder(inputs, "one_nan", _one_nan_score, "margin")
+    assert one_nan["ok"] is False
+    assert any("copies home_score" in item for item in one_nan["failures"]), one_nan["failures"]
+
+    half_null = _audit_builder(inputs, "half_null", _half_null_score, "margin")
+    assert half_null["ok"] is True
+    assert half_null["failures"] == []
+
+    scaled = _audit_builder(inputs, "scaled", _scaled_margin, "margin")
+    assert scaled["ok"] is False
+    assert any("affine copy of the score margin" in item for item in scaled["failures"]), scaled["failures"]
+
+    flipped = _audit_builder(inputs, "flipped", _flipped_margin, "margin")
+    assert flipped["ok"] is False
+    assert any("affine copy of the score margin" in item for item in flipped["failures"]), flipped["failures"]
+
     clean = audit_features("nfl", "home_win", [2023], features=["site", "elo"], inputs=inputs)
     assert clean["ok"] is True
     assert clean["verdict"] == "REVIEW REQUIRED"
@@ -155,8 +172,11 @@ def test_run_record_lists_compares_and_writes_a_model_card(tmp_path):
     logistic = train_classifier(dataset_id, model="logistic", min_train_seasons=1, store=store)
     boosted = train_classifier(dataset_id, model="lightgbm", min_train_seasons=1, store=store)
     listed = list_runs("nfl", limit=1, store=store)
-    assert len(listed["runs"]) == 1
-    assert listed["runs"][0]["run_id"] in {logistic["run_id"], boosted["run_id"]}
+    assert listed["runs"][0]["run_id"] == boosted["run_id"]
+    logistic_meta = json.loads((tmp_path / "models" / logistic["run_id"] / "meta.json").read_text(encoding="utf-8"))
+    boosted_meta = json.loads((tmp_path / "models" / boosted["run_id"] / "meta.json").read_text(encoding="utf-8"))
+    assert "." in logistic_meta["created_at"]
+    assert boosted_meta["sequence"] == logistic_meta["sequence"] + 1
     assert listed["disclaimer"] == DISCLAIMER
     with pytest.raises(LabError, match="unknown league"):
         list_runs("zzz", store=store)
@@ -198,12 +218,14 @@ def test_run_record_lists_compares_and_writes_a_model_card(tmp_path):
     meta = json.loads((run_dir / "meta.json").read_text(encoding="utf-8"))
     repro = meta["reproducibility"]
     assert repro["lab_version"] == __version__ == "0.1.0.dev0"
-    assert repro["features"]
+    assert repro["families"] == ["synthetic"]
+    assert repro["features"] == ["noise"]
     assert repro["params"]["model"] == "logistic"
     assert repro["split"]["scheme"] == "season"
     assert repro["seeds"]["lightgbm_random_state"] == 0
     assert repro["data_manifest"] == []
     assert len(meta["checksums"]["predictions.csv"]) == 64
+    assert len(meta["checksums"]["predictions.parquet"]) == 64
 
     card = model_card(logistic["run_id"], store=store)
     for heading in (
@@ -218,8 +240,10 @@ def test_run_record_lists_compares_and_writes_a_model_card(tmp_path):
         "## 9. Limits and failure modes",
         "## 10. Maintenance",
         "## 11. Artifact manifest and reproduction",
+        "## 12. Approval history and linked experiments",
     ):
         assert heading in card["markdown"]
+    assert card["markdown"] == (run_dir / "model_card.md").read_text(encoding="utf-8")
     assert "not a recommendation to bet" in card["markdown"].lower()
     assert card["card"]["analysis_type"] == "predictive"
     assert card["card"]["validation"]["metric_direction"] == "lower"
@@ -228,6 +252,84 @@ def test_run_record_lists_compares_and_writes_a_model_card(tmp_path):
     assert card["card"]["reproduction"]["command"]["tool"] == "train_classifier"
     assert card["disclaimer"] == DISCLAIMER
     assert (run_dir / "model_card.md").is_file()
+
+
+def test_same_second_runs_use_sequence_then_run_id(tmp_path, monkeypatch):
+    store = RunStore(tmp_path)
+    stamp = "2026-11-26T18:15:07-06:00"
+    older = _listed("run_aaaaaaaaaaaa", stamp, 1)
+    newer = _listed("run_bbbbbbbbbbbb", stamp, 2)
+    tied_low = _listed("run_aaaaaaaaaaaa", stamp, 7)
+    tied_high = _listed("run_bbbbbbbbbbbb", stamp, 7)
+
+    def oldest_first(_store):
+        return [older, newer]
+
+    monkeypatch.setattr("sports_leader_lab.registry.iter_run_metas", oldest_first)
+    assert list_runs("nfl", limit=1, store=store)["runs"][0]["run_id"] == "run_bbbbbbbbbbbb"
+
+    def newest_first(_store):
+        return [newer, older]
+
+    monkeypatch.setattr("sports_leader_lab.registry.iter_run_metas", newest_first)
+    assert list_runs("nfl", limit=1, store=store)["runs"][0]["run_id"] == "run_bbbbbbbbbbbb"
+
+    def tied(_store):
+        return [tied_low, tied_high]
+
+    monkeypatch.setattr("sports_leader_lab.registry.iter_run_metas", tied)
+    assert list_runs("nfl", limit=1, store=store)["runs"][0]["run_id"] == "run_bbbbbbbbbbbb"
+
+
+def _audit_builder(inputs, name, builder, target):
+    registry = default_registry()
+    registry.register(
+        FeatureSpec(
+            name=name,
+            description="leak",
+            known_at=KnownAt.PRIOR_GAMES,
+            datasets=frozenset({"games"}),
+            builder=builder,
+            columns=(name,),
+        )
+    )
+    return audit_features("nfl", target, [2023], features=[name], inputs=inputs, registry=registry)
+
+
+def _one_nan_score(ctx):
+    values = ctx.games["home_score"].to_numpy(dtype=float).copy()
+    values[0] = np.nan
+    return pd.DataFrame({"game_id": ctx.games["game_id"], "one_nan": values})
+
+
+def _half_null_score(ctx):
+    values = ctx.games["home_score"].to_numpy(dtype=float).copy()
+    values[: len(values) // 2] = np.nan
+    return pd.DataFrame({"game_id": ctx.games["game_id"], "half_null": values})
+
+
+def _scaled_margin(ctx):
+    margin = ctx.games["home_score"].to_numpy(dtype=float) - ctx.games["away_score"].to_numpy(dtype=float)
+    return pd.DataFrame({"game_id": ctx.games["game_id"], "scaled": 2.0 * margin + 3.0})
+
+
+def _flipped_margin(ctx):
+    margin = ctx.games["away_score"].to_numpy(dtype=float) - ctx.games["home_score"].to_numpy(dtype=float)
+    return pd.DataFrame({"game_id": ctx.games["game_id"], "flipped": margin})
+
+
+def _listed(run_id: str, created_at: str, sequence: int) -> dict:
+    return {
+        "run_id": run_id,
+        "created_at": created_at,
+        "sequence": sequence,
+        "league": "nfl",
+        "target": "home_win",
+        "model": "logistic",
+        "kind": "classifier",
+        "metrics": {"pooled": {"model": {"log_loss": 0.5}, "beats_elo": False}},
+        "reproducibility": {"lab_version": "0.1.0.dev0"},
+    }
 
 
 def _copy_target(ctx):

@@ -36,7 +36,7 @@ from sports_leader_lab.eval.baselines import (
 from sports_leader_lab.eval.metrics import classification_scores, regression_scores
 from sports_leader_lab.features.elo import ELO_HOME_ADV
 from sports_leader_lab.payload import jsonable
-from sports_leader_lab.runs import load_dataset, new_id, save_run
+from sports_leader_lab.runs import load_dataset, new_id, next_sequence, save_run
 from sports_leader_lab.splits.walk import walk_forward
 from sports_leader_lab.store import RunStore
 
@@ -220,12 +220,13 @@ def _train(
         "residual_sd": residual_sd,
         "home_adv": ELO_HOME_ADV,
     }
-    created = datetime.now(CT).isoformat(timespec="seconds")
+    created = datetime.now(CT).isoformat(timespec="microseconds")
     unique_warnings = list(dict.fromkeys(warnings))
     run_meta = {
         "run_id": run_id,
         "kind": kind,
         "created_at": created,
+        "sequence": next_sequence(destination),
         "league": meta["league"],
         "target": meta["target"],
         "target_kind": target_kind,
@@ -258,6 +259,7 @@ def _train(
                 "test_days": test_days,
             },
             "params": _recorded_params(model, kind=kind, calibration=calibration),
+            "families": list(meta.get("families") or []),
             "features": features,
             "data_manifest": list(meta.get("data_manifest") or []),
             "command": {

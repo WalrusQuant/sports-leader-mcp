@@ -17,6 +17,11 @@ from sports_leader_lab.features.registry import POSTGAME_COLUMNS
 PREGAME_KNOWN = frozenset({"schedule", "prior_games", "as_of_start"})
 FORBIDDEN_NAMES = frozenset(POSTGAME_COLUMNS) | {"score", "opponent_score", "target"}
 _AUC_WARN = 0.95
+# A copy may leave a few rows null. 90% of the rows, and at least this many
+# paired values, is still the same column. A full overlap of a shorter frame
+# is also a copy, so a four-row fixture still fails.
+_OVERLAP_COVERAGE = 0.90
+_OVERLAP_MIN = 8
 
 
 @dataclass
@@ -58,13 +63,21 @@ def audit_dataset(
         series = frame[name]
         if _same(series, target):
             failures.append(f"{name} copies the target")
-        for banned in ("home_score", "away_score", "score", "opponent_score"):
-            if banned in frame.columns and _same(series, frame[banned]):
+        elif _affine(series, target):
+            failures.append(f"{name} is an affine copy of the target")
+        for banned in _copy_columns(frame):
+            if _same(series, frame[banned]):
                 failures.append(f"{name} copies {banned}")
+            elif _affine(series, frame[banned]):
+                failures.append(f"{name} is an affine copy of {banned}")
         if margin is not None and _same(series, margin):
             failures.append(f"{name} copies the score margin")
+        elif margin is not None and _affine(series, margin):
+            failures.append(f"{name} is an affine copy of the score margin")
         if total is not None and _same(series, total):
             failures.append(f"{name} copies the score total")
+        elif total is not None and _affine(series, total):
+            failures.append(f"{name} is an affine copy of the score total")
         for column in _same_game_box_stats(series, frame, stats):
             failures.append(f"{name} copies same-game box stat {column}")
         if _after_start(series, frame):
@@ -116,15 +129,57 @@ def _same_game_box_stats(series: pd.Series, frame: pd.DataFrame, stats: pd.DataF
     return list(dict.fromkeys(found))
 
 
-def _same(series: pd.Series, other: pd.Series) -> bool:
+def _copy_columns(frame: pd.DataFrame) -> list[str]:
+    """Score columns. `completed` is constant on the rows that reach the audit, so it is not a copy target."""
+    columns: list[str] = []
+    for name in ("home_score", "away_score", "score", "opponent_score"):
+        if name in frame.columns and name not in columns:
+            columns.append(name)
+    return columns
+
+
+def _paired(series: pd.Series, other: pd.Series) -> tuple[np.ndarray, np.ndarray] | None:
+    """Non-null overlap when it covers the column, or at least 90% and 8 rows."""
     left = pd.to_numeric(series, errors="coerce")
     right = pd.to_numeric(other, errors="coerce")
-    if len(left) == 0:
+    if len(left) == 0 or len(left) != len(right):
+        return None
+    both = (left.notna() & right.notna()).to_numpy()
+    count = int(both.sum())
+    if count == 0:
+        return None
+    full = count == len(left)
+    covered = count >= _OVERLAP_MIN and count / len(left) >= _OVERLAP_COVERAGE
+    if not full and not covered:
+        return None
+    return left.to_numpy(dtype=float)[both], right.to_numpy(dtype=float)[both]
+
+
+def _same(series: pd.Series, other: pd.Series) -> bool:
+    paired = _paired(series, other)
+    if paired is None:
         return False
-    both = left.notna() & right.notna()
-    if int(both.sum()) != len(left):
+    left, right = paired
+    return bool(np.allclose(left, right))
+
+
+def _affine(series: pd.Series, other: pd.Series) -> bool:
+    """True when the feature is a*column + b on the overlap, and not a constant or an exact copy."""
+    paired = _paired(series, other)
+    if paired is None:
         return False
-    return bool(np.allclose(left.to_numpy(dtype=float), right.to_numpy(dtype=float)))
+    left, right = paired
+    if np.unique(np.round(right, 8)).size < 2:
+        return False
+    design = np.column_stack([right, np.ones(len(right))])
+    coef, _, _, _ = np.linalg.lstsq(design, left, rcond=None)
+    slope = float(coef[0])
+    intercept = float(coef[1])
+    if abs(slope) <= 1e-8:
+        return False
+    if np.allclose(slope, 1.0) and np.allclose(intercept, 0.0):
+        return False
+    return bool(np.allclose(design @ coef, left))
 
 
 def _after_start(series: pd.Series, frame: pd.DataFrame) -> bool:
