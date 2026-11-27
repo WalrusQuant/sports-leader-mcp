@@ -21,14 +21,16 @@ Cache and run files stay outside the repo. See the repository README for the env
 | `query_data` | One SELECT on a published view such as `nfl_games`. External file access is off. Default cap 500 rows, at most 5000, 20 second timeout. |
 | `build_dataset` | Pregame dataset for `home_win`, `margin`, `total`, or `team_points`. Saved only when the leakage audit passes. |
 | `audit_features` | The same leakage checks as `build_dataset`. Does not save. A pass is REVIEW REQUIRED, never clean. |
-| `train_classifier` | Walk-forward logistic or LightGBM. Calibration is none, Platt, or isotonic. Scheme is `season` or `date`. |
-| `train_regressor` | Walk-forward ridge, Poisson, negative binomial, or LightGBM. Poisson and negative binomial are refused for margin. |
-| `predict` | Score `game_date` or `game_ids` as of now in America/Chicago. A completed game is a research replay. |
+| `train_classifier` | Walk-forward logistic or LightGBM. Calibration is none, Platt, or isotonic. `scheme` defaults to `season` (`date` is the other). `min_train_rows` defaults to 50. `test_days` defaults to 14. |
+| `train_regressor` | Walk-forward ridge, Poisson, negative binomial, or LightGBM. Poisson and negative binomial are refused for margin. `scheme` defaults to `season`, `min_train_rows` to 50, and `test_days` to 14. |
+| `predict` | Score `game_date` or `game_ids` as of now in America/Chicago. For `home_win`, `estimate` is P(home team wins). A completed game is a research replay. |
 | `list_runs` | Saved runs for one league, newest first. `limit` is 1 to 100. |
 | `compare_runs` | At least two runs on the primary metric. A different league or target is labeled, not hidden. |
 | `model_card` | Twelve-section card rebuilt from the run record. It is a research record, not an approval. |
 
 Feature families for `build_dataset` and `audit_features` are `site`, `elo`, `team_form`, `rest`, `injuries`, and `probables` (MLB). Omit `features` to use every family for that league.
+
+`predict` returns `home_team_abbr`, `away_team_abbr`, `estimate`, and `estimate_kind` on each game. For a `home_win` run, `estimate` is P(home team wins) and `estimate_kind` is `home_win_probability`. GB at LAR with `estimate` 0.688 is P(LAR win) = 0.688, so P(GB win) is about 0.312. For `margin`, `total`, or `team_points`, `estimate` is that target and `estimate_kind` is the target name.
 
 ## Guardrails
 

@@ -214,8 +214,8 @@ Every tool result includes this line: a research estimate of fit against simple 
 - `build_dataset(league, target, seasons, features?, sql_features?)`: pregame rows for `home_win`, `margin`, `total`, or `team_points` (home team's points). `features` names families: `site`, `elo`, `team_form`, `rest`, `injuries`, `probables` (MLB only). Saved only when the leakage audit passes.
 - `audit_features(league, target, seasons, features?, sql_features?)`: the same leakage checks. Does not save. `ok: true` means REVIEW REQUIRED, never clean.
 - `train_classifier(dataset_id, model="logistic", calibration="none", scheme="season", min_train_seasons=2, min_train_rows=50, embargo_days=0, test_days=14)`: walk-forward only. `model` is `logistic` or `lightgbm`. `calibration` is `none`, `platt`, or `isotonic`. `scheme` is `season` or `date`. Reports log loss against a constant rate, a home-field rate, and as-of Elo. A tie with Elo is not a win.
-- `train_regressor(dataset_id, model="ridge", scheme="season", ...)`: `ridge`, `poisson`, `negbin`, or `lightgbm`. Poisson and negative binomial are refused for `margin`. Count targets are not compared to Elo.
-- `predict(run_id, game_date?, game_ids?, market_prices?)`: scores as of now in `America/Chicago`. Returns `as_of`, `as_of_timezone`, and `start_time_ct`. A completed game is a research replay. A game with no start time is refused. `market_prices` is a list of `{game_id, home_implied_prob, source}` for this call only and is not stored.
+- `train_regressor(dataset_id, model="ridge", scheme="season", min_train_seasons=2, min_train_rows=50, embargo_days=0, test_days=14)`: `ridge`, `poisson`, `negbin`, or `lightgbm`. Poisson and negative binomial are refused for `margin`. Count targets are not compared to Elo. `scheme`, `min_train_rows`, and `test_days` default the same way as `train_classifier` (`season`, 50, 14).
+- `predict(run_id, game_date?, game_ids?, market_prices?)`: scores as of now in `America/Chicago`. Each game has `home_team_abbr`, `away_team_abbr`, `estimate`, and `estimate_kind`. For `home_win`, `estimate` is P(home team wins) and `estimate_kind` is `home_win_probability`. GB at LAR with `estimate` 0.688 is P(LAR win) = 0.688, so P(GB win) is about 0.312. For `margin`, `total`, or `team_points`, `estimate` is that target and `estimate_kind` is the target name. Also returns `as_of`, `as_of_timezone`, and `start_time_ct`. A completed game is a research replay. A game with no start time is refused. `market_prices` is a list of `{game_id, home_implied_prob, source}` for this call only and is not stored.
 - `list_runs(league, limit=20)`: newest first. `limit` is 1 to 100. Ties break on a monotonic sequence, then the run id.
 - `compare_runs(run_ids)`: at least two runs. A different league or target is returned with a caveat, not as a ranking.
 - `model_card(run_id)`: twelve sections rebuilt from the run record, byte-identical to the saved `model_card.md`. The card is not an approval.
@@ -226,7 +226,7 @@ Every tool result includes this line: a research estimate of fit against simple 
 - Features must be known before the game: schedule, prior games, or as of start. Postgame columns are targets and filters, not features.
 - The leakage audit hard-fails a copy of the target, the score, or the margin, a same-game box stat, a timestamp after start, and a raw snapshot name. A constant column is not a copy.
 - Baselines are part of the training result. Do not drop them when you summarize a run.
-- Repeat the no-edge disclaimer when you quote a probability or a margin.
+- When you quote a `home_win` estimate, name the home team. `estimate` is P(home team wins), not the away team's chance. Repeat the no-edge disclaimer with that probability or margin.
 - Compare a market only with prices from a live call in the same turn. Do not invent a closing line. The lab does not store the price.
 - Nothing from Kalshi belongs in a lab call. Do not describe a lab estimate as an edge.
 

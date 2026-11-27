@@ -209,6 +209,15 @@ def test_brewers_packers_and_bucks_over_stdio(live_home, capsys):
                     )
                 )
                 scored = predicted["games"][0]
+                home = scored["home_team_abbr"]
+                away = scored["away_team_abbr"]
+                assert scored["estimate_kind"] == "home_win_probability"
+                assert home
+                assert away
+                probability = float(scored["estimate"])
+                reading = (
+                    f"{away} at {home}: P({home} win) = {probability:.3f}, so {away} ~{1.0 - probability:.3f}"
+                )
                 assert predicted["as_of_timezone"] == "America/Chicago"
                 assert predicted["as_of"].endswith("-06:00") or predicted["as_of"].endswith("-05:00")
                 assert "not a recommendation to bet" in predicted["disclaimer"].lower()
@@ -231,9 +240,13 @@ def test_brewers_packers_and_bucks_over_stdio(live_home, capsys):
                         "elo_log_loss": (trained["pooled"].get("elo") or {}).get("log_loss"),
                         "game_id": scored["game_id"],
                         "game_date": scored["game_date"],
-                        "matchup": f"{scored['away_team_abbr']} at {scored['home_team_abbr']}",
+                        "matchup": f"{away} at {home}",
+                        "home_team_abbr": home,
+                        "away_team_abbr": away,
+                        "estimate_kind": scored["estimate_kind"],
                         "completed": scored["completed"],
                         "estimate": scored["estimate"],
+                        "reading": reading,
                         "as_of": predicted["as_of"],
                         "as_of_timezone": predicted["as_of_timezone"],
                         "start_time_ct": scored["start_time_ct"],

@@ -186,11 +186,16 @@ def predict(
 ) -> dict[str, Any]:
     """Score games from a saved run as of now in America/Chicago.
 
-    Pass game_date (YYYY-MM-DD) or game_ids. The result includes as_of, as_of_timezone,
-    and each game's start_time_ct. A completed game is labeled a research replay.
-    A game with no start time is refused. market_prices, when passed, are current
-    {game_id, home_implied_prob, source} rows for this call only and are not stored.
-    The lab does not fetch odds. This is not a betting edge.
+    Pass game_date (YYYY-MM-DD) or game_ids. Each game has home_team_abbr,
+    away_team_abbr, estimate, and estimate_kind. For a home_win model, estimate
+    is P(home team wins) and estimate_kind is home_win_probability. Read it with
+    the home abbreviation: GB at LAR with estimate 0.688 is P(LAR win) = 0.688,
+    so P(GB win) is about 0.312. For margin, total, or team_points, estimate is
+    that target and estimate_kind is the target name. The result also includes
+    as_of, as_of_timezone, and start_time_ct. A completed game is a research
+    replay. A game with no start time is refused. market_prices, when passed,
+    are current {game_id, home_implied_prob, source} rows for this call only
+    and are not stored. The lab does not fetch odds. This is not a betting edge.
     """
     return _call(predict_fn, run_id, game_date=game_date, game_ids=game_ids, market_prices=market_prices)
 
