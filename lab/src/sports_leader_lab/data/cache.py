@@ -25,7 +25,7 @@ from sports_leader_lab.config import LabConfig, load_config, require_public_url
 from sports_leader_lab.data.manifest import Manifest, ManifestFile, parse_manifest
 from sports_leader_lab.errors import ChecksumMismatch, DataError
 
-USER_AGENT = "sports-leader-lab/0.1.0.dev0"
+USER_AGENT = "sports-leader-lab/0.1.0"
 _MAX_BYTES = 256 * 1024 * 1024
 _TIMEOUT_SECONDS = 60
 

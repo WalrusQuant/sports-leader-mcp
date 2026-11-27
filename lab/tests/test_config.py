@@ -14,8 +14,8 @@ LAB = Path(__file__).resolve().parents[1]
 
 def test_version_is_dev_and_matches_pyproject():
     pyproject = tomllib.loads((LAB / "pyproject.toml").read_text(encoding="utf8"))
-    assert pyproject["project"]["version"] == "0.1.0.dev0"
-    assert __version__ == "0.1.0.dev0"
+    assert pyproject["project"]["version"] == "0.1.0"
+    assert __version__ == "0.1.0"
 
 
 def test_manifest_url_matches_the_node_data_tools():

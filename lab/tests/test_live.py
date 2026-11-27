@@ -252,7 +252,7 @@ def test_p3_audit_registry_and_model_card(tmp_path):
     assert "## 1. Identity" in card["markdown"]
     assert "## 11. Artifact manifest and reproduction" in card["markdown"]
     assert card["card"]["analysis_type"] == "predictive"
-    assert card["card"]["reproduction"]["lab_version"] == "0.1.0.dev0"
+    assert card["card"]["reproduction"]["lab_version"] == "0.1.0"
     assert card["card"]["reproduction"]["data_manifest"]
     assert card["disclaimer"] == DISCLAIMER
 

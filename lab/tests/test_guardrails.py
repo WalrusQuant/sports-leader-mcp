@@ -231,7 +231,7 @@ def test_run_record_lists_compares_and_writes_a_model_card(tmp_path):
         assert column in predictions.columns
     meta = json.loads((run_dir / "meta.json").read_text(encoding="utf-8"))
     repro = meta["reproducibility"]
-    assert repro["lab_version"] == __version__ == "0.1.0.dev0"
+    assert repro["lab_version"] == __version__ == "0.1.0"
     assert repro["families"] == ["synthetic"]
     assert repro["features"] == ["noise"]
     assert repro["params"]["model"] == "logistic"
@@ -374,7 +374,7 @@ def _listed(run_id: str, created_at: str, sequence: int) -> dict:
         "model": "logistic",
         "kind": "classifier",
         "metrics": {"pooled": {"model": {"log_loss": 0.5}, "beats_elo": False}},
-        "reproducibility": {"lab_version": "0.1.0.dev0"},
+        "reproducibility": {"lab_version": "0.1.0"},
     }
 
 

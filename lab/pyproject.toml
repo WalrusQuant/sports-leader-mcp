@@ -1,6 +1,6 @@
 [project]
 name = "sports-leader-lab"
-version = "0.1.0.dev0"
+version = "0.1.0"
 description = "Research lab for walk-forward sports models on the public sportsleader-data Parquet. Not a betting edge."
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
