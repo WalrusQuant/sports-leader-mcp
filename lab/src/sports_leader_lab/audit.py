@@ -1,8 +1,7 @@
-"""Leakage checks run when a dataset is saved.
+"""Leakage checks shared by build_dataset and audit_features.
 
-This is not the standalone audit_features tool. build_dataset calls it and
-refuses to write the dataset when a check fails. A single feature with a very
-high AUC is a warning, not a failure.
+A failed check is NOT CLEAN. A pass, including a high-AUC warning, is
+REVIEW REQUIRED. The automated check never returns CLEAN.
 """
 
 from __future__ import annotations
@@ -35,6 +34,7 @@ def audit_dataset(
     feature_columns: list[str],
     target_column: str,
     column_meta: dict,
+    stats: pd.DataFrame | None = None,
 ) -> AuditReport:
     failures: list[str] = []
     warnings: list[str] = []
@@ -65,12 +65,55 @@ def audit_dataset(
             failures.append(f"{name} copies the score margin")
         if total is not None and _same(series, total):
             failures.append(f"{name} copies the score total")
+        for column in _same_game_box_stats(series, frame, stats):
+            failures.append(f"{name} copies same-game box stat {column}")
         if _after_start(series, frame):
             failures.append(f"{name} has timestamps after start_time")
         suspicious = _suspicious_auc(name, series, target)
         if suspicious:
             warnings.append(suspicious)
     return AuditReport(ok=not failures, failures=_unique(failures), warnings=_unique(warnings))
+
+
+_STAT_KEYS = frozenset(
+    {
+        "game_id",
+        "team_id",
+        "season",
+        "league",
+        "opponent_id",
+        "opponent_team_id",
+        "home_away",
+        "start_time",
+        "game_date",
+        "home_team_id",
+        "away_team_id",
+    }
+)
+
+
+def _same_game_box_stats(series: pd.Series, frame: pd.DataFrame, stats: pd.DataFrame | None) -> list[str]:
+    """Same-game home or away stat columns that match this feature on every row."""
+    if stats is None or stats.empty:
+        return []
+    if "game_id" not in stats.columns or "team_id" not in stats.columns or "game_id" not in frame.columns:
+        return []
+    found: list[str] = []
+    for side in ("home_team_id", "away_team_id"):
+        if side not in frame.columns:
+            continue
+        keys = frame[["game_id", side]].drop_duplicates("game_id")
+        joined = stats.merge(keys, left_on=["game_id", "team_id"], right_on=["game_id", side], how="inner")
+        if joined.empty:
+            continue
+        aligned = joined.drop_duplicates("game_id").set_index("game_id")
+        for column in aligned.columns:
+            if column in _STAT_KEYS:
+                continue
+            mapped = frame["game_id"].map(aligned[column])
+            if _same(series, pd.Series(mapped.to_numpy(), index=series.index)):
+                found.append(str(column))
+    return list(dict.fromkeys(found))
 
 
 def _same(series: pd.Series, other: pd.Series) -> bool:

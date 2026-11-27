@@ -3,7 +3,7 @@
 Layout, so a later index can glob it:
 
 - `datasets/<dataset_id>/data.parquet` and `meta.json`
-- `models/<run_id>/model.joblib`, `meta.json`, `folds.json`, `predictions.parquet`
+- `models/<run_id>/model.joblib`, `meta.json`, `folds.json`, `predictions.parquet`, `predictions.csv`, `model_card.md`
 """
 
 from __future__ import annotations

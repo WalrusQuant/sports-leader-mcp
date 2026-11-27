@@ -24,7 +24,7 @@ from sklearn.calibration import CalibratedClassifierCV
 from sklearn.frozen import FrozenEstimator
 from sklearn.linear_model import LogisticRegression, PoissonRegressor, Ridge
 
-from sports_leader_lab import DISCLAIMER
+from sports_leader_lab import DISCLAIMER, __version__
 from sports_leader_lab.errors import LabError
 from sports_leader_lab.eval.baselines import (
     constant_rate,
@@ -185,10 +185,14 @@ def _train(
         scored["test_rows"] = int(fold.test_rows)
         scored["train_seasons"] = list(fold.train_seasons)
         scored["test_seasons"] = list(fold.test_seasons)
+        scored["train_start"] = _day(fold.train_start)
         scored["train_end"] = _day(fold.train_end)
         scored["test_start"] = _day(fold.test_start)
+        scored["test_end"] = _day(fold.test_end)
         fold_rows.append(scored)
-        pieces.append(fitted["predictions"])
+        part = fitted["predictions"].copy()
+        part.insert(0, "fold", fold.fold)
+        pieces.append(part)
     if not pieces:
         raise LabError("every walk-forward fold was skipped")
     predictions = pd.concat(pieces, ignore_index=True)
@@ -239,6 +243,35 @@ def _train(
         "feature_importance": final["importance"],
         "beats_elo": pooled["beats_elo"],
         "warnings": unique_warnings,
+        "reproducibility": {
+            "lab_version": __version__,
+            "seeds": {
+                "lightgbm_random_state": 0,
+                "numpy": None,
+                "sklearn": None,
+            },
+            "split": {
+                "scheme": scheme,
+                "min_train_seasons": min_train_seasons,
+                "min_train_rows": min_train_rows,
+                "embargo_days": embargo_days,
+                "test_days": test_days,
+            },
+            "params": _recorded_params(model, kind=kind, calibration=calibration),
+            "features": features,
+            "data_manifest": list(meta.get("data_manifest") or []),
+            "command": {
+                "tool": "train_classifier" if kind == "classifier" else "train_regressor",
+                "dataset_id": dataset_id,
+                "model": model,
+                "calibration": calibration,
+                "scheme": scheme,
+                "min_train_seasons": min_train_seasons,
+                "min_train_rows": min_train_rows,
+                "embargo_days": embargo_days,
+                "test_days": test_days,
+            },
+        },
         "disclaimer": DISCLAIMER,
     }
     save_run(destination, run_id, bundle, run_meta, fold_rows, predictions)
@@ -361,6 +394,7 @@ def _pool(predictions: pd.DataFrame, *, kind, count, target_kind) -> dict:
         for season, part in predictions.groupby("season"):
             bias[str(int(season))] = float((part["prediction"] - part["y"]).mean())
     table["bias_by_season"] = bias
+    table["rows"] = int(len(predictions))
     table["beats_elo"] = beats
     table["warnings"] = warnings
     return table
@@ -610,6 +644,31 @@ def _prediction_frame(test: pd.DataFrame, predicted: np.ndarray, baselines: dict
             "baseline_elo": baselines["elo"],
         }
     )
+
+
+def _recorded_params(model: str, *, kind: str, calibration: str) -> dict[str, Any]:
+    """Constructor settings that do not change inside a fold."""
+    params: dict[str, Any] = {"model": model, "kind": kind, "calibration": calibration}
+    if model == "logistic":
+        params.update({"C": 1.0, "max_iter": 1000})
+    elif model == "ridge":
+        params.update({"alpha": 1.0})
+    elif model == "poisson":
+        params.update({"alpha": 0.1, "max_iter": 300})
+    elif model == "negbin":
+        params.update({"log_alpha_clip": [-8.0, 8.0]})
+    elif model == "lightgbm":
+        params.update(
+            {
+                "learning_rate": 0.05,
+                "num_leaves": 15,
+                "min_child_samples": 5,
+                "random_state": 0,
+                "n_estimators": "400 with an inner stop slice, else 100",
+                "objective": "binary" if kind == "classifier" else "poisson for count targets, otherwise regression",
+            }
+        )
+    return params
 
 
 def _metric_block(y, pred, *, kind, count, with_bins: bool) -> dict:

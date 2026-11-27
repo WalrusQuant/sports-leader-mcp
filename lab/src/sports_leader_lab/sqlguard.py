@@ -90,26 +90,44 @@ def locked_connection(con: duckdb.DuckDBPyConnection, *, drop_postgame: bool = F
             frame, gone = strip_postgame(name, frame)
             dropped.update(gone)
         sandbox.register(name, frame)
+    if drop_postgame:
+        for league in games:
+            for dataset in DATASETS:
+                if is_snapshot_dataset(dataset):
+                    raw_snapshots.add(f"{league}_{dataset}")
     sandbox.execute("SET enable_external_access = false")
     sandbox.execute("SET lock_configuration = true")
     return sandbox, dropped, raw_snapshots
 
 
+# Game-result fields. Anything else stripped from a stat table is a same-game
+# box score (yards, plays, and the rest of the game log).
+_RESULT_COLUMNS = _ALWAYS_POSTGAME | {"status"}
+
+
 def feature_sql_problem(sql: str, dropped: Iterable[str], raw_snapshots: Iterable[str]) -> str | None:
-    """A reason to refuse one custom SQL feature, or None when it is safe to run."""
+    """A reason to refuse one custom SQL feature, or None when it is safe to run.
+
+    Double quotes are identifiers, so `"nfl_injuries"` and `"main"."nfl_injuries"`
+    are the same table as the unquoted name. A single-quoted string is not.
+    """
     named = referenced_columns(sql, dropped)
-    if named:
-        listed = ", ".join(sorted(named))
-        return f"references postgame columns: {listed}"
+    results = sorted(name for name in named if name in _RESULT_COLUMNS)
+    stats = sorted(name for name in named if name not in _RESULT_COLUMNS)
+    parts: list[str] = []
+    if results:
+        parts.append(f"references postgame columns: {', '.join(results)}")
+    if stats:
+        parts.append(f"references same-game box stats: {', '.join(stats)}")
     raw = referenced_columns(sql, raw_snapshots)
     if raw:
         listed = ", ".join(sorted(raw))
         views = ", ".join(f"{table}_asof" for table in sorted(raw))
-        return (
+        parts.append(
             f"references raw snapshot {listed}; use {views}, which only includes rows "
             "with valid_from <= start_time and valid_to null or later than start_time"
         )
-    return None
+    return "; ".join(parts) if parts else None
 
 
 def strip_postgame(table: str, frame: pd.DataFrame) -> tuple[pd.DataFrame, set[str]]:
@@ -304,7 +322,7 @@ def _is_postgame(dataset: str | None, column: str) -> bool:
 
 
 def _mask_literals(sql: str) -> str:
-    """Replace strings and comments with spaces so a word inside them is not a column."""
+    """Blank strings and comments. Double-quoted identifiers stay visible."""
     out: list[str] = []
     i = 0
     in_single = False
@@ -350,13 +368,18 @@ def _mask_literals(sql: str) -> str:
             i += 1
             continue
         if in_double:
-            out.append(" ")
+            # DuckDB double quotes name an identifier. Keep the text so a
+            # quoted table or column is still visible to the static check.
+            # A doubled quote is one quote character inside the name.
             if ch == '"' and nxt == '"':
-                out.append(" ")
                 i += 2
                 continue
             if ch == '"':
                 in_double = False
+                out.append(" ")
+                i += 1
+                continue
+            out.append(ch)
             i += 1
             continue
         if ch == "-" and nxt == "-":
