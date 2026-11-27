@@ -9,6 +9,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { Client, InMemoryTransport } from "@modelcontextprotocol/client";
 import { createServer } from "./server.js";
+import { LAB_TOOL_NAMES } from "./lab/tools.js";
 import { chicagoToday } from "./tools/preview.js";
 import { apiCache } from "./client.js";
 import { fixtureState, hasFixture, installFixtureFetch, readFixture } from "./fixture-fetch.js";
@@ -66,9 +67,16 @@ test("tools/list keeps every existing tool, adds get_slate, and publishes output
   for (const n of MARKET_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
   for (const n of PLAYER_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
   for (const n of PREVIEW_TOOLS) assert.ok(names.includes(n), `missing ${n}`);
+  for (const n of LAB_TOOL_NAMES) assert.ok(names.includes(n), `missing ${n}`);
   assert.equal(
     names.length,
-    ORIGINAL_TOOLS.length + ADDED_TOOLS.length + DATA_TOOLS.length + MARKET_TOOLS.length + PLAYER_TOOLS.length + PREVIEW_TOOLS.length,
+    ORIGINAL_TOOLS.length +
+      ADDED_TOOLS.length +
+      DATA_TOOLS.length +
+      MARKET_TOOLS.length +
+      PLAYER_TOOLS.length +
+      PREVIEW_TOOLS.length +
+      LAB_TOOL_NAMES.length,
   );
   for (const t of tools) {
     if (SCHEMA_TOOLS.includes(t.name)) {

@@ -1,8 +1,8 @@
 # Tools
 
-Overview of all 43 tools available in sports-leader-mcp.
+Overview of all 54 tools available in sports-leader-mcp.
 
-Compact JSON is the default. Every tool accepts optional `raw: true`; oversized output is replaced with a valid `{ "truncated": true, ... }` envelope instead of partial JSON.
+Compact JSON is the default. The live-data tools accept optional `raw: true`; oversized output is replaced with a valid `{ "truncated": true, ... }` envelope instead of partial JSON. The eleven research-lab tools do not take `raw`.
 
 Results carry the compact JSON as a text block and as MCP `structuredContent` (top-level arrays as `{ "items": [...] }`). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_game_preview`, `get_team_stats`, `get_rankings`, `get_power_index`, `get_futures`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an `outputSchema`; schemas allow extra properties because fields are only ever added. With `raw: true` the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`.
 
@@ -89,3 +89,21 @@ Parquet files for MLB, NBA, NFL, NHL, college football (FBS), and men's college 
 | [`get_lineups`](data.md#get_lineups) | Lineups. NHL rows come from the official NHL API. |
 | [`get_weather`](data.md#get_weather) | Game weather. |
 | [`get_data_status`](data.md#get_data_status) | Manifest summary and freshness. |
+
+## Research lab
+
+Same connector. The first call starts the Python lab when `uv` and Python 3.11, 3.12, or 3.13 are installed. These tools do not take `raw`. A result is a research fit against simple baselines, not a betting edge. For `home_win`, `estimate` is P(home team wins) and `estimate_kind` is `home_win_probability`.
+
+| Tool | Description |
+|------|-------------|
+| `ping` | Lab health check and the research disclaimer. |
+| `inspect_data` | Rows, dates, grain, null rates, and pregame or postgame for one published dataset. |
+| `query_data` | One SELECT on a published view such as `nfl_games`. |
+| `build_dataset` | Pregame dataset. Saved only when the leakage audit passes. |
+| `audit_features` | The same leakage checks. Does not save. A pass is REVIEW REQUIRED. |
+| `train_classifier` | Walk-forward logistic or LightGBM. No random split. |
+| `train_regressor` | Walk-forward ridge, Poisson, negative binomial, or LightGBM. |
+| `predict` | Score games as of America/Chicago. `home_win` estimates are P(home team wins). |
+| `list_runs` | Saved runs for one league, newest first. |
+| `compare_runs` | At least two runs on the primary metric. |
+| `model_card` | Twelve-section card. A research record, not an approval. |

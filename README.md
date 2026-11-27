@@ -1,7 +1,7 @@
 # sports-leader-mcp
 
 
-Free MCP server for live sports data. **43 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, futures, and keyless Kalshi and Polymarket prices across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, NHL, college football, and men's college basketball from the 2021 season through today.
+Free MCP server for live sports data. **54 tools, 4 resources, 7 resource templates, 5 prompts** covering scores, standings, rosters, player and team stats, betting odds, play-by-play, injuries, transactions, news, college rankings, power index, futures, and keyless Kalshi and Polymarket prices across **30 verified leagues in 11 sports**, plus a historical Parquet export for MLB, NBA, NFL, NHL, college football, and men's college basketball from the 2021 season through today.
 
 No ESPN auth or API keys. Stdio mode has no server-side request quota; HTTP mode applies configurable per-IP limits.
 
@@ -237,7 +237,7 @@ npm run fixtures:capture    # re-record raw ESPN fixtures into test/fixtures
 
 ## Agent-safe responses
 
-Dedicated tools return compact, curated JSON by default. Every tool accepts `raw: true`, but raw ESPN responses can be extremely large and should be used only to recover a specific omitted field. Responses over `SPORTS_LEADER_MAX_TOKENS` are replaced with valid truncation metadata; the server never cuts JSON mid-document.
+Dedicated tools return compact, curated JSON by default. The live-data tools accept `raw: true`, but raw ESPN responses can be extremely large and should be used only to recover a specific omitted field. The eleven research-lab tools do not take `raw`. Responses over `SPORTS_LEADER_MAX_TOKENS` are replaced with valid truncation metadata; the server never cuts JSON mid-document.
 
 Compact outputs intentionally remove image variants, navigation links, references, and UI metadata. They are returned as both compact JSON text and MCP `structuredContent`; a top-level array result is exposed as `structuredContent: { "items": [...] }` (same shape for every protocol era). `get_scoreboard`, `get_game_summary`, `get_game_odds`, `get_injuries`, `get_athlete_gamelog`, `get_player_report`, `get_player_trends`, `get_slate`, `get_game_preview`, `get_kalshi_markets`, `get_polymarket_markets`, and `get_market_odds` also publish an MCP `outputSchema`; schemas allow additional properties because fields are only ever added. With `raw: true`, the text block is the untouched ESPN JSON and `structuredContent` is `{ "raw": true, "response": ... }`. See [tool contracts](docs/tools/) for the current response shapes.
 
@@ -255,9 +255,15 @@ All normalized odds (in `get_game_odds`, `get_scoreboard` events, `get_game_summ
 
 ## ML lab
 
-`sports-leader-lab` is a second stdio server for research models on the same public Parquet export. It does not replace the Node server. It caches the export, builds a leakage-checked dataset, trains a walk-forward classifier or regressor, and scores a game as of a clock in US Central. Every tool result carries the same line: a research estimate of fit against simple baselines, not a betting edge, not a pick, and not a recommendation to bet.
+The same sports-leader connector also serves the research lab. One client entry is the whole server: 43 live-data tools and 11 lab tools. Nothing else is added to the MCP config. The Node process starts the Python lab on the first lab call (`uv run python -m sports_leader_lab`) and reuses that process. Python is not a second connector.
 
-Guardrails, on every tool:
+None of the lab names collide with a live-data tool, so they are registered as `ping`, `inspect_data`, `query_data`, `build_dataset`, `audit_features`, `train_classifier`, `train_regressor`, `predict`, `list_runs`, `compare_runs`, and `model_card`.
+
+The lab caches the public Parquet export, builds a leakage-checked dataset, trains a walk-forward classifier or regressor, and scores a game as of a clock in US Central. Every lab result carries the same line: a research estimate of fit against simple baselines, not a betting edge, not a pick, and not a recommendation to bet.
+
+If `uv` or Python 3.11–3.13 is missing, the connector still starts and the 43 live-data tools still work. A lab tool then returns an error that names `uv` and the Python versions.
+
+Guardrails, on every lab tool:
 
 - Walk-forward only. A random split is not part of the API.
 - Features are known at schedule time, from prior games, or as of the start time. A column from after the start is not a feature.
@@ -267,28 +273,9 @@ Guardrails, on every tool:
 - A market comparison uses prices passed on that `predict` call. The lab does not fetch odds, does not store those prices, and does not keep an odds cache.
 - There is no odds history and no Kalshi data in the lab.
 
-Requires Python 3.11, 3.12, or 3.13, and [uv](https://docs.astral.sh/uv/).
+Lab calls need Python 3.11, 3.12, or 3.13, and [uv](https://docs.astral.sh/uv/) on `PATH`. The connector config above is the only one. From a checkout, `uv` finds the lab next to the server. Developers can install the lab extras with `cd lab && uv sync --group dev`.
 
-```bash
-cd lab
-uv sync --group dev
-uv run python -m sports_leader_lab
-```
-
-Point an MCP client at that command:
-
-```json
-{
-  "mcpServers": {
-    "sports-leader-lab": {
-      "command": "uv",
-      "args": ["run", "--directory", "/absolute/path/to/sports-leader-mcp/lab", "python", "-m", "sports_leader_lab"]
-    }
-  }
-}
-```
-
-The Python API under the tools is `register_views` (for example `nfl_games` and `mlb_team_game_stats`, with a `season` filter), `build_features`, and `walk_forward`. Files are downloaded with Python and then read locally. DuckDB's httpfs extension is not used.
+The Python module stays so the Node server can spawn it. It is not a setup step for an MCP client. The Python API under the tools is `register_views` (for example `nfl_games` and `mlb_team_game_stats`, with a `season` filter), `build_features`, and `walk_forward`. Files are downloaded with Python and then read locally. DuckDB's httpfs extension is not used.
 
 Past seasons are downloaded once and kept while the sha256 matches the manifest. The manifest is rechecked every few hours, so a changed current-season file is downloaded again. A past season whose hash is unchanged is not downloaded again.
 

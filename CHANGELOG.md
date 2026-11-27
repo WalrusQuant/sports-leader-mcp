@@ -7,6 +7,17 @@ All notable changes to sports-leader-mcp. Dates are US Central.
 
 
 
+## 0.10.1 — 2026-11-27
+
+The 11 research-lab tools are served by the main sports-leader connector. One MCP client entry lists 54 tools. No second connector is added.
+
+### Changed
+
+- `ping`, `inspect_data`, `query_data`, `build_dataset`, `audit_features`, `train_classifier`, `train_regressor`, `predict`, `list_runs`, `compare_runs`, and `model_card` are registered on the Node server. None of those names collide with a live-data tool, so `ping` is not prefixed.
+- The first lab call starts `uv run python -m sports_leader_lab` as a stdio child. Later lab calls reuse it. The process is closed when the server exits.
+- If `uv` or Python 3.11–3.13 is missing, the connector still starts and the 43 live-data tools still work. A lab tool returns an error that names `uv` and those Python versions.
+- Lab tool schemas do not take the ESPN `raw` flag. Guardrails, golden tests, the smoke check, and the `home_win_probability` labeling are unchanged. Lab package version stays 0.1.0.
+
 ## 0.10.0 — 2026-11-26
 
 Research lab 0.1.0, beside the Node server at 0.10.0. 43 Node tools.

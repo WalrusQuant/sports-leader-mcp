@@ -1,5 +1,6 @@
-# Offline suite. engines is >=20; Node 22 is the LTS line this repo typechecks
-# against (@types/node 22). Tests use fixtures and must not call live hosts.
+# engines is >=20; Node 22 is the LTS line this repo typechecks against
+# (@types/node 22). The Node suite uses fixtures for ESPN. The lab round-trip
+# downloads the public Parquet export, so that job installs uv.
 name: CI
 
 on:
@@ -14,13 +15,21 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5.4.2
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: lab/uv.lock
+      - name: Install lab
+        working-directory: lab
+        run: uv sync --frozen
       - run: npm ci
       - run: npm run build
       - run: npm run typecheck

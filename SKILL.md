@@ -182,7 +182,7 @@ async function getNBAScoreboard(date?: string) {
 
 ## Using the sports-leader MCP server instead of raw URLs
 
-If the sports-leader MCP server is connected (v0.10.0, 43 tools), prefer its tools over hand-built URLs. They return compact JSON and validate slugs. `raw: true` on any tool returns the untouched ESPN response.
+If the sports-leader MCP server is connected (v0.10.1, 54 tools), prefer its tools over hand-built URLs. They return compact JSON and validate slugs. `raw: true` on a live-data tool returns the untouched ESPN response. The research-lab tools do not take `raw`.
 
 - `get_slate(sport, league, date?)` and `get_scoreboard`: start here for a day of games. Men's and women's college basketball default to every Division I game (`groups=50`, `limit=400`). Pass `groups` only to narrow to one conference.
 - A `dateRange` (`YYYYMMDD-YYYYMMDD`) is not sent to ESPN as one range. ESPN rejects that form. Today and the previous 2 US-Eastern days, plus future days, stay on ESPN, one day at a time, at most 14 of those days. Older days for `mlb`, `nba`, `nfl`, `nhl`, `college-football`, and `mens-college-basketball` come from the games export in one query. The response `source` is `data`, `espn`, or `mixed`. `days` lists each date. A result that would exceed the token budget returns a `page`; pass `offset` for the next slice.
@@ -202,7 +202,7 @@ Six leagues are published from the 2021 season through today: `mlb`, `nba`, `nfl
 
 ## Research lab (sports-leader-lab)
 
-A second stdio server, separate from the 43-tool Node server. Start it with `cd lab && uv run python -m sports_leader_lab`. It reads the public sportsleader-data Parquet. It does not fetch odds and it has no Kalshi data. Current lab version is `0.1.0`.
+The same connector serves these tools. There is no second server to add. The Node process starts the lab on the first lab call when `uv` and Python 3.11, 3.12, or 3.13 are on `PATH`. If they are missing, the lab tools return that error and the live-data tools keep working. The lab reads the public sportsleader-data Parquet. It does not fetch odds and it has no Kalshi data. Current lab version is `0.1.0`. None of these names collide with a live-data tool, including `ping`.
 
 Every tool result includes this line: a research estimate of fit against simple baselines, not a betting edge, not a pick, and not a recommendation to bet.
 
