@@ -24,6 +24,24 @@ def test_unexpected_exceptions_are_tool_errors_with_the_message():
         _call(boom)
 
 
+def test_lab_and_value_errors_are_the_message_only():
+    from mcp.server.mcpserver.exceptions import ToolError
+
+    from sports_leader_lab.errors import LabError
+    from sports_leader_lab.server import _call
+
+    def lab():
+        raise LabError("unknown league 'zzz'")
+
+    def value():
+        raise ValueError("seasons must be integers")
+
+    with pytest.raises(ToolError, match="^unknown league 'zzz'$"):
+        _call(lab)
+    with pytest.raises(ToolError, match="^seasons must be integers$"):
+        _call(value)
+
+
 def test_unknown_league_is_a_clear_tool_error():
     from mcp.server.mcpserver.exceptions import ToolError
 

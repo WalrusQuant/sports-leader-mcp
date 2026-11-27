@@ -18,6 +18,10 @@
  * Offseason leagues with no games are SKIP. INFO does not fail the process.
  */
 
+import { spawnSync } from "node:child_process";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { ALL_TOOLS, produce } from "../dist/server.js";
 import { apiCache } from "../dist/client.js";
 import { VERSION } from "../dist/version.js";
@@ -25,6 +29,7 @@ import { isDataExportConfigured } from "../dist/data/config.js";
 import { DATA_TOOL_NAMES, auditCallForFile, statGroupForDataset } from "../dist/data/tools.js";
 import { auditContracts } from "./contract.mjs";
 
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const tools = new Map(ALL_TOOLS.map((tool) => [tool.name, tool]));
 const today = new Intl.DateTimeFormat("en-CA", {
   timeZone: "America/New_York",
@@ -524,6 +529,8 @@ await auditDataExport();
 
 await auditContracts({ line, leagues: LEAGUES, today, version: VERSION });
 
+auditLabSmoke();
+
 const failed = rows.filter((row) => row.status === "fail");
 const skipped = rows.filter((row) => row.status === "skip");
 const infos = rows.filter((row) => row.status === "info");
@@ -538,6 +545,39 @@ if (failed.length) {
   console.log("Failures:");
   for (const row of failed) console.log(`  ${row.tool}  ${row.label}  ${row.detail}`);
   process.exit(1);
+}
+
+/**
+ * Lab smoke row. This repository has no Monday schedule. When uv is missing the
+ * row is a skip so the Node contract audit still runs. An external weekly job
+ * should run `cd lab && uv run python scripts/smoke.py`.
+ */
+function auditLabSmoke() {
+  const uv = spawnSync(
+    "uv",
+    ["run", "--directory", path.join(root, "lab"), "python", "scripts/smoke.py"],
+    { encoding: "utf8", timeout: 300000 },
+  );
+  if (uv.error && uv.error.code === "ENOENT") {
+    line(
+      "skip",
+      "lab smoke",
+      "build train predict",
+      "uv is not installed. No Monday job lives in this repo; run lab/scripts/smoke.py from the weekly audit.",
+    );
+    return;
+  }
+  if (uv.error) {
+    line("fail", "lab smoke", "build train predict", uv.error.message);
+    return;
+  }
+  if (uv.status !== 0) {
+    const detail = (uv.stderr || uv.stdout || "lab smoke failed").trim().split("\n").at(-1);
+    line("fail", "lab smoke", "build train predict", detail);
+    return;
+  }
+  const detail = (uv.stdout || "").trim().split("\n").at(-1) || "no output";
+  line("pass", "lab smoke", "build train predict", detail);
 }
 
 /**

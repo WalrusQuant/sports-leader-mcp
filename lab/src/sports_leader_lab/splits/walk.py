@@ -106,8 +106,10 @@ def walk_forward(
 
 def _scheme(scheme: str) -> Scheme:
     kind = scheme.strip().lower()
-    if kind not in {"season", "date"}:
+    if kind == "random" or kind.startswith("random_") or kind in {"shuffle", "shuffled"}:
         raise ValueError("random splits are not available; use scheme='season' or scheme='date'")
+    if kind not in {"season", "date"}:
+        raise ValueError("scheme must be season or date")
     return kind  # type: ignore[return-value]
 
 

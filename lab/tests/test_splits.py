@@ -11,6 +11,8 @@ def test_random_splits_are_not_exposed():
     assert not hasattr(splits, "train_test_split")
     with pytest.raises(ValueError, match="random splits are not available"):
         walk_forward(_frame([]), scheme="random")
+    with pytest.raises(ValueError, match="^scheme must be season or date$"):
+        walk_forward(_frame([]), scheme="foo")
 
 
 def test_season_folds_and_descriptions():
