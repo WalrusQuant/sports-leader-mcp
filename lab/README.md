@@ -2,15 +2,9 @@
 
 Research tools for walk-forward models on the public [sportsleader-data](https://github.com/WalrusQuant/sportsleader-data) Parquet files. The lab reports how a model fits past games against simple baselines. It is not a betting edge, a pick, or a recommendation to bet.
 
-The stdio server is separate from the Node sports-leader server:
+These tools are part of the sports-leader MCP connector. One client config lists all 54 tools. The Node server starts this package on the first lab call. `python -m sports_leader_lab` remains the process that Node spawns; it is not a second connector to add.
 
-```bash
-cd lab
-uv sync --group dev
-uv run python -m sports_leader_lab
-```
-
-Cache and run files stay outside the repo. See the repository README for the environment variables and the MCP client snippet.
+Cache and run files stay outside the repo. See the repository README for the environment variables. Lab calls need `uv` and Python 3.11, 3.12, or 3.13. Without them the connector still starts and the live-data tools still work.
 
 ## Tools
 

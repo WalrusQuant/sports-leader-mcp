@@ -23,6 +23,7 @@ import { dataUrl, type DataDeps } from "./http.js";
 import type { ManifestFile } from "./manifest.js";
 import { aggregatePlayerTrends, nflPasserRating, queryDataset, statAggregation } from "./query.js";
 import { DATA_TOOL_NAMES, dataTools, getGames, getPlayerGameLogs, getPlayerTrends } from "./tools.js";
+import { LAB_TOOL_NAMES } from "../lab/tools.js";
 
 const SQL_TYPE: Record<ColType, string> = {
   str: "VARCHAR",
@@ -364,6 +365,7 @@ describe("bayes data export", { concurrency: 1 }, () => {
       "get_market_odds",
       "get_player_report",
       "get_game_preview",
+      ...LAB_TOOL_NAMES,
     ]);
     assert.equal(names.includes("get_injuries"), true);
     assert.equal(names.includes("get_injury_reports"), true);

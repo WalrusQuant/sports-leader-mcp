@@ -11,6 +11,7 @@ import { dataTools } from "./data/tools.js";
 import { marketTools } from "./tools/markets.js";
 import { getPlayerReport } from "./tools/player-report.js";
 import { getGamePreview } from "./tools/preview.js";
+import { labTools } from "./lab/tools.js";
 import type { AnyToolDef } from "./tool.js";
 import { UpstreamError, CancelledError, withRequestSignal } from "./client.js";
 import { applyBudget } from "./transforms.js";
@@ -32,6 +33,7 @@ export const ALL_TOOLS: AnyToolDef[] = [
   ...marketTools,
   getPlayerReport,
   getGamePreview,
+  ...labTools,
 ];
 
 /**
@@ -187,7 +189,9 @@ export function createServer(): McpServer {
       {
         title: tool.title,
         description: tool.description,
-        inputSchema: z.object({ ...tool.inputShape, raw: rawParam }),
+        inputSchema: z.object(
+          tool.acceptsRaw === false ? tool.inputShape : { ...tool.inputShape, raw: rawParam },
+        ),
         ...(tool.outputSchema ? { outputSchema: tool.outputSchema } : {}),
         annotations: {
           ...READ_ONLY_ANNOTATIONS,

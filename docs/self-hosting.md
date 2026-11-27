@@ -131,9 +131,9 @@ Basic liveness check. Always responds, even when the kill switch is active.
 ```json
 {
   "status": "ok",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "uptime": 3621.5,
-  "tools": 43,
+  "tools": 54,
   "stateless": true,
   "protocolVersions": {
     "modern": ["2026-07-28"],
@@ -199,7 +199,7 @@ docker run -p 3000:3000 \
 
 ## Next Steps
 
-- Browse the [Tools](tools/) to see all 43 tools with parameters and examples
+- Browse the [Tools](tools/) to see all 54 tools with parameters and examples
 - Run `npm run audit` from a checkout to hit every tool against live ESPN and print a pass/fail report. After the tool checks it prints a `contract` section (pass, fail, skip, or info) for the raw scoreboard, summary, gamelog, Kalshi, and Polymarket shapes, then a `lab smoke` row (build, train, and predict one NFL home-win model). The row is a skip when `uv` is not installed. `.github/workflows/ci.yml` runs the offline suite on pull requests and on `main`. `.github/workflows/contract.yml` runs the audit only when dispatched. This repository does not schedule a Monday job. A weekly audit that lives elsewhere should run `cd lab && uv run python scripts/smoke.py`.
 - Read [Gotchas & Pitfalls](reference/gotchas.md) for ESPN API quirks
 - Check the [API Endpoints](reference/endpoints.md) reference for the raw ESPN API catalog

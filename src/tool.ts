@@ -30,6 +30,11 @@ export interface ToolDef<S extends z.ZodRawShape = z.ZodRawShape> {
    */
   outputSchema?: z.ZodObject<z.ZodRawShape>;
   /**
+   * When false, the server does not add the ESPN `raw` flag. Lab tools keep
+   * the schema the Python server publishes.
+   */
+  acceptsRaw?: boolean;
+  /**
    * Optional compaction function applied to the raw ESPN response before it is
    * returned to the agent. Bypassed when the caller passes `raw=true`.
    * The server also applies a token-budget backstop after the transform.

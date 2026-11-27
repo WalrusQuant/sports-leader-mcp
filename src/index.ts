@@ -3,6 +3,7 @@ import { serveStdio } from "@modelcontextprotocol/server/stdio";
 
 import { createServer } from "./server.js";
 import { createHttpApp, MODERN_PROTOCOL_VERSION } from "./http.js";
+import { closeLab } from "./lab/bridge.js";
 
 /**
  * stdio: serveStdio reads the opening message and pins one server instance
@@ -19,7 +20,7 @@ function startHttp(port: number) {
     console.log(`sports-leader-mcp HTTP server listening on port ${port} (stateless; MCP ${MODERN_PROTOCOL_VERSION} + 2025-era)`);
   });
   const shutdown = () => {
-    void handler.close().finally(() => httpServer.close(() => process.exit(0)));
+    void closeLab().finally(() => handler.close().finally(() => httpServer.close(() => process.exit(0))));
   };
   process.once("SIGTERM", shutdown);
   process.once("SIGINT", shutdown);
