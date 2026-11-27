@@ -200,6 +200,38 @@ Six leagues are published from the 2021 season through today: `mlb`, `nba`, `nfl
 
 `get_games`, `get_player_game_logs`, `get_player_trends`, `get_lineups`, and `get_data_status` are the export tools. College football player logs use passing, rushing, and receiving. Men's college basketball uses the player group.
 
+## Research lab (sports-leader-lab)
+
+A second stdio server, separate from the 43-tool Node server. Start it with `cd lab && uv run python -m sports_leader_lab`. It reads the public sportsleader-data Parquet. It does not fetch odds and it has no Kalshi data. Current lab version is `0.1.0.dev0` until the next release.
+
+Every tool result includes this line: a research estimate of fit against simple baselines, not a betting edge, not a pick, and not a recommendation to bet.
+
+### Tools
+
+- `ping`: health check. Returns the lab version and the disclaimer. Call it first.
+- `inspect_data(league, dataset, seasons?)`: rows, date range, grain, null rates, and whether each column is pregame or postgame. `league` is `mlb`, `nba`, `nfl`, `nhl`, `cfb`, or `cbb`. Omit `seasons` for every published season.
+- `query_data(sql, max_rows=500, seasons?)`: one SELECT on a view such as `nfl_games` or `mlb_team_game_stats`. No external file access. `max_rows` is 1 to 5000. The query stops at 20 seconds.
+- `build_dataset(league, target, seasons, features?, sql_features?)`: pregame rows for `home_win`, `margin`, `total`, or `team_points` (home team's points). `features` names families: `site`, `elo`, `team_form`, `rest`, `injuries`, `probables` (MLB only). Saved only when the leakage audit passes.
+- `audit_features(league, target, seasons, features?, sql_features?)`: the same leakage checks. Does not save. `ok: true` means REVIEW REQUIRED, never clean.
+- `train_classifier(dataset_id, model="logistic", calibration="none", scheme="season", min_train_seasons=2, min_train_rows=50, embargo_days=0, test_days=14)`: walk-forward only. `model` is `logistic` or `lightgbm`. `calibration` is `none`, `platt`, or `isotonic`. `scheme` is `season` or `date`. Reports log loss against a constant rate, a home-field rate, and as-of Elo. A tie with Elo is not a win.
+- `train_regressor(dataset_id, model="ridge", scheme="season", ...)`: `ridge`, `poisson`, `negbin`, or `lightgbm`. Poisson and negative binomial are refused for `margin`. Count targets are not compared to Elo.
+- `predict(run_id, game_date?, game_ids?, market_prices?)`: scores as of now in `America/Chicago`. Returns `as_of`, `as_of_timezone`, and `start_time_ct`. A completed game is a research replay. A game with no start time is refused. `market_prices` is a list of `{game_id, home_implied_prob, source}` for this call only and is not stored.
+- `list_runs(league, limit=20)`: newest first. `limit` is 1 to 100. Ties break on a monotonic sequence, then the run id.
+- `compare_runs(run_ids)`: at least two runs. A different league or target is returned with a caveat, not as a ranking.
+- `model_card(run_id)`: twelve sections rebuilt from the run record, byte-identical to the saved `model_card.md`. The card is not an approval.
+
+### Guardrails
+
+- Walk-forward only. Do not ask for a random split. It is not a parameter.
+- Features must be known before the game: schedule, prior games, or as of start. Postgame columns are targets and filters, not features.
+- The leakage audit hard-fails a copy of the target, the score, or the margin, a same-game box stat, a timestamp after start, and a raw snapshot name. A constant column is not a copy.
+- Baselines are part of the training result. Do not drop them when you summarize a run.
+- Repeat the no-edge disclaimer when you quote a probability or a margin.
+- Compare a market only with prices from a live call in the same turn. Do not invent a closing line. The lab does not store the price.
+- Nothing from Kalshi belongs in a lab call. Do not describe a lab estimate as an edge.
+
+`SPORTSLEADER_LAB_LIVE=1 uv run pytest -m live` (from `lab/`) runs the frozen NHL 2023 and MLB 2023 goldens and a Brewers, Packers, and Bucks stdio pass. This repo has no Monday schedule. A weekly audit elsewhere should run `cd lab && uv run python scripts/smoke.py` (NFL build, train, predict).
+
 ## For Deeper Reference
 
 - **Full endpoint catalog:** [references/endpoints.md](references/endpoints.md)

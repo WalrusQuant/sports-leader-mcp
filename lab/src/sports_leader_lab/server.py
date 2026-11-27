@@ -70,19 +70,23 @@ def ping() -> dict[str, Any]:
 
 @mcp.tool()
 def inspect_data(league: str, dataset: str, seasons: list[int] | None = None) -> dict[str, Any]:
-    """Describe one published dataset: rows, null rates, dates, grain, and pregame or postgame.
+    """Describe one published dataset before querying or building.
 
-    This is a research description of the export. It is not a betting edge.
+    league is mlb, nba, nfl, nhl, cfb, or cbb. dataset is one published name such
+    as games or team_game_stats. Omit seasons to use every published season.
+    Returns rows, date range, grain, null rates, and whether each column is
+    pregame or postgame. This describes the export. It is not a betting edge.
     """
     return _call(inspect_data_fn, league, dataset, seasons)
 
 
 @mcp.tool()
 def query_data(sql: str, max_rows: int = 500, seasons: list[int] | None = None) -> dict[str, Any]:
-    """Run one SELECT over views such as nfl_games.
+    """Run one SELECT over a published view such as nfl_games or mlb_team_game_stats.
 
-    The query runs on a connection with external file access disabled, a 20 second
-    timeout, and a row cap (default 500, at most 5000). This is research access
+    Only a single SELECT is accepted. The connection has no external file access.
+    max_rows is 1 to 5000 (default 500). The query stops at 20 seconds. Pass
+    seasons to limit which published seasons are loaded. This is research access
     to the export, not a betting edge.
     """
     return _call(query_data_fn, sql, max_rows=max_rows, seasons=seasons)
@@ -96,11 +100,14 @@ def build_dataset(
     features: list[str] | None = None,
     sql_features: list[dict] | None = None,
 ) -> dict[str, Any]:
-    """Build a pregame dataset for home_win, margin, total, or team_points.
+    """Build one pregame dataset and save it only when the leakage audit passes.
 
-    Features come from the registry or from custom SQL. The dataset is saved
-    only when the leakage audit passes. team_points is the home team's points.
-    This is research data, not a betting edge.
+    target is home_win, margin, total, or team_points (the home team's points).
+    seasons must list at least one season. features names registry families:
+    site, elo, team_form, rest, injuries, and probables (MLB). Omit features to
+    use every family for that league. sql_features is optional custom SQL that
+    cannot see postgame columns. A failed audit does not save. This is research
+    data, not a betting edge.
     """
     return _call(build_dataset_fn, league, target, seasons, features=features, sql_features=sql_features)
 
@@ -110,23 +117,32 @@ def train_classifier(
     dataset_id: str,
     model: str = "logistic",
     calibration: str = "none",
+    scheme: str = "season",
     min_train_seasons: int = 2,
+    min_train_rows: int = 50,
     embargo_days: int = 0,
+    test_days: int = 14,
 ) -> dict[str, Any]:
-    """Walk-forward home-win model: L2 logistic or LightGBM, optional Platt or isotonic.
+    """Walk-forward home-win model. There is no random split.
 
-    Early stopping and calibration use a tail inside each training fold, never
-    the test fold. Metrics are log loss, Brier, AUC, ECE, and reliability bins,
-    next to a constant rate, a home-field rate, and as-of Elo. A model that
-    loses to Elo is flagged. This is a research fit, not a betting edge.
+    model is logistic or lightgbm. calibration is none, platt, or isotonic, fit
+    on a tail inside each training fold. scheme is season (hold out a later
+    season after min_train_seasons earlier ones) or date (folds of test_days,
+    with embargo_days between train and test, and at least min_train_rows).
+    Metrics are log loss, Brier, AUC, and ECE, next to a constant rate, a
+    home-field rate, and as-of Elo. Losing to Elo is flagged. This is a
+    research fit, not a betting edge.
     """
     return _call(
         train_classifier_fn,
         dataset_id,
         model=model,
         calibration=calibration,
+        scheme=scheme,
         min_train_seasons=min_train_seasons,
+        min_train_rows=min_train_rows,
         embargo_days=embargo_days,
+        test_days=test_days,
     )
 
 
@@ -134,22 +150,30 @@ def train_classifier(
 def train_regressor(
     dataset_id: str,
     model: str = "ridge",
+    scheme: str = "season",
     min_train_seasons: int = 2,
+    min_train_rows: int = 50,
     embargo_days: int = 0,
+    test_days: int = 14,
 ) -> dict[str, Any]:
-    """Walk-forward margin, total, or team-points model.
+    """Walk-forward margin, total, or team-points model. There is no random split.
 
-    Models are ridge, Poisson, negative binomial, or LightGBM (Poisson objective
-    for counts). Poisson and negative binomial are refused for margin. Metrics
-    include MAE, RMSE, Poisson deviance for counts, bias by season, and an
-    Elo-implied margin. This is a research fit, not a betting edge.
+    model is ridge, poisson, negbin, or lightgbm. Poisson and negative binomial
+    are refused for margin. scheme, min_train_seasons, min_train_rows,
+    embargo_days, and test_days match train_classifier. Metrics include MAE,
+    RMSE, Poisson deviance for counts, bias by season, and an Elo-implied
+    margin. Count targets are not compared to Elo. This is a research fit, not
+    a betting edge.
     """
     return _call(
         train_regressor_fn,
         dataset_id,
         model=model,
+        scheme=scheme,
         min_train_seasons=min_train_seasons,
+        min_train_rows=min_train_rows,
         embargo_days=embargo_days,
+        test_days=test_days,
     )
 
 
@@ -160,11 +184,13 @@ def predict(
     game_ids: list[str] | None = None,
     market_prices: list[dict] | None = None,
 ) -> dict[str, Any]:
-    """Score games from a saved run as of now in US Central (America/Chicago).
+    """Score games from a saved run as of now in America/Chicago.
 
-    Refuses when a required feature is not known before the game's start time.
-    market_prices, when passed, are current home-win prices for this call only
-    and are not stored. The lab does not fetch odds. This is not a betting edge.
+    Pass game_date (YYYY-MM-DD) or game_ids. The result includes as_of, as_of_timezone,
+    and each game's start_time_ct. A completed game is labeled a research replay.
+    A game with no start time is refused. market_prices, when passed, are current
+    {game_id, home_implied_prob, source} rows for this call only and are not stored.
+    The lab does not fetch odds. This is not a betting edge.
     """
     return _call(predict_fn, run_id, game_date=game_date, game_ids=game_ids, market_prices=market_prices)
 
@@ -177,12 +203,14 @@ def audit_features(
     features: list[str] | None = None,
     sql_features: list[dict] | None = None,
 ) -> dict[str, Any]:
-    """Run the dataset leakage checks without saving.
+    """Run the dataset leakage checks and do not save.
 
-    Hard-fails target copies, scores, same-game box stats, timestamps after
-    start, and raw snapshot references. A very high single-feature AUC is a
-    warning. An automated pass is REVIEW REQUIRED, not a sign-off. This is a
-    research check, not a betting edge.
+    Same arguments as build_dataset. Hard-fails a target, score, or margin copy
+    (including a scaled copy) once 30 overlapping rows are non-null, or on every
+    row when the frame is shorter. A column with fewer than two distinct values
+    is not a copy. Same-game box stats, timestamps after start, and raw snapshot
+    names also fail. A very high single-feature AUC is a warning. ok true means
+    REVIEW REQUIRED, never clean. This is a research check, not a betting edge.
     """
     return _call(
         audit_features_fn,
@@ -198,27 +226,31 @@ def audit_features(
 def list_runs(league: str, limit: int = 20) -> dict[str, Any]:
     """List saved runs for one league, newest first.
 
-    This is a research index, not a betting edge.
+    limit is an integer from 1 to 100 (default 20). Order is created_at, then
+    the monotonic sequence, then run_id. This is a research index, not a betting edge.
     """
     return _call(list_runs_fn, league, limit)
 
 
 @mcp.tool()
 def compare_runs(run_ids: list[str]) -> dict[str, Any]:
-    """Compare saved runs on the primary metric and the same fold rows.
+    """Compare at least two saved runs on the primary metric.
 
-    Runs that do not share a league and target are labeled as not comparable.
-    This is a research comparison, not a betting edge.
+    Pass run_ids. Runs that do not share a league and target come back with a
+    caveat that the numbers are not a comparison. This is a research comparison,
+    not a betting edge.
     """
     return _call(compare_runs_fn, run_ids)
 
 
 @mcp.tool()
 def model_card(run_id: str) -> dict[str, Any]:
-    """Model card for one run: data window, features, folds, metrics, limits.
+    """Rebuild the twelve-section model card for one run.
 
-    The card is rebuilt from the run record. This is a research record, not a
-    betting edge.
+    The markdown is rendered from the run record and matches the saved
+    model_card.md. Sections cover the question, data window, features, split,
+    metrics against the baselines, limits, and approval history. The card is a
+    research record. It is not an approval and not a betting edge.
     """
     return _call(model_card_fn, run_id)
 
